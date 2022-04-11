@@ -1,29 +1,33 @@
 import React, { useState } from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import SettingsContext from "./components/SettingContext"
 import Clock from "./components/Clock"
-import setting from "./pages/setting"
+import Setting from "./pages/Setting"
 
 function App() {
-  const [workMinutes, setWorkMinutes] = useState(45)
-  const [breakMinutes, setBreakMinutes] = useState(15)
+  const [workMinutes, setWorkMinutes] = useState(2)
+  const [breakMinutes, setBreakMinutes] = useState(2)
+  const [workNumbers, setWorkNumbers] = useState(0)
+  const [breakNumbers, setBreakNumbers] = useState(0)
+  const [totalSpendingTime, setTotalSpendingTime] = useState(0)
 
   return (
-    <Router>
+    <main>
       <SettingsContext.Provider
         value={{
           workMinutes,
-          setWorkMinutes,
           breakMinutes,
-          setBreakMinutes,
+          workNumbers,
+          setWorkNumbers,
+          breakNumbers,
+          setBreakNumbers,
+          totalSpendingTime,
+          setTotalSpendingTime,
         }}
       >
-        <Routes>
-          <Route path="/" element={Clock} />
-          <Route path="settings" element={setting} />
-        </Routes>
+        <Clock />
       </SettingsContext.Provider>
-    </Router>
+    </main>
   )
 }
 
