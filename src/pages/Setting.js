@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react"
-import SettingContext from "../components/SettingContext"
+import SettingContext from "../components/Clock/SettingContext"
 
 const Setting = () => {
   const {

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { Routes, Route } from "react-router-dom"
-import SettingsContext from "./components/SettingContext"
-import Clock from "./components/Clock"
+import { Routes, Route, Navlink } from "react-router-dom"
+import Menu from "./components/Menu/index"
+import SettingsContext from "./components/Clock/SettingContext"
 import Setting from "./pages/Setting"
 
 function App() {
@@ -30,9 +30,14 @@ function App() {
           setTotalSpendingTime,
         }}
       >
+        <Menu />
         <Routes>
-          <Route path="/" element={<Clock />} />
-          <Route path="settings" element={<Setting />} />
+          <Route path="/" />
+          <Route path="home" />
+          <Route path="report" />
+          <Route path="dashboard" />
+          <Route path="chatroom" />
+          <Route path="setting" element={<Setting />} />
         </Routes>
       </SettingsContext.Provider>
     </main>
