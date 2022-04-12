@@ -1,24 +1,25 @@
-import React, { useContext, useState, useEffect, useRef, useCallback } from "react"
+import React, { useContext, useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import SettingContext from "./SettingContext"
 
 const Clock = () => {
   const {
+    timerDuration,
     workMinutes,
     breakMinutes,
     workNumbers,
     setWorkNumbers,
     breakNumbers,
     setBreakNumbers,
-    totalSpendingTime,
-    setTotalSpendingTime,
   } = useContext(SettingContext)
   const [isPaused, setIsPaused] = useState(false)
   const [mode, setMode] = useState("work")
   const [secondsLeft, setSecondsLeft] = useState(0)
+  const [totalSpendingTime, setTotalSpendingTime] = useState(0)
 
   const secondsLeftRef = useRef(secondsLeft)
+  const totalTimeRef = useRef(0)
   const isPausedRef = useRef(isPaused)
   const modeRef = useRef(mode)
 
@@ -34,19 +35,25 @@ const Clock = () => {
     }, [100])
 
     return () => clearInterval(timer)
-  }, [workMinutes, breakMinutes])
+  }, [workMinutes, breakMinutes, timerDuration])
 
   useEffect(() => {
-    secondsLeftRef.current = workMinutes * 60
+    secondsLeftRef.current = timerDuration * workMinutes * 60
     setSecondsLeft(secondsLeftRef.current)
   }, [])
+
+  useEffect(() => {
+    totalTimeRef.current += 1
+    setTotalSpendingTime(getClockTime(totalTimeRef.current))
+  }, [secondsLeft])
 
   const switchMode = () => {
     modeRef.current === "work"
       ? setWorkNumbers((prev) => (prev += 1))
       : setBreakNumbers((prev) => (prev += 1))
     const nextMode = modeRef.current === "work" ? "break" : "work"
-    const nextSeconds = (nextMode === "work" ? workMinutes : breakMinutes) * 60
+    const nextSeconds =
+      (nextMode === "work" ? workMinutes : breakMinutes) * 60 * timerDuration
 
     setMode(nextMode)
     modeRef.current = nextMode
@@ -58,27 +65,36 @@ const Clock = () => {
   const tickTime = () => {
     secondsLeftRef.current--
     setSecondsLeft(secondsLeftRef.current)
-    totalTimeSpent()
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
-    secondsLeftRef.current = mode === "work" ? workMinutes * 60 : breakMinutes * 60
+    secondsLeftRef.current =
+      mode === "work"
+        ? workMinutes * 60 * timerDuration
+        : breakMinutes * 60 * timerDuration
     setSecondsLeft(secondsLeftRef.current)
   }
-
-  const totalTimeSpent = () => {
-    const pastNumbers =
-      workNumbers * parseFloat(workMinutes) + breakNumbers * parseFloat(breakMinutes)
-    let addMinutes = pastNumbers + parseFloat(secondsLeft)
-    if (addMinutes < 10) addMinutes = "0" + addMinutes
-    let addHours = "00"
-    if (addMinutes > 60) {
-      addHours = Math.floor(addMinutes / 60)
-      addMinutes = addMinutes % 60
-      if (addMinutes < 10) addMinutes = "0" + addMinutes
+  const getClockTime = (time) => {
+    let hours = "00"
+    let minutes = "00"
+    let seconds = "00"
+    if (time < 60) {
+      seconds = time
+      seconds = seconds < 10 ? `0${seconds}` : seconds
+    } else if (time > 60 && time < 3600) {
+      minutes = Math.floor(time / 60)
+      minutes = minutes < 10 ? `0${minutes}` : minutes
+      seconds = (time - minutes * 60) % 60
+      seconds = seconds < 10 ? `0${seconds}` : seconds
+    } else if (time > 3600) {
+      hours = Math.floor(time / 3600)
+      hours = hours < 10 ? `0${hours}` : hours
+      minutes = Math.floor((time - hours * 3600) / 60)
+      minutes = minutes < 10 ? `0${minutes}` : minutes
+      seconds = (time - hours * 3600 - minutes * 60) / 60
+      seconds = seconds < 10 ? `0${seconds}` : seconds
     }
-    const addSeconds = 60 - parseFloat(secondsLeft)
-    setTotalSpendingTime(addHours + ":" + addMinutes + ":" + addSeconds)
+    return `${hours}:${minutes}:${seconds}`
   }
   const TimerContent = {
     textColor: "#000",
@@ -86,14 +102,13 @@ const Clock = () => {
     trailColor: "transparent",
     strokeLinecap: "round",
   }
-  const totalSeconds = mode === "work" ? workMinutes * 60 : breakMinutes * 60
+  const totalSeconds =
+    mode === "work" ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
 
   const minutes = Math.floor(secondsLeft / 60)
   let seconds = secondsLeft % 60
   if (seconds < 10) seconds = "0" + seconds
-
-  console.log(secondsLeftRef.current)
 
   return (
     <div>
@@ -129,9 +144,9 @@ const Clock = () => {
           Reset
         </button>
       </div>
-      <h3>Total (work): {workNumbers}</h3>
-      <h3>Total (breakTime): {breakNumbers}</h3>
-      <h3>Total Time Spent: {totalSpendingTime}</h3>
+      <h3>work time: {workNumbers}</h3>
+      <h3>break time: {breakNumbers}</h3>
+      <h3>Total Time Spent:{totalSpendingTime} </h3>
       <Link to="/settings">Setting</Link>
     </div>
   )

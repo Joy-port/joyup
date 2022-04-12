@@ -1,5 +1,6 @@
 module.exports = {
-  presets: [require("@acmecorp/tailwind-base")],
+  mode: "jit",
+  purge: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx}"],
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
