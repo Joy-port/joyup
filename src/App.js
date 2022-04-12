@@ -29,7 +29,7 @@ function App() {
         setTotalSpendingTime,
       }}
     >
-      <div className="container">
+      <div className="body">
         <Menu />
         <main className="content">
           <Routes>

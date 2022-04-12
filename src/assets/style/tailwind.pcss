@@ -2,15 +2,15 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 
-.container {
+.body {
   @apply h-screen md:flex;
 }
 .content {
-  @apply flex-grow p-3;
+  @apply grow p-3;
 }
 .menu-list {
-  @apply md:static md:h-screen md:w-64 w-screen h-auto bg-slateDark flex flex-col transition-all;
+  @apply md:static md:h-screen lg:w-64 md:w-auto w-screen h-auto bg-slateDark flex flex-col transition-all py-3;
 }
 .menu-item {
-  @apply hover:bg-slateLight m-2 my-1 rounded p-2 hover:text-white text-lightGray cursor-pointer;
+  @apply w-full flex gap-2 rounded p-3 text-lightGray hover:bg-slateLight hover:text-white  cursor-pointer;
 }

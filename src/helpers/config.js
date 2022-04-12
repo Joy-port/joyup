@@ -2,31 +2,31 @@ export const pathInfo = [
   {
     name: "Home",
     path: "/",
-    icon: "home",
+    icon: "Home",
   },
   {
     name: "Report",
     path: "report",
-    icon: "Report",
+    icon: "Activity",
   },
   {
     name: "Dashboard",
     path: "dashboard",
-    icon: "Dashboard",
+    icon: "Folder",
   },
   {
     name: "Chat Room",
     path: "chatRoom",
-    icon: "chatRoom",
+    icon: "MessageSquare",
   },
   {
     name: "Document",
     path: "document",
-    icon: "document",
+    icon: "FileText",
   },
   {
     name: "Setting",
     path: "setting",
-    icon: "setting",
+    icon: "Settings",
   },
 ]
