@@ -1,10 +1,12 @@
+const plugin = require("tailwindcss/plugin")
 module.exports = {
   mode: "jit",
   purge: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx}"],
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
-      sm: "480px",
+      xs: "360px",
+      sm: "576px",
       md: "768px",
       lg: "976px",
       xl: "1440px",
@@ -19,6 +21,11 @@ module.exports = {
       "gray-dark": "#273444",
       gray: "#8492a6",
       "gray-light": "#d3dce6",
+      white: "#fff",
+      black: "#212121",
+      lightGray: "#99AAB5",
+      slateLight: "#2C2F33",
+      slateDark: "#23272A",
     },
     fontFamily: {
       sans: ["Graphik", "sans-serif"],
@@ -34,5 +41,15 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addComponents }) {
+      addComponents({
+        ".btn": {
+          padding: ".5rem 1rem",
+          borderRadius: ".25rem",
+          fontWeight: "600",
+        },
+      })
+    }),
+  ],
 }

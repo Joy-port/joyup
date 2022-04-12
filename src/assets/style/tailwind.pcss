@@ -1,3 +1,16 @@
 @import "tailwindcss/base.css";
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
+
+.container {
+  @apply h-screen md:flex;
+}
+.content {
+  @apply flex-grow p-3;
+}
+.menu-list {
+  @apply md:static md:h-screen md:w-64 w-screen h-auto bg-slateDark flex flex-col transition-all;
+}
+.menu-item {
+  @apply hover:bg-slateLight m-2 my-1 rounded p-2 hover:text-white text-lightGray cursor-pointer;
+}

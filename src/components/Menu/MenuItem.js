@@ -8,7 +8,7 @@ const MenuItem = () => {
       {pathInfo.map((item) => (
         <Link key={item.name} to={item.path}>
           {/* <div className="">{icon}</div> */}
-          <div className="">{item.name}</div>
+          <button className="menu-item">{item.name}</button>
         </Link>
       ))}
     </>
