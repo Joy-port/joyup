@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import Menu from "./components/Menu/index"
 import SettingsContext from "./components/Clock/SettingContext"
 import Setting from "./pages/Setting"
+import Task from "./components/Task"
 
 function App() {
   const [timerDuration, setTimerDuration] = useState(15)
@@ -31,6 +32,7 @@ function App() {
     >
       <div className="body">
         <Menu />
+        <Task />
         <main className="content">
           <Routes>
             <Route path="/" />
