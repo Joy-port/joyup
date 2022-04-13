@@ -1,4 +1,5 @@
 import React from "react"
+import CommandList from "./CommandList"
 
 const index = () => {
   return (
@@ -10,13 +11,14 @@ const index = () => {
         <div className="task-container">
           <div className="flex flex-col gap-3 w-3/4">
             <input type="text" placeholder="title" className="" />
-            <textarea
+            {/* <textarea
               name="description"
               id="description"
               cols="30"
               rows="10"
               placeholder="description"
-            ></textarea>
+            ></textarea> */}
+            <CommandList />
           </div>
           <div className="flex flex-col gap-3">
             <p>
@@ -25,9 +27,9 @@ const index = () => {
             </p>
             <button>Due Date</button>
             <p>Already had Tomatos</p>
-            <select name="number" id="">
-              <option value="none" selected disabled>
-                Needed Tomato
+            <select name="number" value="none" id="">
+              <option value="none" disabled>
+                Select needed Tomato
               </option>
               <option value="1">1</option>
               <option value="2">2</option>

@@ -479,9 +479,15 @@ Ensure the default browser behavior of the `hidden` attribute.
 .font-bold {
   font-weight: 700;
 }
+.italic {
+  font-style: italic;
+}
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .body {
   position: relative;
@@ -566,6 +572,22 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding: 0.75rem;
   --tw-text-opacity: 1;
   color: rgb(35 39 42 / var(--tw-text-opacity));
+}
+.results {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(44 47 51 / var(--tw-border-opacity));
+}
+.results__command {
+  z-index: 20;
+  cursor: pointer;
+  padding: 0.75rem;
+}
+.results__command--selected {
+  z-index: 20;
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 170 181 / var(--tw-bg-opacity));
+  font-weight: 500;
 }
 @media (min-width: 576px) {
 
