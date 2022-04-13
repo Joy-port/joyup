@@ -529,8 +529,13 @@ Ensure the default browser behavior of the `hidden` attribute.
 .font-bold {
   font-weight: 700;
 }
+<<<<<<< HEAD
 .font-semibold {
   font-weight: 600;
+=======
+.italic {
+  font-style: italic;
+>>>>>>> e415fa0 (simple slash function with key press)
 }
 .text-white {
   --tw-text-opacity: 1;
