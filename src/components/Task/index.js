@@ -1,5 +1,6 @@
 import React from "react"
 import CommandList from "./CommandList"
+import TextEditor from "./TextEditor"
 
 const index = () => {
   return (
@@ -19,6 +20,7 @@ const index = () => {
               placeholder="description"
             ></textarea> */}
             <CommandList />
+            <TextEditor />
           </div>
           <div className="flex flex-col gap-3">
             <p>
