@@ -10,14 +10,18 @@
     "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.3.1",
     "draft-js": "^0.11.7",
+    "immutable": "^4.0.0",
+    "interweave": "^13.0.0",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-circular-progressbar": "^2.0.4",
+    "react-contenteditable": "^3.3.6",
     "react-dom": "17.0.2",
     "react-feather": "^2.0.9",
     "react-redux": "^7.2.3",
     "react-router-dom": "6",
-    "react-scripts": "5.0.0"
+    "react-scripts": "5.0.0",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

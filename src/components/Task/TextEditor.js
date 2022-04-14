@@ -1,5 +1,31 @@
-import React, { useState, useRef, useEffect } from "react"
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from "draft-js"
+import React, { useState, useRef, useEffect, useCallback } from "react"
+import {
+  Editor,
+  EditorState,
+  EditorBlock,
+  CompositeDecorator,
+  ContentBlock,
+  ContentState,
+  RichUtils,
+  convertToRaw,
+  convertFromRaw,
+  DefaultDraftBlockRenderMap,
+} from "draft-js"
+
+import Immutable from "immutable"
+
+function myBlockRenderer(contentBlock) {
+  const type = contentBlock.getType()
+  if (type === "atomic") {
+    return {
+      component: MediaComponent,
+      editable: false,
+      props: {
+        foo: "bar",
+      },
+    }
+  }
+}
 
 const BLOCK_TYPES = [
   { label: "H1", style: "header-one" },
@@ -14,6 +40,46 @@ const BLOCK_TYPES = [
   { label: "Code Block", style: "code-block" },
 ]
 
+const TextEditBlock = () => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const onChange = useCallback((edit) => setEditorState(edit))
+  const editorRef = useRef()
+  const onBoldClick = () => {
+    onChange(RichUtils.toggleInlineStyle(editorState, "BOLD"))
+  }
+  const selection = editorState.getSelection()
+  const blockType = editorState
+    .getCurrentContent()
+    .getBlockForKey(selection.getStartKey())
+    .getType()
+
+  const blockRenderMap = Immutable.Map({
+    "header-two": {
+      element: "h2",
+    },
+    unstyled: {
+      element: "h2",
+    },
+  })
+  const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap)
+  console.log(extendedBlockRenderMap)
+  return (
+    <>
+      <button onClick={onBoldClick}>B</button>
+      <div className="bg-white" oncClick={() => editorRef.current.focus()}>
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          blockRendererFn={myBlockRenderer}
+          ref={editorRef}
+          blockRenderMap={extendedBlockRenderMap}
+        />
+      </div>
+    </>
+  )
+}
+
+//with editor
 const TextEditor = () => {
   const [editorState, setEditorState] = useState(() => {
     const content = localStorage.getItem("content")
@@ -50,4 +116,4 @@ const TextEditor = () => {
   )
 }
 
-export default TextEditor
+export default TextEditBlock

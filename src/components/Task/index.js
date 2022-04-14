@@ -1,6 +1,7 @@
 import React from "react"
-import CommandList from "./CommandList"
+// import CommandList from "./CommandList"
 import TextEditor from "./TextEditor"
+import CommandList from "./CommandList"
 
 const index = () => {
   return (
@@ -11,7 +12,7 @@ const index = () => {
         </button>
         <div className="task-container">
           <div className="flex flex-col gap-3 w-3/4">
-            <input type="text" placeholder="title" className="" />
+            {/* <input type="text" placeholder="title" className="" /> */}
             {/* <textarea
               name="description"
               id="description"
@@ -19,8 +20,8 @@ const index = () => {
               rows="10"
               placeholder="description"
             ></textarea> */}
+            {/* <TextEditor /> */}
             <CommandList />
-            <TextEditor />
           </div>
           <div className="flex flex-col gap-3">
             <p>
