@@ -1,31 +1,22 @@
 import React from "react"
-// import CommandList from "./CommandList"
 import TextEditor from "./TextEditor"
-import CommandList from "./CommandList"
+import { TaskContent, TextProvider, useTaskContext } from "./TaskReducer"
 
 const index = () => {
+  const value = useTaskContext()
   return (
     <>
-      <div>
-        <button className="fixed bottom-5 right-5 text-lg bg-slateDark text-white rounded py-2 px-4">
-          open task
-        </button>
+      <button className="fixed bottom-5 right-5 text-lg bg-slateDark text-white rounded py-2 px-4">
+        open task
+      </button>
+      <TextProvider>
         <div className="task-container">
           <div className="flex flex-col gap-3 w-3/4">
-            {/* <input type="text" placeholder="title" className="" /> */}
-            {/* <textarea
-              name="description"
-              id="description"
-              cols="30"
-              rows="10"
-              placeholder="description"
-            ></textarea> */}
-            {/* <TextEditor /> */}
-            <CommandList />
+            <TextEditor />
           </div>
           <div className="flex flex-col gap-3">
             <p>
-              Created date: <br />
+              Created date {value}: <br />
               {new Date().toLocaleString()}
             </p>
             <button>Due Date</button>
@@ -42,7 +33,7 @@ const index = () => {
             </select>
           </div>
         </div>
-      </div>
+      </TextProvider>
     </>
   )
 }
