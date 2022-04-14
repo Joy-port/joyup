@@ -1,30 +1,133 @@
+import isSoftNewlineEvent from "draft-js/lib/isSoftNewlineEvent"
 import React, { useState, useRef, useEffect, useCallback } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 const Docs = [
   {
-    id: "asdasd",
+    id: uuidv4(),
     content: "this is p",
-    tag: "p",
-    style: "",
+    html: {
+      parent: "",
+      tag: "h1",
+      name: "Heading 1",
+      style: "heading-one",
+    },
   },
   {
-    id: "asd",
+    id: uuidv4(),
     content: "this is h1",
-    tag: "h1",
+    html: {
+      parent: "",
+      tag: "code",
+      name: "Code",
+      style: "code-block",
+    },
+  },
+  {
+    id: uuidv4(),
+    content: "This is order list",
+    html: {
+      parent: "ol",
+      tag: "li",
+      name: "Number List",
+      style: "ordered-list",
+    },
+  },
+  {
+    id: uuidv4(),
+    content: "This is order list 2",
+    html: {
+      parent: "ol",
+      tag: "li",
+      name: "Number List",
+      style: "ordered-list-item",
+    },
+  },
+  {
+    id: uuidv4(),
+    content: "This is h2",
+    html: {
+      parent: "",
+      tag: "div",
+      name: "Quote",
+      style: "quote-block",
+    },
+  },
+]
+
+const TextType = [
+  {
+    parent: "",
+    tag: "p",
+    name: "Text",
     style: "",
   },
   {
-    id: "asasd",
-    content: "This is h2",
+    parent: "",
+    tag: "h1",
+    name: "Heading 1",
+    style: "heading-one",
+  },
+  {
+    parent: "",
     tag: "h2",
-    style: "",
+    name: "Heading 2",
+    style: "heading-two",
+  },
+  {
+    parent: "",
+    tag: "h3",
+    name: "Heading 3",
+    style: "heading-three",
+  },
+  {
+    parent: "",
+    tag: "h4",
+    name: "Heading 4",
+    style: "heading-four",
+  },
+  {
+    parent: "",
+    tag: "h5",
+    name: "Heading 5",
+    style: "heading-five",
+  },
+  {
+    parent: "",
+    tag: "h6",
+    name: "Heading 6",
+    style: "heading-six",
+  },
+  {
+    parent: "ul",
+    tag: "li",
+    name: "Bulleted List",
+    style: "unordered-list",
+  },
+  {
+    parent: "ol",
+    tag: "li",
+    name: "Number List",
+    style: "ordered-list",
+  },
+  {
+    parent: "",
+    tag: "div",
+    name: "Quote",
+    style: "quote-block",
+  },
+  {
+    parent: "",
+    tag: "code",
+    name: "Code",
+    style: "code-block",
   },
 ]
 
 const CommandList = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [document, setDocument] = useState(Docs)
+  const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
   const [text, setText] = useState("")
   const [query, setQuery] = useState(null)
@@ -32,35 +135,50 @@ const CommandList = () => {
   const [selectionIndex, setSelectionIndex] = useState(0)
   const inputRef = useRef()
   const focusInput = useRef()
-  const commands = [
-    {
-      text: "Heading 1",
-      style: "heading-1",
-      action: () => {
-        setText(
-          (text) =>
-            text.substring(0, slashCharacterPosition) +
-            "🐕" +
-            text.substring(slashCharacterPosition)
-        )
-      },
-    },
-    {
-      text: "Bulleted List",
-      style: "dot",
-      action: function () {
-        setTextContent((prev) => {
-          return { ...prev, className: this.style }
-        })
-      },
-    },
-    {
-      text: "Code",
-      action: () => {
-        setText("")
-      },
-    },
-  ]
+  // const commands = [
+  //   {
+  //     text: "Heading 1",
+  //     style: "heading-1",
+  //     action: () => {
+  //       setText(
+  //         (text) =>
+  //           text.substring(0, slashCharacterPosition) +
+  //           "🐕" +
+  //           text.substring(slashCharacterPosition)
+  //       )
+  //     },
+  //   },
+  //   {
+  //     text: "Bulleted List",
+  //     style: "dot",
+  //     action: function () {
+  //       setTextContent((prev) => {
+  //         return { ...prev, className: this.style }
+  //       })
+  //     },
+  //   },
+  //   {
+  //     text: "Code",
+  //     action: () => {
+  //       setText("")
+  //     },
+  //   },
+  // ]
+  const changeTextStyle = useCallback(() => {
+    console.log(text)
+    const content = {
+      id: inputRef.current.id,
+      content: text,
+      html: HTMLStyle,
+    }
+    if (content.length) {
+      setTextContent({ ...content })
+      const newDoc = [...document]
+      const index = newDoc.findIndex((item) => item.id === content.id)
+      newDoc.splice(index, 1, content)
+      setDocument(newDoc)
+    }
+  })
   const addNewBlock = useCallback((index, content) => {
     const newDoc = [...document]
     newDoc.splice(index, 0, content)
@@ -72,11 +190,25 @@ const CommandList = () => {
   const toSpecificBlock = useCallback((index) => {
     return document.find((item, i) => i === index)
   })
+  const deleteSlashCommand = useCallback(() => {
+    setText((text) => {
+      const string =
+        text.substring(0, slashCharacterPosition) +
+        text.substring(inputRef.current?.selectionStart)
+      document.find((item) => item.id === inputRef.current.id).content = string
+      return string
+    })
+  })
+
+  useEffect(() => {
+    if (!text) return
+    console.log(text)
+  }, [deleteSlashCommand])
 
   const matchingCommands =
     query !== null
-      ? commands.filter((command) =>
-          command.text.toLowerCase().match(query.toLowerCase())
+      ? TextType.filter((command) =>
+          command.name.toLowerCase().match(query.toLowerCase())
         )
       : []
 
@@ -97,17 +229,38 @@ const CommandList = () => {
       }
     }
   }
-  const deleteSlashCommand = () => {
-    setText(
-      text.substring(0, slashCharacterPosition) +
-        text.substring(inputRef.current?.selectionStart)
-    )
-  }
 
   const selectCommand = (command) => {
     deleteSlashCommand()
-    command.action()
-    setQuery(null)
+    document.find((item) => item.id === inputRef.current.id).html = command
+    const index = document.findIndex((item) => item.id === inputRef.current.id)
+    setHTMLStyle(command)
+    setIsEditing(false)
+    if (document[index + 1]) {
+      setText(document[index + 1].content)
+      focusInput.current = document[index + 1].id
+      setIsEditing(true)
+      setSlashCharacterPosition(null)
+      setQuery(null)
+    } else {
+      const blank = {
+        content: "",
+        id: uuidv4(),
+        html: {
+          tag: "p",
+          name: "Text",
+          style: "",
+        },
+      }
+      addNewBlock(index + 1, blank)
+      setTextContent(blank)
+      setText(blank.content)
+      setHTMLStyle(blank.html)
+      focusInput.current = blank.id
+      setIsEditing(true)
+      setSlashCharacterPosition(null)
+      setQuery(null)
+    }
   }
   // const addNewBlock = (index, content) => {
   //   const newDoc = [...document]
@@ -123,9 +276,13 @@ const CommandList = () => {
 
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
+      console.log(slashCharacterPosition)
       if (slashCharacterPosition === null) {
+        console.log("up")
+        changeTextStyle()
         setIsEditing(false)
         const currentBlock = currentBlockIndex()
+        console.log(currentBlock)
         const nextBlock =
           currentBlock - 1 > 0 ? toSpecificBlock(currentBlock - 1) : toSpecificBlock(0)
         console.log(currentBlock, nextBlock)
@@ -139,6 +296,7 @@ const CommandList = () => {
       }
     } else if (e.key === "ArrowDown") {
       if (slashCharacterPosition === null) {
+        changeTextStyle()
         setIsEditing(false)
         const totalLength = document.length
         const currentBlock = currentBlockIndex()
@@ -158,23 +316,32 @@ const CommandList = () => {
       }
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
+        console.log(matchingCommands[selectionIndex])
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
+        changeTextStyle()
+        setHTMLStyle({})
         const prevIndex = currentBlockIndex()
         setIsEditing(false)
         const blank = {
           content: "",
-          id: uuidv4().toString(),
-          tag: "p",
+          id: uuidv4(),
+          html: {
+            tag: "p",
+            name: "Text",
+            style: "",
+          },
         }
         addNewBlock(prevIndex + 1, blank)
         setIsEditing(true)
+        setTextContent(blank)
         setText(blank.content)
+        setHTMLStyle(blank.html)
         focusInput.current = blank.id
+        e.stopPropagation()
+        e.preventDefault()
         return
       }
-      e.stopPropagation()
-      e.preventDefault()
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
@@ -197,11 +364,12 @@ const CommandList = () => {
     <div className="flex flex-col">
       <>
         {document &&
-          document.map((item) => {
-            const TagName = item.tag
+          document.map((item, index) => {
+            const TagName = item.html.tag
             if (focusInput.current === item.id && isEditing) {
               return (
                 <input
+                  className={HTMLStyle.style || item.html.style}
                   key={item.id}
                   id={item.id}
                   cols="30"
@@ -215,19 +383,38 @@ const CommandList = () => {
                 />
               )
             } else {
-              return (
-                <TagName
-                  key={item.id}
-                  onClick={() => {
-                    focusInput.current = item.id
-                    setIsEditing(true)
-                    setText(item.content)
-                    setTextContent(item)
-                  }}
-                >
-                  {item.content}
-                </TagName>
-              )
+              if (!item.html.parent) {
+                return (
+                  <TagName
+                    key={item.id}
+                    className={item.html.style}
+                    onClick={() => {
+                      focusInput.current = item.id
+                      setIsEditing(true)
+                      setText(item.content)
+                      setHTMLStyle(item.html)
+                    }}
+                  >
+                    {item.content}
+                  </TagName>
+                )
+              } else {
+                const TagParent = item.html.parent
+                return (
+                  <TagParent key={index} id={index} className={item.html.style}>
+                    <TagName
+                      onClick={() => {
+                        focusInput.current = item.id
+                        setIsEditing(true)
+                        setText(item.content)
+                        setHTMLStyle(item.html)
+                      }}
+                    >
+                      {item.content}
+                    </TagName>
+                  </TagParent>
+                )
+              }
             }
           })}
       </>
@@ -242,7 +429,7 @@ const CommandList = () => {
               (index == selectionIndex ? "results__command--selected" : "")
             }
           >
-            {command.text}
+            {command.name}
           </div>
         ))}
       </div>

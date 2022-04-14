@@ -606,6 +606,48 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-left: 0.25rem;
   padding-right: 0.25rem;
 }
+.heading-one {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+.heading-two {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+}
+.heading-three {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
+.heading-four {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+}
+.heading-five {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+}
+.unordered-list {
+  margin-left: 1.25rem;
+  list-style-type: disc;
+  padding-left: 0.75rem;
+}
+.ordered-list {
+  margin-left: 1.25rem;
+  list-style-type: decimal;
+  padding-left: 0.75rem;
+}
+.quote-block {
+  margin-left: -1.25rem;
+  border-left-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(35 39 42 / var(--tw-border-opacity));
+  padding-left: 0.25rem;
+}
 @media (min-width: 576px) {
 
   .sm\:block {
