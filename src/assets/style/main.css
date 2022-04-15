@@ -423,14 +423,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 .block {
   display: block;
 }
-.inline {
-  display: inline;
-}
 .flex {
   display: flex;
-}
-.contents {
-  display: contents;
 }
 .w-3\/4 {
   width: 75%;
@@ -635,11 +629,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-left: 0.75rem;
 }
 .quote-block {
-  margin-left: -1.25rem;
-  border-left-width: 2px;
+  margin-left: 1.25rem;
+  border-left-width: 4px;
   --tw-border-opacity: 1;
   border-color: rgb(35 39 42 / var(--tw-border-opacity));
-  padding-left: 0.25rem;
+  padding-left: 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
 }
 @media (min-width: 576px) {
 
