@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import TextEditor from "./TextEditor"
 import { TaskContent, TextProvider, useTaskContext } from "./TaskReducer"
+import DatePicker from "./DatePicker"
 
 const index = () => {
   const value = useTaskContext()
+  const [dueDate, setDueDate] = useState(new Date())
   return (
     <>
       <button className="fixed bottom-5 right-5 text-lg bg-slateDark text-white rounded py-2 px-4">
@@ -19,7 +21,8 @@ const index = () => {
               Created date {value}: <br />
               {new Date().toLocaleString()}
             </p>
-            <button>Due Date</button>
+            <div className="">Due Date</div>
+            <DatePicker setDate={setDueDate} date={dueDate} />
             <p>Already had Tomatos</p>
             <select name="number" value="none" id="">
               <option value="none" disabled>
