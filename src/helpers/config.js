@@ -25,8 +25,8 @@ export const pathInfo = [
     icon: "FileText",
   },
   {
-    name: "Setting",
-    path: "setting",
+    name: "Settings",
+    path: "settings",
     icon: "Settings",
   },
 ]

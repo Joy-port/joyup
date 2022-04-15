@@ -15,8 +15,8 @@ const Setting = () => {
   const [breakTimer, setBreakTimer] = useState(breakMinutes)
 
   useEffect(() => {
-    setWorkMinutes(workTimer * timerDuration)
-    setBreakMinutes(breakTimer * timerDuration)
+    setWorkMinutes(workTimer)
+    setBreakMinutes(breakTimer)
   }, [timerDuration])
   const saveToDataBase = () => {
     console.log("connect to firebase")
@@ -28,23 +28,19 @@ const Setting = () => {
         <input type="number" onChange={(e) => setTimerDuration(e.target.value.trim())} />
       </div>
       <div>
-        <h2>Working Time Length: {workMinutes} minutes</h2>
+        <h2>Working Time Length: {timerDuration * workTimer} minutes</h2>
         <div className="flex">
           <h3>{timerDuration} X</h3>
           <input type="number" onChange={(e) => setWorkTimer(e.target.value.trim())} />
-          <button onClick={() => setWorkMinutes(workTimer * timerDuration)}>
-            Confirm
-          </button>
+          <button onClick={() => setWorkMinutes(workTimer)}>Confirm</button>
         </div>
       </div>
       <div>
-        <h2>Break Timer Length: {breakMinutes} minutes</h2>
+        <h2>Break Timer Length: {timerDuration * breakTimer} minutes</h2>
         <div className="flex">
           <h3>{timerDuration} X</h3>
           <input type="number" onChange={(e) => setBreakTimer(e.target.value)} />
-          <button onClick={() => setBreakMinutes(breakTimer * timerDuration)}>
-            Confirm
-          </button>
+          <button onClick={() => setBreakMinutes(breakTimer)}>Confirm</button>
         </div>
       </div>
       <button>cancel</button>

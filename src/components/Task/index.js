@@ -7,6 +7,7 @@ import DatePicker from "./DatePicker"
 const index = () => {
   const value = useTaskContext()
   const [dueDate, setDueDate] = useState(new Date())
+  const [startDate, setStartDate] = useState(new Date())
   return (
     <>
       <button className="fixed bottom-5 right-5 text-lg bg-slateDark text-white rounded py-2 px-4">
@@ -23,7 +24,10 @@ const index = () => {
               Created date {value}: <br />
               {new Date().toLocaleString()}
             </p>
-            <div className="">Due Date</div>
+
+            <div>Start Date</div>
+            <DatePicker setDate={setStartDate} date={startDate} />
+            <div>Due Date</div>
             <DatePicker setDate={setDueDate} date={dueDate} />
             <p>Already had Tomatos</p>
             <select name="number" value="none" id="">

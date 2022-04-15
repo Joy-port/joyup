@@ -4,6 +4,7 @@ import Menu from "./components/Menu/index"
 import SettingsContext from "./components/Clock/SettingContext"
 import Setting from "./pages/Setting"
 import Task from "./components/Task"
+import Clock from "./components/Clock"
 
 function App() {
   const [timerDuration, setTimerDuration] = useState(15)
@@ -32,15 +33,15 @@ function App() {
     >
       <div className="body">
         <Menu />
-        <Task />
+        {/* <Task /> */}
         <main className="content">
           <Routes>
-            <Route path="/" />
+            <Route path="/" element={<Clock />} />
             <Route path="home" />
             <Route path="report" />
             <Route path="dashboard" />
             <Route path="chatroom" />
-            <Route path="setting" element={<Setting />} />
+            <Route path="settings" element={<Setting />} />
           </Routes>
         </main>
       </div>

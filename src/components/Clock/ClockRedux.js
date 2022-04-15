@@ -1,44 +1,51 @@
-import React, { useContext, useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
-import SettingContext from "./SettingContext"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  increaseNumber,
+  setPauseStatus,
+  //   setSecondsLeft,
+  //   tickSecondsBackward,
+  setMode,
+} from "../../features/clock"
 
 const Clock = () => {
-  const {
-    timerDuration,
-    workMinutes,
-    breakMinutes,
-    workNumbers,
-    setWorkNumbers,
-    breakNumbers,
-    setBreakNumbers,
-  } = useContext(SettingContext)
-  const [isPaused, setIsPaused] = useState(false)
-  const [mode, setMode] = useState("work")
+  const { workTime, breakTime } = useSelector((state) => state.clock.setting)
+  const { workNumber, breakNumber, totalTime } = useSelector(
+    (state) => state.clock.duration
+  )
+  const { isPaused, mode } = useSelector((state) => state.clock.status)
+  //   const { percentage, minutes, seconds } = useSelector((state) => state.clock.time)
+  const dispatch = useDispatch()
   const [secondsLeft, setSecondsLeft] = useState(0)
-  const [totalSpendingTime, setTotalSpendingTime] = useState(0)
-
   const secondsLeftRef = useRef(secondsLeft)
+  const [totalSpendingTime, setTotalSpendingTime] = useState(0)
   const totalTimeRef = useRef(0)
-  const isPausedRef = useRef(isPaused)
-  const modeRef = useRef(mode)
+  // const modeRef = useRef(mode)
+  //   const secondsLeftRef = useRef(secondsLeft)
+  //   const isPausedRef = useRef(isPaused)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (isPausedRef.current) {
+      console.log(isPaused, secondsLeft)
+      if (isPaused) {
         return
       }
       if (secondsLeftRef.current === 0) {
         return switchMode()
       }
+      console.log(secondsLeft)
       tickTime()
-    }, [100])
+    }, [1000])
 
     return () => clearInterval(timer)
-  }, [workMinutes, breakMinutes, timerDuration])
+  }, [workTime, breakTime, totalTime])
 
   useEffect(() => {
-    secondsLeftRef.current = timerDuration * workMinutes * 60
+    const totalSecondsLeft = totalTime * workTime * 60
+    // dispatch(setSecondsLeft(totalSecondsLeft))
+    secondsLeftRef.current = totalSecondsLeft
     setSecondsLeft(secondsLeftRef.current)
   }, [])
 
@@ -48,31 +55,31 @@ const Clock = () => {
   }, [secondsLeft])
 
   const switchMode = () => {
-    modeRef.current === "work"
-      ? setWorkNumbers((prev) => (prev += 1))
-      : setBreakNumbers((prev) => (prev += 1))
-    const nextMode = modeRef.current === "work" ? "break" : "work"
-    const nextSeconds =
-      (nextMode === "work" ? workMinutes : breakMinutes) * 60 * timerDuration
+    mode === "work"
+      ? dispatch(increaseNumber("workNumber"))
+      : dispatch(increaseNumber("breakNumber"))
+    const nextMode = mode === "work" ? "break" : "work"
+    dispatch(setMode(nextMode))
+    const nextSeconds = (nextMode === "work" ? workTime : breakTime) * 60 * totalTime
+    // dispatch(setSecondsLeft(nextSeconds))
 
-    setMode(nextMode)
-    modeRef.current = nextMode
-
+    // setMode(nextMode)
+    // modeRef.current = nextMode
     setSecondsLeft(nextSeconds)
     secondsLeftRef.current = nextSeconds
   }
 
   const tickTime = () => {
+    // dispatch(tickSecondsBackward())
     secondsLeftRef.current--
     setSecondsLeft(secondsLeftRef.current)
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
-    secondsLeftRef.current =
-      mode === "work"
-        ? workMinutes * 60 * timerDuration
-        : breakMinutes * 60 * timerDuration
-    setSecondsLeft(secondsLeftRef.current)
+    const restartSeconds =
+      mode === "work" ? workTime * 60 * totalTime : breakTime * 60 * totalTime
+    setSecondsLeft(secondsLeftRef)
+    // dispatch(setSecondsLeft(restartSeconds))
   }
   const getClockTime = (time) => {
     let hours = "00"
@@ -102,8 +109,9 @@ const Clock = () => {
     trailColor: "transparent",
     strokeLinecap: "round",
   }
+
   const totalSeconds =
-    mode === "work" ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
+    mode === "work" ? workTime * 60 * totalTime : breakTime * 60 * totalTime
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
 
   const minutes = Math.floor(secondsLeft / 60)
@@ -111,8 +119,8 @@ const Clock = () => {
   if (seconds < 10) seconds = "0" + seconds
 
   return (
-    <div className="flex gap-5 h-100 align-middle">
-      <div className="w-1/2 my-0">
+    <div className="flex h-screen align-middle">
+      <div className="grow my-0">
         <CircularProgressbar
           value={percentage}
           text={minutes + ":" + seconds}
@@ -122,31 +130,35 @@ const Clock = () => {
       <div>
         <button
           onClick={() => {
-            setIsPaused(false)
-            isPausedRef.current = false
+            dispatch(setPauseStatus(false))
+            // setIsPaused(false)
+            // isPausedRef.current = false
           }}
         >
           Play
         </button>
         <button
           onClick={() => {
-            setIsPaused(true)
-            isPausedRef.current = true
+            dispatch(setPauseStatus(true))
+            // setIsPaused(true)
+            // isPausedRef.current = true
           }}
         >
           Pause
         </button>
         <button
           onClick={() => {
-            setIsPaused(true)
-            isPausedRef.current = true
+            dispatch(setPauseStatus(true))
+            // setIsPaused(true)
+            // isPausedRef.current = true
             resetTimer()
           }}
         >
           Reset
         </button>
-        <h3>work time: {workNumbers}</h3>
-        <h3>break time: {breakNumbers}</h3>
+
+        <h3>work time: {workNumber}</h3>
+        <h3>break time: {breakNumber}</h3>
         <h3>Total Time Spent:{totalSpendingTime} </h3>
         <Link to="/settings">Setting</Link>
       </div>
