@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import SettingEditor from "./SettingEditor"
 import TextEditor from "./TextEditor"
 import { TaskContent, TextProvider, useTaskContext } from "./TaskReducer"
 import DatePicker from "./DatePicker"
@@ -14,6 +15,7 @@ const index = () => {
       <TextProvider>
         <div className="task-container">
           <div className="flex flex-col gap-3 w-3/4">
+            <SettingEditor />
             <TextEditor />
           </div>
           <div className="flex flex-col gap-3">

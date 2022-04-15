@@ -66,35 +66,6 @@ const TextEditor = () => {
   const [selectionIndex, setSelectionIndex] = useState(0)
   const inputRef = useRef()
   const focusInput = useRef()
-  // const commands = [
-  //   {
-  //     text: "Heading 1",
-  //     style: "heading-1",
-  //     action: () => {
-  //       setText(
-  //         (text) =>
-  //           text.substring(0, slashCharacterPosition) +
-  //           "🐕" +
-  //           text.substring(slashCharacterPosition)
-  //       )
-  //     },
-  //   },
-  //   {
-  //     text: "Bulleted List",
-  //     style: "dot",
-  //     action: function () {
-  //       setTextContent((prev) => {
-  //         return { ...prev, className: this.style }
-  //       })
-  //     },
-  //   },
-  //   {
-  //     text: "Code",
-  //     action: () => {
-  //       setText("")
-  //     },
-  //   },
-  // ]
   const changeTextStyle = useCallback(() => {
     console.log(text)
     const content = {
