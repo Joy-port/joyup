@@ -5,15 +5,16 @@ import SettingsContext from "./components/Clock/SettingContext"
 import ClockContext from "./components/Clock/ClockContext"
 // import TasksContext from "./components/Task/TasksContext"
 import TasksContext from "./components/Task/TasksReducer"
+import TaskList from "./components/Task/TaskList"
 import Setting from "./pages/Setting"
-import Task from "./components/Task"
 import Clock from "./components/Clock"
+import Task from "./components/Task"
 
 const initialTaskState = {
   title: "",
   description: [],
   createdDate: new Date(),
-  stateDate: new Date(),
+  startDate: new Date(),
   dueDate: new Date(),
   clockNumber: "",
   requiredClockNumber: "",
@@ -21,9 +22,10 @@ const initialTaskState = {
   parent: "",
   id: "",
   projectID: "",
+  taskID: "",
 }
 
-export function reducer(state, action) {
+export function taskReducer(state, action) {
   switch (action.type) {
     case "editDate":
       const { type, date } = action.payload
@@ -32,13 +34,17 @@ export function reducer(state, action) {
       return { ...state, description: [...action.payload] }
     case "requiredClock":
       return { ...state, requiredClockNumber: action.payload }
+    case "setTaskID":
+      return { ...state, taskID: action.payload }
+    case "createNewTask":
+      return { ...initialTaskState, taskID: action.payload }
     default:
       return state
   }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialTaskState)
+  const [state, dispatch] = useReducer(taskReducer, initialTaskState)
   const [isPaused, setIsPaused] = useState(true)
   const isPausedRef = useRef(isPaused)
   const [timerDuration, setTimerDuration] = useState(15)
@@ -76,15 +82,21 @@ function App() {
         <TasksContext.Provider value={tasksValue}>
           <div className="body">
             <Menu />
-            <Task />
+            <TaskList />
             <main className="content">
               <Routes>
-                <Route path="/" element={<Clock />} />
+                <Route path="/" />
                 <Route path="home" />
                 <Route path="report" />
                 <Route path="dashboard" />
                 <Route path="chatroom" />
                 <Route path="settings" element={<Setting />} />
+                <Route path="task">
+                  <Route path=":taskID" element={<Task />}></Route>
+                </Route>
+                <Route path="clock">
+                  <Route path=":taskID" element={<Clock />}></Route>
+                </Route>
               </Routes>
             </main>
           </div>

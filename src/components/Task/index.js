@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import SettingContext from "../Clock/SettingContext"
 import ClockContext from "../Clock/ClockContext"
 import AddSubtask from "./AddSubtask"
@@ -11,12 +12,14 @@ import TasksContent from "./TasksReducer"
 const index = () => {
   // const value = useTaskContext()
   const [state, dispatch] = useContext(TasksContent)
-  const { timerDuration, workMinutes, breakMinutes, workNumbers } =
-    useContext(SettingContext)
-  const { isPaused, setIsPaused, isPausedRef, totalSpendingTime, setTotalSpendingTime } =
-    useContext(ClockContext)
+  const { taskID } = useParams()
+  const { workNumbers } = useContext(SettingContext)
+  const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
+  useEffect(() => {
+    dispatch({ type: "setTaskID", payload: taskID })
+  }, [taskID])
   useEffect(() => {
     if (dueDate < startDate) {
       setDueDate(() => {
@@ -33,9 +36,6 @@ const index = () => {
   }, [dueDate])
   return (
     <>
-      <button className="fixed bottom-5 right-5 text-lg bg-slateDark text-white rounded py-2 px-4">
-        open task
-      </button>
       <div className="task-container">
         <div className="flex flex-col gap-3 w-3/4">
           <SettingEditor />
@@ -51,24 +51,9 @@ const index = () => {
           <DatePicker date={startDate} setDate={setStartDate} />
           <div>Due Date</div>
           <DatePicker date={dueDate} setDate={setDueDate} />
-          <p>Start Clock</p>
-          <button
-            onClick={() => {
-              isPausedRef.current = false
-              setIsPaused(false)
-            }}
-          >
-            +
-          </button>
-          <p>Pause</p>
-          <button
-            onClick={() => {
-              isPausedRef.current = true
-              setIsPaused(true)
-            }}
-          >
-            -
-          </button>
+          {/* <Link to={`clock:${taskID}`} className="bg-orange text-white">
+            OpenClock
+          </Link> */}
           <p>Total Time Spent</p>
           <p>{totalSpendingTime}</p>
           <p>Already had Tomatos: {workNumbers}</p>

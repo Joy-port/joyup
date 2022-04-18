@@ -14,7 +14,7 @@ const Clock = () => {
     breakNumbers,
     setBreakNumbers,
   } = useContext(SettingContext)
-  const { isPaused, setIsPaused, isPausedRef, totalSpendingTime, setTotalSpendingTime } =
+  const { setIsPaused, isPausedRef, totalSpendingTime, setTotalSpendingTime } =
     useContext(ClockContext)
   const [mode, setMode] = useState("work")
   const [secondsLeft, setSecondsLeft] = useState(0)

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
 
 const subTasks = [
@@ -10,6 +11,7 @@ const subTasks = [
 
 // eslint-disable-next-line react/prop-types
 const AddSubtask = ({ children }) => {
+  const navigate = useNavigate()
   const [inputTitle, setInputTitle] = useState()
   const [subTaskList, setSubTaskList] = useState(subTasks)
   const inputRef = useRef()
@@ -36,6 +38,7 @@ const AddSubtask = ({ children }) => {
   const openTask = (e, id) => {
     e.stopPropagation()
     console.log(e.target.value, id)
+    navigate(`/task/${id}`)
   }
   return (
     <>
@@ -45,7 +48,11 @@ const AddSubtask = ({ children }) => {
       <ul>
         {subTaskList.length > 0 &&
           subTaskList.map((item) => (
-            <li key={item.id} onClick={(e) => openTask(e, item.id)}>
+            <li
+              key={item.id}
+              className="cursor-pointer"
+              onClick={(e) => openTask(e, item.id)}
+            >
               <input
                 type="text"
                 value={inputTitle && item.title}
