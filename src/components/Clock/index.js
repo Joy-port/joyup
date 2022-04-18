@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import SettingContext from "./SettingContext"
+import ClockContext from "./ClockContext"
 
 const Clock = () => {
   const {
@@ -13,14 +14,15 @@ const Clock = () => {
     breakNumbers,
     setBreakNumbers,
   } = useContext(SettingContext)
-  const [isPaused, setIsPaused] = useState(false)
+  const { isPaused, setIsPaused, isPausedRef, totalSpendingTime, setTotalSpendingTime } =
+    useContext(ClockContext)
   const [mode, setMode] = useState("work")
   const [secondsLeft, setSecondsLeft] = useState(0)
-  const [totalSpendingTime, setTotalSpendingTime] = useState(0)
+  // const [totalSpendingTime, setTotalSpendingTime] = useState(0)
 
   const secondsLeftRef = useRef(secondsLeft)
   const totalTimeRef = useRef(0)
-  const isPausedRef = useRef(isPaused)
+  // const isPausedRef = useRef(isPaused)
   const modeRef = useRef(mode)
 
   useEffect(() => {

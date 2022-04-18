@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from "react"
+import React, { useState, useRef, useEffect, useCallback, useContext } from "react"
+import TasksContent from "./TasksReducer"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../helpers/config"
 
@@ -55,7 +56,9 @@ const Docs = [
   },
 ]
 
+// eslint-disable-next-line react/prop-types
 const TextEditor = () => {
+  const [state, dispatch] = useContext(TasksContent)
   const [isEditing, setIsEditing] = useState(false)
   const [document, setDocument] = useState(Docs)
   const [HTMLStyle, setHTMLStyle] = useState({})
@@ -67,7 +70,6 @@ const TextEditor = () => {
   const inputRef = useRef()
   const focusInput = useRef()
   const changeTextStyle = useCallback(() => {
-    console.log(text)
     const content = {
       id: inputRef.current.id,
       content: text,
@@ -106,6 +108,11 @@ const TextEditor = () => {
     if (!text) return
     console.log(text)
   }, [deleteSlashCommand])
+
+  useEffect(() => {
+    console.log("change text")
+    dispatch({ type: "editDescription", payload: [...document] })
+  }, [document])
 
   const matchingCommands =
     query !== null

@@ -11,7 +11,7 @@ const SettingProvider = ({ children }) => {
   const [breakMinutes, setBreakMinutes] = useState(1)
   const [workNumbers, setWorkNumbers] = useState(0)
   const [breakNumbers, setBreakNumbers] = useState(0)
-  const [totalSpendingTime, setTotalSpendingTime] = useState(0)
+  // const [totalSpendingTime, setTotalSpendingTime] = useState(0)
 
   const value = {
     timerDuration,
@@ -24,8 +24,8 @@ const SettingProvider = ({ children }) => {
     setWorkNumbers,
     breakNumbers,
     setBreakNumbers,
-    totalSpendingTime,
-    setTotalSpendingTime,
+    // totalSpendingTime,
+    // setTotalSpendingTime,
   }
 
   return <SettingContext.Provider value={value}>{children}</SettingContext.Provider>
