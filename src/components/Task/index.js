@@ -10,6 +10,7 @@ import DatePicker from "./DatePicker"
 import TasksContent from "./TasksReducer"
 import dayjs from "dayjs"
 
+const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const index = () => {
   // const value = useTaskContext()
   const [state, dispatch] = useContext(TasksContent)
@@ -69,14 +70,14 @@ const index = () => {
               dispatch({ type: "requiredClock", payload: e.target.value })
             }}
           >
-            <option value="none" disabled>
+            <option value={-1} disabled>
               Select needed Tomato
             </option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            {total.map((item) => (
+              <option value={item} key={item}>
+                {item}
+              </option>
+            ))}
           </select>
           <button className="bg-slateDark text-white px-2 py-1 rounded">save</button>
         </div>

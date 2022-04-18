@@ -17,7 +17,7 @@ const initialTaskState = {
   startDate: new Date(),
   dueDate: new Date(),
   clockNumber: "",
-  requiredClockNumber: "",
+  requiredClockNumber: -1,
   location: "",
   parent: "",
   id: "",

@@ -14,9 +14,12 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
   const [isSettingTime, setIsSettingTime] = useState(false)
   const inputRef = useRef()
   const [date, setDate] = useState(new Date())
+  const [editRequiredNumber, setEditRequiredNumber] = useState(false)
+  const [requiredNumber, setRequiredNumber] = useState(null)
   const timeRef = useRef()
 
   useEffect(() => {
+    if (!date || !text) return
     if (date) {
       if (!timeRef) return
       const hourMinutes = dayjs(date).format("HH:mm")
@@ -36,7 +39,6 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
       })
       timeRef.current = dayjs(date).format("HH:mm")
       setIsSettingTime(false)
-
       setText("")
       setQuery(null)
       deleteSlashCommand()
@@ -44,10 +46,19 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
     }
   }, [date])
 
-  // useEffect(() => {
-  //   if (time) {
-  //   }
-  // }, [time])
+  useEffect(() => {
+    if (!text) return
+    if (editRequiredNumber) {
+      if (!text.includes("Required")) return
+      const number = parseFloat(text.split(":")[1].trim())
+      if (!number) return
+      dispatch({ type: "requiredClock", payload: number })
+      setText("")
+      setQuery(null)
+      deleteSlashCommand()
+      setSlashCharacterPosition(null)
+    }
+  }, [setEditRequiredNumber, editRequiredNumber, text])
   const commands = [
     {
       name: "Start Date",
@@ -65,6 +76,7 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
       name: "Due Date",
       style: "",
       action: function () {
+        setIsEditing(true)
         setIsSettingTime(true)
         setText(() => {
           const newText = "/Due Date"
@@ -73,7 +85,18 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
       },
     },
     {
-      name: "Clear",
+      name: "required clock numbers",
+      action: () => {
+        setEditRequiredNumber(true)
+        setText(() => {
+          const newText = "/Required Clocks:"
+          return newText
+        })
+        setRequiredNumber(0)
+      },
+    },
+    {
+      name: "set Time numbers",
       action: () => {
         setText("")
       },
