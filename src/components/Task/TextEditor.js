@@ -56,7 +56,6 @@ const Docs = [
   },
 ]
 
-// eslint-disable-next-line react/prop-types
 const TextEditor = () => {
   const [state, dispatch] = useContext(TasksContent)
   const [isEditing, setIsEditing] = useState(false)
@@ -292,7 +291,21 @@ const TextEditor = () => {
                 />
               )
             } else {
-              if (!item.html.parent) {
+              if (!item.content) {
+                return (
+                  <p
+                    key={item.id}
+                    onClick={() => {
+                      focusInput.current = item.id
+                      setIsEditing(true)
+                      setText(item.content)
+                      setHTMLStyle(item.html)
+                    }}
+                  >
+                    &#160;
+                  </p>
+                )
+              } else if (item.content && !item.html.parent) {
                 return (
                   <TagName
                     key={item.id}
