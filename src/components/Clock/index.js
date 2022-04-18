@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import SettingContext from "./SettingContext"
 import ClockContext from "./ClockContext"
@@ -24,6 +24,7 @@ const Clock = () => {
   const totalTimeRef = useRef(0)
   // const isPausedRef = useRef(isPaused)
   const modeRef = useRef(mode)
+  const { taskID } = useParams
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -113,44 +114,55 @@ const Clock = () => {
   if (seconds < 10) seconds = "0" + seconds
 
   return (
-    <div className="flex gap-5 h-100 align-middle">
-      <div className="w-1/2 my-0">
-        <CircularProgressbar
-          value={percentage}
-          text={minutes + ":" + seconds}
-          styles={buildStyles(TimerContent)}
-        />
-      </div>
-      <div>
-        <button
-          onClick={() => {
-            setIsPaused(false)
-            isPausedRef.current = false
-          }}
-        >
-          Play
-        </button>
-        <button
-          onClick={() => {
-            setIsPaused(true)
-            isPausedRef.current = true
-          }}
-        >
-          Pause
-        </button>
-        <button
-          onClick={() => {
-            setIsPaused(true)
-            isPausedRef.current = true
-            resetTimer()
-          }}
-        >
-          Reset
-        </button>
-        <h3>work time: {workNumbers}</h3>
-        <h3>break time: {breakNumbers}</h3>
-        <h3>Total Time Spent:{totalSpendingTime} </h3>
-        <Link to="/settings">Setting</Link>
+    <div className="task-container">
+      <div className="flex justify-between grow align-middle">
+        <div className="w-1/2 my-0">
+          <CircularProgressbar
+            value={percentage}
+            text={minutes + ":" + seconds}
+            styles={buildStyles(TimerContent)}
+          />
+        </div>
+        <div className="flex flex-col justify-between">
+          <div className="">
+            <button
+              onClick={() => {
+                setIsPaused(false)
+                isPausedRef.current = false
+              }}
+            >
+              Play
+            </button>
+            <button
+              onClick={() => {
+                setIsPaused(true)
+                isPausedRef.current = true
+              }}
+            >
+              Pause
+            </button>
+            <button
+              onClick={() => {
+                setIsPaused(true)
+                isPausedRef.current = true
+                resetTimer()
+              }}
+            >
+              Reset
+            </button>
+            <h3>work time: {workNumbers}</h3>
+            <h3>break time: {breakNumbers}</h3>
+            <h3>Total Time Spent:{totalSpendingTime} </h3>
+          </div>
+          <div className="flex gap-4">
+            <Link to="/settings" className="button">
+              Clock Settings
+            </Link>
+            <Link to={`/task/${taskID}`} className="button">
+              Back to Task
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

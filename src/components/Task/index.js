@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import SettingContext from "../Clock/SettingContext"
 import ClockContext from "../Clock/ClockContext"
 import AddSubtask from "./AddSubtask"
@@ -51,16 +51,15 @@ const index = () => {
           <DatePicker date={startDate} setDate={setStartDate} />
           <div>Due Date</div>
           <DatePicker date={dueDate} setDate={setDueDate} />
-          {/* <Link to={`clock:${taskID}`} className="bg-orange text-white">
+          <Link to={`/clock/${taskID}`} className="bg-orange text-white">
             OpenClock
-          </Link> */}
+          </Link>
           <p>Total Time Spent</p>
           <p>{totalSpendingTime}</p>
           <p>Already had Tomatos: {workNumbers}</p>
           <select
             name="number"
             value={state.requiredClockNumber}
-            id=""
             onChange={(e) => {
               dispatch({ type: "requiredClock", payload: e.target.value })
             }}
