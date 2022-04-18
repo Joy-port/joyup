@@ -1,39 +1,90 @@
-import React, { useState, useRef, useCallback } from "react"
+import React, { useState, useRef, useCallback, useEffect, useContext } from "react"
+import DatePick from "./DatePicker"
+import dayjs from "dayjs"
+import TasksContent from "./TasksReducer"
 
-const SettingEditor = () => {
+// eslint-disable-next-line react/prop-types
+const SettingEditor = ({ setStartDate, setDueDate }) => {
+  const [state, dispatch] = useContext(TasksContent)
   const [isEditing, setIsEditing] = useState(true)
   const [text, setText] = useState("")
   const [query, setQuery] = useState(null)
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
+  const [isSettingTime, setIsSettingTime] = useState(false)
   const inputRef = useRef()
+  const [date, setDate] = useState(new Date())
+  const timeRef = useRef()
+
+  useEffect(() => {
+    if (date) {
+      if (!timeRef) return
+      const hourMinutes = dayjs(date).format("HH:mm")
+      if (hourMinutes === timeRef.current) return
+      let name = ""
+      if (!text) return
+      if (text.includes("Start")) {
+        name = "/Start Date"
+        setStartDate(date)
+      } else if (text.includes("Due")) {
+        name = "/Due Date"
+        setDueDate(date)
+      }
+      setText(() => {
+        const selectedDate = dayjs(date).format("MM/DD HH:mm")
+        return name + ":" + selectedDate
+      })
+      timeRef.current = dayjs(date).format("HH:mm")
+      setIsSettingTime(false)
+
+      setText("")
+      setQuery(null)
+      deleteSlashCommand()
+      setSlashCharacterPosition(null)
+    }
+  }, [date])
+
+  // useEffect(() => {
+  //   if (time) {
+  //   }
+  // }, [time])
   const commands = [
     {
-      name: "Heading 1",
-      style: "heading-1",
+      name: "Start Date",
+      style: "",
       action: () => {
-        setText(
-          (text) =>
-            text.substring(0, slashCharacterPosition) +
-            "🐕" +
-            text.substring(slashCharacterPosition)
-        )
+        setIsEditing(true)
+        setIsSettingTime(true)
+        setText(() => {
+          const newText = "/Start Date"
+          return newText
+        })
       },
     },
     {
-      name: "Bulleted List",
-      style: "dot",
+      name: "Due Date",
+      style: "",
       action: function () {
-        alert("open window")
+        setIsSettingTime(true)
+        setText(() => {
+          const newText = "/Due Date"
+          return newText
+        })
       },
     },
     {
-      name: "Code",
+      name: "Clear",
       action: () => {
         setText("")
       },
     },
   ]
+
+  const handleChangeRaw = (value) => {
+    if (value === "tomorrow") {
+      setStartDate(dayjs().add(new Date(), 1))
+    }
+  }
 
   const deleteSlashCommand = useCallback(() => {
     setText((text) => {
@@ -69,12 +120,7 @@ const SettingEditor = () => {
   }
 
   const selectCommand = (command) => {
-    deleteSlashCommand()
-    setIsEditing(false)
     command.action()
-    setIsEditing(true)
-    setSlashCharacterPosition(null)
-    setQuery(null)
   }
 
   const onKeyDown = (e) => {
@@ -98,11 +144,11 @@ const SettingEditor = () => {
       }
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
-        console.log(matchingCommands[selectionIndex])
         selectCommand(matchingCommands[selectionIndex])
+        // setIsEditing(true)
       } else if (slashCharacterPosition === null) {
+        dispatch({ type: setTitle, payload: text })
         setIsEditing(false)
-        setIsEditing(true)
         e.stopPropagation()
         e.preventDefault()
         return
@@ -116,12 +162,12 @@ const SettingEditor = () => {
     <div className="flex flex-col">
       {text !== "" && !isEditing ? (
         <div
+          className="heading-one"
           onClick={() => {
             setIsEditing(true)
             setText = { text }
           }}
         >
-          {" "}
           {text}
         </div>
       ) : (
@@ -152,6 +198,7 @@ const SettingEditor = () => {
           </div>
         ))}
       </div>
+      {isSettingTime && <DatePick date={date} setDate={setDate} showType={true} />}
     </div>
   )
 }

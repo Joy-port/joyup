@@ -8,6 +8,7 @@ import TextEditor from "./TextEditor"
 // import { TaskContent, TextProvider, useTaskContext } from "./TasksReducer"
 import DatePicker from "./DatePicker"
 import TasksContent from "./TasksReducer"
+import dayjs from "dayjs"
 
 const index = () => {
   // const value = useTaskContext()
@@ -29,16 +30,18 @@ const index = () => {
     }
   }, [startDate, setStartDate])
   useEffect(() => {
-    dispatch({ type: "editDate", payload: { type: "startDate", date: startDate } })
+    const date = new Date(startDate).getTime()
+    dispatch({ type: "editDate", payload: { type: "startDate", date: date } })
   }, [startDate])
   useEffect(() => {
-    dispatch({ type: "editDate", payload: { type: "dueDate", date: dueDate } })
+    const date = new Date(startDate).getTime()
+    dispatch({ type: "editDate", payload: { type: "dueDate", date: date } })
   }, [dueDate])
   return (
     <>
       <div className="task-container">
         <div className="flex flex-col gap-3 w-3/4">
-          <SettingEditor />
+          <SettingEditor setStartDate={setStartDate} setDueDate={setDueDate} />
           <TextEditor description={state.description} />
           <AddSubtask>AddSubtask</AddSubtask>
         </div>
@@ -48,9 +51,11 @@ const index = () => {
             {new Date().toLocaleString()}
           </p>
           <div>Start Date</div>
-          <DatePicker date={startDate} setDate={setStartDate} />
+          <p>{dayjs(new Date(state.startDate).getTime()).format("MM/DD HH:mm ")}</p>
+          <DatePicker date={startDate} setDate={setStartDate} showType={false} />
           <div>Due Date</div>
-          <DatePicker date={dueDate} setDate={setDueDate} />
+          <p>{dayjs(new Date(state.dueDate).getTime()).format("MM/DD HH:mm ")}</p>
+          <DatePicker date={dueDate} setDate={setDueDate} showType={false} />
           <Link to={`/clock/${taskID}`} className="bg-orange text-white">
             OpenClock
           </Link>

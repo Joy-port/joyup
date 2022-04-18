@@ -5,7 +5,7 @@ import dayjs from "dayjs"
 import "react-datepicker/dist/react-datepicker.css"
 
 // eslint-disable-next-line react/prop-types
-const DatePick = ({ date, setDate }) => {
+const DatePick = ({ date, setDate, showType }) => {
   const current = new Date()
   const addTime = (addTime) => {
     const nowTime = current.getTime()
@@ -61,6 +61,7 @@ const DatePick = ({ date, setDate }) => {
       }}
       onChangeRaw={(event) => handleChangeRaw(event.target.value)}
       dateFormat="MMMM d, yyyy h:mm aa"
+      inline={showType}
     />
   )
 }

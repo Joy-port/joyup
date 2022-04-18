@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import SettingContext from "./SettingContext"
 import ClockContext from "./ClockContext"

@@ -22,7 +22,6 @@ const initialTaskState = {
   parent: "",
   id: "",
   projectID: "",
-  taskID: "",
 }
 
 export function taskReducer(state, action) {
@@ -35,9 +34,11 @@ export function taskReducer(state, action) {
     case "requiredClock":
       return { ...state, requiredClockNumber: action.payload }
     case "setTaskID":
-      return { ...state, taskID: action.payload }
+      return { ...state, id: action.payload }
     case "createNewTask":
-      return { ...initialTaskState, taskID: action.payload }
+      return { ...initialTaskState, id: action.payload }
+    case "setTitle":
+      return { ...initialTaskState, title: action.payload }
     default:
       return state
   }
