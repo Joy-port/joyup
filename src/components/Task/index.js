@@ -11,8 +11,18 @@ import TasksContent from "./TasksReducer"
 import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const tags = [
+  {
+    type: "priority",
+    content: ["urgent", "high", "normal", "low"],
+  },
+  {
+    type: "progress",
+    content: ["none", "todo", "doing", "done"],
+  },
+]
+
 const index = () => {
-  // const value = useTaskContext()
   const [state, dispatch] = useContext(TasksContent)
   const { taskID } = useParams()
   const { workNumbers } = useContext(SettingContext)
@@ -47,6 +57,24 @@ const index = () => {
           <AddSubtask>AddSubtask</AddSubtask>
         </div>
         <div className="flex flex-col gap-3">
+          {tags.map((item) => (
+            <select
+              name="item"
+              id="item"
+              key={item.type}
+              value={state.tags[item]}
+              onChange={(e) => {
+                dispatch({ type: "editTags", payload: e.target.value.trim() })
+              }}
+            >
+              <option value={-1}>please select</option>
+              {item.content.map((tag) => (
+                <option value={tag} key={tag}>
+                  {tag}
+                </option>
+              ))}
+            </select>
+          ))}
           <p>
             Created date: <br />
             {new Date().toLocaleString()}
@@ -60,8 +88,7 @@ const index = () => {
           <Link to={`/clock/${taskID}`} className="bg-orange text-white">
             OpenClock
           </Link>
-          <p>Total Time Spent</p>
-          <p>{totalSpendingTime}</p>
+          <p>Total Time Spent: {totalSpendingTime}</p>
           <p>Already had Tomatos: {workNumbers}</p>
           <select
             name="number"
@@ -79,6 +106,13 @@ const index = () => {
               </option>
             ))}
           </select>
+          <input
+            type="text"
+            placeholder="location"
+            onChange={(e) => {
+              dispatch({ type: "editLocation", payload: e.target.value })
+            }}
+          />
           <button className="bg-slateDark text-white px-2 py-1 rounded">save</button>
         </div>
       </div>

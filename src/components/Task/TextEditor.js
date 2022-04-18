@@ -184,17 +184,14 @@ const TextEditor = () => {
 
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
-      console.log(slashCharacterPosition)
       if (slashCharacterPosition === null) {
-        console.log("up")
         changeTextStyle()
         setIsEditing(false)
         const currentBlock = currentBlockIndex()
-        console.log(currentBlock)
         const nextBlock =
           currentBlock - 1 > 0 ? toSpecificBlock(currentBlock - 1) : toSpecificBlock(0)
-        console.log(currentBlock, nextBlock)
         setText(nextBlock.content)
+        console.log(focusInput.current)
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {

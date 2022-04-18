@@ -170,7 +170,7 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
         selectCommand(matchingCommands[selectionIndex])
         // setIsEditing(true)
       } else if (slashCharacterPosition === null) {
-        dispatch({ type: setTitle, payload: text })
+        dispatch({ type: "setTitle", payload: text })
         setIsEditing(false)
         e.stopPropagation()
         e.preventDefault()
@@ -188,7 +188,7 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
           className="heading-one"
           onClick={() => {
             setIsEditing(true)
-            setText = { text }
+            setText(text)
           }}
         >
           {text}
