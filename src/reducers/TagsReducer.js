@@ -1,4 +1,5 @@
 import { useState, createContext } from "react"
+import { firebase } from "../helpers/firebase"
 
 export const initialTagState = {
   type: [],
@@ -6,8 +7,7 @@ export const initialTagState = {
 
 export function tagReducer(state = initialTagState, action) {
   switch (action.type) {
-    case "editDate":
-      const { type, date } = action.payload
+    case "getTags":
       return { ...state, [type]: date }
     default:
       return state

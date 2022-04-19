@@ -12,7 +12,7 @@ export const initialTaskState = {
   parent: "",
   id: "",
   projectID: "",
-  tags: {},
+  tags: [],
 }
 
 export function taskReducer(state = initialTaskState, action) {
@@ -31,7 +31,14 @@ export function taskReducer(state = initialTaskState, action) {
     case "setLocation":
       return { ...state, location: action.payload }
     case "editTags":
-      return { ...state, tags: { ...action.payload } }
+      const { parent, child } = action.payload
+      let newState = state.tags
+      if (state.tags.some((item) => item.parent === parent)) {
+        newState.find((item) => item.parent === parent).child = child
+      } else {
+        newState.push({ parent: parent, child: child })
+      }
+      return { ...state, tags: [...newState] }
     case "createNewTask":
       return { ...initialTaskState, id: action.payload }
     default:

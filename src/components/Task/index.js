@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState, useCallback } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import SettingContext from "../../reducers/SettingReducer"
 import TasksContent from "../../reducers/TasksReducer"
@@ -8,16 +8,32 @@ import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
+import { firebase } from "../../helpers/firebase"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const tags = [
   {
+    id: "1",
     type: "priority",
-    content: ["urgent", "high", "normal", "low"],
+    child: [
+      {
+        id: "1",
+        name: "urgent",
+      },
+      { id: "3", name: "high" },
+      { id: "4", name: "normal" },
+      { id: "5", name: "low" },
+    ],
   },
   {
+    id: "2",
     type: "progress",
-    content: ["none", "todo", "doing", "done"],
+    child: [
+      { id: "6", name: "none" },
+      { id: "7", name: "todo" },
+      { id: "8", name: "doing" },
+      { id: "9", name: "done" },
+    ],
   },
 ]
 
@@ -29,6 +45,19 @@ const index = () => {
   const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
+  const [tagList, setTagList] = useState(tags)
+  // const [tags, setTags] = useState(async () => {
+  //   try {
+  //     const tagList = await firebase.getProjectTags()
+  //     return tagList
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // })
+
+  // useEffect(() => {
+  //   getTags()
+  // }, [getTags])
   useEffect(() => {
     dispatch({ type: "setTaskID", payload: taskID })
   }, [taskID])
@@ -48,6 +77,8 @@ const index = () => {
     const date = new Date(startDate).getTime()
     dispatch({ type: "editDate", payload: { type: "dueDate", date: date } })
   }, [dueDate])
+
+  const saveToDataBase = () => {}
   return (
     <>
       <div className="task-container">
@@ -64,23 +95,27 @@ const index = () => {
             <AddSubtask>AddSubtask</AddSubtask>
           </div>
           <div className="flex flex-col gap-3 mt-1">
-            {tags.map((item) => (
-              <select
-                name="item"
-                id="item"
-                key={item.type}
-                value={state.tags[item]}
-                onChange={(e) => {
-                  dispatch({ type: "editTags", payload: e.target.value.trim() })
-                }}
-              >
-                <option value={-1}>please select</option>
-                {item.content.map((tag) => (
-                  <option value={tag} key={tag}>
-                    {tag}
-                  </option>
-                ))}
-              </select>
+            {tagList.map((item) => (
+              <>
+                <p>{item.type} </p>
+                <select
+                  key={item.id}
+                  onChange={(e) => {
+                    const tag = {
+                      parent: item.id,
+                      child: e.target.value,
+                    }
+                    dispatch({ type: "editTags", payload: tag })
+                  }}
+                >
+                  <option value={-1}>please select</option>
+                  {item.child.map((tag) => (
+                    <option value={tag.id} key={tag.id}>
+                      {tag.name}
+                    </option>
+                  ))}
+                </select>
+              </>
             ))}
             <p>
               Created date: <br />
@@ -120,7 +155,12 @@ const index = () => {
                 dispatch({ type: "editLocation", payload: e.target.value })
               }}
             />
-            <button className="bg-slateDark text-white px-2 py-1 rounded">save</button>
+            <button
+              className="bg-slateDark text-white px-2 py-1 rounded"
+              onClick={saveToDataBase}
+            >
+              save
+            </button>
           </div>
         </div>
       </div>
