@@ -1,43 +1,56 @@
-import React, { useState, useReducer, useContext, createContext } from "react"
+import { useState, createContext } from "react"
 
-const initialState = {
+export const initialTaskState = {
   title: "",
   description: [],
   createdDate: new Date(),
   startDate: new Date(),
   dueDate: new Date(),
   clockNumber: "",
-  requiredClockNumber: "",
+  requiredClockNumber: -1,
   location: "",
   parent: "",
   id: "",
   projectID: "",
+  tags: {},
 }
 
-export function reducer(state, action) {
+export function taskReducer(state = initialTaskState, action) {
   switch (action.type) {
     case "editDate":
       const { type, date } = action.payload
       return { ...state, [type]: date }
-    case "saveDescription":
+    case "editDescription":
       return { ...state, description: [...action.payload] }
+    case "requiredClock":
+      return { ...state, requiredClockNumber: action.payload }
+    case "setTaskID":
+      return { ...state, id: action.payload }
+    case "setTitle":
+      return { ...state, title: action.payload }
+    case "setLocation":
+      return { ...state, location: action.payload }
+    case "editTags":
+      return { ...state, tags: { ...action.payload } }
+    case "createNewTask":
+      return { ...initialTaskState, id: action.payload }
     default:
       return state
   }
 }
 
-// export function useTasksReducer(reducer, initialState) {
-//   const [state, setState] = useState(initialState)
+export function useTasksReducer(reducer = taskReducer, initialState = initialTaskState) {
+  const [state, setState] = useState(initialState)
 
-//   function dispatch(action) {
-//     const nextState = reducer(state, action)
-//     setState(nextState)
-//   }
+  function dispatch(action) {
+    const nextState = reducer(state, action)
+    setState(nextState)
+  }
 
-//   return [state, dispatch]
-// }
+  return [state, dispatch]
+}
 
-const TasksContent = React.createContext([])
+const TasksContext = createContext()
 // export const useTasksContext = () => useContext(TasksContent)
 
 // eslint-disable-next-line react/prop-types
@@ -47,4 +60,4 @@ const TasksContent = React.createContext([])
 //   return <TasksContent.Provider value={value}>{children}</TasksContent.Provider>
 // }
 
-export default TasksContent
+export default TasksContext

@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import SettingContext from "../Clock/SettingContext"
+// import SettingContext from "../Clock/SettingContext"
+import { useClockSettingReducer } from "../Clock/SettingReducer"
 import ClockContext from "../Clock/ClockContext"
 import AddSubtask from "./AddSubtask"
 import SettingEditor from "./SettingEditor"
 import TextEditor from "./TextEditor"
-// import { TaskContent, TextProvider, useTaskContext } from "./TasksReducer"
-import DatePicker from "./DatePicker"
 import TasksContent from "./TasksReducer"
+// import { TaskContent, TextProvider, useTaskContext } from "./TasksReducer"
+// import { useTasksContext } from "./TasksContext"
+import DatePicker from "./DatePicker"
 import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -24,9 +26,11 @@ const tags = [
 
 const index = () => {
   const [state, dispatch] = useContext(TasksContent)
+  // const [state, dispatch] = useTasksContext()
   const { taskID } = useParams()
   const navigation = useNavigate()
-  const { workNumbers } = useContext(SettingContext)
+  // const { workNumbers } = useContext(SettingContext)
+  const [{ workNumbers }, clockSettingDispatch] = useClockSettingReducer()
   const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())

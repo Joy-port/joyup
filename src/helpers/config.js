@@ -16,14 +16,14 @@ export const pathInfo = [
   },
   {
     name: "Chat Room",
-    path: "chatRoom",
+    path: "chatroom",
     icon: "MessageSquare",
   },
-  {
-    name: "Document",
-    path: "document",
-    icon: "FileText",
-  },
+  // {
+  //   name: "Document",
+  //   path: "document",
+  //   icon: "FileText",
+  // },
   {
     name: "Settings",
     path: "settings",

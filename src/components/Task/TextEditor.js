@@ -109,7 +109,7 @@ const TextEditor = () => {
   }, [deleteSlashCommand])
 
   useEffect(() => {
-    console.log("change text")
+    console.log(state.document)
     dispatch({ type: "editDescription", payload: [...document] })
   }, [document])
 

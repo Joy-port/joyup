@@ -1,14 +1,17 @@
 import React, { useState, useReducer, useRef } from "react"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Menu from "./components/Menu/index"
 import SettingsContext from "./components/Clock/SettingContext"
 import ClockContext from "./components/Clock/ClockContext"
 // import TasksContext from "./components/Task/TasksContext"
 import TasksContext from "./components/Task/TasksReducer"
-import TaskList from "./components/Task/TaskList"
-import Setting from "./pages/Setting"
+import TimeSetting from "./pages/TimeSetting"
+import Home from "./pages/Home"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
+import Report from "./pages/Report"
+import Dashboard from "./pages/Dashboard"
+import ChatRoom from "./pages/ChatRoom"
 
 const initialTaskState = {
   title: "",
@@ -81,31 +84,34 @@ function App() {
   }
 
   const tasksValue = [state, dispatch]
-
+  //useOutletcontext?
   return (
     <SettingsContext.Provider value={settingsValue}>
       <ClockContext.Provider value={clockValue}>
         <TasksContext.Provider value={tasksValue}>
-          <div className="body">
-            <Menu />
-            <TaskList />
-            <main className="content">
-              <Routes>
-                <Route path="/" />
-                <Route path="home" />
-                <Route path="report" />
-                <Route path="dashboard" />
-                <Route path="chatroom" />
-                <Route path="settings" element={<Setting />} />
-                <Route path="task">
-                  <Route path=":taskID" element={<Task />}></Route>
-                </Route>
-                <Route path="clock">
-                  <Route path=":taskID" element={<Clock />}></Route>
-                </Route>
-              </Routes>
-            </main>
-          </div>
+          {/* <div className="body"> */}
+          {/* <Menu />
+            <TaskList /> */}
+          {/* <main className="content"> */}
+          <Routes>
+            <Route path="/" element={<Menu />}>
+              <Route index element={<Home />} />
+              <Route path="report" element={<Report />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="chatroom" element={<ChatRoom />} />
+              <Route path="settings" element={<TimeSetting />} />
+              <Route path="task">
+                <Route path=":taskID" element={<Task />} />
+              </Route>
+              <Route path="clock">
+                <Route path=":taskID" element={<Clock />} />
+              </Route>
+              <Route path="task/" element={<Navigate to="/" replace />} />
+              <Route path="clock/" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+          {/* </main> */}
+          {/* </div> */}
         </TasksContext.Provider>
       </ClockContext.Provider>
     </SettingsContext.Provider>

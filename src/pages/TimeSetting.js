@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import SettingContext from "../components/Clock/SettingContext"
 
-const Setting = () => {
+const TimeSetting = () => {
   const {
     timerDuration,
     setTimerDuration,
@@ -49,4 +49,4 @@ const Setting = () => {
   )
 }
 
-export default Setting
+export default TimeSetting
