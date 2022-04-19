@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
+import { any } from "prop-types"
 
 const subTasks = [
   {
@@ -9,7 +10,6 @@ const subTasks = [
   },
 ]
 
-// eslint-disable-next-line react/prop-types
 const AddSubtask = ({ children }) => {
   const navigate = useNavigate()
   const [inputTitle, setInputTitle] = useState()
@@ -68,6 +68,10 @@ const AddSubtask = ({ children }) => {
       </ul>
     </>
   )
+}
+
+AddSubtask.propTypes = {
+  children: any,
 }
 
 export default AddSubtask

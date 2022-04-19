@@ -4,8 +4,6 @@ export const initialTimeState = {
   timerDuration: 15,
   workMinutes: 4,
   breakMinutes: 1,
-  workNumbers: 0,
-  breakNumbers: 0,
 }
 
 export function timeReducer(state, action) {
@@ -13,9 +11,6 @@ export function timeReducer(state, action) {
     case "editTimer":
       const { type, duration } = action.payload
       return { ...state, [type]: duration }
-    case "addClockNumber":
-      const { clockType } = action.payload
-      return { ...state, [clockType]: state[clockType] + 1 }
     default:
       return state
   }

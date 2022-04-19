@@ -1,10 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect, useContext } from "react"
-import DatePick from "./DatePicker"
+import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
-import TasksContent from "./TasksReducer"
+import TasksContent from "../../../reducers/TasksReducer"
+import { any } from "prop-types"
 
-// eslint-disable-next-line react/prop-types
-const SettingEditor = ({ setStartDate, setDueDate }) => {
+const TitleEditor = ({ setStartDate, setDueDate }) => {
   const [state, dispatch] = useContext(TasksContent)
   const [isEditing, setIsEditing] = useState(true)
   const [text, setText] = useState("")
@@ -12,10 +12,10 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
   const [isSettingTime, setIsSettingTime] = useState(false)
-  const inputRef = useRef()
   const [date, setDate] = useState(new Date())
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
   const [requiredNumber, setRequiredNumber] = useState(null)
+  const inputRef = useRef()
   const timeRef = useRef()
 
   useEffect(() => {
@@ -96,7 +96,19 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
       },
     },
     {
-      name: "set Time numbers",
+      name: "priority",
+      action: () => {
+        setText("")
+      },
+    },
+    {
+      name: "to do status",
+      action: () => {
+        setText("")
+      },
+    },
+    {
+      name: "create new tags",
       action: () => {
         setText("")
       },
@@ -226,4 +238,9 @@ const SettingEditor = ({ setStartDate, setDueDate }) => {
   )
 }
 
-export default SettingEditor
+TitleEditor.propTypes = {
+  setStartDate: any,
+  setDueDate: any,
+}
+
+export default TitleEditor

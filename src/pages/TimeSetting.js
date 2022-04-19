@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import SettingsContext from "../components/Clock/SettingReducer"
+import SettingsContext from "../reducers/SettingReducer"
 
 const TimeSetting = () => {
   const [state, dispatch] = useContext(SettingsContext)

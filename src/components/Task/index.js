@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-// import SettingContext from "../Clock/SettingContext"
-import { useClockSettingReducer } from "../Clock/SettingReducer"
-import ClockContext from "../Clock/ClockContext"
-import AddSubtask from "./AddSubtask"
-import SettingEditor from "./SettingEditor"
-import TextEditor from "./TextEditor"
-import TasksContent from "./TasksReducer"
-// import { TaskContent, TextProvider, useTaskContext } from "./TasksReducer"
-// import { useTasksContext } from "./TasksContext"
-import DatePicker from "./DatePicker"
+import SettingContext from "../../reducers/SettingReducer"
+import TasksContent from "../../reducers/TasksReducer"
+import ClockContext from "../../reducers/ClockReducer"
+import TitleEditor from "./commands/TitleEditor"
+import TextEditor from "./commands/TextEditor"
+import AddSubtask from "./components/AddSubtask"
+import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -26,11 +23,9 @@ const tags = [
 
 const index = () => {
   const [state, dispatch] = useContext(TasksContent)
-  // const [state, dispatch] = useTasksContext()
   const { taskID } = useParams()
   const navigation = useNavigate()
-  // const { workNumbers } = useContext(SettingContext)
-  const [{ workNumbers }, clockSettingDispatch] = useClockSettingReducer()
+  const [{ workNumbers }, clockSettingDispatch] = useContext(SettingContext)
   const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
@@ -64,7 +59,7 @@ const index = () => {
         </button>
         <div className="flex gap-5">
           <div className="flex flex-col gap-3 w-3/4 mt-1">
-            <SettingEditor setStartDate={setStartDate} setDueDate={setDueDate} />
+            <TitleEditor setStartDate={setStartDate} setDueDate={setDueDate} />
             <TextEditor description={state.description} />
             <AddSubtask>AddSubtask</AddSubtask>
           </div>

@@ -1,64 +1,24 @@
 import React, { useState, useRef, useEffect, useCallback, useContext } from "react"
-import TasksContent from "./TasksReducer"
+import TasksContent from "../../../reducers/TasksReducer"
 import { v4 as uuidv4 } from "uuid"
-import { TextType } from "../../helpers/config"
+import { TextType } from "../../../helpers/config"
 
 const Docs = [
   {
     id: uuidv4(),
-    content: "this is p",
+    content: "",
     html: {
       parent: "",
-      tag: "h1",
-      name: "Heading 1",
-      style: "heading-one",
-    },
-  },
-  {
-    id: uuidv4(),
-    content: "this is h1",
-    html: {
-      parent: "",
-      tag: "code",
-      name: "Code",
-      style: "code-block",
-    },
-  },
-  {
-    id: uuidv4(),
-    content: "This is order list",
-    html: {
-      parent: "ol",
-      tag: "li",
-      name: "Number List",
-      style: "ordered-list",
-    },
-  },
-  {
-    id: uuidv4(),
-    content: "This is order list 2",
-    html: {
-      parent: "ol",
-      tag: "li",
-      name: "Number List",
-      style: "ordered-list-item",
-    },
-  },
-  {
-    id: uuidv4(),
-    content: "This is h2",
-    html: {
-      parent: "",
-      tag: "div",
-      name: "Quote",
-      style: "quote-block",
+      tag: "p",
+      name: "",
+      style: "",
     },
   },
 ]
 
 const TextEditor = () => {
   const [state, dispatch] = useContext(TasksContent)
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(true)
   const [document, setDocument] = useState(Docs)
   const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
@@ -122,7 +82,7 @@ const TextEditor = () => {
 
   const onChange = (e) => {
     const newText = e.target.value
-    setText(newText) //save
+    setText(newText)
     document.find((item) => item.id === inputRef.current.id).content = newText
     if (slashCharacterPosition !== null) {
       const isSlashStillActive = newText[slashCharacterPosition] === "/"
@@ -250,6 +210,7 @@ const TextEditor = () => {
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
+      // delete docs document block
       console.log(text)
       if (text === "") {
         setIsEditing(false)

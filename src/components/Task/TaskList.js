@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
-import TasksContent from "./TasksReducer"
+import TasksContent from "../../reducers/TasksReducer"
 
 const TaskList = () => {
   const [state, dispatch] = useContext(TasksContent)

@@ -16,7 +16,6 @@ const Clock = () => {
     (state) => state.clock.duration
   )
   const { isPaused, mode } = useSelector((state) => state.clock.status)
-  //   const { percentage, minutes, seconds } = useSelector((state) => state.clock.time)
   const dispatch = useDispatch()
   const [secondsLeft, setSecondsLeft] = useState(0)
   const secondsLeftRef = useRef(secondsLeft)

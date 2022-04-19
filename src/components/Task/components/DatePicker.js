@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from "react"
 import DatePicker from "react-datepicker"
+import { any, bool, func } from "prop-types"
 import dayjs from "dayjs"
-
 import "react-datepicker/dist/react-datepicker.css"
 
-// eslint-disable-next-line react/prop-types
 const DatePick = ({ date, setDate, showType }) => {
   const current = new Date()
   const addTime = (addTime) => {
@@ -64,6 +63,12 @@ const DatePick = ({ date, setDate, showType }) => {
       inline={showType}
     />
   )
+}
+
+DatePick.propTypes = {
+  date: any,
+  setDate: func,
+  showType: bool,
 }
 
 export default DatePick

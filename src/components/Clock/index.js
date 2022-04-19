@@ -1,44 +1,34 @@
-import React, { useContext, useState, useEffect, useRef } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { Link, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
-import SettingsContext from "./SettingReducer"
-import ClockContext from "./ClockContext"
+import SettingsContext from "../../reducers/SettingReducer"
+import ClockContext from "../../reducers/ClockReducer"
 
 const Clock = () => {
-  const [state, dispatch] = useContext(SettingsContext)
-  const { timerDuration, workMinutes, breakMinutes, workNumbers, breakNumbers } = state
-  const { setIsPaused, isPausedRef, totalSpendingTime, setTotalSpendingTime } =
-    useContext(ClockContext)
-  const [mode, setMode] = useState("work")
-  const [secondsLeft, setSecondsLeft] = useState(0)
-  // const [totalSpendingTime, setTotalSpendingTime] = useState(0)
-  // const isPausedRef = useRef(isPaused)
-
+  const [settingState, settingDispatch] = useContext(SettingsContext)
+  const { timerDuration, workMinutes, breakMinutes } = settingState
+  const [clockState, clockDispatch] = useContext(ClockContext)
+  const { isPaused, mode, secondsLeft, workNumbers, breakNumbers } = clockState
   const secondsLeftRef = useRef(secondsLeft)
-  const totalTimeRef = useRef(0)
-  const modeRef = useRef(mode)
+
   const { taskID } = useParams()
-  const setTimer = (type) => {
-    dispatch({
+  const setTimer = (clockType) => {
+    clockDispatch({
       type: "addClockNumber",
-      payload: { type: type },
+      payload: { clockType: clockType },
     })
   }
-  // useEffect(() => {
-  //   setTimerDuration(state.timerDuration)
-  // }, [state.timerDuration])
-  // useEffect(() => {
-  //   setWorkMinutes(state.workMinutes)
-  // }, [state.workMinutes])
-  // useEffect(() => {
-  //   setBreakMinutes(state.breakMinutes)
-  // }, [state.breakMinutes])
+  const clockStatus = (type, status) => {
+    clockDispatch({
+      type: "clockAction",
+      payload: { type: type, status: status },
+    })
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (isPausedRef.current) {
-        return
-      }
+      if (isPaused) return
+      console.log(mode, secondsLeftRef.current)
       if (secondsLeftRef.current === 0) {
         return switchMode()
       }
@@ -46,43 +36,36 @@ const Clock = () => {
     }, [100])
 
     return () => clearInterval(timer)
-  }, [workMinutes, breakMinutes, timerDuration])
+  }, [isPaused, mode, secondsLeft])
 
   useEffect(() => {
     secondsLeftRef.current = timerDuration * workMinutes * 60
-    setSecondsLeft(secondsLeftRef.current)
+    clockStatus("secondsLeft", secondsLeftRef.current)
   }, [])
 
   useEffect(() => {
-    totalTimeRef.current += 1
-    setTotalSpendingTime(getClockTime(totalTimeRef.current))
+    // totalTimeRef.current += 1
+    // setTotalSpendingTime(getClockTime(totalTimeRef.current))
   }, [secondsLeft])
-  //setWorkNumbers((prev) => (prev += 1))
-  //setBreakNumbers((prev) => (prev += 1))
+
   const switchMode = () => {
-    modeRef.current === "work" ? setTimer("workNumbers") : setTimer("breakNumbers")
-    const nextMode = modeRef.current === "work" ? "break" : "work"
-    const nextSeconds =
-      (nextMode === "work" ? workMinutes : breakMinutes) * 60 * timerDuration
-
-    setMode(nextMode)
-    modeRef.current = nextMode
-
-    setSecondsLeft(nextSeconds)
+    mode === 0 ? setTimer("workNumbers") : setTimer("breakNumbers")
+    const nextMode = mode === 0 ? 1 : 0
+    const nextSeconds = (nextMode === 0 ? workMinutes : breakMinutes) * 60 * timerDuration
     secondsLeftRef.current = nextSeconds
+    clockStatus("secondsLeft", nextSeconds)
+    clockStatus("mode", parseFloat(nextMode))
   }
 
   const tickTime = () => {
     secondsLeftRef.current--
-    setSecondsLeft(secondsLeftRef.current)
+    clockStatus("secondsLeft", secondsLeftRef.current)
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
     secondsLeftRef.current =
-      mode === "work"
-        ? workMinutes * 60 * timerDuration
-        : breakMinutes * 60 * timerDuration
-    setSecondsLeft(secondsLeftRef.current)
+      mode === 0 ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
+    clockStatus("secondsLeft", secondsLeftRef.current)
   }
   const getClockTime = (time) => {
     let hours = "00"
@@ -108,12 +91,12 @@ const Clock = () => {
   }
   const TimerContent = {
     textColor: "#000",
-    pathColor: mode === "work" ? "#f54e4e" : "#3e98c7",
+    pathColor: mode === 0 ? "#f54e4e" : "#3e98c7",
     trailColor: "transparent",
     strokeLinecap: "round",
   }
   const totalSeconds =
-    mode === "work" ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
+    mode === 0 ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
 
   const minutes = Math.floor(secondsLeft / 60)
@@ -135,24 +118,17 @@ const Clock = () => {
             <div className="">
               <button
                 onClick={() => {
-                  setIsPaused(false)
-                  isPausedRef.current = false
+                  clockStatus("isPaused", false)
+                  // setIsPaused(false)
+                  // isPausedRef.current = false
                 }}
               >
                 Play
               </button>
+              <button onClick={() => clockStatus("isPaused", true)}>Pause</button>
               <button
                 onClick={() => {
-                  setIsPaused(true)
-                  isPausedRef.current = true
-                }}
-              >
-                Pause
-              </button>
-              <button
-                onClick={() => {
-                  setIsPaused(true)
-                  isPausedRef.current = true
+                  clockStatus("isPaused", true)
                   resetTimer()
                 }}
               >
@@ -160,7 +136,7 @@ const Clock = () => {
               </button>
               <h3>work time: {workNumbers}</h3>
               <h3>break time: {breakNumbers}</h3>
-              <h3>Total Time Spent:{totalSpendingTime} </h3>
+              {/* <h3>Total Time Spent:{totalSpendingTime} </h3> */}
             </div>
             <div className="flex gap-4">
               <Link to="/settings" className="button">
