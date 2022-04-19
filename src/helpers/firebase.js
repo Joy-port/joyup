@@ -13,3 +13,29 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
+
+export const firebase = {
+  auth: getAuth(app),
+  db: getFirestore(app),
+  getTask: async () => {},
+  saveTask: async () => {
+    try {
+      const clockData = [
+        this.db,
+        this.collectionName,
+        this.auth.currentUser.uid,
+        "clocks",
+      ]
+      const userClockPosition = collection(...clockData)
+      const clockList = await getDocs(userClockPosition)
+      const clocks = []
+      clockList.forEach(async (doc) => {
+        if (!doc.data().timezone) return
+        clocks.push(doc.data().timezone)
+      })
+      return clocks
+    } catch (error) {
+      console.error(error)
+    }
+  },
+}

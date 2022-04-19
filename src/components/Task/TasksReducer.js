@@ -3,9 +3,9 @@ import { useState, createContext } from "react"
 export const initialTaskState = {
   title: "",
   description: [],
-  createdDate: new Date(),
-  startDate: new Date(),
-  dueDate: new Date(),
+  createdDate: new Date().getTime(),
+  startDate: new Date().getTime(),
+  dueDate: "",
   clockNumber: "",
   requiredClockNumber: -1,
   location: "",

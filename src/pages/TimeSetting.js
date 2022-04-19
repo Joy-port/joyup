@@ -1,46 +1,67 @@
-import React, { useState, useContext, useEffect } from "react"
-import SettingContext from "../components/Clock/SettingContext"
+import React, { useContext } from "react"
+import SettingsContext from "../components/Clock/SettingReducer"
 
 const TimeSetting = () => {
-  const {
-    timerDuration,
-    setTimerDuration,
-    workMinutes,
-    setWorkMinutes,
-    breakMinutes,
-    setBreakMinutes,
-  } = useContext(SettingContext)
-
-  const [workTimer, setWorkTimer] = useState(workMinutes)
-  const [breakTimer, setBreakTimer] = useState(breakMinutes)
-
-  useEffect(() => {
-    setWorkMinutes(workTimer)
-    setBreakMinutes(breakTimer)
-  }, [timerDuration])
+  const [state, dispatch] = useContext(SettingsContext)
+  const setTimer = (e, type, value) => {
+    if (e.key === "Enter") {
+      if (!value) {
+        alert("please enter numbers")
+        return
+      }
+      dispatch({
+        type: "editTimer",
+        payload: { type: type, duration: value },
+      })
+    }
+  }
   const saveToDataBase = () => {
     console.log("connect to firebase")
   }
   return (
     <>
       <div>
-        <h2 className="text-bold">Timer Duration: {timerDuration} minutes</h2>
-        <input type="number" onChange={(e) => setTimerDuration(e.target.value.trim())} />
+        <h2 className="text-bold">Timer Duration: {state.timerDuration} minutes</h2>
+        <input
+          type="number"
+          onChange={(e) =>
+            setTimer(e, "timerDuration", parseFloat(e.target.value.trim()))
+          }
+          onKeyDown={(e) =>
+            setTimer(e, "timerDuration", parseFloat(e.target.value.trim()))
+          }
+        />
       </div>
       <div>
-        <h2>Working Time Length: {timerDuration * workTimer} minutes</h2>
+        <h2>Working Time Length: {state.timerDuration * state.workMinutes} minutes</h2>
         <div className="flex">
-          <h3>{timerDuration} X</h3>
-          <input type="number" onChange={(e) => setWorkTimer(e.target.value.trim())} />
-          <button onClick={() => setWorkMinutes(workTimer)}>Confirm</button>
+          <h3>{state.timerDuration} X</h3>
+          <input
+            type="number"
+            onChange={(e) =>
+              setTimer(e, "workMinutes", parseFloat(e.target.value.trim()))
+            }
+            onKeyDown={(e) =>
+              setTimer(e, "workMinutes", parseFloat(e.target.value.trim()))
+            }
+          />
+          {/* <button onClick={() => setWorkMinutes(workTimer)}>Confirm</button> */}
         </div>
       </div>
       <div>
-        <h2>Break Timer Length: {timerDuration * breakTimer} minutes</h2>
+        <h2>Break Timer Length: {state.timerDuration * state.breakMinutes} minutes</h2>
         <div className="flex">
-          <h3>{timerDuration} X</h3>
-          <input type="number" onChange={(e) => setBreakTimer(e.target.value)} />
-          <button onClick={() => setBreakMinutes(breakTimer)}>Confirm</button>
+          <h3>{state.timerDuration} X</h3>
+          <input
+            type="number"
+            onChange={(e) =>
+              setTimer(e, "breakMinutes", parseFloat(e.target.value.trim()))
+            }
+            onKeyDown={(e) =>
+              setTimer(e, "breakMinutes", parseFloat(e.target.value.trim()))
+            }
+          />
+          {/* <button onClick={() => setBreakMinutes(breakTimer)}>Confirm</button> */}
         </div>
       </div>
       <button>cancel</button>
