@@ -3,21 +3,25 @@ export const pathInfo = [
     name: "Home",
     path: "/",
     icon: "Home",
+    component: "Home",
   },
   {
     name: "Report",
     path: "report",
     icon: "Activity",
+    component: "Report",
   },
   {
     name: "Dashboard",
     path: "dashboard",
     icon: "Folder",
+    component: "Dashboard",
   },
   {
     name: "Chat Room",
     path: "chatroom",
     icon: "MessageSquare",
+    component: "ChatRoom",
   },
   // {
   //   name: "Document",
@@ -28,6 +32,34 @@ export const pathInfo = [
     name: "Settings",
     path: "settings",
     icon: "Settings",
+    component: "TimeSetting",
+  },
+]
+export const viewInfo = [
+  {
+    name: "List",
+    path: "list",
+    component: "Home",
+  },
+  {
+    name: "Board",
+    path: "board",
+    component: "Home",
+  },
+  {
+    name: "Mind Map",
+    path: "mind-map",
+    component: "Home",
+  },
+  {
+    name: "Map",
+    path: "location",
+    component: "Home",
+  },
+  {
+    name: "Calendar",
+    path: "calendar",
+    component: "Home",
   },
 ]
 
