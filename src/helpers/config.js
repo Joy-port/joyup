@@ -39,27 +39,27 @@ export const viewInfo = [
   {
     name: "List",
     path: "list",
-    component: "Home",
+    component: "List",
   },
   {
     name: "Board",
     path: "board",
-    component: "Home",
+    component: "Task",
   },
   {
     name: "Mind Map",
     path: "mind-map",
-    component: "Home",
+    component: "Task",
   },
   {
     name: "Map",
     path: "location",
-    component: "Home",
+    component: "Task",
   },
   {
     name: "Calendar",
     path: "calendar",
-    component: "Home",
+    component: "Task",
   },
 ]
 

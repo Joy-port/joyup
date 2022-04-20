@@ -10,7 +10,9 @@ import Task from "./components/Task"
 import Home from "./pages/Home"
 import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
+import List from "./components/DragFunction"
 import ChatRoom from "./pages/ChatRoom"
+
 import TimeSetting from "./pages/TimeSetting"
 import { pathInfo, viewInfo } from "./helpers/config"
 
@@ -20,6 +22,11 @@ const components = {
   Dashboard,
   ChatRoom,
   TimeSetting,
+}
+
+const viewComponents = {
+  List,
+  Task,
 }
 
 function App() {
@@ -55,7 +62,7 @@ function App() {
                   {viewInfo.map((view, index) => {
                     const Component = components[view.component]
                     return (
-                      <Route path={`dashboard/{view.path}`} key={index}>
+                      <Route path={view.path} key={index}>
                         <Route path=":projectID" element={<Component />} />
                       </Route>
                     )

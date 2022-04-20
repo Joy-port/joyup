@@ -6,7 +6,7 @@
   @apply h-screen md:flex relative;
 }
 .content {
-  @apply grow p-3;
+  @apply grow p-3 flex flex-col;
 }
 .menu-list {
   @apply md:static md:h-screen lg:w-64 md:w-auto w-screen h-auto bg-slateDark flex flex-col transition-all py-3;
@@ -84,4 +84,15 @@
 
 .selected-tag {
   @apply font-semibold text-gray text-3xl capitalize;
+}
+
+.column {
+  @apply border rounded-sm;
+}
+
+.task-list {
+  @apply p-2;
+}
+.task {
+  @apply border border-slateLight bg-white rounded-sm p-2 mb-3;
 }
