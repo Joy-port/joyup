@@ -18,8 +18,8 @@ export const initialTaskState = {
 export function taskReducer(state = initialTaskState, action) {
   switch (action.type) {
     case "editDate":
-      const { type, date } = action.payload
-      return { ...state, [type]: date }
+      const { name, date } = action.payload
+      return { ...state, [name]: date }
     case "editDescription":
       return { ...state, description: [...action.payload] }
     case "requiredClock":
@@ -36,8 +36,9 @@ export function taskReducer(state = initialTaskState, action) {
       if (state.tags.some((item) => item.parent === parent)) {
         newState.find((item) => item.parent === parent).child = child
       } else {
-        newState.push({ parent: parent, child: child })
+        newState.push(action.payload)
       }
+      console.log(newState)
       return { ...state, tags: [...newState] }
     case "createNewTask":
       return { ...initialTaskState, id: action.payload }

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import SettingContext from "../../reducers/SettingReducer"
+import TagsContext from "../../reducers/TagsReducer"
 import TasksContent from "../../reducers/TasksReducer"
 import ClockContext from "../../reducers/ClockReducer"
 import TitleEditor from "./commands/TitleEditor"
@@ -11,41 +12,43 @@ import dayjs from "dayjs"
 import { firebase } from "../../helpers/firebase"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-const tags = [
-  {
-    id: "1",
-    type: "priority",
-    child: [
-      {
-        id: "1",
-        name: "urgent",
-      },
-      { id: "3", name: "high" },
-      { id: "4", name: "normal" },
-      { id: "5", name: "low" },
-    ],
-  },
-  {
-    id: "2",
-    type: "progress",
-    child: [
-      { id: "6", name: "none" },
-      { id: "7", name: "todo" },
-      { id: "8", name: "doing" },
-      { id: "9", name: "done" },
-    ],
-  },
-]
+// const tags = [
+//   {
+//     id: "1",
+//     type: "priority",
+//     child: [
+//       {
+//         id: "1",
+//         name: "urgent",
+//       },
+//       { id: "3", name: "high" },
+//       { id: "4", name: "normal" },
+//       { id: "5", name: "low" },
+//     ],
+//   },
+//   {
+//     id: "2",
+//     type: "progress",
+//     child: [
+//       { id: "6", name: "none" },
+//       { id: "7", name: "todo" },
+//       { id: "8", name: "doing" },
+//       { id: "9", name: "done" },
+//     ],
+//   },
+// ]
 
 const index = () => {
   const [state, dispatch] = useContext(TasksContent)
+  const [tagState, tagDispatch] = useContext(TagsContext)
   const { taskID } = useParams()
   const navigation = useNavigate()
   const [{ workNumbers }, clockSettingDispatch] = useContext(SettingContext)
   const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
-  const [tagList, setTagList] = useState(tags)
+  const [tagList, setTagList] = useState(tagState.tags)
+  const { tags } = state
   // const [tags, setTags] = useState(async () => {
   //   try {
   //     const tagList = await firebase.getProjectTags()
@@ -58,6 +61,10 @@ const index = () => {
   // useEffect(() => {
   //   getTags()
   // }, [getTags])
+
+  useEffect(() => {
+    console.log(tags)
+  }, [tags])
   useEffect(() => {
     dispatch({ type: "setTaskID", payload: taskID })
   }, [taskID])
@@ -71,11 +78,11 @@ const index = () => {
   }, [startDate, setStartDate])
   useEffect(() => {
     const date = new Date(startDate).getTime()
-    dispatch({ type: "editDate", payload: { type: "startDate", date: date } })
+    dispatch({ type: "editDate", payload: { name: "startDate", date: date } })
   }, [startDate])
   useEffect(() => {
     const date = new Date(startDate).getTime()
-    dispatch({ type: "editDate", payload: { type: "dueDate", date: date } })
+    dispatch({ type: "editDate", payload: { name: "dueDate", date: date } })
   }, [dueDate])
 
   const saveToDataBase = () => {}
@@ -96,26 +103,29 @@ const index = () => {
           </div>
           <div className="flex flex-col gap-3 mt-1">
             {tagList.map((item) => (
-              <>
+              <div key={item.id}>
                 <p>{item.type} </p>
                 <select
-                  key={item.id}
+                  value={
+                    tags.find((selected) => selected.parent === item.id)?.child || -1
+                  }
                   onChange={(e) => {
                     const tag = {
                       parent: item.id,
                       child: e.target.value,
+                      type: item.type,
                     }
                     dispatch({ type: "editTags", payload: tag })
                   }}
                 >
                   <option value={-1}>please select</option>
-                  {item.child.map((tag) => (
+                  {item.children.map((tag) => (
                     <option value={tag.id} key={tag.id}>
                       {tag.name}
                     </option>
                   ))}
                 </select>
-              </>
+              </div>
             ))}
             <p>
               Created date: <br />

@@ -2,24 +2,42 @@ import React, { useState, useRef, useCallback, useEffect, useContext } from "rea
 import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
 import TasksContent from "../../../reducers/TasksReducer"
-import { any } from "prop-types"
+import TagsContext from "../../../reducers/TagsReducer"
+import { func } from "prop-types"
 
 const TitleEditor = ({ setStartDate, setDueDate }) => {
   const [state, dispatch] = useContext(TasksContent)
+  const { tags } = state
+  const [tagState, tagDispatch] = useContext(TagsContext)
   const [isEditing, setIsEditing] = useState(true)
   const [text, setText] = useState("")
   const [query, setQuery] = useState(null)
+  const [tagsQuery, setTagsQuery] = useState(null)
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
+  const [tagCharacterPosition, setTagCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
   const [isSettingTime, setIsSettingTime] = useState(false)
   const [date, setDate] = useState(new Date())
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
   const [requiredNumber, setRequiredNumber] = useState(null)
+  const [style, setStyle] = useState("heading-one")
+  const [isEditingTags, setIsEditingTags] = useState(false)
+  const [selectedTagType, setSelectedTagType] = useState(null)
+  const [selectedTag, setSelectedTag] = useState(null)
   const inputRef = useRef()
   const timeRef = useRef()
+  const setTagsAction = useCallback((tagsName) => {
+    setIsEditing(true)
+    setStyle("selected-tag")
+    setText(() => {
+      const newText = `/${tagsName}`
+      return newText
+    })
+    setIsEditingTags(true)
+  })
 
   useEffect(() => {
-    if (!date || !text) return
+    if (!date || !text || !text.includes("/")) return
     if (date) {
       if (!timeRef) return
       const hourMinutes = dayjs(date).format("HH:mm")
@@ -38,11 +56,10 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
         return name + ":" + selectedDate
       })
       timeRef.current = dayjs(date).format("HH:mm")
+      setStyle("heading-one")
       setIsSettingTime(false)
       setText("")
-      setQuery(null)
       deleteSlashCommand()
-      setSlashCharacterPosition(null)
     }
   }, [date])
 
@@ -59,6 +76,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       setSlashCharacterPosition(null)
     }
   }, [setEditRequiredNumber, editRequiredNumber, text])
+
   const commands = [
     {
       name: "Start Date",
@@ -70,6 +88,9 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           const newText = "/Start Date"
           return newText
         })
+        setStyle("selected-tag")
+        setQuery(null)
+        setSlashCharacterPosition(null)
       },
     },
     {
@@ -82,6 +103,9 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           const newText = "/Due Date"
           return newText
         })
+        setStyle("selected-tag")
+        setQuery(null)
+        setSlashCharacterPosition(null)
       },
     },
     {
@@ -97,14 +121,30 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
     },
     {
       name: "priority",
-      action: () => {
-        setText("")
+      action: function () {
+        setIsEditing(true)
+        setText(() => {
+          const newText = "/Priority :"
+          return newText
+        })
+        setStyle("selected-tag")
+        setSelectedTagType(tagState.tags.find((item) => item.type === this.name))
+        setSlashCharacterPosition(null)
+        setQuery(null)
       },
     },
     {
-      name: "to do status",
-      action: () => {
-        setText("")
+      name: "progress",
+      action: function () {
+        setIsEditing(true)
+        setText(() => {
+          const newText = "/Progress :"
+          return newText
+        })
+        setStyle("selected-tag")
+        setSelectedTagType(tagState.tags.find((item) => item.type === this.name))
+        setQuery(null)
+        setSlashCharacterPosition(null)
       },
     },
     {
@@ -137,6 +177,13 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
         )
       : []
 
+  const matchingTags =
+    tagsQuery !== null
+      ? selectedTagType.children.filter((child) =>
+          child.name.toLowerCase().match(tagsQuery.toLowerCase())
+        )
+      : []
+
   const onChange = (e) => {
     const newText = e.target.value
     setText(newText)
@@ -152,10 +199,36 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
         setQuery(null)
       }
     }
+    if (tagCharacterPosition !== null) {
+      const isSlashStillActive = newText[tagCharacterPosition] === ":"
+      if (isSlashStillActive) {
+        setQuery(
+          newText.substring(tagCharacterPosition + 1, inputRef.current?.selectionStart)
+        )
+        setSelectionIndex(0)
+      } else {
+        setTagCharacterPosition(null)
+        setQuery(null)
+      }
+    }
   }
 
   const selectCommand = (command) => {
     command.action()
+    setSelectionIndex(0)
+  }
+  const selectTags = (tag) => {
+    const tagType = {
+      parent: selectedTagType.id,
+      child: tag.id,
+      type: selectedTagType.type,
+    }
+    setSelectedTag(tag.id)
+    dispatch({ type: "editTags", payload: tagType })
+    setSelectedTagType(null)
+    setText("")
+    setStyle("heading-one")
+    setIsEditing(false)
   }
 
   const onKeyDown = (e) => {
@@ -181,7 +254,9 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       if (matchingCommands[selectionIndex]) {
         selectCommand(matchingCommands[selectionIndex])
         // setIsEditing(true)
-      } else if (slashCharacterPosition === null) {
+      } else if (selectedTagType !== null) {
+        selectTags()
+      } else if (slashCharacterPosition === null && selectedTagType === null) {
         dispatch({ type: "setTitle", payload: text })
         setIsEditing(false)
         e.stopPropagation()
@@ -207,7 +282,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
         </div>
       ) : (
         <input
-          className="heading-one"
+          className={style}
           cols="30"
           rows="10"
           value={text}
@@ -234,13 +309,27 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
         ))}
       </div>
       {isSettingTime && <DatePick date={date} setDate={setDate} showType={true} />}
+      {selectedTagType?.children &&
+        selectedTagType.children.map((child, index) => (
+          <div
+            key={child.id}
+            onClick={() => selectTags(child)}
+            onMouseOver={() => setSelectionIndex(index)}
+            className={
+              "results__command " +
+              (index == selectionIndex ? "results__command--selected" : "")
+            }
+          >
+            {child.name}
+          </div>
+        ))}
     </div>
   )
 }
 
 TitleEditor.propTypes = {
-  setStartDate: any,
-  setDueDate: any,
+  setStartDate: func,
+  setDueDate: func,
 }
 
 export default TitleEditor
