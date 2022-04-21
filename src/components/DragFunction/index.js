@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
-import Column from "./styles/Column"
+import Column from "./components/Column"
 
 // const result = {
 //   combine: null,
@@ -168,7 +168,6 @@ const initialTasks = [
 
 const index = () => {
   const groupType = "progress"
-  //   const currentColumnID = "7"
   const [tasks, setTasks] = useState(initialTasks)
   const [columns, setColumns] = useState(() => {
     const columnGroup = firebaseTags
@@ -190,6 +189,7 @@ const index = () => {
     const orderArray = columns.map((item) => item.id)
     return orderArray
   })
+
   const onDragEnd = useCallback((result) => {
     const { destination, draggableId, source } = result
     if (!destination) return
@@ -198,32 +198,65 @@ const index = () => {
       destination.index === source.index
     )
       return
-    const dropAtColumn = columns.find((column) => column.id === source.droppableId)
-    const newTaskIds = [...dropAtColumn.taskIds]
-    newTaskIds.splice(source.index, 1)
-    newTaskIds.splice(destination.index, 0, draggableId) //taskID
+    const startAtColumn = columns.find((column) => column.id === source.droppableId)
+    const finishAtColumn = columns.find((column) => column.id === destination.droppableId)
 
-    const newColumn = {
-      ...dropAtColumn,
-      taskIds: newTaskIds,
+    if (startAtColumn.id === finishAtColumn.id) {
+      const newTaskIds = [...startAtColumn.taskIds]
+      newTaskIds.splice(source.index, 1)
+      newTaskIds.splice(destination.index, 0, draggableId)
+
+      const newColumn = {
+        ...startAtColumn,
+        taskIds: newTaskIds,
+      }
+      setColumns((prev) => {
+        const oldColumns = [...prev]
+        const currentIndex = oldColumns.findIndex(
+          (column) => column.id === startAtColumn.id
+        )
+        oldColumns.splice(currentIndex, 1, newColumn)
+        return [...oldColumns]
+      })
+    } else {
+      const startColumnTaskIds = [...startAtColumn.taskIds]
+      startColumnTaskIds.splice(source.index, 1)
+      const newStartColumn = {
+        ...startAtColumn,
+        taskIds: startColumnTaskIds,
+      }
+      const finishColumnTaskIds = [...finishAtColumn.taskIds]
+      finishColumnTaskIds.splice(destination.index, 0, draggableId)
+      const newFinishColumn = {
+        ...finishAtColumn,
+        taskIds: finishColumnTaskIds,
+      }
+      setColumns((prev) => {
+        const oldColumns = [...prev]
+        const startIndex = oldColumns.findIndex(
+          (column) => column.id === startAtColumn.id
+        )
+        const finishIndex = oldColumns.findIndex(
+          (column) => column.id === finishAtColumn.id
+        )
+        oldColumns.splice(startIndex, 1, newStartColumn)
+        oldColumns.splice(finishIndex, 1, newFinishColumn)
+        return [...oldColumns]
+      })
     }
-    setColumns((prev) => {
-      const oldColumns = [...prev]
-      const currentIndex = oldColumns.findIndex((column) => column.id === dropAtColumn.id)
-      oldColumns.splice(currentIndex, 1, newColumn)
-      return [...oldColumns]
-    })
-  }, [])
+  })
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      {columnOrder.map((columnId) => {
-        const column = columns.find((item) => item.id === columnId)
-        const taskList = column.taskIds.map((taskId) =>
-          tasks.find((task) => task.id === taskId)
-        )
-        return <Column key={column.id} column={column} taskList={taskList} />
-      })}
+      <div className="view-list">
+        {columnOrder.map((columnId) => {
+          const column = columns.find((item) => item.id === columnId)
+          const taskList = column.taskIds.map((taskId) =>
+            tasks.find((task) => task.id === taskId)
+          )
+          return <Column key={column.id} column={column} taskList={taskList} />
+        })}
+      </div>
     </DragDropContext>
   )
 }

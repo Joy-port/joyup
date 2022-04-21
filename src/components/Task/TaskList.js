@@ -17,13 +17,12 @@ const TaskList = () => {
     navigate(`/task/${taskID}`)
   }, [taskID])
 
+  const onChange = () => {}
   return (
     <div className="fixed bottom-5 right-5 ">
       <select
         className="bg-slateDark text-white border-r-2 py-1 px-2"
-        name=""
-        id=""
-        value="default"
+        onChange={onChange}
       >
         <option value="default">Select A Task and Start</option>
         {taskLists &&

@@ -91,8 +91,20 @@
 }
 
 .task-list {
-  @apply p-2;
+  @apply min-h-min p-2;
 }
 .task {
-  @apply border border-slateLight bg-white rounded-sm p-2 mb-3;
+  @apply flex justify-between align-middle border border-slateLight rounded-sm p-2 mb-3;
+}
+
+.view-list {
+  @apply flex flex-col gap-3;
+}
+
+.view-board {
+  @apply flex gap-3 grow;
+}
+
+.view-board-column {
+  @apply w-96;
 }
