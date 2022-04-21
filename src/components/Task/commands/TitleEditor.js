@@ -1,12 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect, useContext } from "react"
 import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
-import TasksContent from "../../../reducers/TasksReducer"
+import { TaskContext } from "../../../reducers/TaskReducer"
 import TagsContext from "../../../reducers/TagsReducer"
 import { func } from "prop-types"
 
 const TitleEditor = ({ setStartDate, setDueDate }) => {
-  const [state, dispatch] = useContext(TasksContent)
+  const [state, dispatch] = useContext(TaskContext)
   const { tags } = state
   const [tagState, tagDispatch] = useContext(TagsContext)
   const [isEditing, setIsEditing] = useState(true)

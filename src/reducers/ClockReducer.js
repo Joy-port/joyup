@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from "react"
+import { any } from "prop-types"
+import React, { createContext, useReducer } from "react"
 
 export const initialTimeState = {
   isPaused: true,
@@ -25,19 +26,28 @@ export function timeReducer(state = initialTimeState, action) {
   }
 }
 
-export function useClockTimerReducer(
-  reducer = timeReducer,
-  initialState = initialTimeState
-) {
-  const [state, setState] = useState(initialState)
+// export function useClockTimerReducer(
+//   reducer = timeReducer,
+//   initialState = initialTimeState
+// ) {
+//   const [state, setState] = useState(initialState)
 
-  function dispatch(action) {
-    const nextState = reducer(state, action)
-    setState(nextState)
-  }
+//   function dispatch(action) {
+//     const nextState = reducer(state, action)
+//     setState(nextState)
+//   }
 
-  return [state, dispatch]
+//   return [state, dispatch]
+// }
+
+export const ClockContext = createContext()
+const ClockProvider = ({ children }) => {
+  const value = useReducer(timeReducer, initialTimeState)
+  return <ClockContext.Provider value={value}>{children}</ClockContext.Provider>
 }
 
-const ClockContext = createContext()
-export default ClockContext
+ClockProvider.propTypes = {
+  children: any,
+}
+
+export default ClockProvider

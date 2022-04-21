@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef } from "react"
 import { Link, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
-import SettingsContext from "../../reducers/SettingReducer"
-import ClockContext from "../../reducers/ClockReducer"
+import { SettingsContext } from "../../reducers/SettingReducer"
+import { ClockContext } from "../../reducers/ClockReducer"
 
 const Clock = () => {
   const [settingState, settingDispatch] = useContext(SettingsContext)

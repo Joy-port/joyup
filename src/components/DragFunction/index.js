@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState, useContext } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import Column from "./components/Column"
 
@@ -216,7 +216,9 @@ const index = ({ type }) => {
           (column) => column.id === finishAtColumn.id
         )
         oldColumns.splice(startIndex, 1, newStartColumn)
+        console.log(oldColumns)
         oldColumns.splice(finishIndex, 1, newFinishColumn)
+        console.log(oldColumns)
         return [...oldColumns]
       })
     }

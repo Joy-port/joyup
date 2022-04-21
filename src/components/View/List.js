@@ -8,9 +8,9 @@ const List = ({ type }) => {
       <div className="flex align-bottom">
         <div className="">
           <p>group by</p>
-          <selection>
+          {/* <selection>
             <option value=""></option>
-          </selection>
+          </selection> */}
         </div>
       </div>
       <DragFunction type={type} />

@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useState, useCallback } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import SettingContext from "../../reducers/SettingReducer"
-import TagsContext from "../../reducers/TagsReducer"
-import TasksContent from "../../reducers/TasksReducer"
-import ClockContext from "../../reducers/ClockReducer"
+import { SettingsContext } from "../../reducers/SettingReducer"
+import { TagsContext } from "../../reducers/TagsReducer"
+import { TaskContext } from "../../reducers/TaskReducer"
+import { ClockContext } from "../../reducers/ClockReducer"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
-import { firebase } from "../../helpers/firebase"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 // const tags = [
@@ -39,28 +38,16 @@ const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 // ]
 
 const index = () => {
-  const [state, dispatch] = useContext(TasksContent)
+  const [state, dispatch] = useContext(TaskContext)
   const [tagState, tagDispatch] = useContext(TagsContext)
   const { taskID } = useParams()
   const navigation = useNavigate()
-  const [{ workNumbers }, clockSettingDispatch] = useContext(SettingContext)
+  const [{ workNumbers }, clockSettingDispatch] = useContext(SettingsContext)
   const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
   const [tagList, setTagList] = useState(tagState.tags)
   const { tags } = state
-  // const [tags, setTags] = useState(async () => {
-  //   try {
-  //     const tagList = await firebase.getProjectTags()
-  //     return tagList
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // })
-
-  // useEffect(() => {
-  //   getTags()
-  // }, [getTags])
 
   useEffect(() => {
     console.log(tags)

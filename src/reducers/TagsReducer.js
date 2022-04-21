@@ -1,4 +1,5 @@
-import { useState, createContext } from "react"
+import { any } from "prop-types"
+import React, { useReducer, createContext } from "react"
 import { firebase } from "../helpers/firebase"
 
 const initialTotalTags = [
@@ -143,7 +144,7 @@ const initialTasks = [
 ]
 
 export const initialTagState = {
-  totalTags: [
+  tags: [
     {
       id: "1",
       type: "priority",
@@ -214,25 +215,24 @@ export function tagReducer(state = initialTagState, action) {
   }
 }
 
-export function useTagsReducer(reducer = tagReducer, initialState = initialTagState) {
-  const [state, setState] = useState(initialState)
+// export function useTagsReducer(reducer = tagReducer, initialState = initialTagState) {
+//   const [state, setState] = useState(initialState)
 
-  function dispatch(action) {
-    const nextState = reducer(state, action)
-    setState(nextState)
-  }
+//   function dispatch(action) {
+//     const nextState = reducer(state, action)
+//     setState(nextState)
+//   }
 
-  return [state, dispatch]
-}
-
-const TagsContext = createContext()
-// export const useTagsContext = () => useContext(TasksContent)
-
-// eslint-disable-next-line react/prop-types
-// export const TextProvider = ({ children }) => {
-//   const [state, dispatch] = useReducer(reducer, initialState)
-//   const value = [state, dispatch]
-//   return <TasksContent.Provider value={value}>{children}</TasksContent.Provider>
+//   return [state, dispatch]
 // }
 
-export default TagsContext
+export const TagsContext = createContext()
+const TagsProvider = ({ children }) => {
+  const value = useReducer(tagReducer, initialTagState)
+  return <TagsContext.Provider value={value}>{children}</TagsContext.Provider>
+}
+
+TagsProvider.propTypes = {
+  children: any,
+}
+export default TagsProvider

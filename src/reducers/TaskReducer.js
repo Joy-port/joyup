@@ -1,4 +1,5 @@
-import { useState, createContext } from "react"
+import { any } from "prop-types"
+import React, { createContext, useReducer } from "react"
 
 export const initialTaskState = {
   title: "",
@@ -47,25 +48,26 @@ export function taskReducer(state = initialTaskState, action) {
   }
 }
 
-export function useTasksReducer(reducer = taskReducer, initialState = initialTaskState) {
-  const [state, setState] = useState(initialState)
+// export function useTasksReducer(reducer = taskReducer, initialState = initialTaskState) {
+//   const [state, setState] = useState(initialState)
 
-  function dispatch(action) {
-    const nextState = reducer(state, action)
-    setState(nextState)
-  }
+//   function dispatch(action) {
+//     const nextState = reducer(state, action)
+//     setState(nextState)
+//   }
 
-  return [state, dispatch]
-}
-
-const TasksContext = createContext()
-// export const useTasksContext = () => useContext(TasksContent)
-
-// eslint-disable-next-line react/prop-types
-// export const TextProvider = ({ children }) => {
-//   const [state, dispatch] = useReducer(reducer, initialState)
-//   const value = [state, dispatch]
-//   return <TasksContent.Provider value={value}>{children}</TasksContent.Provider>
+//   return [state, dispatch]
 // }
 
-export default TasksContext
+export const TaskContext = createContext()
+
+const TaskProvider = ({ children }) => {
+  const value = useReducer(taskReducer, initialTaskState)
+  return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
+}
+
+TaskProvider.propTypes = {
+  children: any,
+}
+
+export default TaskProvider

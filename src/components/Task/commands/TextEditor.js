@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useContext } from "react"
-import TasksContent from "../../../reducers/TasksReducer"
+import { TaskContext } from "../../../reducers/TaskReducer"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
 
@@ -17,7 +17,7 @@ const Docs = [
 ]
 
 const TextEditor = () => {
-  const [state, dispatch] = useContext(TasksContent)
+  const [state, dispatch] = useContext(TaskContext)
   const [isEditing, setIsEditing] = useState(true)
   const [document, setDocument] = useState(Docs)
   const [HTMLStyle, setHTMLStyle] = useState({})

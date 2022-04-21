@@ -1,10 +1,11 @@
 import React from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
+import { pathInfo, viewInfo } from "./helpers/config"
 import Layout from "./components/Layout"
-import ClockContext, { useClockTimerReducer } from "./reducers/ClockReducer"
-import SettingsContext, { useClockSettingReducer } from "./reducers/SettingReducer"
-import TasksContext, { useTasksReducer } from "./reducers/TasksReducer"
-import TagsContext, { useTagsReducer } from "./reducers/TagsReducer"
+import SettingsProvider from "./reducers/SettingReducer"
+import TaskProvider from "./reducers/TaskReducer"
+import ClockProvider from "./reducers/ClockReducer"
+import TagsProvider from "./reducers/TagsReducer"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
 import List from "./components/View/List"
@@ -13,9 +14,7 @@ import Home from "./pages/Home"
 import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
 import ChatRoom from "./pages/ChatRoom"
-
 import TimeSetting from "./pages/TimeSetting"
-import { pathInfo, viewInfo } from "./helpers/config"
 
 const components = {
   Home,
@@ -32,16 +31,11 @@ const viewComponents = {
 }
 
 function App() {
-  const settingValue = useClockSettingReducer()
-  const tagsValue = useTagsReducer()
-  const clockValue = useClockTimerReducer()
-  const tasksValue = useTasksReducer()
-
   return (
-    <SettingsContext.Provider value={settingValue}>
-      <TagsContext.Provider value={tagsValue}>
-        <ClockContext.Provider value={clockValue}>
-          <TasksContext.Provider value={tasksValue}>
+    <SettingsProvider>
+      <TagsProvider>
+        <ClockProvider>
+          <TaskProvider>
             <Routes>
               <Route path="/" element={<Layout />}>
                 {pathInfo.map((path, index) => {
@@ -93,10 +87,10 @@ function App() {
                 ))}
               </Route>
             </Routes>
-          </TasksContext.Provider>
-        </ClockContext.Provider>
-      </TagsContext.Provider>
-    </SettingsContext.Provider>
+          </TaskProvider>
+        </ClockProvider>
+      </TagsProvider>
+    </SettingsProvider>
   )
 }
 
