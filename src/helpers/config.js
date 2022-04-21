@@ -40,26 +40,28 @@ export const viewInfo = [
     name: "List",
     path: "list",
     component: "List",
+    type: "list",
   },
   {
     name: "Board",
     path: "board",
-    component: "Task",
+    component: "List",
+    type: "board",
   },
   {
     name: "Mind Map",
     path: "mind-map",
-    component: "Task",
+    component: "DragFunction",
   },
   {
     name: "Map",
     path: "location",
-    component: "Task",
+    component: "DragFunction",
   },
   {
     name: "Calendar",
     path: "calendar",
-    component: "Task",
+    component: "DragFunction",
   },
 ]
 

@@ -7,10 +7,11 @@ import TasksContext, { useTasksReducer } from "./reducers/TasksReducer"
 import TagsContext, { useTagsReducer } from "./reducers/TagsReducer"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
+import List from "./components/View/List"
+import DragFunction from "./components/DragFunction"
 import Home from "./pages/Home"
 import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
-import List from "./components/DragFunction"
 import ChatRoom from "./pages/ChatRoom"
 
 import TimeSetting from "./pages/TimeSetting"
@@ -26,6 +27,7 @@ const components = {
 
 const viewComponents = {
   List,
+  DragFunction,
   Task,
 }
 
@@ -60,10 +62,16 @@ function App() {
                 })}
                 <Route path="dashboard" element={<Dashboard />}>
                   {viewInfo.map((view, index) => {
-                    const Component = components[view.component]
+                    const Component = viewComponents[view.component]
+                    let type = view.type || "none"
+                    const isHome = view.path === "list"
                     return (
                       <Route path={view.path} key={index}>
-                        <Route path=":projectID" element={<Component />} />
+                        <Route
+                          index={isHome}
+                          path=":projectID"
+                          element={<Component type={type} />}
+                        />
                       </Route>
                     )
                   })}

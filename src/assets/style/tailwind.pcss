@@ -6,7 +6,7 @@
   @apply h-screen md:flex relative;
 }
 .content {
-  @apply grow p-3 flex flex-col;
+  @apply grow p-3 flex flex-col overflow-hidden;
 }
 .menu-list {
   @apply md:static md:h-screen lg:w-64 md:w-auto w-screen h-auto bg-slateDark flex flex-col transition-all py-3;
@@ -102,7 +102,7 @@
 }
 
 .view-board {
-  @apply flex gap-3 grow;
+  @apply flex grow gap-3;
 }
 
 .view-board-column {

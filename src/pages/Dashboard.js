@@ -2,7 +2,6 @@ import React from "react"
 import { Link, Outlet } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
 import { viewInfo } from "../helpers/config"
-import DragFunction from "../components/DragFunction"
 
 const projectID = uuidv4()
 
@@ -20,7 +19,9 @@ const Dashboard = () => {
           </Link>
         ))}
       </div>
-      <DragFunction />
+      <div>
+        <Outlet />
+      </div>
     </>
   )
 }

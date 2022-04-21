@@ -2,15 +2,6 @@ import React, { useCallback, useEffect, useState } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import Column from "./components/Column"
 
-// const result = {
-//   combine: null,
-//   draggableId: "Go to supermarket",
-//   mode: "FLUID",
-//   reason: "DROP",
-//   source: { index: 1, droppableId: "7" },
-//   destination: { droppableId: "7", index: 2 },
-//   type: "DEFAULT",
-// }
 const firebaseTags = [
   {
     id: "1",
@@ -151,22 +142,7 @@ const initialTasks = [
     ],
   },
 ]
-
-// const dragTask = {
-//   draggableID: "taskID",
-//   type: "TYPE",
-//   reason: "DROP",
-//   source: {
-//     droppableID: "tags[group].parent",
-//     index: 0, //tags.index
-//   },
-//   destination: {
-//     droppableID: "c1",
-//     index: 1,
-//   },
-// }
-
-const index = () => {
+const index = ({ type }) => {
   const groupType = "progress"
   const [tasks, setTasks] = useState(initialTasks)
   const [columns, setColumns] = useState(() => {
@@ -248,7 +224,7 @@ const index = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="view-list">
+      <div className={`view-${type}`}>
         {columnOrder.map((columnId) => {
           const column = columns.find((item) => item.id === columnId)
           const taskList = column.taskIds.map((taskId) =>
