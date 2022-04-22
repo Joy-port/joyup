@@ -1,12 +1,13 @@
 import { any } from "prop-types"
-import React, { useReducer, createContext } from "react"
+import React, { createContext, useEffect } from "react"
+import { useAsyncReducer } from "../helpers/useAsyncReducer"
 import { firebase } from "../helpers/firebase"
 
 const initialTotalTags = [
   {
     id: "1",
     type: "priority",
-    child: [
+    children: [
       {
         id: "1",
         name: "urgent",
@@ -19,7 +20,7 @@ const initialTotalTags = [
   {
     id: "2",
     type: "progress",
-    child: [
+    children: [
       { id: "6", name: "none" },
       { id: "7", name: "todo" },
       { id: "8", name: "doing" },
@@ -27,7 +28,7 @@ const initialTotalTags = [
     ],
   },
 ]
-const initalSelectedColumns = {
+const initialSelectedColumns = {
   none: {
     id: "6",
     title: "none",
@@ -145,91 +146,130 @@ const initialTasks = [
 
 export const initialTagState = {
   tags: [
-    {
-      id: "1",
-      type: "priority",
-      children: [
-        {
-          id: "1",
-          name: "urgent",
-        },
-        { id: "3", name: "high" },
-        { id: "4", name: "normal" },
-        { id: "5", name: "low" },
-      ],
-    },
-    {
-      id: "2",
-      type: "progress",
-      children: [
-        { id: "6", name: "none" },
-        { id: "7", name: "todo" },
-        { id: "8", name: "doing" },
-        { id: "9", name: "done" },
-      ],
-    },
+    //disconnect to firebase
+    // {
+    //   id: "1",
+    //   type: "priority",
+    //   children: [
+    //     {
+    //       id: "1",
+    //       name: "urgent",
+    //     },
+    //     { id: "3", name: "high" },
+    //     { id: "4", name: "normal" },
+    //     { id: "5", name: "low" },
+    //   ],
+    // },
+    // {
+    //   id: "2",
+    //   type: "progress",
+    //   children: [
+    //     { id: "6", name: "none" },
+    //     { id: "7", name: "todo" },
+    //     { id: "8", name: "doing" },
+    //     { id: "9", name: "done" },
+    //   ],
+    // },
   ],
-  selectedTag: {
-    id: "1",
-    type: "priority",
-    children: [
-      {
-        id: "1",
-        name: "urgent",
-      },
-      { id: "3", name: "high" },
-      { id: "4", name: "normal" },
-      { id: "5", name: "low" },
-    ],
+  selectedType: {
+    // id: "1",
+    // type: "priority",
+    // children: [
+    //   {
+    //     id: "1",
+    //     name: "urgent",
+    //   },
+    //   { id: "3", name: "high" },
+    //   { id: "4", name: "normal" },
+    //   { id: "5", name: "low" },
+    // ],
   },
   selectedTagColumns: {
-    none: {
-      id: "6",
-      title: "none",
-      taskIds: [],
-    },
-    todo: {
-      id: "7",
-      title: "todo",
-      taskIds: [],
-    },
-    doing: {
-      id: "8",
-      title: "doing",
-      taskIds: [],
-    },
-    done: {
-      id: "9",
-      title: "done",
-      taskIds: [],
-    },
+    // 6: {
+    //   id: "6",
+    //   title: "none",
+    //   taskIds: [],
+    // },
+    // 7: {
+    //   id: "7",
+    //   title: "todo",
+    //   taskIds: [],
+    // },
+    // 8: {
+    //   id: "8",
+    //   title: "doing",
+    //   taskIds: [],
+    // },
+    // 9: {
+    //   id: "9",
+    //   title: "done",
+    //   taskIds: [],
+    // },
   },
+  selectedTagTasks: [...initialTasks],
+  selectedColumnOrder: [],
+  // selectedColumnOrder: ["6", "7", "8", "9"],
 }
 
-export function tagReducer(state = initialTagState, action) {
+async function tagReducer(state = initialTagState, action) {
   switch (action.type) {
     case "getTags":
       return { ...state, [type]: date }
+    case "getInitialTags":
+      const defaultTagList = initialTotalTags
+      // connect to firebase
+      // const defaultTagList = await firebase.getDefaultTags()
+      const newTagList = [...defaultTagList]
+      const newSelectedType = newTagList[0]
+      const newColumns = {}
+      newSelectedType.children.map((tag) => {
+        newColumns[tag.id] = {
+          id: tag.id,
+          title: tag.name,
+          taskIds: [],
+        }
+      })
+      const newColumnOrder = Object.keys(newColumns)
+
+      return {
+        ...state,
+        tags: newTagList,
+        selectedType: newSelectedType,
+        selectedTagColumns: newColumns,
+        selectedColumnOrder: newColumnOrder,
+      }
+    case "switchType":
+      const typeId = action.payload
+      const newType = state.tags.find((type) => typeId === type.id)
+      let newTagsColumns = {}
+      newType.children.forEach((tag) => {
+        newTagsColumns[tag.id] = {
+          id: tag.id,
+          title: tag.name,
+          taskIds: [],
+        }
+      })
+      const newOrder = Object.keys(newTagsColumns)
+      return {
+        ...state,
+        selectedType: { ...newType },
+        selectedTagColumns: { ...newTagsColumns },
+        selectedColumnOrder: [...newOrder],
+      }
     default:
       return state
   }
 }
 
-// export function useTagsReducer(reducer = tagReducer, initialState = initialTagState) {
-//   const [state, setState] = useState(initialState)
-
-//   function dispatch(action) {
-//     const nextState = reducer(state, action)
-//     setState(nextState)
-//   }
-
-//   return [state, dispatch]
-// }
-
 export const TagsContext = createContext()
 const TagsProvider = ({ children }) => {
-  const value = useReducer(tagReducer, initialTagState)
-  return <TagsContext.Provider value={value}>{children}</TagsContext.Provider>
+  const [state, dispatch] = useAsyncReducer(tagReducer, initialTagState)
+
+  useEffect(() => {
+    dispatch({ type: "getInitialTags" })
+  }, [])
+
+  return <TagsContext.Provider value={[state, dispatch]}>{children}</TagsContext.Provider>
 }
 
 TagsProvider.propTypes = {

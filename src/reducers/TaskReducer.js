@@ -1,5 +1,6 @@
 import { any } from "prop-types"
 import React, { createContext, useReducer } from "react"
+import { useAsyncReducer } from "../helpers/useAsyncReducer"
 
 export const initialTaskState = {
   title: "",
@@ -16,7 +17,7 @@ export const initialTaskState = {
   tags: [],
 }
 
-export function taskReducer(state = initialTaskState, action) {
+export async function taskReducer(state = initialTaskState, action) {
   switch (action.type) {
     case "editDate":
       const { name, date } = action.payload
@@ -48,21 +49,10 @@ export function taskReducer(state = initialTaskState, action) {
   }
 }
 
-// export function useTasksReducer(reducer = taskReducer, initialState = initialTaskState) {
-//   const [state, setState] = useState(initialState)
-
-//   function dispatch(action) {
-//     const nextState = reducer(state, action)
-//     setState(nextState)
-//   }
-
-//   return [state, dispatch]
-// }
-
 export const TaskContext = createContext()
 
 const TaskProvider = ({ children }) => {
-  const value = useReducer(taskReducer, initialTaskState)
+  const value = useAsyncReducer(taskReducer, initialTaskState)
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
 }
 

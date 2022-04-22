@@ -6,7 +6,7 @@ import { array, object } from "prop-types"
 const Column = ({ column, taskList }) => {
   return (
     <div className="column view-board-column">
-      <h1 className="heading-four">{column.name}</h1>
+      <h1 className="heading-four">{column.title}</h1>
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => {
           const isDraggingOver = snapshot.isDraggingOver ? "bg-blue" : "bg-white"

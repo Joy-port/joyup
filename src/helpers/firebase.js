@@ -45,7 +45,7 @@ export const firebase = {
       console.error(err)
     }
   },
-  getProjectTags: async function () {
+  getDefaultTags: async function () {
     try {
       const collectionName = "tags"
       const tagsData = collection(this.db, collectionName)
@@ -57,17 +57,20 @@ export const firebase = {
           const parentTags = {
             id: doc.id,
             type: doc.data().name,
-            child: [],
+            children: [],
           }
           tagsGroup.push(parentTags)
-        } else {
-          const child = {
+        }
+      })
+      defaultTagList.forEach(async (doc) => {
+        if (doc.data().parent !== "") {
+          const childTags = {
             id: doc.id,
             name: doc.data().name,
           }
           tagsGroup
             .find((parents) => parents.id === doc.data().parent)
-            .child.splice(doc.data().index, 0, child)
+            .children.splice(doc.data().index, 0, childTags)
         }
       })
       return tagsGroup

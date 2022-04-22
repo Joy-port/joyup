@@ -1,5 +1,6 @@
+import React, { createContext } from "react"
+import { useAsyncReducer } from "../helpers/useAsyncReducer"
 import { any } from "prop-types"
-import React, { createContext, useReducer } from "react"
 
 export const initialTimeState = {
   timerDuration: 15,
@@ -7,7 +8,7 @@ export const initialTimeState = {
   breakMinutes: 1,
 }
 
-export function timeReducer(state, action) {
+export async function timeReducer(state, action) {
   switch (action.type) {
     case "editTimer":
       const { type, duration } = action.payload
@@ -34,7 +35,7 @@ export function timeReducer(state, action) {
 export const SettingsContext = createContext()
 
 const SettingsProvider = ({ children }) => {
-  const value = useReducer(timeReducer, initialTimeState)
+  const value = useAsyncReducer(timeReducer, initialTimeState)
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>
 }
 

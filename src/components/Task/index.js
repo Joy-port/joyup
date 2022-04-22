@@ -11,31 +11,6 @@ import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-// const tags = [
-//   {
-//     id: "1",
-//     type: "priority",
-//     child: [
-//       {
-//         id: "1",
-//         name: "urgent",
-//       },
-//       { id: "3", name: "high" },
-//       { id: "4", name: "normal" },
-//       { id: "5", name: "low" },
-//     ],
-//   },
-//   {
-//     id: "2",
-//     type: "progress",
-//     child: [
-//       { id: "6", name: "none" },
-//       { id: "7", name: "todo" },
-//       { id: "8", name: "doing" },
-//       { id: "9", name: "done" },
-//     ],
-//   },
-// ]
 
 const index = () => {
   const [state, dispatch] = useContext(TaskContext)
