@@ -21,12 +21,9 @@ const index = () => {
   const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
-  const [tagList, setTagList] = useState(tagState.tags)
+  const { types } = tagState
   const { tags } = state
 
-  useEffect(() => {
-    console.log(tags)
-  }, [tags])
   useEffect(() => {
     dispatch({ type: "setTaskID", payload: taskID })
   }, [taskID])
@@ -47,7 +44,6 @@ const index = () => {
     dispatch({ type: "editDate", payload: { name: "dueDate", date: date } })
   }, [dueDate])
 
-  const saveToDataBase = () => {}
   return (
     <>
       <div className="task-container">
@@ -57,14 +53,14 @@ const index = () => {
         >
           X
         </button>
-        <div className="flex gap-5">
+        <div className="flex flex-col gap-5 md:flex-row">
           <div className="flex flex-col gap-3 w-3/4 mt-1">
             <TitleEditor setStartDate={setStartDate} setDueDate={setDueDate} />
             <TextEditor description={state.description} />
             <AddSubtask>AddSubtask</AddSubtask>
           </div>
           <div className="flex flex-col gap-3 mt-1">
-            {tagList.map((item) => (
+            {types.map((item) => (
               <div key={item.id}>
                 <p>{item.type} </p>
                 <select
@@ -80,7 +76,7 @@ const index = () => {
                     dispatch({ type: "editTags", payload: tag })
                   }}
                 >
-                  <option value={-1}>please select</option>
+                  <option value={-1}>none</option>
                   {item.children.map((tag) => (
                     <option value={tag.id} key={tag.id}>
                       {tag.name}
@@ -129,7 +125,7 @@ const index = () => {
             />
             <button
               className="bg-slateDark text-white px-2 py-1 rounded"
-              onClick={saveToDataBase}
+              onClick={() => dispatch({ type: "saveToDataBase" })}
             >
               save
             </button>

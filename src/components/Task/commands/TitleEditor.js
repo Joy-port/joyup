@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect, useContext } from "rea
 import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
 import { TaskContext } from "../../../reducers/TaskReducer"
-import TagsContext from "../../../reducers/TagsReducer"
+import { TagsContext } from "../../../reducers/TagsReducer"
 import { func } from "prop-types"
 
 const TitleEditor = ({ setStartDate, setDueDate }) => {
@@ -128,7 +128,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           return newText
         })
         setStyle("selected-tag")
-        setSelectedTagType(tagState.tags.find((item) => item.type === this.name))
+        setSelectedTagType(tagState.types.find((item) => item.type === this.name))
         setSlashCharacterPosition(null)
         setQuery(null)
       },
@@ -142,7 +142,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           return newText
         })
         setStyle("selected-tag")
-        setSelectedTagType(tagState.tags.find((item) => item.type === this.name))
+        setSelectedTagType(tagState.types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
       },

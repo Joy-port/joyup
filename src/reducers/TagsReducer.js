@@ -145,7 +145,7 @@ const initialTasks = [
 ]
 
 export const initialTagState = {
-  tags: [
+  types: [
     //disconnect to firebase
     // {
     //   id: "1",
@@ -233,14 +233,14 @@ async function tagReducer(state = initialTagState, action) {
 
       return {
         ...state,
-        tags: newTagList,
+        types: newTagList,
         selectedType: newSelectedType,
         selectedTagColumns: newColumns,
         selectedColumnOrder: newColumnOrder,
       }
     case "switchType":
       const typeId = action.payload
-      const newType = state.tags.find((type) => typeId === type.id)
+      const newType = state.types.find((type) => typeId === type.id)
       let newTagsColumns = {}
       newType.children.forEach((tag) => {
         newTagsColumns[tag.id] = {

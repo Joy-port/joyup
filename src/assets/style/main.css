@@ -788,6 +788,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding: 0.5rem;
   vertical-align: middle;
 }
+.task-container {
+  overflow-y: auto;
+}
 .view-list {
   display: flex;
   flex-direction: column;
@@ -811,6 +814,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .md\:hidden {
     display: none;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
   }
 }
 @media (min-width: 976px) {

@@ -1,5 +1,6 @@
 import { any } from "prop-types"
-import React, { createContext, useReducer } from "react"
+import React, { createContext } from "react"
+import { firebase } from "../helpers/firebase"
 import { useAsyncReducer } from "../helpers/useAsyncReducer"
 
 export const initialTaskState = {
@@ -7,30 +8,46 @@ export const initialTaskState = {
   description: [],
   createdDate: new Date().getTime(),
   startDate: new Date().getTime(),
-  dueDate: "",
+  dueDate: new Date().getTime(),
   clockNumber: "",
-  requiredClockNumber: -1,
+  requiredNumber: -1,
   location: "",
   parent: "",
   id: "",
-  projectID: "",
+  projectID: "8gx8UcCs8cLC8V8s2SMK",
   tags: [],
+  totalTime: "",
 }
 
-export async function taskReducer(state = initialTaskState, action) {
+async function taskReducer(state = initialTaskState, action) {
   switch (action.type) {
     case "editDate":
       const { name, date } = action.payload
+      const { createdDate, dueDate } = state
+      if (createdDate !== dueDate) {
+        firebase.saveTaskPartialContent(state.id, { [name]: date })
+      }
       return { ...state, [name]: date }
     case "editDescription":
+      console.log("description", action.payload)
+      if (action.payload.content !== "") {
+        await firebase.saveDescription(state)
+      }
       return { ...state, description: [...action.payload] }
     case "requiredClock":
-      return { ...state, requiredClockNumber: action.payload }
+      console.log("required clock", action.payload)
+      firebase.saveTaskPartialContent(state.id, { requiredNumber: action.payload })
+      return { ...state, requiredNumber: action.payload }
     case "setTaskID":
+      console.log("taskID", action.payload)
       return { ...state, id: action.payload }
     case "setTitle":
+      if (action.payload === "") return state
+      console.log("title", action.payload)
+      firebase.saveTaskPartialContent(state.id, { title: action.payload })
       return { ...state, title: action.payload }
     case "setLocation":
+      console.log("location", action.payload)
       return { ...state, location: action.payload }
     case "editTags":
       const { parent, child } = action.payload
@@ -40,9 +57,14 @@ export async function taskReducer(state = initialTaskState, action) {
       } else {
         newState.push(action.payload)
       }
-      console.log(newState)
+      console.log("tags", newState)
       return { ...state, tags: [...newState] }
+    case "saveToDataBase":
+      firebase.saveTask(state)
+      firebase.saveDescription(state)
+      return state
     case "createNewTask":
+      console.log("create new")
       return { ...initialTaskState, id: action.payload }
     default:
       return state

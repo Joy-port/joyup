@@ -5,7 +5,7 @@ import DragFunction from "../DragFunction"
 
 const List = ({ type }) => {
   const [tagsState, tagsDispatch] = useContext(TagsContext)
-  const { tags, selectedType } = tagsState
+  const { types, selectedType } = tagsState
   return (
     <div>
       <div className="flex align-bottom">
@@ -19,7 +19,7 @@ const List = ({ type }) => {
             }
           >
             <option value={-1}>please select</option>
-            {tags.map((type) => (
+            {types.map((type) => (
               <option value={type.id} key={type.id}>
                 {type.type}
               </option>
