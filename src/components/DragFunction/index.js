@@ -30,7 +30,7 @@ const index = ({ type }) => {
   // const [columnOrder, setColumnOrder] = useState(() => {
   //   return Object.keys(columns)
   // })
-
+  console.log(selectedTagTasks)
   const onDragEnd = useCallback((result) => {
     const { destination, draggableId, source } = result
     if (!destination) return

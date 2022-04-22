@@ -9,6 +9,7 @@ import {
   deleteDoc,
   query,
   where,
+  getDoc,
 } from "firebase/firestore"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
@@ -36,10 +37,115 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
-
+const defaultTags = [
+  {
+    createdBy: "0",
+    id: "7qzOkGy3a0F6kgDqu5ma",
+    index: 0,
+    name: "to do",
+    parent: "Y3ScZ3EP9hhO7PB0EkJU",
+    projectID: "",
+    type: "progress",
+  },
+  {
+    createdBy: "0",
+    id: "BjCJ9brvUXkru0jJYZ6c",
+    index: -1,
+    name: "priority",
+    parent: "",
+    projectID: [""],
+    type: "priority",
+  },
+  {
+    createdBy: "0",
+    id: "LqoN88hEwKS5ttU283yU",
+    index: 1,
+    name: "high",
+    parent: "BjCJ9brvUXkru0jJYZ6c",
+    projectID: "",
+    type: "priority",
+  },
+  {
+    createdBy: "0",
+    id: "Y3ScZ3EP9hhO7PB0EkJU",
+    index: -1,
+    name: "progress",
+    parent: "",
+    projectID: [""],
+    type: "progress",
+  },
+  {
+    createdBy: "0",
+    id: "ZT9kq2hhregSKPmVcEHh",
+    index: 2,
+    name: "normal",
+    parent: "BjCJ9brvUXkru0jJYZ6c",
+    projectID: "",
+    type: "priority",
+  },
+  {
+    createdBy: "0",
+    id: "b0htJEJVP9noZU8Tx200",
+    index: 2,
+    name: "done",
+    parent: "Y3ScZ3EP9hhO7PB0EkJU",
+    projectID: "",
+    type: "progress",
+  },
+  {
+    createdBy: "0",
+    id: "hH5M4VZKHGyheC4QID2n",
+    index: 0,
+    name: "urgent",
+    parent: "BjCJ9brvUXkru0jJYZ6c",
+    projectID: "",
+    type: "priority",
+  },
+  {
+    createdBy: "0",
+    id: "mkPSjbSrFD7ert0HosMg",
+    index: 1,
+    name: "in progress",
+    parent: "Y3ScZ3EP9hhO7PB0EkJU",
+    projectID: "",
+    type: "progress",
+  },
+  {
+    createdBy: "0",
+    id: "yEFXbvDC5slJxmMVOp3D",
+    index: 3,
+    name: "low",
+    parent: "BjCJ9brvUXkru0jJYZ6c",
+    projectID: "",
+    type: "priority",
+  },
+]
 export const firebase = {
   // auth: getAuth(app),
   db: getFirestore(app),
+  getProjectTasks: async function (projectID) {
+    console.log(projectID)
+    const collectionName = "tasks"
+    const q = query(
+      collection(this.db, collectionName),
+      where("projectID", "==", projectID)
+    )
+    const totalTaskSnapshot = await getDocs(q)
+    const totalTasks = []
+    totalTaskSnapshot.forEach((doc) => {
+      const data = {
+        ...doc.data(),
+      }
+      const requiredData = {
+        title: data.title,
+        id: doc.id,
+        projectID: data.projectID,
+        tags: data.tags,
+      }
+      totalTasks.push(requiredData)
+    })
+    return totalTasks
+  },
   getDefaultTags: async function () {
     try {
       const collectionName = "tags"
@@ -78,7 +184,7 @@ export const firebase = {
       const collectionName = "tasks"
       const taskData = {
         title: state.title,
-        requiredNumber: state.requiredClockNumber,
+        requiredNumber: state.requiredNumber,
         createdDate: state.createdDate,
         dueDate: state.dueDate,
         startDate: state.startDate,
@@ -88,8 +194,9 @@ export const firebase = {
         totalTime: state.totalTime,
         tags: state.tags,
       }
-
-      await setDoc(doc(this.db, collectionName, state.id), taskData)
+      if (state.id) {
+        await setDoc(doc(this.db, collectionName, state.id), taskData)
+      }
     } catch (err) {
       console.error(err)
     }
@@ -100,6 +207,7 @@ export const firebase = {
     const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
     const { description } = state
     description.forEach(async (line) => {
+      console.log(line)
       const eachLinePosition = doc(...taskIdDescription, line.id)
       await setDoc(eachLinePosition, line)
     })
@@ -108,9 +216,19 @@ export const firebase = {
     try {
       const collectionName = "tasks"
       const taskContentRef = [this.db, collectionName, stateId]
-      await setDoc(doc(...taskContentRef), { ...content })
+      const taskHasSavedInDataBase = await getDoc(doc(...taskContentRef))
+      if (taskHasSavedInDataBase.exists()) {
+        console.log(taskHasSavedInDataBase.data())
+        await updateDoc(doc(...taskContentRef), { ...content })
+      }
     } catch (error) {
       console.error(error)
     }
   },
+  // saveDefaultTags: async function () {
+  //   const q = [this.db, "tags"]
+  //   defaultTags.forEach(async (tag) => {
+  //     await setDoc(doc(...q, tag.id), { ...tag })
+  //   })
+  // },
 }

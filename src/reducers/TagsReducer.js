@@ -3,6 +3,31 @@ import React, { createContext, useEffect } from "react"
 import { useAsyncReducer } from "../helpers/useAsyncReducer"
 import { firebase } from "../helpers/firebase"
 
+function separateTasks(totalTasks, selectedTypeId) {
+  const selectedTypeTask = []
+  const noneGroupTask = []
+  totalTasks.forEach((task) => {
+    const hasCurrentTypeTask = task.tags.some((tag) => tag.parent === selectedTypeId)
+    if (hasCurrentTypeTask) {
+      selectedTypeTask.push(task)
+      return
+    }
+    noneGroupTask.push(task)
+  })
+  console.log(selectedTypeTask)
+  return [selectedTypeTask, noneGroupTask, totalTasks]
+}
+
+function matchTagTaskIds(tasks, tagId) {
+  if (!tasks) return []
+  return tasks
+    .filter((task) => {
+      const hasCurrentTagTask = task.tags.some((item) => item.child === tagId)
+      if (hasCurrentTagTask) return task
+    })
+    .map((item) => item.id)
+}
+
 const initialTotalTags = [
   {
     id: "1",
@@ -206,8 +231,11 @@ export const initialTagState = {
     //   taskIds: [],
     // },
   },
-  selectedTagTasks: [...initialTasks],
+  selectedTagTasks: [],
+  noneTagTasks: [],
   selectedColumnOrder: [],
+  totalTagTasks: [],
+  // selectedTagTasks: [...initialTasks],
   // selectedColumnOrder: ["6", "7", "8", "9"],
 }
 
@@ -216,17 +244,23 @@ async function tagReducer(state = initialTagState, action) {
     case "getTags":
       return { ...state, [type]: date }
     case "getInitialTags":
-      const defaultTagList = initialTotalTags
+      // disconnect to firebase
+      // const defaultTagList = initialTotalTags
       // connect to firebase
-      // const defaultTagList = await firebase.getDefaultTags()
+      const projectID = "8gx8UcCs8cLC8V8s2SMK"
+      const totalProjects = await firebase.getProjectTasks(projectID)
+
+      const defaultTagList = await firebase.getDefaultTags()
       const newTagList = [...defaultTagList]
       const newSelectedType = newTagList[0]
       const newColumns = {}
-      newSelectedType.children.map((tag) => {
-        newColumns[tag.id] = {
-          id: tag.id,
-          title: tag.name,
-          taskIds: [],
+      const [selectedTask, noneTask] = separateTasks(totalProjects, newSelectedType.id)
+      newSelectedType.children.map((tagChild) => {
+        const currentTagTaskIds = matchTagTaskIds(selectedTask, tagChild.id)
+        newColumns[tagChild.id] = {
+          id: tagChild.id,
+          title: tagChild.name,
+          taskIds: [...currentTagTaskIds],
         }
       })
       const newColumnOrder = Object.keys(newColumns)
@@ -237,16 +271,23 @@ async function tagReducer(state = initialTagState, action) {
         selectedType: newSelectedType,
         selectedTagColumns: newColumns,
         selectedColumnOrder: newColumnOrder,
+        totalTagTasks: totalProjects,
+        selectedTagTasks: selectedTask,
+        noneTagTasks: noneTask,
       }
     case "switchType":
       const typeId = action.payload
+      const totalTasks = [...state.selectedTagTasks]
       const newType = state.types.find((type) => typeId === type.id)
+      const [selectedTypeTask, noneGroupTask] = separateTasks(totalTasks, newType.id)
+
       let newTagsColumns = {}
       newType.children.forEach((tag) => {
+        const newTypeTaskIds = matchTagTaskIds(selectedTypeTask, tag.id)
         newTagsColumns[tag.id] = {
           id: tag.id,
           title: tag.name,
-          taskIds: [],
+          taskIds: newTypeTaskIds,
         }
       })
       const newOrder = Object.keys(newTagsColumns)
@@ -255,7 +296,13 @@ async function tagReducer(state = initialTagState, action) {
         selectedType: { ...newType },
         selectedTagColumns: { ...newTagsColumns },
         selectedColumnOrder: [...newOrder],
+        selectedTagTasks: selectedTypeTask,
+        noneTagTasks: noneGroupTask,
       }
+    case "getProjectTasks":
+      const selectedProjectID = "8gx8UcCs8cLC8V8s2SMK"
+      const allTasks = await firebase.getProjectTasks(selectedProjectID)
+      return { ...state, selectedTagTasks: allTasks }
     default:
       return state
   }

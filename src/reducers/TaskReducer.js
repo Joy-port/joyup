@@ -51,21 +51,24 @@ async function taskReducer(state = initialTaskState, action) {
       return { ...state, location: action.payload }
     case "editTags":
       const { parent, child } = action.payload
-      let newState = state.tags
+      let newTagState = state.tags
       if (state.tags.some((item) => item.parent === parent)) {
-        newState.find((item) => item.parent === parent).child = child
+        newTagState.find((item) => item.parent === parent).child = child
       } else {
-        newState.push(action.payload)
+        newTagState.push(action.payload)
       }
-      console.log("tags", newState)
-      return { ...state, tags: [...newState] }
+      console.log("tags", newTagState)
+      return { ...state, tags: [...newTagState] }
     case "saveToDataBase":
       firebase.saveTask(state)
       firebase.saveDescription(state)
       return state
     case "createNewTask":
-      console.log("create new")
-      return { ...initialTaskState, id: action.payload }
+      const newState = {
+        ...initialTaskState,
+        id: action.payload,
+      }
+      return newState
     default:
       return state
   }

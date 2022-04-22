@@ -33,7 +33,7 @@ const TaskList = () => {
           ))}
       </select>
       <button className="bg-slateDark text-white py-1 px-2" onClick={createNewTask}>
-        Create Task
+        + Task
       </button>
     </div>
   )

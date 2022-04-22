@@ -87,7 +87,7 @@ const index = () => {
             ))}
             <p>
               Created date: <br />
-              {new Date().toLocaleString()}
+              {new Date(state.createdDate).toLocaleString()}
             </p>
             <div>Start Date</div>
             <p>{dayjs(new Date(state.startDate).getTime()).format("MM/DD HH:mm ")}</p>
@@ -102,7 +102,7 @@ const index = () => {
             <p>Already had Tomatos: {workNumbers}</p>
             <select
               name="number"
-              value={state.requiredClockNumber}
+              value={state.requiredClockNumber || -1}
               onChange={(e) => {
                 dispatch({ type: "requiredClock", payload: e.target.value })
               }}
@@ -119,15 +119,19 @@ const index = () => {
             <input
               type="text"
               placeholder="location"
+              value={state.location}
               onChange={(e) => {
                 dispatch({ type: "editLocation", payload: e.target.value })
               }}
             />
             <button
               className="bg-slateDark text-white px-2 py-1 rounded"
-              onClick={() => dispatch({ type: "saveToDataBase" })}
+              onClick={() => {
+                dispatch({ type: "saveToDataBase" })
+                navigation("/") //to home
+              }}
             >
-              save
+              Create Task
             </button>
           </div>
         </div>
