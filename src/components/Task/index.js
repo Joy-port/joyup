@@ -58,14 +58,13 @@ const index = () => {
         <select
           value={currentProjectID}
           onChange={(e) => {
-            console.log(e)
+            console.log(e.target.value, currentProjectID)
             projectDispatch({ type: "switchProject", payload: e.target.value })
             tagDispatch({ type: "switchProject", payload: { pid: e.target.value } })
           }}
         >
           {projectList &&
             projectList.map((item) => {
-              console.log("project", item)
               return (
                 <option key={item.id} value={item.id}>
                   {item.title}
@@ -84,9 +83,7 @@ const index = () => {
               <div key={item.id}>
                 <p>{item.type} </p>
                 <select
-                  value={
-                    tags.find((selected) => selected.parent === item.id)?.child || -1
-                  }
+                  value={tags.find((selected) => selected.parent === item.id)?.child}
                   onChange={(e) => {
                     const tag = {
                       parent: item.id,
@@ -98,9 +95,9 @@ const index = () => {
                       type: "saveTagToProjectTags",
                       payload: [item.id, e.target.value],
                     })
+                    console.log(state.tags)
                   }}
                 >
-                  <option value={-1}>none</option>
                   {item.children.map((tag) => (
                     <option value={tag.id} key={tag.id}>
                       {tag.name}

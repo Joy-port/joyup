@@ -7,8 +7,13 @@ import Column from "./components/Column"
 const index = ({ type }) => {
   const [taskState, taskDispatch] = useContext(TaskContext)
   const [tagsState, tagsDispatch] = useContext(TagsContext)
-  const { selectedTagColumns, selectedColumnOrder, selectedTagTasks, selectedType } =
-    tagsState
+  const {
+    selectedTagColumns,
+    selectedColumnOrder,
+    selectedTagTasks,
+    selectedType,
+    noneTagTasks,
+  } = tagsState
   const onDragEnd = useCallback((result) => {
     const { destination, draggableId, source } = result
     if (!destination) return
@@ -30,12 +35,11 @@ const index = ({ type }) => {
         taskIds: newTaskIds,
       }
       taskDispatch({
-        type: "editTags",
+        type: "saveTagsToDB",
         payload: {
           parent: selectedType.id,
           child: finishAtColumn.id,
           type: selectedType.type,
-          index: destination.index,
         },
       })
       tagsDispatch({ type: "switchTagForTask", payload: newColumn })
@@ -52,18 +56,24 @@ const index = ({ type }) => {
         ...finishAtColumn,
         taskIds: finishColumnTaskIds,
       }
-
-      taskDispatch({
-        type: "editTags",
-        payload: {
+      //fix id
+      if (newFinishColumn.id === "l0Du2A7l5CUCJLnmRZuP") {
+        taskDispatch({ type: "deleteTag", payload: newStartColumn.id })
+        tagsDispatch({ type: "removeTag", payload: [draggableId, selectedType.id] })
+      } else {
+        const taskContent = {
+          taskId: draggableId,
           parent: selectedType.id,
           child: finishAtColumn.id,
           type: selectedType.type,
-          index: destination.index,
-        },
-      })
-      tagsDispatch({ type: "switchTagForTask", payload: newStartColumn })
-      tagsDispatch({ type: "switchTagForTask", payload: newFinishColumn })
+        }
+        taskDispatch({
+          type: "saveTagsToDB",
+          payload: taskContent,
+        })
+        tagsDispatch({ type: "switchTagForTask", payload: newStartColumn })
+        tagsDispatch({ type: "switchTagForTask", payload: newFinishColumn })
+      }
     }
   })
 

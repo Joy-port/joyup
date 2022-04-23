@@ -50,15 +50,20 @@ async function taskReducer(state = initialTaskState, action) {
       console.log("location", action.payload)
       return { ...state, location: action.payload }
     case "editTags":
-      const { parent, child } = action.payload
+      const { parent, child, index } = action.payload
       let newTagState = state.tags
       if (state.tags.some((item) => item.parent === parent)) {
         newTagState.find((item) => item.parent === parent).child = child
+        newTagState.find((item) => item.parent === parent).index = index
       } else {
         newTagState.push(action.payload)
       }
-      console.log("tags", newTagState)
+      console.log(state.tags)
+      // firebase.saveTaskPartialContent()
       return { ...state, tags: [...newTagState] }
+    case "deleteTag":
+      const leftTags = state.tags.filter((tag) => tag.parent !== action.payload)
+      return { ...state, tags: [...leftTags] }
     case "saveToDataBase":
       firebase.saveTask(state)
       firebase.saveDescription(state)
@@ -67,6 +72,7 @@ async function taskReducer(state = initialTaskState, action) {
       const newState = {
         ...initialTaskState,
         id: action.payload,
+        tags: [],
       }
       return newState
     case "saveTagToProjectTags":
@@ -80,6 +86,12 @@ async function taskReducer(state = initialTaskState, action) {
       }
       await firebase.saveTagsToProjectIDfromTask(content)
 
+      return state
+    case "getTask":
+      return state
+    case "saveTagsToDB":
+      const tagContent = action.payload
+      await firebase.saveTaskTags(tagContent)
       return state
     default:
       return state

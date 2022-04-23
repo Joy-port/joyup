@@ -6,28 +6,22 @@ import { firebase } from "../helpers/firebase"
 function separateTasks(totalTasks, selectedTypeId) {
   const selectedTypeTask = []
   const noneGroupTask = []
+  if (!selectedTypeId) return [selectedTypeTask, noneGroupTask, totalTasks]
   totalTasks.forEach((task) => {
     const hasCurrentTypeTask = task.tags.some((tag) => tag.parent === selectedTypeId)
     if (hasCurrentTypeTask) {
+      console.log(task.tags, task.title)
       selectedTypeTask.push(task)
       return
     }
     noneGroupTask.push(task)
   })
-  console.log(selectedTypeTask)
   return [selectedTypeTask, noneGroupTask, totalTasks]
 }
 
-function matchTagTaskIds(tasks, tagId) {
-  if (!tasks) return []
-  return tasks
-    .filter((task) => {
-      const hasCurrentTagTask = task.tags.some((item) => item.child === tagId)
-      if (hasCurrentTagTask) return task
-    })
-    .map((item) => item.id)
+function matchTagTaskIds(tagId, projectTagsList) {
+  return projectTagsList[tagId]
 }
-
 const initialTotalTags = [
   {
     id: "1",
@@ -171,73 +165,20 @@ const initialTasks = [
 
 export const initialTagState = {
   projectID: "8gx8UcCs8cLC8V8s2SMK",
-  types: [
-    //disconnect to firebase
-    // {
-    //   id: "1",
-    //   type: "priority",
-    //   children: [
-    //     {
-    //       id: "1",
-    //       name: "urgent",
-    //     },
-    //     { id: "3", name: "high" },
-    //     { id: "4", name: "normal" },
-    //     { id: "5", name: "low" },
-    //   ],
-    // },
-    // {
-    //   id: "2",
-    //   type: "progress",
-    //   children: [
-    //     { id: "6", name: "none" },
-    //     { id: "7", name: "todo" },
-    //     { id: "8", name: "doing" },
-    //     { id: "9", name: "done" },
-    //   ],
-    // },
-  ],
-  selectedType: {
-    // id: "1",
-    // type: "priority",
-    // children: [
-    //   {
-    //     id: "1",
-    //     name: "urgent",
-    //   },
-    //   { id: "3", name: "high" },
-    //   { id: "4", name: "normal" },
-    //   { id: "5", name: "low" },
-    // ],
-  },
-  selectedTagColumns: {
-    // 6: {
-    //   id: "6",
-    //   title: "none",
-    //   taskIds: [],
-    // },
-    // 7: {
-    //   id: "7",
-    //   title: "todo",
-    //   taskIds: [],
-    // },
-    // 8: {
-    //   id: "8",
-    //   title: "doing",
-    //   taskIds: [],
-    // },
-    // 9: {
-    //   id: "9",
-    //   title: "done",
-    //   taskIds: [],
-    // },
-  },
+  types: [],
+  selectedType: {},
+  selectedTagColumns: {},
   selectedTagTasks: [],
   noneTagTasks: [],
   selectedColumnOrder: [],
   totalTagTasks: [],
-  // selectedTagTasks: [...initialTasks],
-  // selectedColumnOrder: ["6", "7", "8", "9"],
+  projectTagsOrderList: {},
+}
+
+const defaultNoneTagList = {
+  id: "noTagTasks",
+  title: "no grouped tasks",
+  taskIds: [],
 }
 
 async function tagReducer(state = initialTagState, action) {
@@ -247,17 +188,19 @@ async function tagReducer(state = initialTagState, action) {
     case "getInitialTags":
       // disconnect to firebase
       // const defaultTagList = initialTotalTags
+      // const totalProjects = initialTasks
       // connect to firebase
       const projectID = "8gx8UcCs8cLC8V8s2SMK"
       const totalProjects = await firebase.getProjectTasks(projectID)
+      const defaultTagList = await firebase.getDefaultTags(projectID)
+      const projectTagContent = await firebase.getProjectTags(projectID)
 
-      const defaultTagList = await firebase.getDefaultTags()
       const newTagList = [...defaultTagList]
       const newSelectedType = newTagList[0]
       const newColumns = {}
       const [selectedTask, noneTask] = separateTasks(totalProjects, newSelectedType.id)
       newSelectedType.children.map((tagChild) => {
-        const currentTagTaskIds = matchTagTaskIds(selectedTask, tagChild.id)
+        const currentTagTaskIds = matchTagTaskIds(tagChild.id, projectTagContent)
         newColumns[tagChild.id] = {
           id: tagChild.id,
           title: tagChild.name,
@@ -275,6 +218,7 @@ async function tagReducer(state = initialTagState, action) {
         totalTagTasks: totalProjects,
         selectedTagTasks: selectedTask,
         noneTagTasks: noneTask,
+        projectTagsOrderList: projectTagContent,
       }
     case "switchType":
       const typeId = action.payload
@@ -284,7 +228,7 @@ async function tagReducer(state = initialTagState, action) {
 
       let newTagsColumns = {}
       newType.children.forEach((tag) => {
-        const newTypeTaskIds = matchTagTaskIds(selectedTypeTask, tag.id)
+        const newTypeTaskIds = matchTagTaskIds(tag.id, state.projectTagsOrderList)
         newTagsColumns[tag.id] = {
           id: tag.id,
           title: tag.name,
@@ -313,6 +257,19 @@ async function tagReducer(state = initialTagState, action) {
       selectedTagColumns[columnContent.id] = columnContent
       firebase.saveTaskOrder(state.projectID, columnContent)
       return { ...state, selectedTagColumns }
+    case "removeTag":
+      const [removedTaskID, removedTagId] = action.payload
+      const newNoTagList = state.noneGroupTask.push(
+        state.selectedTagTasks.find((item) => item.id === removedTaskID)
+      )
+      const newSelectedList = state.selectedTagTasks.filter(
+        (item) => item.id !== removedTagId
+      )
+      return {
+        ...state,
+        selectedTagColumns: newSelectedList,
+        noneGroupTask: newNoTagList,
+      }
     default:
       return state
   }

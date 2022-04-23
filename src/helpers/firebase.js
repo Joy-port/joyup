@@ -141,7 +141,6 @@ export const firebase = {
   db: getFirestore(app),
   getUserProjects: async function (userID) {
     //has problem to fix
-    console.log(userID)
     const userCollection = "userProjects"
     const userRef = doc(this.db, userCollection, userID)
     const projectSnapShot = await getDoc(userRef)
@@ -158,7 +157,6 @@ export const firebase = {
       })
       ownerProjectArray.push(projectContent)
     })
-    console.log(ownerProjectArray)
     return [ownerProjectArray, collaborateProjects]
   },
   createNewProject: async function (projectID, projectTitle, userID) {
@@ -189,27 +187,10 @@ export const firebase = {
     }
   },
   saveTagsToProjectIDfromTask: async function (content) {
-    const { parentTag, childTag, taskID, projectID } = content
+    const { parentTag, childTag, taskID, projectID, index } = content
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
-    // const typeTags = []
-    // if (projectTags.exists()) {
-    //   projectTags.data()[parentTag].forEach((childTag) => {
-    //     typeTags.push(childTag)
-    //   })
-    // }
-    // typeTags.forEach(async (item) => {
-    //   const q = query(
-    //     collection(this.db, collectionName),
-    //     where([item], "array-contains", taskID)
-    //   )
-    //   const querySnapshot = await getDocs(q)
-    //   querySnapshot.forEach((doc) => {
-    //     console.log(doc.id)
-    //     // console.log(doc.id, " => ", doc.data())
-    //   })
-    // })
     if (!projectTags.data()[childTag]) {
       await updateDoc(projectRef, {
         [childTag]: [],
@@ -227,7 +208,6 @@ export const firebase = {
     })
   },
   getProjectTasks: async function (projectID) {
-    console.log(projectID)
     const collectionName = "tasks"
     const q = query(
       collection(this.db, collectionName),
@@ -253,7 +233,6 @@ export const firebase = {
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
-    // console.log("has content", projectTags.data()[columnID])
     const columnTaskIds = {}
     columnIDs.forEach((column) => {
       const columnContent = {
@@ -263,37 +242,30 @@ export const firebase = {
     })
     return columnTaskIds
   },
-  getDefaultTags: async function () {
+  getDefaultTags: async function (projectID) {
     try {
       const collectionName = "tags"
       const tagsData = collection(this.db, collectionName)
       const q = query(tagsData, where("createdBy", "==", "0"))
+      const qProject = query(tagsData, where("projectID", "==", projectID))
       const defaultTagList = await getDocs(q)
-      const tagsGroup = []
-      defaultTagList.forEach(async (doc) => {
-        if (doc.data().parent === "") {
-          const parentTags = {
-            id: doc.id,
-            type: doc.data().name,
-            children: [],
-          }
-          tagsGroup.push(parentTags)
-        }
-      })
-      defaultTagList.forEach(async (doc) => {
-        if (doc.data().parent !== "") {
-          const childTags = {
-            id: doc.id,
-            name: doc.data().name,
-          }
-          tagsGroup
-            .find((parents) => parents.id === doc.data().parent)
-            .children.splice(doc.data().index, 0, childTags)
-        }
-      })
-      return tagsGroup
+      const projectTagList = await getDocs(q)
+      const defaultTags = getTagList(defaultTagList)
+      const customTags = getTagList(projectTagList)
+      if (customTags !== []) defaultTags.concat(customTags)
+      return defaultTags
     } catch (error) {
       console.error(error)
+    }
+  },
+  getProjectTags: async function (projectID) {
+    try {
+      const collectionName = "projects"
+      const projectRef = doc(this.db, collectionName, projectID)
+      const projectTagsDocument = await getDoc(projectRef)
+      return { ...projectTagsDocument.data() }
+    } catch (err) {
+      console.error(err)
     }
   },
   saveTask: async function (state) {
@@ -324,7 +296,6 @@ export const firebase = {
     const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
     const { description } = state
     description.forEach(async (line) => {
-      console.log(line)
       const eachLinePosition = doc(...taskIdDescription, line.id)
       await setDoc(eachLinePosition, line)
     })
@@ -335,11 +306,29 @@ export const firebase = {
       const taskContentRef = [this.db, collectionName, stateId]
       const taskHasSavedInDataBase = await getDoc(doc(...taskContentRef))
       if (taskHasSavedInDataBase.exists()) {
-        console.log(taskHasSavedInDataBase.data())
         await updateDoc(doc(...taskContentRef), { ...content })
       }
     } catch (error) {
       console.error(error)
+    }
+  },
+  saveTaskTags: async function (tagContent) {
+    try {
+      const collectionName = "tasks"
+      const taskContentRef = [this.db, collectionName, tagContent.taskId]
+      const tag = { ...tagContent }
+      delete tag.taskId
+      const taskContent = await getDoc(doc(...taskContentRef))
+      const prevTagContent = taskContent.data().tags
+      if (prevTagContent.some((item) => item.parent === tag.parent)) {
+        const newTagContent = prevTagContent.filter((item) => item.parent !== tag.parent)
+        newTagContent.push(tag)
+        await updateDoc(doc(...taskContentRef), { tags: newTagContent })
+      } else {
+        await updateDoc(doc(...taskContentRef), { tags: arrayUnion(tag) })
+      }
+    } catch (err) {
+      console.error(err)
     }
   },
   // saveDefaultTags: async function () {
@@ -348,4 +337,41 @@ export const firebase = {
   //     await setDoc(doc(...q, tag.id), { ...tag })
   //   })
   // },
+}
+
+function getTagList(defaultTagList) {
+  const tagsGroup = []
+  defaultTagList.forEach(async (doc) => {
+    if (doc.data().parent === "") {
+      const parentTags = {
+        id: doc.id,
+        type: doc.data().name,
+        children: [],
+      }
+      tagsGroup.push(parentTags)
+    }
+  })
+  defaultTagList.forEach(async (doc) => {
+    if (doc.data().parent !== "" && doc.data().parent !== "all") {
+      const childTags = {
+        id: doc.id,
+        name: doc.data().name,
+      }
+      tagsGroup
+        .find((parents) => parents.id === doc.data().parent)
+        .children.splice(doc.data().index, 0, childTags)
+    }
+  })
+  defaultTagList.forEach(async (doc) => {
+    if (doc.data().parent === "all") {
+      const childTag = {
+        id: doc.id,
+        name: doc.data().name,
+      }
+      tagsGroup.map((item) => {
+        item.children.unshift(childTag)
+      })
+    }
+  })
+  return tagsGroup
 }

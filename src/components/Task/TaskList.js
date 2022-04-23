@@ -1,11 +1,13 @@
 import React, { useState, useContext, useCallback, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
+import { TagsContext } from "../../reducers/TagsReducer"
 import { TaskContext } from "../../reducers/TaskReducer"
 
 const TaskList = () => {
   const [state, dispatch] = useContext(TaskContext)
-  const [taskLists, setTaskLists] = useState([])
+  const [tagState, tagDispatch] = useContext(TagsContext)
+  const [taskLists, setTaskLists] = useState(tagState.totalTagTasks)
   let navigate = useNavigate()
   const [taskID, setTaskID] = useState("")
   const createNewTask = useCallback(() => {
