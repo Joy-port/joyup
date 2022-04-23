@@ -12,7 +12,6 @@ const List = ({ type }) => {
         <div className="">
           <p>group by</p>
           <select
-            id=""
             value={selectedType.id || -1}
             onChange={(e) =>
               tagsDispatch({ type: "switchType", payload: e.target.value })

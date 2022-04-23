@@ -69,6 +69,18 @@ async function taskReducer(state = initialTaskState, action) {
         id: action.payload,
       }
       return newState
+    case "saveTagToProjectTags":
+      //when created new Tasks
+      const [parentTag, childTag] = action.payload
+      const content = {
+        parentTag,
+        childTag,
+        taskID: state.id,
+        projectID: state.projectID,
+      }
+      await firebase.saveTagsToProjectIDfromTask(content)
+
+      return state
     default:
       return state
   }

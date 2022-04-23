@@ -1,4 +1,4 @@
-import { any } from "prop-types"
+import { any, string } from "prop-types"
 import React, { createContext, useEffect } from "react"
 import { useAsyncReducer } from "../helpers/useAsyncReducer"
 import { firebase } from "../helpers/firebase"
@@ -170,6 +170,7 @@ const initialTasks = [
 ]
 
 export const initialTagState = {
+  projectID: "8gx8UcCs8cLC8V8s2SMK",
   types: [
     //disconnect to firebase
     // {
@@ -299,10 +300,19 @@ async function tagReducer(state = initialTagState, action) {
         selectedTagTasks: selectedTypeTask,
         noneTagTasks: noneGroupTask,
       }
+    case "switchProject":
+      const { pid } = action.payload
+      return { ...state, projectID: pid }
     case "getProjectTasks":
       const selectedProjectID = "8gx8UcCs8cLC8V8s2SMK"
       const allTasks = await firebase.getProjectTasks(selectedProjectID)
       return { ...state, selectedTagTasks: allTasks }
+    case "switchTagForTask":
+      const columnContent = { ...action.payload }
+      const { selectedTagColumns } = state
+      selectedTagColumns[columnContent.id] = columnContent
+      firebase.saveTaskOrder(state.projectID, columnContent)
+      return { ...state, selectedTagColumns }
     default:
       return state
   }
@@ -321,5 +331,6 @@ const TagsProvider = ({ children }) => {
 
 TagsProvider.propTypes = {
   children: any,
+  projectID: string,
 }
 export default TagsProvider

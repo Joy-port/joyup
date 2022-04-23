@@ -1,3 +1,4 @@
+import { async } from "@firebase/util"
 import { initializeApp } from "firebase/app"
 import {
   getFirestore,
@@ -10,6 +11,7 @@ import {
   query,
   where,
   getDoc,
+  arrayUnion,
 } from "firebase/firestore"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
@@ -120,9 +122,110 @@ const defaultTags = [
     type: "priority",
   },
 ]
+const defaultParentID = ["BjCJ9brvUXkru0jJYZ6c", "Y3ScZ3EP9hhO7PB0EkJU"]
+const defaultChildren = {
+  BjCJ9brvUXkru0jJYZ6c: [
+    "LqoN88hEwKS5ttU283yU",
+    "ZT9kq2hhregSKPmVcEHh",
+    "hH5M4VZKHGyheC4QID2n",
+    "yEFXbvDC5slJxmMVOp3D",
+  ],
+  Y3ScZ3EP9hhO7PB0EkJU: [
+    "7qzOkGy3a0F6kgDqu5ma",
+    "b0htJEJVP9noZU8Tx200",
+    "mkPSjbSrFD7ert0HosMg",
+  ],
+}
 export const firebase = {
   // auth: getAuth(app),
   db: getFirestore(app),
+  getUserProjects: async function (userID) {
+    //has problem to fix
+    console.log(userID)
+    const userCollection = "userProjects"
+    const userRef = doc(this.db, userCollection, userID)
+    const projectSnapShot = await getDoc(userRef)
+    const ownerProjects = projectSnapShot.data().ownerProjects
+    const collaborateProjects = projectSnapShot.data().collaborateProjects
+    const ownerProjectArray = []
+    await ownerProjects.forEach(async (id) => {
+      const projectContent = {}
+      const q = query(collection(this.db, "projects"), where("id", "==", id))
+      const projects = await getDocs(q)
+      projects.forEach((doc) => {
+        projectContent.id = doc.id
+        projectContent.title = doc.data().title
+      })
+      ownerProjectArray.push(projectContent)
+    })
+    console.log(ownerProjectArray)
+    return [ownerProjectArray, collaborateProjects]
+  },
+  createNewProject: async function (projectID, projectTitle, userID) {
+    //when created project with defaultTags
+    try {
+      //create data in project collections
+      const collectionName = "projects"
+      const projectRef = doc(this.db, collectionName, projectID)
+      const projectContent = {
+        title: projectTitle,
+        tags: [...defaultParentID],
+        ...defaultChildren,
+      }
+      await setDoc(projectRef, projectContent)
+      //create data in user
+      const userCollection = "userProjects"
+      //project Type needed to be added
+      // ownerProjects or  collaborateProjects
+      const projectType = "ownerProjects"
+      const userRef = doc(this.db, userCollection, userID)
+      await updateDoc(userRef, {
+        [projectType]: arrayUnion(projectID),
+      })
+
+      return projectContent
+    } catch (err) {
+      console.error(error)
+    }
+  },
+  saveTagsToProjectIDfromTask: async function (content) {
+    const { parentTag, childTag, taskID, projectID } = content
+    const collectionName = "projects"
+    const projectRef = doc(this.db, collectionName, projectID)
+    const projectTags = await getDoc(projectRef)
+    // const typeTags = []
+    // if (projectTags.exists()) {
+    //   projectTags.data()[parentTag].forEach((childTag) => {
+    //     typeTags.push(childTag)
+    //   })
+    // }
+    // typeTags.forEach(async (item) => {
+    //   const q = query(
+    //     collection(this.db, collectionName),
+    //     where([item], "array-contains", taskID)
+    //   )
+    //   const querySnapshot = await getDocs(q)
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(doc.id)
+    //     // console.log(doc.id, " => ", doc.data())
+    //   })
+    // })
+    if (!projectTags.data()[childTag]) {
+      await updateDoc(projectRef, {
+        [childTag]: [],
+      })
+    }
+    await updateDoc(projectRef, {
+      [childTag]: arrayUnion(taskID),
+    })
+  },
+  saveTaskOrder: async function (projectID, columnContent) {
+    const collectionName = "projects"
+    const projectRef = doc(this.db, collectionName, projectID)
+    await updateDoc(projectRef, {
+      [columnContent.id]: columnContent.taskIds,
+    })
+  },
   getProjectTasks: async function (projectID) {
     console.log(projectID)
     const collectionName = "tasks"
@@ -145,6 +248,20 @@ export const firebase = {
       totalTasks.push(requiredData)
     })
     return totalTasks
+  },
+  getTagColumnRelatedTaskIds: async function (projectID, columnIDs) {
+    const collectionName = "projects"
+    const projectRef = doc(this.db, collectionName, projectID)
+    const projectTags = await getDoc(projectRef)
+    // console.log("has content", projectTags.data()[columnID])
+    const columnTaskIds = {}
+    columnIDs.forEach((column) => {
+      const columnContent = {
+        taskIds: projectTags.data()[column.id],
+      }
+      columnTaskIds[column.id] = columnContent
+    })
+    return columnTaskIds
   },
   getDefaultTags: async function () {
     try {

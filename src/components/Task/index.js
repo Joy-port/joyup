@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { SettingsContext } from "../../reducers/SettingReducer"
 import { TagsContext } from "../../reducers/TagsReducer"
 import { TaskContext } from "../../reducers/TaskReducer"
+import { ProjectContext } from "../../reducers/ProjectReducer"
 import { ClockContext } from "../../reducers/ClockReducer"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
@@ -23,7 +24,8 @@ const index = () => {
   const [startDate, setStartDate] = useState(new Date())
   const { types } = tagState
   const { tags } = state
-
+  const [projectState, projectDispatch] = useContext(ProjectContext)
+  const { projectList, currentProjectID } = projectState
   useEffect(() => {
     dispatch({ type: "setTaskID", payload: taskID })
   }, [taskID])
@@ -53,6 +55,24 @@ const index = () => {
         >
           X
         </button>
+        <select
+          value={currentProjectID}
+          onChange={(e) => {
+            console.log(e)
+            projectDispatch({ type: "switchProject", payload: e.target.value })
+            tagDispatch({ type: "switchProject", payload: { pid: e.target.value } })
+          }}
+        >
+          {projectList &&
+            projectList.map((item) => {
+              console.log("project", item)
+              return (
+                <option key={item.id} value={item.id}>
+                  {item.title}
+                </option>
+              )
+            })}
+        </select>
         <div className="flex flex-col gap-5 md:flex-row">
           <div className="flex flex-col gap-3 w-3/4 mt-1">
             <TitleEditor setStartDate={setStartDate} setDueDate={setDueDate} />
@@ -74,6 +94,10 @@ const index = () => {
                       type: item.type,
                     }
                     dispatch({ type: "editTags", payload: tag })
+                    dispatch({
+                      type: "saveTagToProjectTags",
+                      payload: [item.id, e.target.value],
+                    })
                   }}
                 >
                   <option value={-1}>none</option>

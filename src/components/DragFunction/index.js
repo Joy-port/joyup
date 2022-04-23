@@ -1,36 +1,14 @@
 import React, { useCallback, useContext, useState } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
+import { TaskContext } from "../../reducers/TaskReducer"
 import { TagsContext } from "../../reducers/TagsReducer"
 import Column from "./components/Column"
 
 const index = ({ type }) => {
+  const [taskState, taskDispatch] = useContext(TaskContext)
   const [tagsState, tagsDispatch] = useContext(TagsContext)
-  const { selectedTagColumns, selectedColumnOrder, selectedTagTasks } = tagsState
-  // const [tasks, setTasks] = useState(tagsState.selectedTagTasks)
-  // const groupType = "progress"
-  // const [columns, setColumns] = useState(() => {
-  //   const columns = {}
-  //   tagsState.tags
-  //     .find((tag) => tag.type === groupType)
-  //     .children.forEach((tag) => {
-  //       const currentTasks = tasks.filter((task) => {
-  //         const hasCurrentTag =
-  //           task.tags.find(
-  //             (taskTag) => taskTag.type === groupType && taskTag.child === tag.id
-  //           )?.child === tag.id
-  //         if (hasCurrentTag) return task
-  //       })
-  //       tag.taskIds = currentTasks.map((task) => task.id)
-  //       columns[tag.id] = tag
-  //     })
-  //   return { ...columns }
-  // })
-
-  //change columns into map
-  // const [columnOrder, setColumnOrder] = useState(() => {
-  //   return Object.keys(columns)
-  // })
-  console.log(selectedTagTasks)
+  const { selectedTagColumns, selectedColumnOrder, selectedTagTasks, selectedType } =
+    tagsState
   const onDragEnd = useCallback((result) => {
     const { destination, draggableId, source } = result
     if (!destination) return
@@ -39,8 +17,8 @@ const index = ({ type }) => {
       destination.index === source.index
     )
       return
-    const startAtColumn = columns[source.droppableId]
-    const finishAtColumn = columns[destination.droppableId]
+    const startAtColumn = selectedTagColumns[source.droppableId]
+    const finishAtColumn = selectedTagColumns[destination.droppableId]
 
     if (startAtColumn.id === finishAtColumn.id) {
       const newTaskIds = [...startAtColumn.taskIds]
@@ -51,9 +29,16 @@ const index = ({ type }) => {
         ...startAtColumn,
         taskIds: newTaskIds,
       }
-      setColumns((prev) => {
-        return { ...prev, [newColumn.id]: newColumn }
+      taskDispatch({
+        type: "editTags",
+        payload: {
+          parent: selectedType.id,
+          child: finishAtColumn.id,
+          type: selectedType.type,
+          index: destination.index,
+        },
       })
+      tagsDispatch({ type: "switchTagForTask", payload: newColumn })
     } else {
       const startColumnTaskIds = [...startAtColumn.taskIds]
       startColumnTaskIds.splice(source.index, 1)
@@ -67,13 +52,18 @@ const index = ({ type }) => {
         ...finishAtColumn,
         taskIds: finishColumnTaskIds,
       }
-      setColumns((prev) => {
-        return {
-          ...prev,
-          [newStartColumn.id]: newStartColumn,
-          [newFinishColumn.id]: newFinishColumn,
-        }
+
+      taskDispatch({
+        type: "editTags",
+        payload: {
+          parent: selectedType.id,
+          child: finishAtColumn.id,
+          type: selectedType.type,
+          index: destination.index,
+        },
       })
+      tagsDispatch({ type: "switchTagForTask", payload: newStartColumn })
+      tagsDispatch({ type: "switchTagForTask", payload: newFinishColumn })
     }
   })
 
