@@ -10,6 +10,7 @@ import TagsProvider from "./reducers/TagsReducer"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
 import List from "./components/View/List"
+import Calendar from "./components/Calendar"
 import DragFunction from "./components/DragFunction"
 import Home from "./pages/Home"
 import Report from "./pages/Report"
@@ -27,6 +28,7 @@ const components = {
 
 const viewComponents = {
   List,
+  Calendar,
   DragFunction,
   Task,
 }

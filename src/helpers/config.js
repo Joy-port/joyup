@@ -49,9 +49,9 @@ export const viewInfo = [
     type: "board",
   },
   {
-    name: "Mind Map",
-    path: "mind-map",
-    component: "DragFunction",
+    name: "Calendar",
+    path: "calendar",
+    component: "Calendar",
   },
   {
     name: "Map",
@@ -59,8 +59,8 @@ export const viewInfo = [
     component: "DragFunction",
   },
   {
-    name: "Calendar",
-    path: "calendar",
+    name: "Mind Map",
+    path: "mind-map",
     component: "DragFunction",
   },
 ]
