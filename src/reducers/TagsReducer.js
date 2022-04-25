@@ -10,7 +10,6 @@ function separateTasks(totalTasks, selectedTypeId) {
   totalTasks.forEach((task) => {
     const hasCurrentTypeTask = task.tags.some((tag) => tag.parent === selectedTypeId)
     if (hasCurrentTypeTask) {
-      console.log(task.tags, task.title)
       selectedTypeTask.push(task)
       return
     }
@@ -164,7 +163,8 @@ const initialTasks = [
 ]
 
 export const initialTagState = {
-  projectID: "8gx8UcCs8cLC8V8s2SMK",
+  // selectedProjectID: "8gx8UcCs8cLC8V8s2SMK",
+  selectedProjectID: "",
   types: [],
   selectedType: {},
   selectedTagColumns: {},
@@ -172,7 +172,10 @@ export const initialTagState = {
   noneTagTasks: [],
   selectedColumnOrder: [],
   totalTagTasks: [],
-  projectTagsOrderList: {},
+  selectedProjectTagsOrderList: {},
+  totalProjectList: [],
+  ownerProjectList: [],
+  collaborateProjectList: [],
 }
 
 const defaultNoneTagList = {
@@ -182,23 +185,28 @@ const defaultNoneTagList = {
 }
 
 async function tagReducer(state = initialTagState, action) {
+  console.log("state", state)
+  console.log("action", action)
   switch (action.type) {
-    case "getTags":
-      return { ...state, [type]: date }
+    // case "getTags":
+    //   return { ...state, [type]: date }
     case "getInitialTags":
       // disconnect to firebase
       // const defaultTagList = initialTotalTags
       // const totalProjects = initialTasks
       // connect to firebase
       const projectID = "8gx8UcCs8cLC8V8s2SMK"
-      const totalProjects = await firebase.getProjectTasks(projectID)
+      const totalProjectTasks = await firebase.getProjectTasks(projectID)
       const defaultTagList = await firebase.getDefaultTags(projectID)
       const projectTagContent = await firebase.getProjectTags(projectID)
 
       const newTagList = [...defaultTagList]
       const newSelectedType = newTagList[0]
       const newColumns = {}
-      const [selectedTask, noneTask] = separateTasks(totalProjects, newSelectedType.id)
+      const [selectedTask, noneTask] = separateTasks(
+        totalProjectTasks,
+        newSelectedType.id
+      )
       newSelectedType.children.map((tagChild) => {
         const currentTagTaskIds = matchTagTaskIds(tagChild.id, projectTagContent)
         newColumns[tagChild.id] = {
@@ -215,10 +223,10 @@ async function tagReducer(state = initialTagState, action) {
         selectedType: newSelectedType,
         selectedTagColumns: newColumns,
         selectedColumnOrder: newColumnOrder,
-        totalTagTasks: totalProjects,
+        totalTagTasks: totalProjectTasks,
         selectedTagTasks: selectedTask,
         noneTagTasks: noneTask,
-        projectTagsOrderList: projectTagContent,
+        selectedProjectTagsOrderList: projectTagContent,
       }
     case "switchType":
       const typeId = action.payload
@@ -228,7 +236,7 @@ async function tagReducer(state = initialTagState, action) {
 
       let newTagsColumns = {}
       newType.children.forEach((tag) => {
-        const newTypeTaskIds = matchTagTaskIds(tag.id, state.projectTagsOrderList)
+        const newTypeTaskIds = matchTagTaskIds(tag.id, state.selectedProjectTagsOrderList)
         newTagsColumns[tag.id] = {
           id: tag.id,
           title: tag.name,
@@ -246,7 +254,7 @@ async function tagReducer(state = initialTagState, action) {
       }
     case "switchProject":
       const { pid } = action.payload
-      return { ...state, projectID: pid }
+      return { ...state, selectedProjectID: pid }
     case "getProjectTasks":
       const selectedProjectID = "8gx8UcCs8cLC8V8s2SMK"
       const allTasks = await firebase.getProjectTasks(selectedProjectID)
@@ -270,24 +278,45 @@ async function tagReducer(state = initialTagState, action) {
         selectedTagColumns: newSelectedList,
         noneGroupTask: newNoTagList,
       }
+    case "getAllProjects":
+      const totalProjects = await firebase.getTotalProjects()
+      return { ...state, totalProjectList: [...totalProjects] }
+    case "getProjectList":
+      const { userID } = action.payload
+      const [ownerProjects, collaborateProjects] = await firebase.getUserProjects(userID)
+      // projectList: projects, currentProjectID: projects[0]
+      // console.log(ownerProjects)
+      console.log(ownerProjects, collaborateProjects)
+      return {
+        ...state,
+        ownerProjectList: [...ownerProjects],
+        collaborateProjectList: [...collaborateProjects],
+      }
+    // case "switchProject":
+    //   return { ...state, currentProjectID: action.payload }
     default:
       return state
   }
 }
 
 export const TagsContext = createContext()
-const TagsProvider = ({ children }) => {
+const TagsProvider = ({ children, userID }) => {
   const [state, dispatch] = useAsyncReducer(tagReducer, initialTagState)
-
+  console.log(state)
   useEffect(() => {
+    console.log("run initial tags")
+    dispatch({ type: "getAllProjects" })
     dispatch({ type: "getInitialTags" })
+    dispatch({ type: "getProjectList", payload: { userID } })
   }, [])
+  useEffect(() => {}, [])
+  useEffect(() => {}, [])
 
   return <TagsContext.Provider value={[state, dispatch]}>{children}</TagsContext.Provider>
 }
 
 TagsProvider.propTypes = {
   children: any,
-  projectID: string,
+  userID: string,
 }
 export default TagsProvider

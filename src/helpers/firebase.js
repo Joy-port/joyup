@@ -17,26 +17,26 @@ import {
 // const analytics = getAnalytics(app)
 
 //joyup
-const firebaseConfig = {
-  apiKey: "AIzaSyAiunsJAkpLkmy1Fg5FOLjYIct1Q-SXzCM",
-  authDomain: "joyup-managment.firebaseapp.com",
-  projectId: "joyup-managment",
-  storageBucket: "joyup-managment.appspot.com",
-  messagingSenderId: "213014992466",
-  appId: "1:213014992466:web:71dd4fcc93b1bb98db718b",
-  measurementId: "G-X689NX3J9C",
-}
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAiunsJAkpLkmy1Fg5FOLjYIct1Q-SXzCM",
+//   authDomain: "joyup-managment.firebaseapp.com",
+//   projectId: "joyup-managment",
+//   storageBucket: "joyup-managment.appspot.com",
+//   messagingSenderId: "213014992466",
+//   appId: "1:213014992466:web:71dd4fcc93b1bb98db718b",
+//   measurementId: "G-X689NX3J9C",
+// }
 
 //test account
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
-//   authDomain: "designworks-project.firebaseapp.com",
-//   projectId: "designworks-project",
-//   storageBucket: "designworks-project.appspot.com",
-//   messagingSenderId: "773350951759",
-//   appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
-//   measurementId: "G-4KNVP5V95N",
-// }
+const firebaseConfig = {
+  apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
+  authDomain: "designworks-project.firebaseapp.com",
+  projectId: "designworks-project",
+  storageBucket: "designworks-project.appspot.com",
+  messagingSenderId: "773350951759",
+  appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
+  measurementId: "G-4KNVP5V95N",
+}
 
 const app = initializeApp(firebaseConfig)
 const defaultTags = [
@@ -139,25 +139,26 @@ const defaultChildren = {
 export const firebase = {
   // auth: getAuth(app),
   db: getFirestore(app),
+  getTotalProjects: async function () {
+    const collectionName = "projects"
+    const projectRef = collection(this.db, collectionName)
+    const totalProjects = []
+    const projectSnapshot = await getDocs(projectRef)
+    projectSnapshot.forEach((item) => {
+      totalProjects.push(item.data())
+    })
+    console.log(totalProjects)
+    return totalProjects
+  },
   getUserProjects: async function (userID) {
     //has problem to fix
     const userCollection = "userProjects"
     const userRef = doc(this.db, userCollection, userID)
-    const projectSnapShot = await getDoc(userRef)
-    const ownerProjects = projectSnapShot.data().ownerProjects
-    const collaborateProjects = projectSnapShot.data().collaborateProjects
-    const ownerProjectArray = []
-    await ownerProjects.forEach(async (id) => {
-      const projectContent = {}
-      const q = query(collection(this.db, "projects"), where("id", "==", id))
-      const projects = await getDocs(q)
-      projects.forEach((doc) => {
-        projectContent.id = doc.id
-        projectContent.title = doc.data().title
-      })
-      ownerProjectArray.push(projectContent)
-    })
-    return [ownerProjectArray, collaborateProjects]
+    const userProjects = await getDoc(userRef)
+    if (!userProjects.exists()) return
+    const ownerProjects = userProjects.data().ownerProjects
+    const collaborateProjects = userProjects.data().collaborateProjects
+    return [ownerProjects, collaborateProjects]
   },
   createNewProject: async function (projectID, projectTitle, userID) {
     //when created project with defaultTags
