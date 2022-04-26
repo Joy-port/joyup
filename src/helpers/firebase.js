@@ -6,11 +6,11 @@ import {
   doc,
   setDoc,
   updateDoc,
+  getDoc,
   getDocs,
   deleteDoc,
   query,
   where,
-  getDoc,
   arrayUnion,
   onSnapshot,
 } from "firebase/firestore"
@@ -149,6 +149,31 @@ export const firebase = {
       })
       callback(dataObject)
     })
+  },
+  getUserSettings: async function (userID) {
+    try {
+      const collectionName = "userSettings"
+      const userSettingsRef = doc(this.db, collectionName, userID)
+      const userDoc = await getDoc(userSettingsRef)
+      console.log(userDoc.exists())
+      if (userDoc.exists()) {
+        return userDoc.data()
+      }
+      return ""
+    } catch (err) {
+      console.error(err)
+    }
+  },
+  editUserSettingsTimer: async function (userID, clockSettings) {
+    try {
+      const collectionName = "userSettings"
+      const userSettingsRef = doc(this.db, collectionName, userID)
+      await updateDoc(userSettingsRef, {
+        clockSettings,
+      })
+    } catch (err) {
+      console.error(err)
+    }
   },
   getTotalProjects: async function () {
     const collectionName = "projects"
