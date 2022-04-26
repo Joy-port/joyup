@@ -1,8 +1,11 @@
-import React, { useContext } from "react"
-import { SettingsContext } from "../reducers/SettingReducer"
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 const TimeSetting = () => {
-  const [state, dispatch] = useContext(SettingsContext)
+  const { timerDuration, workMinutes, breakMinutes } = useSelector(
+    (state) => state.settings
+  )
+  const dispatch = useDispatch()
   const setTimer = (e, type, value) => {
     if (e.key === "Enter") {
       if (!value) {
@@ -21,7 +24,7 @@ const TimeSetting = () => {
   return (
     <>
       <div>
-        <h2 className="text-bold">Timer Duration: {state.timerDuration} minutes</h2>
+        <h2 className="text-bold">Timer Duration: {timerDuration} minutes</h2>
         <input
           type="number"
           onChange={(e) =>
@@ -33,9 +36,9 @@ const TimeSetting = () => {
         />
       </div>
       <div>
-        <h2>Working Time Length: {state.timerDuration * state.workMinutes} minutes</h2>
+        <h2>Working Time Length: {timerDuration * workMinutes} minutes</h2>
         <div className="flex">
-          <h3>{state.timerDuration} X</h3>
+          <h3>{timerDuration} X</h3>
           <input
             type="number"
             onChange={(e) =>
@@ -49,9 +52,9 @@ const TimeSetting = () => {
         </div>
       </div>
       <div>
-        <h2>Break Timer Length: {state.timerDuration * state.breakMinutes} minutes</h2>
+        <h2>Break Timer Length: {timerDuration * breakMinutes} minutes</h2>
         <div className="flex">
-          <h3>{state.timerDuration} X</h3>
+          <h3>{timerDuration} X</h3>
           <input
             type="number"
             onChange={(e) =>

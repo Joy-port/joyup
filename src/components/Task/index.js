@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { SettingsContext } from "../../reducers/SettingReducer"
+import { useDispatch, useSelector } from "react-redux"
 import { TagsContext } from "../../reducers/TagsReducer"
 import { TaskContext } from "../../reducers/TaskReducer"
-import { ProjectContext } from "../../reducers/ProjectReducer"
-import { ClockContext } from "../../reducers/ClockReducer"
+// import { ClockContext } from "../../reducers/ClockReducer"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
@@ -13,19 +12,40 @@ import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+const getClockTime = (time) => {
+  let hours = "00"
+  let minutes = "00"
+  let seconds = "00"
+  if (time < 60) {
+    seconds = time
+    seconds = seconds < 10 ? `0${seconds}` : seconds
+  } else if (time > 60 && time < 3600) {
+    minutes = Math.floor(time / 60)
+    minutes = minutes < 10 ? `0${minutes}` : minutes
+    seconds = (time - minutes * 60) % 60
+    seconds = seconds < 10 ? `0${seconds}` : seconds
+  } else if (time > 3600) {
+    hours = Math.floor(time / 3600)
+    hours = hours < 10 ? `0${hours}` : hours
+    minutes = Math.floor((time - hours * 3600) / 60)
+    minutes = minutes < 10 ? `0${minutes}` : minutes
+    seconds = (time - hours * 3600 - minutes * 60) / 60
+    seconds = seconds < 10 ? `0${seconds}` : seconds
+  }
+  return `${hours}:${minutes}:${seconds}`
+}
+
 const index = () => {
+  const { totalSpendingSeconds, workNumbers } = useSelector((state) => state.clock)
   const [state, dispatch] = useContext(TaskContext)
   const [tagState, tagDispatch] = useContext(TagsContext)
   const { taskID } = useParams()
   const navigation = useNavigate()
-  const [{ workNumbers }, clockSettingDispatch] = useContext(SettingsContext)
-  const { totalSpendingTime } = useContext(ClockContext)
   const [dueDate, setDueDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
   const { types } = tagState
   const { tags } = state
-  const [projectState, projectDispatch] = useContext(ProjectContext)
-  const { projectList, currentProjectID } = projectState
+  const { ownerProjectList, selectedProjectID } = tagState
   useEffect(() => {
     dispatch({ type: "setTaskID", payload: taskID })
   }, [taskID])
@@ -56,15 +76,15 @@ const index = () => {
           X
         </button>
         <select
-          value={currentProjectID}
+          value={selectedProjectID}
           onChange={(e) => {
-            console.log(e.target.value, currentProjectID)
+            console.log(e.target.value, selectedProjectID)
             projectDispatch({ type: "switchProject", payload: e.target.value })
             tagDispatch({ type: "switchProject", payload: { pid: e.target.value } })
           }}
         >
-          {projectList &&
-            projectList.map((item) => {
+          {ownerProjectList &&
+            ownerProjectList.map((item) => {
               return (
                 <option key={item.id} value={item.id}>
                   {item.title}
@@ -119,8 +139,8 @@ const index = () => {
             <Link to={`/clock/${taskID}`} className="bg-orange text-white">
               OpenClock
             </Link>
-            <p>Total Time Spent: {totalSpendingTime}</p>
-            <p>Already had Tomatos: {workNumbers}</p>
+            <p>Total Time Spent: {getClockTime(totalSpendingSeconds)}</p>
+            <p>Already Run Tomatos: {workNumbers}</p>
             <select
               name="number"
               value={state.requiredClockNumber || -1}

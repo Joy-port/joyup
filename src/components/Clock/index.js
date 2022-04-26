@@ -1,25 +1,49 @@
 import React, { useContext, useEffect, useRef } from "react"
 import { Link, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
-import { SettingsContext } from "../../reducers/SettingReducer"
-import { ClockContext } from "../../reducers/ClockReducer"
+import { useDispatch, useSelector } from "react-redux"
+
+const getClockTime = (time) => {
+  let hours = "00"
+  let minutes = "00"
+  let seconds = "00"
+  if (time < 60) {
+    seconds = time
+    seconds = seconds < 10 ? `0${seconds}` : seconds
+  } else if (time > 60 && time < 3600) {
+    minutes = Math.floor(time / 60)
+    minutes = minutes < 10 ? `0${minutes}` : minutes
+    seconds = (time - minutes * 60) % 60
+    seconds = seconds < 10 ? `0${seconds}` : seconds
+  } else if (time > 3600) {
+    hours = Math.floor(time / 3600)
+    hours = hours < 10 ? `0${hours}` : hours
+    minutes = Math.floor((time - hours * 3600) / 60)
+    minutes = minutes < 10 ? `0${minutes}` : minutes
+    seconds = (time - hours * 3600 - minutes * 60) / 60
+    seconds = seconds < 10 ? `0${seconds}` : seconds
+  }
+  return `${hours}:${minutes}:${seconds}`
+}
 
 const Clock = () => {
-  const [settingState, settingDispatch] = useContext(SettingsContext)
-  const { timerDuration, workMinutes, breakMinutes } = settingState
-  const [clockState, clockDispatch] = useContext(ClockContext)
-  const { isPaused, mode, secondsLeft, workNumbers, breakNumbers } = clockState
+  const { timerDuration, workMinutes, breakMinutes } = useSelector(
+    (state) => state.settings
+  )
+  const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
+    useSelector((state) => state.clock)
+  const dispatch = useDispatch()
   const secondsLeftRef = useRef(secondsLeft)
-
+  const totalTimeRef = useRef(0)
   const { taskID } = useParams()
   const setTimer = (clockType) => {
-    clockDispatch({
+    dispatch({
       type: "addClockNumber",
       payload: { clockType: clockType },
     })
   }
   const clockStatus = (type, status) => {
-    clockDispatch({
+    dispatch({
       type: "clockAction",
       payload: { type: type, status: status },
     })
@@ -28,7 +52,6 @@ const Clock = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       if (isPaused) return
-      console.log(mode, secondsLeftRef.current)
       if (secondsLeftRef.current === 0) {
         return switchMode()
       }
@@ -44,8 +67,9 @@ const Clock = () => {
   }, [])
 
   useEffect(() => {
-    // totalTimeRef.current += 1
-    // setTotalSpendingTime(getClockTime(totalTimeRef.current))
+    if (secondsLeft === 3600 || isPaused === true) return
+    totalTimeRef.current += 1
+    dispatch({ type: "calculateTotalTime", payload: totalTimeRef.current })
   }, [secondsLeft])
 
   const switchMode = () => {
@@ -66,28 +90,6 @@ const Clock = () => {
     secondsLeftRef.current =
       mode === 0 ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
     clockStatus("secondsLeft", secondsLeftRef.current)
-  }
-  const getClockTime = (time) => {
-    let hours = "00"
-    let minutes = "00"
-    let seconds = "00"
-    if (time < 60) {
-      seconds = time
-      seconds = seconds < 10 ? `0${seconds}` : seconds
-    } else if (time > 60 && time < 3600) {
-      minutes = Math.floor(time / 60)
-      minutes = minutes < 10 ? `0${minutes}` : minutes
-      seconds = (time - minutes * 60) % 60
-      seconds = seconds < 10 ? `0${seconds}` : seconds
-    } else if (time > 3600) {
-      hours = Math.floor(time / 3600)
-      hours = hours < 10 ? `0${hours}` : hours
-      minutes = Math.floor((time - hours * 3600) / 60)
-      minutes = minutes < 10 ? `0${minutes}` : minutes
-      seconds = (time - hours * 3600 - minutes * 60) / 60
-      seconds = seconds < 10 ? `0${seconds}` : seconds
-    }
-    return `${hours}:${minutes}:${seconds}`
   }
   const TimerContent = {
     textColor: "#000",
@@ -119,8 +121,6 @@ const Clock = () => {
               <button
                 onClick={() => {
                   clockStatus("isPaused", false)
-                  // setIsPaused(false)
-                  // isPausedRef.current = false
                 }}
               >
                 Play
@@ -136,7 +136,7 @@ const Clock = () => {
               </button>
               <h3>work time: {workNumbers}</h3>
               <h3>break time: {breakNumbers}</h3>
-              {/* <h3>Total Time Spent:{totalSpendingTime} </h3> */}
+              <h3>Total Time Spent:{getClockTime(totalSpendingSeconds)},</h3>
             </div>
             <div className="flex gap-4">
               <Link to="/settings" className="button">

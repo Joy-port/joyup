@@ -1,10 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit"
-import clockReducer from "../features/clock"
-import taskReducer from "../features/task"
+import { createStore, applyMiddleware } from "redux"
+import thunk from "redux-thunk"
+import rootReducer from "../sliceReducers"
 
-export const store = configureStore({
-  reducer: {
-    clock: clockReducer,
-    task: taskReducer,
-  },
-})
+export const store = createStore(rootReducer, applyMiddleware(thunk))
