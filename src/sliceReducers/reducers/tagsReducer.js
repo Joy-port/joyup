@@ -9,15 +9,30 @@ const initialTagState = {
   selectedColumnOrder: [],
   totalTagTasks: [],
   selectedProjectTagsOrderList: {},
-  totalProjectList: [],
   ownerProjectList: [],
   collaborateProjectList: [],
+  totalTaskList: {},
+  totalTagList: {},
+  totalProjectList: {},
 }
 
 async function tagsReducer(state = initialTagState, action) {
-  console.log("state", state)
-  console.log("action", action)
   switch (action.type) {
+    case "projects/updateProjects":
+      return {
+        ...state,
+        totalProjectList: { ...action.payload },
+      }
+    case "tags/updateTagsDetail":
+      return {
+        ...state,
+        totalTagList: { ...action.payload },
+      }
+    case "tasks/updateAllTasks":
+      return {
+        ...state,
+        totalTaskList: { ...action.payload },
+      }
     // case "getTags":
     //   return { ...state, [type]: date }
     case "getInitialTags":

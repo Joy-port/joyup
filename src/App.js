@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
 import { pathInfo, viewInfo } from "./helpers/config"
 import { store } from "./app/store"
@@ -17,6 +17,8 @@ import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
 import ChatRoom from "./pages/ChatRoom"
 import TimeSetting from "./pages/TimeSetting"
+import { useDispatch } from "react-redux"
+import { task } from "./sliceReducers/actions/taskAction"
 
 const components = {
   Home,
@@ -35,6 +37,10 @@ const viewComponents = {
 
 function App() {
   const userID = "dgus0WgwhRr5SOYhTpmi"
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(task.getProjects(userID))
+  }, [])
   console.log("store", store.getState())
   return (
     <TagsProvider userID={userID}>

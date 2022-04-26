@@ -12,6 +12,7 @@ import {
   where,
   getDoc,
   arrayUnion,
+  onSnapshot,
 } from "firebase/firestore"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
@@ -139,6 +140,16 @@ const defaultChildren = {
 export const firebase = {
   // auth: getAuth(app),
   db: getFirestore(app),
+  getRealTimeData: async function (collectionName, callback) {
+    const projectRef = collection(this.db, collectionName)
+    const dataObject = {}
+    onSnapshot(projectRef, { includeMetadataChanges: false }, (projectCollections) => {
+      projectCollections.forEach((project) => {
+        dataObject[project.id] = project.data()
+      })
+      callback(dataObject)
+    })
+  },
   getTotalProjects: async function () {
     const collectionName = "projects"
     const projectRef = collection(this.db, collectionName)
@@ -147,7 +158,6 @@ export const firebase = {
     projectSnapshot.forEach((item) => {
       totalProjects.push(item.data())
     })
-    console.log(totalProjects)
     return totalProjects
   },
   getUserProjects: async function (userID) {

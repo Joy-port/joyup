@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { connect, useDispatch, useSelector } from "react-redux"
 import { TagsContext } from "../../reducers/TagsReducer"
 import { TaskContext } from "../../reducers/TaskReducer"
 // import { ClockContext } from "../../reducers/ClockReducer"
