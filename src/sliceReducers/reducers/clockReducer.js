@@ -8,7 +8,6 @@ const initialClockState = {
   pauseTime: null,
   stopTime: null,
   totalSpendingSeconds: 0,
-  total: 0,
 }
 
 function clockReducer(state = initialClockState, action) {

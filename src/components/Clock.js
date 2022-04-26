@@ -1,35 +1,11 @@
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { Link, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
-
-const getClockTime = (time) => {
-  let hours = "00"
-  let minutes = "00"
-  let seconds = "00"
-  if (time < 60) {
-    seconds = time
-    seconds = seconds < 10 ? `0${seconds}` : seconds
-  } else if (time > 60 && time < 3600) {
-    minutes = Math.floor(time / 60)
-    minutes = minutes < 10 ? `0${minutes}` : minutes
-    seconds = (time - minutes * 60) % 60
-    seconds = seconds < 10 ? `0${seconds}` : seconds
-  } else if (time > 3600) {
-    hours = Math.floor(time / 3600)
-    hours = hours < 10 ? `0${hours}` : hours
-    minutes = Math.floor((time - hours * 3600) / 60)
-    minutes = minutes < 10 ? `0${minutes}` : minutes
-    seconds = (time - hours * 3600 - minutes * 60) / 60
-    seconds = seconds < 10 ? `0${seconds}` : seconds
-  }
-  return `${hours}:${minutes}:${seconds}`
-}
+import { getClockTime } from "../helpers/functions"
 
 const Clock = () => {
-  const { timerDuration, workMinutes, breakMinutes } = useSelector(
-    (state) => state.settings
-  )
+  const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
     useSelector((state) => state.clock)
   const dispatch = useDispatch()
@@ -62,7 +38,7 @@ const Clock = () => {
   }, [isPaused, mode, secondsLeft])
 
   useEffect(() => {
-    secondsLeftRef.current = timerDuration * workMinutes * 60
+    secondsLeftRef.current = base * workTime * 60
     clockStatus("secondsLeft", secondsLeftRef.current)
   }, [])
 
@@ -75,7 +51,7 @@ const Clock = () => {
   const switchMode = () => {
     mode === 0 ? setTimer("workNumbers") : setTimer("breakNumbers")
     const nextMode = mode === 0 ? 1 : 0
-    const nextSeconds = (nextMode === 0 ? workMinutes : breakMinutes) * 60 * timerDuration
+    const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60 * base
     secondsLeftRef.current = nextSeconds
     clockStatus("secondsLeft", nextSeconds)
     clockStatus("mode", parseFloat(nextMode))
@@ -87,8 +63,7 @@ const Clock = () => {
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
-    secondsLeftRef.current =
-      mode === 0 ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
+    secondsLeftRef.current = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
     clockStatus("secondsLeft", secondsLeftRef.current)
   }
   const TimerContent = {
@@ -97,10 +72,9 @@ const Clock = () => {
     trailColor: "transparent",
     strokeLinecap: "round",
   }
-  const totalSeconds =
-    mode === 0 ? workMinutes * 60 * timerDuration : breakMinutes * 60 * timerDuration
+  const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
-
+  console.log(secondsLeft)
   const minutes = Math.floor(secondsLeft / 60)
   let seconds = secondsLeft % 60
   if (seconds < 10) seconds = "0" + seconds

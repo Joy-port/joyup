@@ -4,7 +4,7 @@ export const initialTaskState = {
   createdDate: new Date().getTime(),
   startDate: new Date().getTime(),
   dueDate: new Date().getTime(),
-  clockNumber: "",
+  clockNumber: 0,
   requiredNumber: -1,
   location: "",
   parent: "",

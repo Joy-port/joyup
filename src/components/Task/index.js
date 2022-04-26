@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { connect, useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { TagsContext } from "../../reducers/TagsReducer"
 import { TaskContext } from "../../reducers/TaskReducer"
-// import { ClockContext } from "../../reducers/ClockReducer"
+import { getClockTime } from "../../helpers/functions"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
@@ -11,30 +11,6 @@ import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-const getClockTime = (time) => {
-  let hours = "00"
-  let minutes = "00"
-  let seconds = "00"
-  if (time < 60) {
-    seconds = time
-    seconds = seconds < 10 ? `0${seconds}` : seconds
-  } else if (time > 60 && time < 3600) {
-    minutes = Math.floor(time / 60)
-    minutes = minutes < 10 ? `0${minutes}` : minutes
-    seconds = (time - minutes * 60) % 60
-    seconds = seconds < 10 ? `0${seconds}` : seconds
-  } else if (time > 3600) {
-    hours = Math.floor(time / 3600)
-    hours = hours < 10 ? `0${hours}` : hours
-    minutes = Math.floor((time - hours * 3600) / 60)
-    minutes = minutes < 10 ? `0${minutes}` : minutes
-    seconds = (time - hours * 3600 - minutes * 60) / 60
-    seconds = seconds < 10 ? `0${seconds}` : seconds
-  }
-  return `${hours}:${minutes}:${seconds}`
-}
-
 const index = () => {
   const { totalSpendingSeconds, workNumbers } = useSelector((state) => state.clock)
   const [state, dispatch] = useContext(TaskContext)
