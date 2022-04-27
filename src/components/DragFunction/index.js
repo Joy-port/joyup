@@ -1,19 +1,18 @@
-import React, { useCallback, useContext, useState } from "react"
+import React, { useCallback } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
-import { TaskContext } from "../../reducers/TaskReducer"
-import { TagsContext } from "../../reducers/TagsReducer"
+import { useDispatch, useSelector } from "react-redux"
 import Column from "./components/Column"
+import { tags } from "../../sliceReducers/actions/tagsAction"
 
 const index = ({ type }) => {
-  const [taskState, taskDispatch] = useContext(TaskContext)
-  const [tagsState, tagsDispatch] = useContext(TagsContext)
   const {
     selectedTagColumns,
     selectedColumnOrder,
     selectedTagTasks,
     selectedType,
     noneTagTasks,
-  } = tagsState
+  } = useSelector((state) => state.tags)
+  const dispatch = useDispatch()
   const onDragEnd = useCallback((result) => {
     const { destination, draggableId, source } = result
     if (!destination) return
@@ -34,15 +33,7 @@ const index = ({ type }) => {
         ...startAtColumn,
         taskIds: newTaskIds,
       }
-      taskDispatch({
-        type: "saveTagsToDB",
-        payload: {
-          parent: selectedType.id,
-          child: finishAtColumn.id,
-          type: selectedType.type,
-        },
-      })
-      tagsDispatch({ type: "switchTagForTask", payload: newColumn })
+      dispatch(tags.updateTagOrder(newColumn))
     } else {
       const startColumnTaskIds = [...startAtColumn.taskIds]
       startColumnTaskIds.splice(source.index, 1)
@@ -58,8 +49,8 @@ const index = ({ type }) => {
       }
       //fix id
       if (newFinishColumn.id === "l0Du2A7l5CUCJLnmRZuP") {
-        taskDispatch({ type: "deleteTag", payload: newStartColumn.id })
-        tagsDispatch({ type: "removeTag", payload: [draggableId, selectedType.id] })
+        // taskDispatch({ type: "deleteTag", payload: newStartColumn.id })
+        // tagsDispatch({ type: "removeTag", payload: [draggableId, selectedType.id] })
       } else {
         const taskContent = {
           taskId: draggableId,
@@ -67,12 +58,9 @@ const index = ({ type }) => {
           child: finishAtColumn.id,
           type: selectedType.type,
         }
-        taskDispatch({
-          type: "saveTagsToDB",
-          payload: taskContent,
-        })
-        tagsDispatch({ type: "switchTagForTask", payload: newStartColumn })
-        tagsDispatch({ type: "switchTagForTask", payload: newFinishColumn })
+        dispatch(tags.updateTagsForTask(taskContent))
+        dispatch(tags.updateTagOrder(newStartColumn))
+        dispatch(tags.updateTagOrder(newFinishColumn))
       }
     }
   })
@@ -86,10 +74,12 @@ const index = ({ type }) => {
             if (!column?.taskIds) {
               return <Column key={column.id} column={column} taskList={column?.taskIds} />
             } else {
-              const taskList = column.taskIds.map((taskId) =>
-                selectedTagTasks.find((task) => task.id === taskId)
-              )
-              return <Column key={column.id} column={column} taskList={taskList} />
+              const taskList = column.taskIds
+                .map((taskId) => selectedTagTasks.find((task) => task.id === taskId))
+                .filter((task) => task !== undefined)
+              if (taskList) {
+                return <Column key={column.id} column={column} taskList={taskList} />
+              }
             }
           })}
       </div>

@@ -94,12 +94,6 @@ function taskReducer(state = initialTaskState, action) {
       // await firebase.saveTagsToProjectIDfromTask(content)
 
       return state
-    case "getTask":
-      return state
-    case "saveTagsToDB":
-      const tagContent = action.payload
-      // await firebase.saveTaskTags(tagContent)
-      return state
     default:
       return state
   }

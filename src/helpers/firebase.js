@@ -222,11 +222,12 @@ export const firebase = {
       console.error(error)
     }
   },
-  saveTagsToProjectIDfromTask: async function (content) {
+  saveTagsToProjectID: async function (content) {
     const { parentTag, childTag, taskID, projectID, index } = content
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
+
     if (!projectTags.data()[childTag]) {
       await updateDoc(projectRef, {
         [childTag]: [],

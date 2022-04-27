@@ -1,6 +1,7 @@
 import { string } from "prop-types"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { tags } from "../../sliceReducers/actions/tagsAction"
 import DragFunction from "../DragFunction"
 
 const List = ({ type }) => {
@@ -13,7 +14,7 @@ const List = ({ type }) => {
           <p>group by</p>
           <select
             value={selectedType.id || -1}
-            onChange={(e) => dispatch({ type: "switchType", payload: e.target.value })}
+            onChange={(e) => dispatch(tags.switchType(e.target.value))}
           >
             <option value={-1}>please select</option>
             {types.map((type) => (
@@ -24,7 +25,7 @@ const List = ({ type }) => {
           </select>
         </div>
       </div>
-      {/* <DragFunction type={type} /> */}
+      <DragFunction type={type} />
     </div>
   )
 }
