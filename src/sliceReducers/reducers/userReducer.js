@@ -9,16 +9,16 @@ const initialUserState = {
 
 function userReducer(state = initialUserState, action) {
   switch (action.type) {
-    case "getUserProjectList":
+    case "user/getUserProjectList":
       return { ...state, userProjects: [...action.payload] }
-    case "getUserOwnProjectList":
-      const [ownProjects, collaborateProjects] = action.payload
+    case "user/getUserOwnProjectList":
+      const { ownerProjects, collaborateProjects } = action.payload
       return {
         ...state,
-        ownerProjects: [...ownProjects],
+        ownerProjects: [...ownerProjects],
         collaborateProjects: [...collaborateProjects],
       }
-    case "receiveInvitationProjectList":
+    case "user/receiveInvitationProjectList":
       return {
         ...state,
         invitationProjects: [...action.payload],

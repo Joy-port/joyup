@@ -5,7 +5,6 @@ export const projects = {
     return async function (dispatch) {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
-          console.log(projects)
           dispatch({ type: "projects/updateProjects", payload: projects })
         })
       } catch (err) {

@@ -9,8 +9,9 @@ const initialTagState = {
   selectedColumnOrder: [],
   totalTagTasks: [],
   selectedProjectTagsOrderList: {},
-  ownerProjectList: [],
-  collaborateProjectList: [],
+  totalTasksToSelect: [],
+  // ownerProjectList: [],
+  // collaborateProjectList: [],
 }
 
 async function tagsReducer(state = initialTagState, action) {

@@ -1,4 +1,6 @@
-export const initialTaskState = {
+const initialTaskState = {
+  id: "",
+  projectID: "",
   title: "",
   description: [],
   createdDate: new Date().getTime(),
@@ -8,26 +10,36 @@ export const initialTaskState = {
   requiredNumber: -1,
   location: "",
   parent: "",
-  id: "",
-  projectID: "8gx8UcCs8cLC8V8s2SMK",
   tags: [],
   totalTime: "",
 }
 
-async function taskReducer(state = initialTaskState, action) {
+function taskReducer(state = initialTaskState, action) {
   switch (action.type) {
+    case "task/selectedProject":
+      return {
+        ...state,
+        projectID: action.payload,
+      }
+    case "task/setTaskID":
+      return {
+        ...state,
+        id: action.payload,
+      }
+    case "task/getTaskDetails":
+      console.log("old task detail", action.payload)
+      return {
+        ...state,
+        ...action.payload,
+      }
     case "editDate":
       const { name, date } = action.payload
-      const { createdDate, dueDate } = state
-      if (createdDate !== dueDate) {
-        firebase.saveTaskPartialContent(state.id, { [name]: date })
-      }
       return { ...state, [name]: date }
     case "editDescription":
       console.log("description", action.payload)
-      if (action.payload.content !== "") {
-        await firebase.saveDescription(state)
-      }
+      // if (action.payload.content !== "") {
+      //   await firebase.saveDescription(state)
+      // }
       return { ...state, description: [...action.payload] }
     case "requiredClock":
       console.log("required clock", action.payload)
@@ -79,14 +91,14 @@ async function taskReducer(state = initialTaskState, action) {
         taskID: state.id,
         projectID: state.projectID,
       }
-      await firebase.saveTagsToProjectIDfromTask(content)
+      // await firebase.saveTagsToProjectIDfromTask(content)
 
       return state
     case "getTask":
       return state
     case "saveTagsToDB":
       const tagContent = action.payload
-      await firebase.saveTaskTags(tagContent)
+      // await firebase.saveTaskTags(tagContent)
       return state
     default:
       return state

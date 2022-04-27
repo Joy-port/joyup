@@ -17,6 +17,7 @@ import ChatRoom from "./pages/ChatRoom"
 import TimeSetting from "./pages/TimeSetting"
 import { useDispatch } from "react-redux"
 import { settings } from "./sliceReducers/actions/settingsAction"
+import { user } from "./sliceReducers/actions/userAction"
 import { projects } from "./sliceReducers/actions/projectAction"
 
 const components = {
@@ -42,6 +43,7 @@ function App() {
     dispatch(projects.updateTags())
     dispatch(projects.updateTasks())
     dispatch(settings.getUserSettings(userID))
+    dispatch(user.getUserProjectList(userID))
   }, [])
   return (
     <TagsProvider userID={userID}>

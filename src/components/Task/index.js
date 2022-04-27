@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import { getClockTime } from "../../helpers/functions"
+import { task } from "../../sliceReducers/actions/taskAction"
 import { TagsContext } from "../../reducers/TagsReducer"
 import { TaskContext } from "../../reducers/TaskReducer"
-import { getClockTime } from "../../helpers/functions"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
@@ -12,35 +13,57 @@ import dayjs from "dayjs"
 
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const index = () => {
+  const { totalTaskList, userProjects } = useSelector((state) => state.user)
+  const { types, ownerProjectList, selectedProjectID } = useSelector(
+    (state) => state.tags
+  )
+  const {
+    id,
+    projectID,
+    title,
+    description,
+    createdDate,
+    startDate,
+    dueDate,
+    clockNumber,
+    requiredNumber,
+    location,
+    parent,
+    tags,
+    totalTime,
+  } = useSelector((state) => state.tasks)
   const { totalSpendingSeconds, workNumbers } = useSelector((state) => state.clock)
-  const [state, dispatch] = useContext(TaskContext)
-  const [tagState, tagDispatch] = useContext(TagsContext)
   const { taskID } = useParams()
   const navigation = useNavigate()
-  const [dueDate, setDueDate] = useState(new Date())
-  const [startDate, setStartDate] = useState(new Date())
-  const { types } = tagState
-  const { tags } = state
-  const { ownerProjectList, selectedProjectID } = tagState
+
+  // const [state, dispatch] = useContext(TaskContext)
+  // const [tagState, tagDispatch] = useContext(TagsContext)
+  // const [dueDate, setDueDate] = useState(new Date())
+  // const [startDate, setStartDate] = useState(new Date())
+  // const { tags } = state
+  // const { ownerProjectList, selectedProjectID } = tagState
+  // const { types } = tagState
   useEffect(() => {
-    dispatch({ type: "setTaskID", payload: taskID })
-  }, [taskID])
-  useEffect(() => {
-    if (dueDate < startDate) {
-      setDueDate(() => {
-        const afterStartDate = startDate
-        return afterStartDate
-      })
+    if (id === "") {
+      dispatch(task.checkTaskIDToOpen(taskID))
     }
-  }, [startDate, setStartDate])
-  useEffect(() => {
-    const date = new Date(startDate).getTime()
-    dispatch({ type: "editDate", payload: { name: "startDate", date: date } })
-  }, [startDate])
-  useEffect(() => {
-    const date = new Date(startDate).getTime()
-    dispatch({ type: "editDate", payload: { name: "dueDate", date: date } })
-  }, [dueDate])
+  }, [taskID])
+  // useEffect(() => {
+  //   if (dueDate < startDate) {
+  //     setDueDate(() => {
+  //       const afterStartDate = startDate
+  //       return afterStartDate
+  //     })
+  //   }
+  // }, [startDate, setStartDate])
+  // useEffect(() => {
+  //   const date = new Date(startDate).getTime()
+  //   dispatch({ type: "editDate", payload: { name: "startDate", date: date } })
+  // }, [startDate])
+  // useEffect(() => {
+  //   const date = new Date(startDate).getTime()
+  //   dispatch({ type: "editDate", payload: { name: "dueDate", date: date } })
+  // }, [dueDate])
 
   return (
     <>

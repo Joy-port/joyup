@@ -190,10 +190,10 @@ export const firebase = {
     const userCollection = "userProjects"
     const userRef = doc(this.db, userCollection, userID)
     const userProjects = await getDoc(userRef)
-    if (!userProjects.exists()) return
-    const ownerProjects = userProjects.data().ownerProjects
-    const collaborateProjects = userProjects.data().collaborateProjects
-    return [ownerProjects, collaborateProjects]
+    if (!userProjects.exists()) return {}
+    const ownerProjects = userProjects.data().ownerProjects || []
+    const collaborateProjects = userProjects.data().collaborateProjects || []
+    return { ownerProjects, collaborateProjects }
   },
   createNewProject: async function (projectID, projectTitle, userID) {
     //when created project with defaultTags
