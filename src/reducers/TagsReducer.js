@@ -450,13 +450,11 @@ async function tagReducer(state = initialTagState, action) {
 export const TagsContext = createContext()
 const TagsProvider = ({ children, userID }) => {
   const [state, dispatch] = useAsyncReducer(tagReducer, initialTagState)
-  useEffect(() => {
-    dispatch({ type: "getAllProjects" })
-    dispatch({ type: "getInitialTags" })
-    dispatch({ type: "getProjectList", payload: { userID } })
-  }, [])
-  useEffect(() => {}, [])
-  useEffect(() => {}, [])
+  // useEffect(() => {
+  //   dispatch({ type: "getAllProjects" })
+  //   dispatch({ type: "getInitialTags" })
+  //   dispatch({ type: "getProjectList", payload: { userID } })
+  // }, [])
 
   return <TagsContext.Provider value={[state, dispatch]}>{children}</TagsContext.Provider>
 }

@@ -788,6 +788,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .task-container {
   overflow-y: auto;
+  --tw-bg-opacity: 1;
+  background-color: rgb(132 146 166 / var(--tw-bg-opacity));
 }
 .view-list {
   display: flex;

@@ -240,6 +240,7 @@ export const firebase = {
   saveTaskOrder: async function (projectID, columnContent) {
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
+    // const projectDoc = await getDoc(projectRef)
     await updateDoc(projectRef, {
       [columnContent.id]: columnContent.taskIds,
     })

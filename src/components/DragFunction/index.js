@@ -5,13 +5,8 @@ import Column from "./components/Column"
 import { tags } from "../../sliceReducers/actions/tagsAction"
 
 const index = ({ type }) => {
-  const {
-    selectedTagColumns,
-    selectedColumnOrder,
-    selectedTagTasks,
-    selectedType,
-    noneTagTasks,
-  } = useSelector((state) => state.tags)
+  const { selectedTagColumns, selectedColumnOrder, selectedTagTasks, selectedType } =
+    useSelector((state) => state.tags)
   const dispatch = useDispatch()
   const onDragEnd = useCallback((result) => {
     const { destination, draggableId, source } = result
@@ -47,21 +42,16 @@ const index = ({ type }) => {
         ...finishAtColumn,
         taskIds: finishColumnTaskIds,
       }
-      //fix id
-      if (newFinishColumn.id === "l0Du2A7l5CUCJLnmRZuP") {
-        // taskDispatch({ type: "deleteTag", payload: newStartColumn.id })
-        // tagsDispatch({ type: "removeTag", payload: [draggableId, selectedType.id] })
-      } else {
-        const taskContent = {
-          taskId: draggableId,
-          parent: selectedType.id,
-          child: finishAtColumn.id,
-          type: selectedType.type,
-        }
-        dispatch(tags.updateTagsForTask(taskContent))
-        dispatch(tags.updateTagOrder(newStartColumn))
-        dispatch(tags.updateTagOrder(newFinishColumn))
+      console.log("drag", newStartColumn.taskIds, newFinishColumn.taskIds)
+      const taskContent = {
+        taskId: draggableId,
+        parent: selectedType.id,
+        child: finishAtColumn.id,
+        type: selectedType.type,
       }
+      dispatch(tags.updateTagsForTask(taskContent))
+      dispatch(tags.updateTagOrder(newStartColumn))
+      dispatch(tags.updateTagOrder(newFinishColumn))
     }
   })
 

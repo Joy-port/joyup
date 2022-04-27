@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, Outlet } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { css } from "@emotion/react"
 import PuffLoader from "react-spinners/ClipLoader"
 import { tags } from "../../sliceReducers/actions/tagsAction"
@@ -8,7 +8,7 @@ import { tags } from "../../sliceReducers/actions/tagsAction"
 const override = css`
   display: block;
   margin: 0 auto;
-  border-color: red;
+  border-color: slateLight;
 `
 
 const ProjectList = () => {
@@ -24,7 +24,7 @@ const ProjectList = () => {
   return (
     <>
       {JSON.stringify(totalProjectList) === "{}" ? (
-        <PuffLoader loading={isLoading} css={override} size={150} />
+        <PuffLoader color="slateLight" loading={isLoading} css={override} size={150} />
       ) : (
         <>
           <div className="heading-four">Your Projects</div>

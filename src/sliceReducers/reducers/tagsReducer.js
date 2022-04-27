@@ -4,7 +4,6 @@ const initialTagState = {
   selectedType: {},
   selectedTagColumns: {},
   selectedTagTasks: [],
-  noneTagTasks: [],
   selectedColumnOrder: [],
   selectedProjectTagsOrderList: {},
   selectedProjectTaskList: {},
@@ -26,11 +25,6 @@ function tagsReducer(state = initialTagState, action) {
       return {
         ...state,
         types: [...action.payload],
-        // selectedType: { ...initialTypeData },
-        // selectedTagColumns: { ...selectedColumns },
-        // selectedTagTasks: selectedTasks,
-        // selectedColumnOrder: [...selectedColumnOrder],
-        // noneTagTasks: noneTask,
       }
     case "tags/switchType":
       const { selectedTypeData, selectedColumns, selectedTasks, selectedColumnOrder } =
@@ -43,18 +37,10 @@ function tagsReducer(state = initialTagState, action) {
         selectedColumnOrder: [...selectedColumnOrder],
         // noneTagTasks: noneGroupTask,
       }
-    case "switchProject":
-      const { pid } = action.payload
-      return { ...state, selectedProjectID: pid }
-    case "getProjectTasks":
-      const selectedProjectID = "8gx8UcCs8cLC8V8s2SMK"
-      // const allTasks = await firebase.getProjectTasks(selectedProjectID)
-      return { ...state, selectedTagTasks: allTasks }
     case "tags/switchTaskOrders":
       const columnContent = { ...action.payload }
       const { selectedTagColumns } = state
       selectedTagColumns[columnContent.id].taskIds = [...columnContent.taskIds]
-      console.log(selectedTagColumns)
       return { ...state, selectedTagColumns }
     case "removeTag":
       const [removedTaskID, removedTagId] = action.payload

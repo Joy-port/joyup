@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../../helpers/functions"
 import { task } from "../../sliceReducers/actions/taskAction"
-import { TagsContext } from "../../reducers/TagsReducer"
-import { TaskContext } from "../../reducers/TaskReducer"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
@@ -14,9 +12,8 @@ import dayjs from "dayjs"
 const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const index = () => {
   const { totalTaskList, userProjects } = useSelector((state) => state.user)
-  const { types, ownerProjectList, selectedProjectID } = useSelector(
-    (state) => state.tags
-  )
+  const { totalProjectList } = useSelector((state) => state.projects)
+  const { types } = useSelector((state) => state.tags)
   const {
     id,
     projectID,
@@ -36,8 +33,6 @@ const index = () => {
   const { taskID } = useParams()
   const navigation = useNavigate()
 
-  // const [state, dispatch] = useContext(TaskContext)
-  // const [tagState, tagDispatch] = useContext(TagsContext)
   // const [dueDate, setDueDate] = useState(new Date())
   // const [startDate, setStartDate] = useState(new Date())
   // const { tags } = state
@@ -68,25 +63,23 @@ const index = () => {
   return (
     <>
       <div className="task-container">
-        <button
-          className="block text-white font-semibold self-end"
-          onClick={() => navigation(-1)}
-        >
+        <button className="self-end" onClick={() => navigation(-1)}>
           X
         </button>
         <select
-          value={selectedProjectID}
+          value={projectID}
           onChange={(e) => {
-            console.log(e.target.value, selectedProjectID)
-            projectDispatch({ type: "switchProject", payload: e.target.value })
-            tagDispatch({ type: "switchProject", payload: { pid: e.target.value } })
+            dispatch({ type: "task/selectedProject", payload: e.target.value })
+            // projectDispatch({ type: "switchProject", payload: e.target.value })
+            // tagDispatch({ type: "switchProject", payload: { pid: e.target.value } })
           }}
         >
-          {ownerProjectList &&
-            ownerProjectList.map((item) => {
+          {userProjects &&
+            userProjects.map((projectID) => {
+              const projectDetail = totalProjectList[projectID]
               return (
-                <option key={item.id} value={item.id}>
-                  {item.title}
+                <option key={projectDetail.id} value={projectDetail.id}>
+                  {projectDetail.title}
                 </option>
               )
             })}
@@ -98,33 +91,35 @@ const index = () => {
             <AddSubtask>AddSubtask</AddSubtask>
           </div>
           <div className="flex flex-col gap-3 mt-1">
-            {types.map((item) => (
-              <div key={item.id}>
-                <p>{item.type} </p>
-                <select
-                  value={tags.find((selected) => selected.parent === item.id)?.child}
-                  onChange={(e) => {
-                    const tag = {
-                      parent: item.id,
-                      child: e.target.value,
-                      type: item.type,
-                    }
-                    dispatch({ type: "editTags", payload: tag })
-                    dispatch({
-                      type: "saveTagToProjectTags",
-                      payload: [item.id, e.target.value],
-                    })
-                    console.log(state.tags)
-                  }}
-                >
-                  {item.children.map((tag) => (
-                    <option value={tag.id} key={tag.id}>
-                      {tag.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
+            {types &&
+              types.map((item) => (
+                <div className="flex gap-2 rounded px-2 py-1 bg-white" key={item.id}>
+                  <p className="font-semibold">{item.type} </p>
+                  <select
+                    value={tags.find((selected) => selected.parent === item.id)?.child}
+                    onChange={(e) => {
+                      const tag = {
+                        parent: item.id,
+                        child: e.target.value,
+                        type: item.type,
+                      }
+                      //direct add to firebase
+                      //need to fix
+                      dispatch({ type: "task/editTags", payload: tag })
+                      dispatch({
+                        type: "saveTagToProjectTags",
+                        payload: [item.id, e.target.value],
+                      })
+                    }}
+                  >
+                    {item.children.map((tag) => (
+                      <option value={tag.id} key={tag.id}>
+                        {tag.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
             <p>
               Created date: <br />
               {new Date(state.createdDate).toLocaleString()}
