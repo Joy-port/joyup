@@ -9,7 +9,7 @@ const initialTagState = {
   selectedColumnOrder: [],
   totalTagTasks: [],
   selectedProjectTagsOrderList: {},
-  totalTasksToSelect: [],
+  selectedProjectTaskList: [],
   // ownerProjectList: [],
   // collaborateProjectList: [],
 }

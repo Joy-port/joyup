@@ -1,4 +1,5 @@
 const initialProjectState = {
+  projectList: [],
   totalTaskList: {},
   totalTagList: {},
   totalProjectList: {},
@@ -10,6 +11,7 @@ function projectReducer(state = initialProjectState, action) {
       return {
         ...state,
         totalProjectList: { ...action.payload },
+        projectList: Object.keys(action.payload),
       }
     case "projects/updateTagsDetail":
       return {
