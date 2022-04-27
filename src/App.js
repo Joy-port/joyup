@@ -66,22 +66,23 @@ function App() {
                 return
               }
             })}
-            <Route path="dashboard" element={<Dashboard />}>
-              <Route path=":projectID" element={<ProjectList />} />
-              {viewInfo.map((view, index) => {
-                const Component = viewComponents[view.component]
-                let type = view.type || "none"
-                const isHome = view.path === "list"
-                return (
-                  <Route path={view.path} key={index}>
+            <Route path="dashboard">
+              <Route index element={<ProjectList />} />
+              <Route path=":projectID" element={<Dashboard />}>
+                {viewInfo.map((view, index) => {
+                  const Component = viewComponents[view.component]
+                  let type = view.type || "none"
+                  const isHome = view.path === "list"
+                  return (
                     <Route
                       index={isHome}
-                      path=":projectID"
+                      path={view.path}
+                      key={index}
                       element={<Component type={type} />}
-                    />
-                  </Route>
-                )
-              })}
+                    ></Route>
+                  )
+                })}
+              </Route>
             </Route>
             <Route path="task">
               <Route path=":taskID" element={<Task />} />

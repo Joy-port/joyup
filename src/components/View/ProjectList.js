@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, Outlet } from "react-router-dom"
 import { css } from "@emotion/react"
 import PuffLoader from "react-spinners/ClipLoader"
 
@@ -15,7 +15,12 @@ const ProjectList = () => {
     (state) => state.user
   )
   const { totalProjectList } = useSelector((state) => state.projects)
+  const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.status)
+  const onClick = (projectID) => {
+    dispatch({ type: "tags/selectedProject", payload: projectID })
+    dispatch({ type: "task/selectedProject", payload: projectID })
+  }
   return (
     <>
       {JSON.stringify(totalProjectList) === "{}" ? (
@@ -25,28 +30,32 @@ const ProjectList = () => {
           <div className="heading-four">Your Projects</div>
           {ownerProjects &&
             ownerProjects.map((projectID) => {
+              if (projectID === "") {
+                return
+              }
               const ownerProject = totalProjectList[projectID]
               return (
                 <Link
-                  to={`/dashboard/list/${ownerProject.id}`}
+                  to={`${ownerProject.id}`}
                   key={ownerProject.id}
                   className="task"
+                  onClick={() => onClick(ownerProject.id)}
                 >
                   {ownerProject.title}
                 </Link>
               )
             })}
+          <div className="task cursor-pointer">Create New Project</div>
           <div className="heading-four">Projects collaborate with you</div>
           {collaborateProjects &&
             collaborateProjects.map((projectID) => {
               const collaborateProject = totalProjectList[projectID]
-              !collaborateProject ? (
-                <></>
-              ) : (
+              collaborateProject && (
                 <Link
-                  to={`/dashboard/list/${collaborateProject.id}`}
+                  to={`${collaborateProject.id}`}
                   key={collaborateProject.id}
                   className="task"
+                  onClick={() => onClick(collaborateProject.id)}
                 >
                   {collaborateProject.title}
                 </Link>

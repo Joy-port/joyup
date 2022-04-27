@@ -14,8 +14,13 @@ const initialTagState = {
   // collaborateProjectList: [],
 }
 
-async function tagsReducer(state = initialTagState, action) {
+function tagsReducer(state = initialTagState, action) {
   switch (action.type) {
+    case "tags/selectedProject":
+      return {
+        ...state,
+        selectedProjectID: action.payload,
+      }
     // case "getTags":
     //   return { ...state, [type]: date }
     case "getInitialTags":
@@ -24,9 +29,9 @@ async function tagsReducer(state = initialTagState, action) {
       // const totalProjects = initialTasks
       // connect to firebase
       const projectID = "8gx8UcCs8cLC8V8s2SMK"
-      const totalProjectTasks = await firebase.getProjectTasks(projectID)
-      const defaultTagList = await firebase.getDefaultTags(projectID)
-      const projectTagContent = await firebase.getProjectTags(projectID)
+      // const totalProjectTasks = await firebase.getProjectTasks(projectID)
+      // const defaultTagList = await firebase.getDefaultTags(projectID)
+      // const projectTagContent = await firebase.getProjectTags(projectID)
 
       const newTagList = [...defaultTagList]
       const newSelectedType = newTagList[0]
@@ -85,7 +90,7 @@ async function tagsReducer(state = initialTagState, action) {
       return { ...state, selectedProjectID: pid }
     case "getProjectTasks":
       const selectedProjectID = "8gx8UcCs8cLC8V8s2SMK"
-      const allTasks = await firebase.getProjectTasks(selectedProjectID)
+      // const allTasks = await firebase.getProjectTasks(selectedProjectID)
       return { ...state, selectedTagTasks: allTasks }
     case "switchTagForTask":
       const columnContent = { ...action.payload }
@@ -107,11 +112,11 @@ async function tagsReducer(state = initialTagState, action) {
         noneGroupTask: newNoTagList,
       }
     case "getAllProjects":
-      const totalProjects = await firebase.getTotalProjects()
+      // const totalProjects = await firebase.getTotalProjects()
       return { ...state, totalProjectList: [...totalProjects] }
     case "getProjectList":
       const { userID } = action.payload
-      const [ownerProjects, collaborateProjects] = await firebase.getUserProjects(userID)
+      // const [ownerProjects, collaborateProjects] = await firebase.getUserProjects(userID)
       // projectList: projects, currentProjectID: projects[0]
       // console.log(ownerProjects)
       console.log(ownerProjects, collaborateProjects)

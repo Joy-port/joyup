@@ -17,12 +17,12 @@ export const pathInfo = [
     icon: "Folder",
     component: "Dashboard",
   },
-  {
-    name: "Chat Room",
-    path: "chatroom",
-    icon: "MessageSquare",
-    component: "ChatRoom",
-  },
+  // {
+  //   name: "Chat Room",
+  //   path: "chatroom",
+  //   icon: "MessageSquare",
+  //   component: "ChatRoom",
+  // },
   // {
   //   name: "Document",
   //   path: "document",
