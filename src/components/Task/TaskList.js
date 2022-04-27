@@ -2,15 +2,11 @@ import React, { useState, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
-// import { TagsContext } from "../../reducers/TagsReducer"
-// import { TaskContext } from "../../reducers/TaskReducer"
 
 const TaskList = () => {
-  // const [state, dispatch] = useContext(TaskContext)
-  // const [tagState, tagDispatch] = useContext(TagsContext)
   const dispatch = useDispatch()
-  const { id, projectID } = useSelector((state) => state.task)
-  const { totalTaskList, userProjects } = useSelector((state) => state.user)
+  const { id } = useSelector((state) => state.task)
+  const { totalTaskList } = useSelector((state) => state.user)
   const { totalTasksToSelect } = useSelector((state) => state.tags)
   let navigate = useNavigate()
   const [taskID, setTaskID] = useState("")
@@ -22,15 +18,9 @@ const TaskList = () => {
   useEffect(() => {
     navigate(`/task/${taskID}`)
   }, [taskID])
-  useEffect(() => {
-    console.log(totalTaskList)
-  }, [totalTaskList])
 
   const onChange = (e) => {
-    console.log(e.target.value)
     const taskID = e.target.value
-    // const taskDetail = totalTaskList[taskID]
-    // console.log(taskDetail)
     navigate(`/task/${taskID}`)
   }
   return (

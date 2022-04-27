@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, Outlet } from "react-router-dom"
 import { css } from "@emotion/react"
 import PuffLoader from "react-spinners/ClipLoader"
+import { tags } from "../../sliceReducers/actions/tagsAction"
 
 const override = css`
   display: block;
@@ -18,8 +19,7 @@ const ProjectList = () => {
   const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.status)
   const onClick = (projectID) => {
-    dispatch({ type: "tags/selectedProject", payload: projectID })
-    dispatch({ type: "task/selectedProject", payload: projectID })
+    dispatch(tags.switchProject(projectID))
   }
   return (
     <>

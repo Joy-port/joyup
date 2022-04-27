@@ -1,5 +1,4 @@
 const initialTagState = {
-  // selectedProjectID: "8gx8UcCs8cLC8V8s2SMK",
   selectedProjectID: "",
   types: [],
   selectedType: {},
@@ -7,11 +6,8 @@ const initialTagState = {
   selectedTagTasks: [],
   noneTagTasks: [],
   selectedColumnOrder: [],
-  totalTagTasks: [],
   selectedProjectTagsOrderList: {},
-  selectedProjectTaskList: [],
-  // ownerProjectList: [],
-  // collaborateProjectList: [],
+  selectedProjectTaskList: {},
 }
 
 function tagsReducer(state = initialTagState, action) {
@@ -21,6 +17,30 @@ function tagsReducer(state = initialTagState, action) {
         ...state,
         selectedProjectID: action.payload,
       }
+    case "tags/getProjectTasks":
+      return {
+        ...state,
+        selectedProjectTaskList: { ...action.payload },
+      }
+    case "tags/getProjectInitialTags":
+      const {
+        projectTotalTypes,
+        initialTypeData,
+        selectedColumns,
+        selectedTasks,
+        selectedColumnOrder,
+      } = action.payload
+      console.log(selectedColumnOrder)
+      return {
+        ...state,
+        types: [...projectTotalTypes],
+        selectedType: { ...initialTypeData },
+        selectedTagColumns: { ...selectedColumns },
+        selectedTagTasks: selectedTasks,
+        selectedColumnOrder: [...selectedColumnOrder],
+        // noneTagTasks: noneTask,
+        // selectedProjectTagsOrderList: projectTagContent,
+      }
     // case "getTags":
     //   return { ...state, [type]: date }
     case "getInitialTags":
@@ -28,7 +48,7 @@ function tagsReducer(state = initialTagState, action) {
       // const defaultTagList = initialTotalTags
       // const totalProjects = initialTasks
       // connect to firebase
-      const projectID = "8gx8UcCs8cLC8V8s2SMK"
+      // const projectID = "8gx8UcCs8cLC8V8s2SMK"
       // const totalProjectTasks = await firebase.getProjectTasks(projectID)
       // const defaultTagList = await firebase.getDefaultTags(projectID)
       // const projectTagContent = await firebase.getProjectTags(projectID)

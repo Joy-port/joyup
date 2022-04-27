@@ -1,13 +1,10 @@
 import React from "react"
-import { Link, Outlet, useParams } from "react-router-dom"
-import { v4 as uuidv4 } from "uuid"
+import { Link, Outlet } from "react-router-dom"
 import { viewInfo } from "../helpers/config"
 import { useSelector } from "react-redux"
 
 const Dashboard = () => {
   const state = useSelector((state) => state.tags)
-  const { projectID } = useParams
-  console.log(projectID)
   return (
     <>
       <div className="flex">

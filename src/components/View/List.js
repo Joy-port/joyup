@@ -1,11 +1,11 @@
 import { string } from "prop-types"
-import React, { useContext } from "react"
-import { TagsContext } from "../../reducers/TagsReducer"
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
 import DragFunction from "../DragFunction"
 
 const List = ({ type }) => {
-  const [tagsState, tagsDispatch] = useContext(TagsContext)
-  const { types, selectedType } = tagsState
+  const { types, selectedType } = useSelector((state) => state.tags)
+  const dispatch = useDispatch()
   return (
     <div>
       <div className="flex align-bottom">
@@ -13,9 +13,7 @@ const List = ({ type }) => {
           <p>group by</p>
           <select
             value={selectedType.id || -1}
-            onChange={(e) =>
-              tagsDispatch({ type: "switchType", payload: e.target.value })
-            }
+            onChange={(e) => dispatch({ type: "switchType", payload: e.target.value })}
           >
             <option value={-1}>please select</option>
             {types.map((type) => (
@@ -26,7 +24,7 @@ const List = ({ type }) => {
           </select>
         </div>
       </div>
-      <DragFunction type={type} />
+      {/* <DragFunction type={type} /> */}
     </div>
   )
 }
