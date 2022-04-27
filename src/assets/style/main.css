@@ -463,6 +463,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .gap-3 {
   gap: 0.75rem;
 }
+.gap-2 {
+  gap: 0.5rem;
+}
 .self-end {
   align-self: flex-end;
 }
@@ -482,6 +485,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(35 39 42 / var(--tw-bg-opacity));
 }
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
 .bg-orange {
   --tw-bg-opacity: 1;
   background-color: rgb(255 120 73 / var(--tw-bg-opacity));
@@ -489,10 +496,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-blue {
   --tw-bg-opacity: 1;
   background-color: rgb(31 182 255 / var(--tw-bg-opacity));
-}
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 .bg-slateLight {
   --tw-bg-opacity: 1;
@@ -789,7 +792,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .task-container {
   overflow-y: auto;
   --tw-bg-opacity: 1;
-  background-color: rgb(132 146 166 / var(--tw-bg-opacity));
+  background-color: rgb(211 220 230 / var(--tw-bg-opacity));
 }
 .view-list {
   display: flex;
@@ -803,6 +806,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .view-board-column {
   width: 24rem;
+}
+.close-button {
+  display: block;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 @media (min-width: 576px) {
 

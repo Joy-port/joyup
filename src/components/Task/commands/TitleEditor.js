@@ -1,16 +1,15 @@
-import React, { useState, useRef, useCallback, useEffect, useContext } from "react"
+import React, { useState, useRef, useCallback, useEffect } from "react"
 import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
-import { TaskContext } from "../../../reducers/TaskReducer"
-import { TagsContext } from "../../../reducers/TagsReducer"
-import { func } from "prop-types"
+import { useDispatch, useSelector } from "react-redux"
+import { task } from "../../../sliceReducers/actions/taskAction"
 
-const TitleEditor = ({ setStartDate, setDueDate }) => {
-  const [state, dispatch] = useContext(TaskContext)
-  const { tags } = state
-  const [tagState, tagDispatch] = useContext(TagsContext)
+const TitleEditor = () => {
+  const { title } = useSelector((state) => state.task)
+  const { types } = useSelector((state) => state.tags)
+  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(true)
-  const [text, setText] = useState("")
+  const [text, setText] = useState(title)
   const [query, setQuery] = useState(null)
   const [tagsQuery, setTagsQuery] = useState(null)
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
@@ -19,7 +18,6 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
   const [isSettingTime, setIsSettingTime] = useState(false)
   const [date, setDate] = useState(new Date())
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
-  const [requiredNumber, setRequiredNumber] = useState(null)
   const [style, setStyle] = useState("heading-one")
   const [isEditingTags, setIsEditingTags] = useState(false)
   const [selectedTagType, setSelectedTagType] = useState(null)
@@ -46,10 +44,10 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       if (!text) return
       if (text.includes("Start")) {
         name = "/Start Date"
-        setStartDate(date)
+        dispatch(task.saveTaskDate("startDate", date))
       } else if (text.includes("Due")) {
         name = "/Due Date"
-        setDueDate(date)
+        dispatch(task.saveTaskDate("dueDate", date))
       }
       setText(() => {
         const selectedDate = dayjs(date).format("MM/DD HH:mm")
@@ -69,7 +67,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       if (!text.includes("Required")) return
       const number = parseFloat(text.split(":")[1].trim())
       if (!number) return
-      dispatch({ type: "requiredClock", payload: number })
+      dispatch(task.saveTaskDetail("requiredNumber", parseFloat(number)))
       setText("")
       setQuery(null)
       deleteSlashCommand()
@@ -116,7 +114,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           const newText = "/Required Clocks:"
           return newText
         })
-        setRequiredNumber(0)
+        dispatch(task.saveTaskDetail("requiredNumber", 0))
       },
     },
     {
@@ -128,7 +126,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           return newText
         })
         setStyle("selected-tag")
-        setSelectedTagType(tagState.types.find((item) => item.type === this.name))
+        setSelectedTagType(types.find((item) => item.type === this.name))
         setSlashCharacterPosition(null)
         setQuery(null)
       },
@@ -142,7 +140,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
           return newText
         })
         setStyle("selected-tag")
-        setSelectedTagType(tagState.types.find((item) => item.type === this.name))
+        setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
       },
@@ -154,12 +152,6 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       },
     },
   ]
-
-  const handleChangeRaw = (value) => {
-    if (value === "tomorrow") {
-      setStartDate(dayjs().add(new Date(), 1))
-    }
-  }
 
   const deleteSlashCommand = useCallback(() => {
     setText((text) => {
@@ -224,7 +216,7 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       type: selectedTagType.type,
     }
     setSelectedTag(tag.id)
-    dispatch({ type: "editTags", payload: tagType })
+    dispatch(task.saveTaskTag(tagType))
     setSelectedTagType(null)
     setText("")
     setStyle("heading-one")
@@ -257,7 +249,8 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
       } else if (selectedTagType !== null) {
         selectTags()
       } else if (slashCharacterPosition === null && selectedTagType === null) {
-        dispatch({ type: "setTitle", payload: text })
+        if (text.trim() === "") return
+        dispatch(task.saveTaskDetail("title", text))
         setIsEditing(false)
         e.stopPropagation()
         e.preventDefault()
@@ -325,11 +318,6 @@ const TitleEditor = ({ setStartDate, setDueDate }) => {
         ))}
     </div>
   )
-}
-
-TitleEditor.propTypes = {
-  setStartDate: func,
-  setDueDate: func,
 }
 
 export default TitleEditor

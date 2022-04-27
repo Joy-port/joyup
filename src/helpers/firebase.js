@@ -223,7 +223,7 @@ export const firebase = {
     }
   },
   saveTagsToProjectID: async function (content) {
-    const { parentTag, childTag, taskID, projectID, index } = content
+    const { childTag, taskID, projectID } = content
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
@@ -235,6 +235,7 @@ export const firebase = {
     }
     await updateDoc(projectRef, {
       [childTag]: arrayUnion(taskID),
+      tasks: arrayUnion(taskID),
     })
   },
   saveTaskOrder: async function (projectID, columnContent) {
@@ -306,38 +307,30 @@ export const firebase = {
       console.error(err)
     }
   },
-  saveTask: async function (state) {
+  saveTask: async function (taskContent) {
     try {
       const collectionName = "tasks"
-      const taskData = {
-        title: state.title,
-        requiredNumber: state.requiredNumber,
-        createdDate: state.createdDate,
-        dueDate: state.dueDate,
-        startDate: state.startDate,
-        location: state.location,
-        id: state.id,
-        projectID: state.projectID,
-        totalTime: state.totalTime,
-        tags: state.tags,
-      }
-      if (state.id) {
-        await setDoc(doc(this.db, collectionName, state.id), taskData)
+      const taskRef = doc(this.db, collectionName, taskContent.id)
+      const taskDoc = await getDoc(taskRef)
+      if (!taskDoc.exists()) {
+        await setDoc(taskRef, { ...taskContent })
+      } else {
+        await updateDoc(taskRef, { ...taskContent })
       }
     } catch (err) {
       console.error(err)
     }
   },
-  saveDescription: async function (state) {
-    const collectionName = "tasks"
-    const subCollectionName = "descriptions"
-    const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
-    const { description } = state
-    description.forEach(async (line) => {
-      const eachLinePosition = doc(...taskIdDescription, line.id)
-      await setDoc(eachLinePosition, line)
-    })
-  },
+  // saveDescription: async function (state) {
+  //   const collectionName = "tasks"
+  //   const subCollectionName = "descriptions"
+  //   const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
+  //   const { description } = state
+  //   description.forEach(async (line) => {
+  //     const eachLinePosition = doc(...taskIdDescription, line.id)
+  //     await setDoc(eachLinePosition, line)
+  //   })
+  // },
   saveTaskPartialContent: async function (stateId, content) {
     try {
       const collectionName = "tasks"

@@ -12,9 +12,7 @@ const override = css`
 `
 
 const ProjectList = () => {
-  const { ownerProjects, collaborateProjects, userProjects } = useSelector(
-    (state) => state.user
-  )
+  const { ownerProjects, collaborateProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.status)

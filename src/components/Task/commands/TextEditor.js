@@ -1,25 +1,14 @@
-import React, { useState, useRef, useEffect, useCallback, useContext } from "react"
-import { TaskContext } from "../../../reducers/TaskReducer"
+import React, { useState, useRef, useEffect, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
-
-const Docs = [
-  {
-    id: uuidv4(),
-    content: "",
-    html: {
-      parent: "",
-      tag: "p",
-      name: "",
-      style: "",
-    },
-  },
-]
+import { task } from "../../../sliceReducers/actions/taskAction"
 
 const TextEditor = () => {
-  const [state, dispatch] = useContext(TaskContext)
+  const { description } = useSelector((state) => state.task)
+  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(true)
-  const [document, setDocument] = useState(Docs)
+  const [document, setDocument] = useState(description)
   const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
   const [text, setText] = useState("")
@@ -69,7 +58,7 @@ const TextEditor = () => {
   }, [deleteSlashCommand])
 
   useEffect(() => {
-    dispatch({ type: "editDescription", payload: [...document] })
+    dispatch(task.saveTaskDetail("editDescription", [...document]))
   }, [document])
 
   const matchingCommands =

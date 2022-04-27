@@ -1,22 +1,34 @@
+import { v4 as uuidv4 } from "uuid"
 const initialTaskState = {
   id: "",
   projectID: "",
   title: "",
-  description: [],
+  description: [
+    {
+      id: uuidv4(),
+      content: "",
+      html: {
+        parent: "",
+        tag: "p",
+        name: "",
+        style: "",
+      },
+    },
+  ],
   createdDate: new Date().getTime(),
   startDate: new Date().getTime(),
   dueDate: new Date().getTime(),
   clockNumber: 0,
   requiredNumber: -1,
+  totalTime: 0,
   location: "",
   parent: "",
   tags: [],
-  totalTime: "",
 }
 
 function taskReducer(state = initialTaskState, action) {
   switch (action.type) {
-    case "task/selectedProject":
+    case "task/projectID":
       return {
         ...state,
         projectID: action.payload,
@@ -32,46 +44,34 @@ function taskReducer(state = initialTaskState, action) {
         ...state,
         ...action.payload,
       }
-    case "editDate":
+    case "task/editDate":
       const { name, date } = action.payload
       return { ...state, [name]: date }
-    case "editDescription":
+    case "task/description":
       console.log("description", action.payload)
       // if (action.payload.content !== "") {
       //   await firebase.saveDescription(state)
       // }
       return { ...state, description: [...action.payload] }
-    case "requiredClock":
-      console.log("required clock", action.payload)
-      firebase.saveTaskPartialContent(state.id, { requiredNumber: action.payload })
+    case "task/requiredNumber":
       return { ...state, requiredNumber: action.payload }
+    case "task/title":
+      console.log(action.payload)
+      return { ...state, title: action.payload }
     case "setTaskID":
       console.log("taskID", action.payload)
       return { ...state, id: action.payload }
-    case "setTitle":
-      if (action.payload === "") return state
-      console.log("title", action.payload)
-      firebase.saveTaskPartialContent(state.id, { title: action.payload })
-      return { ...state, title: action.payload }
-    case "setLocation":
-      console.log("location", action.payload)
+    case "task/location":
       return { ...state, location: action.payload }
     case "task/editTags":
-      const { parent, child } = action.payload
-      let newTagState = state.tags
-      if (state.tags.some((item) => item.parent === parent)) {
-        newTagState.find((item) => item.parent === parent).child = child
-      } else {
-        newTagState.push(action.payload)
-      }
-      return { ...state, tags: [...newTagState] }
+      return { ...state, tags: [...action.payload] }
+    case "task/totalTime":
+      return { ...state, totalTime: action.payload }
+    case "task/clockNumber":
+      return { ...state, clockNumber: action.payload }
     case "deleteTag":
       const leftTags = state.tags.filter((tag) => tag.parent !== action.payload)
       return { ...state, tags: [...leftTags] }
-    case "saveToDataBase":
-      firebase.saveTask(state)
-      firebase.saveDescription(state)
-      return state
     case "createNewTask":
       const newState = {
         ...initialTaskState,

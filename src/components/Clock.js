@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../helpers/functions"
-
+import { task } from "../sliceReducers/actions/taskAction"
 const Clock = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
@@ -24,7 +24,12 @@ const Clock = () => {
       payload: { type: type, status: status },
     })
   }
-
+  useEffect(() => {
+    dispatch(task.saveTaskDetail("totalTime", parseFloat(totalSpendingSeconds)))
+  }, [totalSpendingSeconds])
+  useEffect(() => {
+    dispatch(task.saveTaskDetail("clockNumber", parseFloat(workNumbers)))
+  }, [workNumbers])
   useEffect(() => {
     const timer = setInterval(() => {
       if (isPaused) return
