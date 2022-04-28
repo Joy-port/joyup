@@ -15,7 +15,9 @@ const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = ({ taskOpenType }) => {
   const { totalTaskList, userProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
-  const { types, selectedType, selectedProjectID } = useSelector((state) => state.tags)
+  const { types, selectedColumnOrder, selectedProjectID } = useSelector(
+    (state) => state.tags
+  )
   const {
     id,
     projectID,
@@ -43,6 +45,16 @@ const index = ({ taskOpenType }) => {
   useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
   }, [selectedProjectID])
+  useEffect(() => {
+    types.forEach((type) => {
+      const tag = {
+        parent: type.id,
+        child: type.children[0].id,
+        type: type.type,
+      }
+      dispatch(task.saveTaskTag(tag))
+    })
+  }, [])
   useEffect(() => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
@@ -109,9 +121,10 @@ const index = ({ taskOpenType }) => {
                   <select
                     value={
                       tagList.find((selected) => selected.parent === item.id)?.child ||
-                      null
+                      selectedColumnOrder[0]
                     }
                     onChange={(e) => {
+                      dispatch(tags.switchType(item.type))
                       const tag = {
                         parent: item.id,
                         child: e.target.value,
@@ -120,7 +133,7 @@ const index = ({ taskOpenType }) => {
                       dispatch(task.saveTaskTag(tag))
                     }}
                   >
-                    <option value={null}>select {item.type}</option>
+                    {/* <option value={0}>select {item.type}</option> */}
                     {item.children.map((tag) => (
                       <option value={tag.id} key={tag.id}>
                         {tag.name}
