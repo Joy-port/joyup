@@ -9,10 +9,9 @@ import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
-import { number } from "prop-types"
 
 const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-const index = ({ taskOpenType }) => {
+const index = () => {
   const { totalTaskList, userProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
   const { types, selectedColumnOrder, selectedProjectID } = useSelector(
@@ -131,7 +130,6 @@ const index = ({ taskOpenType }) => {
                       dispatch(task.saveTaskTag(tag))
                     }}
                   >
-                    {/* <option value={0}>select {item.type}</option> */}
                     {item.children.map((tag) => (
                       <option value={tag.id} key={tag.id}>
                         {tag.name}
@@ -198,10 +196,10 @@ const index = ({ taskOpenType }) => {
               className="bg-slateDark text-white px-2 py-1 rounded"
               onClick={() => {
                 dispatch(task.saveTotalTask())
-                navigation("/dashboard")
+                navigation(-1)
               }}
             >
-              {taskOpenType === "0" ? "Create Task" : "Save Task"}
+              Save Task
             </button>
           </div>
         </div>
@@ -209,9 +207,4 @@ const index = ({ taskOpenType }) => {
     </>
   )
 }
-
-index.propTypes = {
-  taskOpenType: number,
-}
-
 export default index

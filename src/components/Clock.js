@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../helpers/functions"
@@ -9,6 +9,7 @@ const Clock = () => {
   const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
     useSelector((state) => state.clock)
   const dispatch = useDispatch()
+  const navigation = useNavigate()
   const secondsLeftRef = useRef(secondsLeft)
   const totalTimeRef = useRef(0)
   const { taskID } = useParams()
@@ -121,9 +122,9 @@ const Clock = () => {
               <Link to="/settings" className="button">
                 Clock Settings
               </Link>
-              <Link to={`/task/${taskID}`} className="button">
+              <div className="button" onClick={() => navigation(-1)}>
                 Back to Task
-              </Link>
+              </div>
             </div>
           </div>
         </div>

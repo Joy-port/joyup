@@ -91,13 +91,14 @@ function App() {
           </Route>
         </Route>
         <Route path="task">
+          <Route index element={<Navigate to="/" replace />} />
           <Route path=":taskID" element={<Task />} />
         </Route>
         <Route path="clock">
+          <Route index element={<Navigate to="/" replace />} />
           <Route path=":taskID" element={<Clock />} />
         </Route>
-        <Route path="task/" element={<Navigate to="/" replace />} />
-        <Route path="clock/" element={<Navigate to="/" replace />} />
+
         {viewInfo.map((view) => (
           <Route
             path={`${view.path}/`}
