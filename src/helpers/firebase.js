@@ -155,7 +155,6 @@ export const firebase = {
       const collectionName = "userSettings"
       const userSettingsRef = doc(this.db, collectionName, userID)
       const userDoc = await getDoc(userSettingsRef)
-      console.log(userDoc.exists())
       if (userDoc.exists()) {
         return userDoc.data()
       }

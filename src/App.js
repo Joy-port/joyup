@@ -38,6 +38,7 @@ function App() {
   const userID = "dgus0WgwhRr5SOYhTpmi"
   const dispatch = useDispatch()
   const projectList = useSelector((state) => state.projects)
+  const { selectedProjectID } = useSelector((state) => state.tags)
   const { ownerProjects } = useSelector((state) => state.user)
   useEffect(() => {
     dispatch(projects.updateProjects())
@@ -49,7 +50,11 @@ function App() {
 
   useEffect(() => {
     if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
-      dispatch(tags.initialProjectData())
+      if (selectedProjectID === "") {
+        dispatch(tags.initialProjectData())
+      } else {
+        dispatch(tags.switchProject(selectedProjectID))
+      }
     }
   }, [projectList, ownerProjects])
 

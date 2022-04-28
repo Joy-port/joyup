@@ -42,7 +42,6 @@ export const task = {
   saveTaskDetail: (type, content) => {
     return async (dispatch, getState) => {
       try {
-        console.log(type, content)
         const { id } = getState().task
         const actionType = `task/${type}`
         dispatch({ type: actionType, payload: content })

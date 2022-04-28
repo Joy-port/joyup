@@ -50,9 +50,9 @@ const DatePick = ({ date, setDate, showType }) => {
     <DatePicker
       showTimeSelect
       showDisabledMonthNavigation
-      minDate={current}
-      minTime={current}
-      maxTime={maxTime}
+      // minDate={current}
+      // minTime={current}
+      // maxTime={maxTime}
       selected={date}
       timeIntervals={30}
       onChange={(date) => {

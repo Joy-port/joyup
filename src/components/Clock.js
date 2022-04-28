@@ -9,7 +9,7 @@ const Clock = () => {
   const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
     useSelector((state) => state.clock)
   const dispatch = useDispatch()
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const secondsLeftRef = useRef(secondsLeft)
   const totalTimeRef = useRef(0)
   const { taskID } = useParams()
@@ -80,7 +80,6 @@ const Clock = () => {
   }
   const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
-  console.log(secondsLeft)
   const minutes = Math.floor(secondsLeft / 60)
   let seconds = secondsLeft % 60
   if (seconds < 10) seconds = "0" + seconds
@@ -88,6 +87,17 @@ const Clock = () => {
   return (
     <>
       <div className="task-container">
+        <button
+          className="self-end"
+          onClick={() => {
+            if (confirm("quit without saving current change?")) {
+              dispatch({ type: "task/clearTaskWithoutSaving" })
+              navigate(-1)
+            }
+          }}
+        >
+          X
+        </button>
         <div className="flex justify-between grow align-middle">
           <div className="w-1/2 my-0">
             <CircularProgressbar
@@ -122,8 +132,20 @@ const Clock = () => {
               <Link to="/settings" className="button">
                 Clock Settings
               </Link>
-              <div className="button" onClick={() => navigation(-1)}>
+              <div
+                className="button"
+                onClick={() => navigate(`/task/${taskID}`, { replace: true })}
+              >
                 Back to Task
+              </div>
+              <div
+                className="button"
+                onClick={() => {
+                  dispatch(task.saveTotalTask())
+                  navigate(-1)
+                }}
+              >
+                Save
               </div>
             </div>
           </div>

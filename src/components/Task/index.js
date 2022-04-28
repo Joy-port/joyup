@@ -32,7 +32,7 @@ const index = () => {
   } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const { taskID } = useParams()
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const [address, setAddress] = useState(location)
   const [calendarStartDate, setCalendarStartDate] = useState(startDate)
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
@@ -82,7 +82,7 @@ const index = () => {
           onClick={() => {
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
-              navigation(-1)
+              navigate(-1)
             }
           }}
         >
@@ -156,9 +156,12 @@ const index = () => {
               setDate={setCalendarDueDate}
               showType={false}
             />
-            <Link to={`/clock/${taskID}`} className="bg-orange text-white">
+            <div
+              className="button"
+              onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
+            >
               OpenClock
-            </Link>
+            </div>
             <p>Total Time Spent: {getClockTime(totalTime)}</p>
             <p>Already Run Clock Numbers: {clockNumber}</p>
             <select
@@ -196,7 +199,7 @@ const index = () => {
               className="bg-slateDark text-white px-2 py-1 rounded"
               onClick={() => {
                 dispatch(task.saveTotalTask())
-                navigation(-1)
+                navigate(-1)
               }}
             >
               Save Task
