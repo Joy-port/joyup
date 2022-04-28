@@ -17,7 +17,8 @@ const initialTaskState = {
   ],
   createdDate: new Date().getTime(),
   startDate: new Date().getTime(),
-  dueDate: new Date().getTime(),
+  dueDate: new Date(new Date().setHours(new Date().getHours() + 1)).getTime(),
+  allDay: false,
   clockNumber: 0,
   requiredNumber: -1,
   totalTime: 0,
@@ -39,7 +40,6 @@ function taskReducer(state = initialTaskState, action) {
         id: action.payload,
       }
     case "task/getTaskDetails":
-      console.log("old task detail", action.payload)
       return {
         ...state,
         ...action.payload,
@@ -48,7 +48,6 @@ function taskReducer(state = initialTaskState, action) {
       const { name, date } = action.payload
       return { ...state, [name]: date }
     case "task/description":
-      console.log("description", action.payload)
       // if (action.payload.content !== "") {
       //   await firebase.saveDescription(state)
       // }
@@ -56,10 +55,8 @@ function taskReducer(state = initialTaskState, action) {
     case "task/requiredNumber":
       return { ...state, requiredNumber: action.payload }
     case "task/title":
-      console.log(action.payload)
       return { ...state, title: action.payload }
     case "setTaskID":
-      console.log("taskID", action.payload)
       return { ...state, id: action.payload }
     case "task/location":
       return { ...state, location: action.payload }

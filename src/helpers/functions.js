@@ -1,3 +1,4 @@
+import moment from "moment"
 export const getClockTime = (time) => {
   let hours = "00"
   let minutes = "00"
@@ -19,4 +20,34 @@ export const getClockTime = (time) => {
     seconds = seconds < 10 ? `0${seconds}` : seconds
   }
   return `${hours}:${minutes}:${seconds}`
+}
+
+export function filterSelectedTypeTags(
+  selectedProject,
+  selectedType,
+  totalTagList,
+  totalTaskList,
+  totalProjectList
+) {
+  const selectedColumns = {}
+  const selectedTasks = []
+  const currentProject = totalProjectList[selectedProject]
+  currentProject[selectedType].forEach((tagID) => {
+    selectedColumns[tagID] = {
+      id: tagID,
+      title: totalTagList[tagID].name,
+      taskIds: currentProject[tagID] || [],
+    }
+    currentProject[tagID].forEach((taskid) => {
+      if (totalTaskList[taskid]) {
+        selectedTasks.push(totalTaskList[taskid])
+      }
+    })
+  })
+
+  return [selectedColumns, selectedTasks]
+}
+
+export function getCalendarTime(timeInNanoSeconds) {
+  return new Date(timeInNanoSeconds)
 }

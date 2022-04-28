@@ -1,30 +1,5 @@
 import { firebase } from "../../helpers/firebase"
-
-function filterSelectedTypeTags(
-  selectedProject,
-  selectedType,
-  totalTagList,
-  totalTaskList,
-  totalProjectList
-) {
-  const selectedColumns = {}
-  const selectedTasks = []
-  const currentProject = totalProjectList[selectedProject]
-  currentProject[selectedType].forEach((tagID) => {
-    selectedColumns[tagID] = {
-      id: tagID,
-      title: totalTagList[tagID].name,
-      taskIds: currentProject[tagID] || [],
-    }
-    currentProject[tagID].forEach((taskid) => {
-      if (totalTaskList[taskid]) {
-        selectedTasks.push(totalTaskList[taskid])
-      }
-    })
-  })
-
-  return [selectedColumns, selectedTasks]
-}
+import { filterSelectedTypeTags } from "../../helpers/functions"
 
 export const tags = {
   initialProjectData: function () {
@@ -32,17 +7,16 @@ export const tags = {
       try {
         //get initial all project Data
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
-        console.log(totalTagList, totalProjectList, totalTaskList)
         const { ownerProjects } = getState().user
         const projectID = ownerProjects[0]
         const initialProject = totalProjectList[projectID]
-        console.log(initialProject)
         const projectTasks = initialProject.tasks
         const projectTaskDetail = {}
         projectTasks.forEach((taskID) => {
           projectTaskDetail[taskID] = {
-            title: totalTaskList[taskID].title,
-            id: totalTaskList[taskID].id,
+            ...totalTaskList[taskID],
+            start: new Date(totalTaskList[taskID].startDate),
+            end: new Date(totalTaskList[taskID].dueDate),
           }
         })
         const projectTotalTagsParent = initialProject.tags
@@ -93,9 +67,8 @@ export const tags = {
         projectTasks.forEach((taskID) => {
           projectTaskDetail[taskID] = {
             ...totalTaskList[taskID],
-            // createdDate: new Date(totalTaskList[taskID].createdDate),
-            // startDate: new Date(totalTaskList[taskID].startDate),
-            // dueDate: new Date(totalTaskList[taskID].dueDate),
+            start: new Date(totalTaskList[taskID].startDate),
+            end: new Date(totalTaskList[taskID].dueDate),
           }
         })
         const projectTotalTagsParent = currentProject.tags
@@ -167,7 +140,6 @@ export const tags = {
     return async (dispatch, getState) => {
       try {
         const { selectedProjectID } = getState().tags
-        console.log(selectedProjectID)
         await firebase.saveTaskOrder(selectedProjectID, taskTagContent)
         dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
       } catch (err) {

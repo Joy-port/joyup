@@ -46,14 +46,18 @@ const index = ({ taskOpenType }) => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
   }, [selectedProjectID])
   useEffect(() => {
-    types.forEach((type) => {
-      const tag = {
-        parent: type.id,
-        child: type.children[0].id,
-        type: type.type,
-      }
-      dispatch(task.saveTaskTag(tag))
-    })
+    if (!totalTaskList[taskID]) {
+      types.forEach((type) => {
+        const tag = {
+          parent: type.id,
+          child: type.children[0].id,
+          type: type.type,
+        }
+        dispatch(task.saveTaskTag(tag))
+      })
+    } else {
+      //set data from totalTaskList[id]
+    }
   }, [])
   useEffect(() => {
     dispatch(task.checkTaskIDToOpen(taskID))
