@@ -1,48 +1,65 @@
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useState, useCallback } from "react"
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
+import { useNavigate } from "react-router-dom"
 
 const localizer = momentLocalizer(moment)
-// const ColoredDateCellWrapper = ({ children }) =>
-//   React.cloneElement(React.Children.only(children), {
-//     style: {
-//       backgroundColor: "lightblue",
-//     },
-//   })
+const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = () => {
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
+  const { totalTaskList } = useSelector((state) => state.projects)
+  // const task = useSelector((state) => state.task)
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
-  // const { components, defaultDate, max, views } = useMemo(
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const onDoubleClickEvent = (e) => {
+    if (totalTaskList[e.id]) {
+      dispatch({ type: "task/openSavedTask", payload: e })
+      navigate(`/task/${e.id}`)
+    }
+  }
+  const handleSelectSlot = useCallback(({ start, end }) => {
+    console.log("start", start)
+    console.log("end", end)
+    // dispatch({ type: "task/openSavedTask", payload: e })
+    // navigate(`/task/${e.id}`)
+    // setEvents((prev) => [...prev, { start, end, title }]) //dispatch
+  })
+
+  // const handleSelectEvent = useCallback((event) => window.alert(event.title), [])
+
+  // const { defaultDate, scrollToTime } = useMemo(
   //   () => ({
-  //     components: {
-  //       timeSlotWrapper: ColoredDateCellWrapper,
-  //     },
-  //     defaultDate: new Date(),
-  //     max: new Date(2035, 12, 31),
-  //     views: Object.keys(Views).map((k) => Views[k]),
+  //     defaultDate: new Date(2015, 3, 12),
+  //     scrollToTime: new Date(1970, 1, 1, 6),
   //   }),
   //   []
   // )
 
   return (
     <div className="">
-      <Calendar
+      <DragDropCalendar
         localizer={localizer}
         defaultDate={new Date()}
         defaultView="month"
         style={{ height: "calc(100vh - 50px)" }}
         startAccessor="start"
         endAccessor="end"
-        // components={components}
-        // defaultDate={defaultDate}
+        selectable
         events={events}
         views={{
           day: true,
           week: true,
           month: true,
         }}
+        onDoubleClickEvent={onDoubleClickEvent}
+        // onSelectEvent={handleSelectEvent}
+        onSelectSlot={handleSelectSlot}
+        // scrollToTime={scrollToTime}
       />
     </div>
   )

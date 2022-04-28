@@ -82,6 +82,8 @@ function taskReducer(state = initialTaskState, action) {
         tagList: [],
       }
       return backToInitialState
+    case "task/openSavedTask":
+      return { ...state, ...action.payload }
     case "saveTagToProjectTags":
       //when created new Tasks
       const [parentTag, childTag] = action.payload

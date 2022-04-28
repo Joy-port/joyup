@@ -37,9 +37,7 @@ const viewComponents = {
 function App() {
   const userID = "dgus0WgwhRr5SOYhTpmi"
   const dispatch = useDispatch()
-  const { projectList, totalTaskList, totalTagList, totalProjectList } = useSelector(
-    (state) => state.projects
-  )
+  const projectList = useSelector((state) => state.projects)
   const { ownerProjects } = useSelector((state) => state.user)
   useEffect(() => {
     dispatch(projects.updateProjects())
@@ -50,16 +48,10 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (
-      JSON.stringify(projectList) !== "{}" &&
-      JSON.stringify(totalTaskList) !== "{}" &&
-      JSON.stringify(totalTagList) !== "{}" &&
-      JSON.stringify(totalProjectList) !== "{}" &&
-      ownerProjects.length !== 0
-    ) {
+    if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
       dispatch(tags.initialProjectData())
     }
-  }, [projectList, totalTaskList, totalTagList, totalProjectList, ownerProjects])
+  }, [projectList, ownerProjects])
 
   return (
     <Routes>

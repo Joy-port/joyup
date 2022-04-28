@@ -39,14 +39,10 @@ const index = ({ taskOpenType }) => {
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
 
   useEffect(() => {
-    //how to set by initial render
-    // dispatch(task.saveTaskTag())
-  }, [])
-  useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
   }, [selectedProjectID])
   useEffect(() => {
-    if (!totalTaskList[taskID]) {
+    if (!totalTaskList?.taskID) {
       types.forEach((type) => {
         const tag = {
           parent: type.id,
@@ -55,8 +51,6 @@ const index = ({ taskOpenType }) => {
         }
         dispatch(task.saveTaskTag(tag))
       })
-    } else {
-      //set data from totalTaskList[id]
     }
   }, [])
   useEffect(() => {

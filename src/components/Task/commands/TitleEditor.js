@@ -44,10 +44,18 @@ const TitleEditor = () => {
       if (!text) return
       if (text.includes("Start")) {
         name = "/Start Date"
-        dispatch(task.saveTaskDate("startDate", date))
+        const dateContent = {
+          name: "startDate",
+          date,
+        }
+        dispatch(task.saveTaskDate(dateContent))
       } else if (text.includes("Due")) {
         name = "/Due Date"
-        dispatch(task.saveTaskDate("dueDate", date))
+        const dateContent = {
+          name: "dueDate",
+          date,
+        }
+        dispatch(task.saveTaskDate(dateContent))
       }
       setText(() => {
         const selectedDate = dayjs(date).format("MM/DD HH:mm")
