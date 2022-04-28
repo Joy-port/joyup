@@ -1,5 +1,5 @@
 const initialStatus = {
-  isLoading: false,
+  isLoading: true,
 }
 
 function statusReducer(state = initialStatus, action) {

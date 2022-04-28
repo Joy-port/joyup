@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../../helpers/functions"
+import { tags } from "../../sliceReducers/actions/tagsAction"
 import { task } from "../../sliceReducers/actions/taskAction"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
@@ -25,7 +26,7 @@ const index = ({ taskOpenType }) => {
     requiredNumber,
     location,
     parent,
-    tags,
+    tagList,
     totalTime,
   } = useSelector((state) => state.task)
   const dispatch = useDispatch()
@@ -46,8 +47,8 @@ const index = ({ taskOpenType }) => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
   useEffect(() => {
-    if (dueDate < startDate) {
-      setDueDate(() => {
+    if (calendarDueDate < calendarStartDate) {
+      setCalendarDueDate(() => {
         const afterStartDate = startDate
         return afterStartDate
       })
@@ -67,7 +68,15 @@ const index = ({ taskOpenType }) => {
   return (
     <>
       <div className="task-container">
-        <button className="self-end" onClick={() => navigation(-1)}>
+        <button
+          className="self-end"
+          onClick={() => {
+            if (confirm("quit without saving current change?")) {
+              dispatch({ type: "task/clearTaskWithoutSaving" })
+              navigation(-1)
+            }
+          }}
+        >
           X
         </button>
         <select
@@ -99,8 +108,8 @@ const index = ({ taskOpenType }) => {
                   <p className="font-semibold">{item.type} </p>
                   <select
                     value={
-                      tags.find((selected) => selected.parent === item.id)?.child ||
-                      types.find((type) => type.id === item.id).children[0].id
+                      tagList.find((selected) => selected.parent === item.id)?.child ||
+                      null
                     }
                     onChange={(e) => {
                       const tag = {
@@ -111,6 +120,7 @@ const index = ({ taskOpenType }) => {
                       dispatch(task.saveTaskTag(tag))
                     }}
                   >
+                    <option value={null}>select {item.type}</option>
                     {item.children.map((tag) => (
                       <option value={tag.id} key={tag.id}>
                         {tag.name}
@@ -177,7 +187,7 @@ const index = ({ taskOpenType }) => {
               className="bg-slateDark text-white px-2 py-1 rounded"
               onClick={() => {
                 dispatch(task.saveTotalTask())
-                navigation(-1)
+                navigation("/dashboard")
               }}
             >
               {taskOpenType === "0" ? "Create Task" : "Save Task"}

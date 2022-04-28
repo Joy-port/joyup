@@ -262,7 +262,7 @@ export const firebase = {
         title: data.title,
         id: doc.id,
         projectID: data.projectID,
-        tags: data.tags,
+        tagList: data.tagList,
       }
       totalTasks.push(requiredData)
     })
@@ -350,13 +350,13 @@ export const firebase = {
       const tag = { ...tagContent }
       delete tag.taskId
       const taskContent = await getDoc(doc(...taskContentRef))
-      const prevTagContent = taskContent.data().tags
+      const prevTagContent = taskContent.data().tagList
       if (prevTagContent.some((item) => item.parent === tag.parent)) {
         const newTagContent = prevTagContent.filter((item) => item.parent !== tag.parent)
         newTagContent.push(tag)
-        await updateDoc(doc(...taskContentRef), { tags: newTagContent })
+        await updateDoc(doc(...taskContentRef), { tagList: newTagContent })
       } else {
-        await updateDoc(doc(...taskContentRef), { tags: arrayUnion(tag) })
+        await updateDoc(doc(...taskContentRef), { tagList: arrayUnion(tag) })
       }
     } catch (err) {
       console.error(err)

@@ -32,10 +32,11 @@ export const tags = {
       try {
         //get initial all project Data
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
-
+        console.log(totalTagList, totalProjectList, totalTaskList)
         const { ownerProjects } = getState().user
         const projectID = ownerProjects[0]
         const initialProject = totalProjectList[projectID]
+        console.log(initialProject)
         const projectTasks = initialProject.tasks
         const projectTaskDetail = {}
         projectTasks.forEach((taskID) => {
@@ -91,8 +92,10 @@ export const tags = {
         const projectTaskDetail = {}
         projectTasks.forEach((taskID) => {
           projectTaskDetail[taskID] = {
-            title: totalTaskList[taskID].title,
-            id: totalTaskList[taskID].id,
+            ...totalTaskList[taskID],
+            // createdDate: new Date(totalTaskList[taskID].createdDate),
+            // startDate: new Date(totalTaskList[taskID].startDate),
+            // dueDate: new Date(totalTaskList[taskID].dueDate),
           }
         })
         const projectTotalTagsParent = currentProject.tags

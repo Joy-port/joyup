@@ -23,7 +23,7 @@ const initialTaskState = {
   totalTime: 0,
   location: "",
   parent: "",
-  tags: [],
+  tagList: [],
 }
 
 function taskReducer(state = initialTaskState, action) {
@@ -64,21 +64,27 @@ function taskReducer(state = initialTaskState, action) {
     case "task/location":
       return { ...state, location: action.payload }
     case "task/editTags":
-      return { ...state, tags: [...action.payload] }
+      return { ...state, tagList: [...action.payload] }
     case "task/totalTime":
       return { ...state, totalTime: action.payload }
     case "task/clockNumber":
       return { ...state, clockNumber: action.payload }
     case "deleteTag":
-      const leftTags = state.tags.filter((tag) => tag.parent !== action.payload)
-      return { ...state, tags: [...leftTags] }
+      const leftTags = state.tagList.filter((tag) => tag.parent !== action.payload)
+      return { ...state, tagList: [...leftTags] }
     case "createNewTask":
       const newState = {
         ...initialTaskState,
         id: action.payload,
-        tags: [],
+        tagList: [],
       }
       return newState
+    case "task/clearTaskWithoutSaving":
+      const backToInitialState = {
+        ...initialTaskState,
+        tagList: [],
+      }
+      return backToInitialState
     case "saveTagToProjectTags":
       //when created new Tasks
       const [parentTag, childTag] = action.payload

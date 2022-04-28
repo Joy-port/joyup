@@ -5,7 +5,6 @@ export const task = {
     return async (dispatch, getState) => {
       const { totalTaskList } = getState().projects
       const taskDetail = totalTaskList[taskID]
-      console.log(taskDetail)
       if (taskDetail === "") {
         //create new task
         dispatch({ type: "task/setTaskID", payload: taskID })
@@ -17,7 +16,7 @@ export const task = {
   saveTaskTag: (tagContent) => {
     return async (dispatch, getState) => {
       try {
-        const newTagState = [...getState().task.tags]
+        const newTagState = [...getState().task.tagList]
         const { parent, child } = tagContent
         if (newTagState.some((item) => item.parent === parent)) {
           newTagState.find((item) => item.parent === parent).child = child
@@ -60,15 +59,16 @@ export const task = {
     return async (dispatch, getState) => {
       try {
         const { task } = getState()
-        console.log(task)
         await firebase.saveTask(task)
-        task.tags.forEach(async (tagContent) => {
+        task.tagList.forEach(async (tagContent) => {
           const content = {
+            parentTag: tagContent.parent,
             childTag: tagContent.child,
             taskID: task.id,
             projectID: task.projectID,
           }
           await firebase.saveTagsToProjectID(content)
+          // await firebase.saveTagsToProjectIDfromTask(content)
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })

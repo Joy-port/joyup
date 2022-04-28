@@ -13,7 +13,7 @@ import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
 import ChatRoom from "./pages/ChatRoom"
 import TimeSetting from "./pages/TimeSetting"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { settings } from "./sliceReducers/actions/settingsAction"
 import { user } from "./sliceReducers/actions/userAction"
 import { projects } from "./sliceReducers/actions/projectAction"
@@ -37,14 +37,29 @@ const viewComponents = {
 function App() {
   const userID = "dgus0WgwhRr5SOYhTpmi"
   const dispatch = useDispatch()
+  const { projectList, totalTaskList, totalTagList, totalProjectList } = useSelector(
+    (state) => state.projects
+  )
+  const { ownerProjects } = useSelector((state) => state.user)
   useEffect(() => {
     dispatch(projects.updateProjects())
     dispatch(projects.updateTags())
     dispatch(projects.updateTasks())
     dispatch(settings.getUserSettings(userID))
     dispatch(user.getUserProjectList(userID))
-    dispatch(tags.initialProjectData())
   }, [])
+
+  useEffect(() => {
+    if (
+      JSON.stringify(projectList) !== "{}" &&
+      JSON.stringify(totalTaskList) !== "{}" &&
+      JSON.stringify(totalTagList) !== "{}" &&
+      JSON.stringify(totalProjectList) !== "{}" &&
+      ownerProjects.length !== 0
+    ) {
+      dispatch(tags.initialProjectData())
+    }
+  }, [projectList, totalTaskList, totalTagList, totalProjectList, ownerProjects])
 
   return (
     <Routes>
