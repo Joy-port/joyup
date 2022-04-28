@@ -6,12 +6,13 @@ import {
   doc,
   setDoc,
   updateDoc,
+  getDoc,
   getDocs,
   deleteDoc,
   query,
   where,
-  getDoc,
   arrayUnion,
+  onSnapshot,
 } from "firebase/firestore"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
@@ -139,25 +140,60 @@ const defaultChildren = {
 export const firebase = {
   // auth: getAuth(app),
   db: getFirestore(app),
+  getRealTimeData: async function (collectionName, callback) {
+    const projectRef = collection(this.db, collectionName)
+    const dataObject = {}
+    onSnapshot(projectRef, { includeMetadataChanges: false }, (projectCollections) => {
+      projectCollections.forEach((project) => {
+        dataObject[project.id] = project.data()
+      })
+      callback(dataObject)
+    })
+  },
+  getUserSettings: async function (userID) {
+    try {
+      const collectionName = "userSettings"
+      const userSettingsRef = doc(this.db, collectionName, userID)
+      const userDoc = await getDoc(userSettingsRef)
+      console.log(userDoc.exists())
+      if (userDoc.exists()) {
+        return userDoc.data()
+      }
+      return ""
+    } catch (err) {
+      console.error(err)
+    }
+  },
+  editUserSettingsTimer: async function (userID, clockSettings) {
+    try {
+      const collectionName = "userSettings"
+      const userSettingsRef = doc(this.db, collectionName, userID)
+      await updateDoc(userSettingsRef, {
+        clockSettings,
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  },
+  getTotalProjects: async function () {
+    const collectionName = "projects"
+    const projectRef = collection(this.db, collectionName)
+    const totalProjects = []
+    const projectSnapshot = await getDocs(projectRef)
+    projectSnapshot.forEach((item) => {
+      totalProjects.push(item.data())
+    })
+    return totalProjects
+  },
   getUserProjects: async function (userID) {
     //has problem to fix
     const userCollection = "userProjects"
     const userRef = doc(this.db, userCollection, userID)
-    const projectSnapShot = await getDoc(userRef)
-    const ownerProjects = projectSnapShot.data().ownerProjects
-    const collaborateProjects = projectSnapShot.data().collaborateProjects
-    const ownerProjectArray = []
-    await ownerProjects.forEach(async (id) => {
-      const projectContent = {}
-      const q = query(collection(this.db, "projects"), where("id", "==", id))
-      const projects = await getDocs(q)
-      projects.forEach((doc) => {
-        projectContent.id = doc.id
-        projectContent.title = doc.data().title
-      })
-      ownerProjectArray.push(projectContent)
-    })
-    return [ownerProjectArray, collaborateProjects]
+    const userProjects = await getDoc(userRef)
+    if (!userProjects.exists()) return {}
+    const ownerProjects = userProjects.data().ownerProjects || []
+    const collaborateProjects = userProjects.data().collaborateProjects || []
+    return { ownerProjects, collaborateProjects }
   },
   createNewProject: async function (projectID, projectTitle, userID) {
     //when created project with defaultTags
@@ -186,11 +222,12 @@ export const firebase = {
       console.error(error)
     }
   },
-  saveTagsToProjectIDfromTask: async function (content) {
-    const { parentTag, childTag, taskID, projectID, index } = content
+  saveTagsToProjectID: async function (content) {
+    const { childTag, taskID, projectID } = content
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
+
     if (!projectTags.data()[childTag]) {
       await updateDoc(projectRef, {
         [childTag]: [],
@@ -198,11 +235,13 @@ export const firebase = {
     }
     await updateDoc(projectRef, {
       [childTag]: arrayUnion(taskID),
+      tasks: arrayUnion(taskID),
     })
   },
   saveTaskOrder: async function (projectID, columnContent) {
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
+    // const projectDoc = await getDoc(projectRef)
     await updateDoc(projectRef, {
       [columnContent.id]: columnContent.taskIds,
     })
@@ -223,7 +262,7 @@ export const firebase = {
         title: data.title,
         id: doc.id,
         projectID: data.projectID,
-        tags: data.tags,
+        tagList: data.tagList,
       }
       totalTasks.push(requiredData)
     })
@@ -268,38 +307,30 @@ export const firebase = {
       console.error(err)
     }
   },
-  saveTask: async function (state) {
+  saveTask: async function (taskContent) {
     try {
       const collectionName = "tasks"
-      const taskData = {
-        title: state.title,
-        requiredNumber: state.requiredNumber,
-        createdDate: state.createdDate,
-        dueDate: state.dueDate,
-        startDate: state.startDate,
-        location: state.location,
-        id: state.id,
-        projectID: state.projectID,
-        totalTime: state.totalTime,
-        tags: state.tags,
-      }
-      if (state.id) {
-        await setDoc(doc(this.db, collectionName, state.id), taskData)
+      const taskRef = doc(this.db, collectionName, taskContent.id)
+      const taskDoc = await getDoc(taskRef)
+      if (!taskDoc.exists()) {
+        await setDoc(taskRef, { ...taskContent })
+      } else {
+        await updateDoc(taskRef, { ...taskContent })
       }
     } catch (err) {
       console.error(err)
     }
   },
-  saveDescription: async function (state) {
-    const collectionName = "tasks"
-    const subCollectionName = "descriptions"
-    const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
-    const { description } = state
-    description.forEach(async (line) => {
-      const eachLinePosition = doc(...taskIdDescription, line.id)
-      await setDoc(eachLinePosition, line)
-    })
-  },
+  // saveDescription: async function (state) {
+  //   const collectionName = "tasks"
+  //   const subCollectionName = "descriptions"
+  //   const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
+  //   const { description } = state
+  //   description.forEach(async (line) => {
+  //     const eachLinePosition = doc(...taskIdDescription, line.id)
+  //     await setDoc(eachLinePosition, line)
+  //   })
+  // },
   saveTaskPartialContent: async function (stateId, content) {
     try {
       const collectionName = "tasks"
@@ -319,13 +350,13 @@ export const firebase = {
       const tag = { ...tagContent }
       delete tag.taskId
       const taskContent = await getDoc(doc(...taskContentRef))
-      const prevTagContent = taskContent.data().tags
+      const prevTagContent = taskContent.data().tagList
       if (prevTagContent.some((item) => item.parent === tag.parent)) {
         const newTagContent = prevTagContent.filter((item) => item.parent !== tag.parent)
         newTagContent.push(tag)
-        await updateDoc(doc(...taskContentRef), { tags: newTagContent })
+        await updateDoc(doc(...taskContentRef), { tagList: newTagContent })
       } else {
-        await updateDoc(doc(...taskContentRef), { tags: arrayUnion(tag) })
+        await updateDoc(doc(...taskContentRef), { tagList: arrayUnion(tag) })
       }
     } catch (err) {
       console.error(err)

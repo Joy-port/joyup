@@ -1,131 +1,177 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { SettingsContext } from "../../reducers/SettingReducer"
-import { TagsContext } from "../../reducers/TagsReducer"
-import { TaskContext } from "../../reducers/TaskReducer"
-import { ProjectContext } from "../../reducers/ProjectReducer"
-import { ClockContext } from "../../reducers/ClockReducer"
+import { useDispatch, useSelector } from "react-redux"
+import { getClockTime } from "../../helpers/functions"
+import { tags } from "../../sliceReducers/actions/tagsAction"
+import { task } from "../../sliceReducers/actions/taskAction"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
+import { number } from "prop-types"
 
-const total = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-const index = () => {
-  const [state, dispatch] = useContext(TaskContext)
-  const [tagState, tagDispatch] = useContext(TagsContext)
+const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const index = ({ taskOpenType }) => {
+  const { totalTaskList, userProjects } = useSelector((state) => state.user)
+  const { totalProjectList } = useSelector((state) => state.projects)
+  const { types, selectedColumnOrder, selectedProjectID } = useSelector(
+    (state) => state.tags
+  )
+  const {
+    id,
+    projectID,
+    createdDate,
+    startDate,
+    dueDate,
+    clockNumber,
+    requiredNumber,
+    location,
+    parent,
+    tagList,
+    totalTime,
+  } = useSelector((state) => state.task)
+  const dispatch = useDispatch()
   const { taskID } = useParams()
   const navigation = useNavigate()
-  const [{ workNumbers }, clockSettingDispatch] = useContext(SettingsContext)
-  const { totalSpendingTime } = useContext(ClockContext)
-  const [dueDate, setDueDate] = useState(new Date())
-  const [startDate, setStartDate] = useState(new Date())
-  const { types } = tagState
-  const { tags } = state
-  const [projectState, projectDispatch] = useContext(ProjectContext)
-  const { projectList, currentProjectID } = projectState
+  const [address, setAddress] = useState(location)
+  const [calendarStartDate, setCalendarStartDate] = useState(startDate)
+  const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
+
   useEffect(() => {
-    dispatch({ type: "setTaskID", payload: taskID })
+    //how to set by initial render
+    // dispatch(task.saveTaskTag())
+  }, [])
+  useEffect(() => {
+    dispatch(task.saveTaskDetail("projectID", selectedProjectID))
+  }, [selectedProjectID])
+  useEffect(() => {
+    types.forEach((type) => {
+      const tag = {
+        parent: type.id,
+        child: type.children[0].id,
+        type: type.type,
+      }
+      dispatch(task.saveTaskTag(tag))
+    })
+  }, [])
+  useEffect(() => {
+    dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
   useEffect(() => {
-    if (dueDate < startDate) {
-      setDueDate(() => {
+    if (calendarDueDate < calendarStartDate) {
+      setCalendarDueDate(() => {
         const afterStartDate = startDate
         return afterStartDate
       })
     }
-  }, [startDate, setStartDate])
+  }, [calendarStartDate])
   useEffect(() => {
-    const date = new Date(startDate).getTime()
-    dispatch({ type: "editDate", payload: { name: "startDate", date: date } })
-  }, [startDate])
+    const date = new Date(calendarStartDate).getTime()
+    const dateContent = { name: "startDate", date }
+    dispatch(task.saveTaskDate(dateContent))
+  }, [calendarStartDate])
   useEffect(() => {
-    const date = new Date(startDate).getTime()
-    dispatch({ type: "editDate", payload: { name: "dueDate", date: date } })
-  }, [dueDate])
+    const date = new Date(calendarDueDate).getTime()
+    const dateContent = { name: "dueDate", date }
+    dispatch(task.saveTaskDate(dateContent))
+  }, [calendarDueDate])
 
   return (
     <>
       <div className="task-container">
         <button
-          className="block text-white font-semibold self-end"
-          onClick={() => navigation(-1)}
+          className="self-end"
+          onClick={() => {
+            if (confirm("quit without saving current change?")) {
+              dispatch({ type: "task/clearTaskWithoutSaving" })
+              navigation(-1)
+            }
+          }}
         >
           X
         </button>
         <select
-          value={currentProjectID}
+          value={projectID}
           onChange={(e) => {
-            console.log(e.target.value, currentProjectID)
-            projectDispatch({ type: "switchProject", payload: e.target.value })
-            tagDispatch({ type: "switchProject", payload: { pid: e.target.value } })
+            dispatch(task.saveTaskDetail("projectID", e.target.value))
           }}
         >
-          {projectList &&
-            projectList.map((item) => {
+          {userProjects &&
+            userProjects.map((projectID) => {
+              const projectDetail = totalProjectList[projectID]
               return (
-                <option key={item.id} value={item.id}>
-                  {item.title}
+                <option key={projectDetail.id} value={projectDetail.id}>
+                  {projectDetail.title}
                 </option>
               )
             })}
         </select>
         <div className="flex flex-col gap-5 md:flex-row">
           <div className="flex flex-col gap-3 w-3/4 mt-1">
-            <TitleEditor setStartDate={setStartDate} setDueDate={setDueDate} />
-            <TextEditor description={state.description} />
+            <TitleEditor />
+            <TextEditor />
             <AddSubtask>AddSubtask</AddSubtask>
           </div>
           <div className="flex flex-col gap-3 mt-1">
-            {types.map((item) => (
-              <div key={item.id}>
-                <p>{item.type} </p>
-                <select
-                  value={tags.find((selected) => selected.parent === item.id)?.child}
-                  onChange={(e) => {
-                    const tag = {
-                      parent: item.id,
-                      child: e.target.value,
-                      type: item.type,
+            {types &&
+              types.map((item) => (
+                <div className="flex gap-2 rounded px-2 py-1 bg-white" key={item.id}>
+                  <p className="font-semibold">{item.type} </p>
+                  <select
+                    value={
+                      tagList.find((selected) => selected.parent === item.id)?.child ||
+                      selectedColumnOrder[0]
                     }
-                    dispatch({ type: "editTags", payload: tag })
-                    dispatch({
-                      type: "saveTagToProjectTags",
-                      payload: [item.id, e.target.value],
-                    })
-                    console.log(state.tags)
-                  }}
-                >
-                  {item.children.map((tag) => (
-                    <option value={tag.id} key={tag.id}>
-                      {tag.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
+                    onChange={(e) => {
+                      dispatch(tags.switchType(item.type))
+                      const tag = {
+                        parent: item.id,
+                        child: e.target.value,
+                        type: item.type,
+                      }
+                      dispatch(task.saveTaskTag(tag))
+                    }}
+                  >
+                    {/* <option value={0}>select {item.type}</option> */}
+                    {item.children.map((tag) => (
+                      <option value={tag.id} key={tag.id}>
+                        {tag.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
             <p>
               Created date: <br />
-              {new Date(state.createdDate).toLocaleString()}
+              {new Date(createdDate).toLocaleString()}
             </p>
             <div>Start Date</div>
-            <p>{dayjs(new Date(state.startDate).getTime()).format("MM/DD HH:mm ")}</p>
-            <DatePicker date={startDate} setDate={setStartDate} showType={false} />
+            <p>{dayjs(new Date(startDate).getTime()).format("MM/DD HH:mm ")}</p>
+            <DatePicker
+              date={calendarStartDate}
+              setDate={setCalendarStartDate}
+              showType={false}
+            />
             <div>Due Date</div>
-            <p>{dayjs(new Date(state.dueDate).getTime()).format("MM/DD HH:mm ")}</p>
-            <DatePicker date={dueDate} setDate={setDueDate} showType={false} />
+            <p>{dayjs(new Date(dueDate).getTime()).format("MM/DD HH:mm ")}</p>
+            <DatePicker
+              date={calendarDueDate}
+              setDate={setCalendarDueDate}
+              showType={false}
+            />
             <Link to={`/clock/${taskID}`} className="bg-orange text-white">
               OpenClock
             </Link>
-            <p>Total Time Spent: {totalSpendingTime}</p>
-            <p>Already had Tomatos: {workNumbers}</p>
+            <p>Total Time Spent: {getClockTime(totalTime)}</p>
+            <p>Already Run Clock Numbers: {clockNumber}</p>
             <select
               name="number"
-              value={state.requiredClockNumber || -1}
+              value={requiredNumber || -1}
               onChange={(e) => {
-                dispatch({ type: "requiredClock", payload: e.target.value })
+                dispatch(
+                  task.saveTaskDetail("requiredNumber", parseFloat(e.target.value))
+                )
               }}
             >
               <option value={-1} disabled>
@@ -140,25 +186,34 @@ const index = () => {
             <input
               type="text"
               placeholder="location"
-              value={state.location}
+              value={address}
               onChange={(e) => {
-                dispatch({ type: "editLocation", payload: e.target.value })
+                setAddress(e.target.value)
+                dispatch(task.saveTaskDetail("location", e.target.value))
+              }}
+              onKeyDown={(e) => {
+                setAddress(e.target.value)
+                dispatch(task.saveTaskDetail("location", e.target.value))
               }}
             />
             <button
               className="bg-slateDark text-white px-2 py-1 rounded"
               onClick={() => {
-                dispatch({ type: "saveToDataBase" })
-                navigation("/") //to home
+                dispatch(task.saveTotalTask())
+                navigation("/dashboard")
               }}
             >
-              Create Task
+              {taskOpenType === "0" ? "Create Task" : "Save Task"}
             </button>
           </div>
         </div>
       </div>
     </>
   )
+}
+
+index.propTypes = {
+  taskOpenType: number,
 }
 
 export default index

@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import { Draggable } from "react-beautiful-dnd"
 import { number, object } from "prop-types"
 import { List } from "react-feather"
@@ -14,7 +15,7 @@ const Task = ({ task, index }) => {
             {...provided.draggableProps}
             ref={provided.innerRef}
           >
-            {task.title}
+            <Link to={`/task/${task.id}`}>{task.title}</Link>
             <div {...provided.dragHandleProps}>
               <List />
             </div>
