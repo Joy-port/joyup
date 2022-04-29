@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../../helpers/functions"
 import { tags } from "../../sliceReducers/actions/tagsAction"
@@ -9,7 +9,7 @@ import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
-import { Clock, X } from "react-feather"
+import { Clock, X, Archive, Save } from "react-feather"
 
 const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = () => {
@@ -228,15 +228,29 @@ const index = () => {
                 }}
               />
             </div>
-            <button
-              className="button button-dark"
-              onClick={() => {
-                dispatch(task.saveTotalTask())
-                navigate(-1)
-              }}
-            >
-              Save Task
-            </button>
+            <div className="flex justify-between gap-2">
+              <button
+                className="button button-dark flex justify-center gap-3 mb-1"
+                onClick={() => {
+                  if (confirm("confirm to delete the task ")) {
+                    dispatch(task.deleteCurrentTask())
+                    navigate(-1)
+                  }
+                }}
+              >
+                <Archive />
+              </button>
+              <button
+                className="button button-dark flex justify-center gap-3 mb-1 grow"
+                onClick={() => {
+                  dispatch(task.saveTotalTask())
+                  navigate(-1)
+                }}
+              >
+                <Save />
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>

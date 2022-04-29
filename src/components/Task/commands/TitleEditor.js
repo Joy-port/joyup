@@ -270,10 +270,10 @@ const TitleEditor = () => {
   }
 
   return (
-    <div className="flex flex-col rounded border-2 border-light300">
+    <div className="flex flex-col rounded border-2 border-transparent ">
       {text !== "" && !isEditing ? (
         <div
-          className="heading-one bg-white px-2 py-1 rounded"
+          className="heading-one bg-light200 text-slateLight px-2 py-1 rounded"
           onClick={() => {
             setIsEditing(true)
             setText(text)

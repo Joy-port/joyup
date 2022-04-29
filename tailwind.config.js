@@ -27,7 +27,7 @@ module.exports = {
       gray: "#8492a6",
       white: "#fff",
       black: "#212121",
-      transparentDark: "#23272A90",
+      transparentDark: "#23272A99",
       transparent: "transparent",
     },
     fontFamily: {
@@ -46,6 +46,13 @@ module.exports = {
         "1/4": "25%",
         "1/2": "50%",
         "3/4": "75%",
+      },
+      zIndex: {
+        60: "60",
+        70: "70",
+        80: "80",
+        90: "90",
+        100: "100",
       },
     },
   },

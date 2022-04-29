@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Calendar, momentLocalizer } from "react-big-calendar"
@@ -8,7 +8,7 @@ import moment from "moment"
 import { task } from "../../sliceReducers/actions/taskAction"
 
 const localizer = momentLocalizer(moment)
-const DragDropCalendar = withDragAndDrop(Calendar)
+// const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = () => {
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
@@ -17,7 +17,9 @@ const index = () => {
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  useEffect(() => {
+    setEvents(Object.values(selectedProjectTaskList))
+  }, [selectedProjectTaskList])
   // const onDoubleClickEvent = (e) => {
   //   if (totalTaskList[e.id]) {
   //     dispatch({ type: "task/openSavedTask", payload: e })
@@ -81,7 +83,7 @@ const index = () => {
 
   return (
     <div className="">
-      <DragDropCalendar
+      <Calendar
         dayLayoutAlgorithm="overlap"
         localizer={localizer}
         defaultDate={new Date()}
@@ -102,7 +104,7 @@ const index = () => {
         onSelectEvent={handleSelectEvent} //onclick once
         onSelectSlot={handleSelectSlot} //add event
         // onEventResize={onEventResize}
-        onEventDrop={onEventDrop}
+        // onEventDrop={onEventDrop}
         // popup //problem will break the view
       />
     </div>

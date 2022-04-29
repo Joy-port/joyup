@@ -1,3 +1,4 @@
+import { async } from "@firebase/util"
 import { firebase } from "../../helpers/firebase"
 export const task = {
   checkTaskIDToOpen: (taskID) => {
@@ -42,6 +43,7 @@ export const task = {
   saveTaskDetail: (type, content) => {
     return async (dispatch, getState) => {
       try {
+        console.log(type, content)
         const { id } = getState().task
         const actionType = `task/${type}`
         dispatch({ type: actionType, payload: content })
@@ -69,6 +71,16 @@ export const task = {
           // await firebase.saveTagsToProjectIDfromTask(content)
         })
       } catch (err) {
+        dispatch({ type: "status/ERROR", payload: err })
+      }
+    }
+  },
+  deleteCurrentTask: () => {
+    return async (dispatch, getState) => {
+      try {
+        const { id, projectID, tagList } = getState().task
+        await firebase.deleteTaskFromTaskAndProjects(id, projectID, tagList)
+      } catch (error) {
         dispatch({ type: "status/ERROR", payload: err })
       }
     }

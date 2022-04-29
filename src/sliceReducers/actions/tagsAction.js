@@ -1,3 +1,4 @@
+import { async } from "@firebase/util"
 import { firebase } from "../../helpers/firebase"
 import { filterSelectedTypeTags } from "../../helpers/functions"
 
@@ -118,6 +119,13 @@ export const tags = {
         const currentProject = totalProjectList[selectedProjectID]
         const selectedTypeData = types.find((type) => type.id === selectedTypeID)
         const selectedColumnOrder = currentProject[selectedTypeID]
+        console.log(
+          selectedProjectID,
+          selectedTypeID,
+          totalTagList,
+          totalTaskList,
+          totalProjectList
+        )
         const [selectedColumns, selectedTasks] = filterSelectedTypeTags(
           selectedProjectID,
           selectedTypeID,

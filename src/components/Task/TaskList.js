@@ -24,7 +24,7 @@ const TaskList = () => {
     navigate(`/task/${taskID}`)
   }
   return (
-    <div className="fixed bottom-5 right-5 ">
+    <div className="fixed bottom-5 right-5 z-100">
       <select
         className="bg-slateDark text-white border-r-2 py-1 px-2"
         value={id}

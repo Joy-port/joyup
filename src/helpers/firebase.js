@@ -13,6 +13,7 @@ import {
   where,
   arrayUnion,
   onSnapshot,
+  arrayRemove,
 } from "firebase/firestore"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
@@ -222,11 +223,29 @@ export const firebase = {
     }
   },
   saveTagsToProjectID: async function (content) {
-    const { childTag, taskID, projectID } = content
+    const { parentTag, childTag, taskID, projectID } = content
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
-
+    //add if new create
+    if (!projectTags.data().tasks.some((item) => item === taskID)) {
+      await updateDoc(projectRef, {
+        tasks: arrayUnion(taskID),
+      })
+    }
+    //delete previous
+    const tagList = [...projectTags.data()[parentTag]]
+    const prevTag = tagList.find((tagID) => {
+      const hasTask = projectTags.data()[tagID].find((task) => task === taskID)
+      if (hasTask) return tagID
+      return ""
+    })
+    if (prevTag !== "") {
+      await updateDoc(projectRef, {
+        [prevTag]: arrayRemove(taskID),
+      })
+    }
+    //add to new
     if (!projectTags.data()[childTag]) {
       await updateDoc(projectRef, {
         [childTag]: [],
@@ -234,7 +253,6 @@ export const firebase = {
     }
     await updateDoc(projectRef, {
       [childTag]: arrayUnion(taskID),
-      tasks: arrayUnion(taskID),
     })
   },
   saveTaskOrder: async function (projectID, columnContent) {
@@ -359,6 +377,35 @@ export const firebase = {
       }
     } catch (err) {
       console.error(err)
+    }
+  },
+  deleteTaskFromTaskAndProjects: async function (taskID, projectID, tagList) {
+    try {
+      console.log(taskID, projectID, tagList)
+      const collectionName = "tasks"
+      const projectCollection = "projects"
+      const taskRef = doc(this.db, collectionName, taskID)
+      await deleteDoc(taskRef)
+
+      const projectRef = doc(this.db, projectCollection, projectID)
+
+      const projectData = await getDoc(projectRef)
+
+      await updateDoc(projectRef, {
+        tasks: arrayRemove(taskID),
+      })
+      const tags = tagList.reduce((total, current) => {
+        total.push(current.child)
+        return total
+      }, [])
+      tags.forEach(async (tagID) => {
+        await updateDoc(projectRef, {
+          [tagID]: arrayRemove(taskID),
+        })
+      })
+      console.log(tags)
+    } catch (error) {
+      console.error(error)
     }
   },
   // saveDefaultTags: async function () {

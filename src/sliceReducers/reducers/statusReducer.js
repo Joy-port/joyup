@@ -10,7 +10,7 @@ function statusReducer(state = initialStatus, action) {
       return { ...state, isLoading: true }
     case "status/ERROR":
       const err = action.payload
-      console.error(err.code, err.message)
+      console.error(err.code, err.message, err)
       return state
     default:
       return state

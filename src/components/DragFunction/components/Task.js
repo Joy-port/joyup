@@ -10,7 +10,7 @@ const Task = ({ task, index }) => {
   const { totalTaskList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const onClick = (taskID) => {
-    const taskDetail = totalTaskList[taskID]
+    const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/task/${task.id}`)
   }
