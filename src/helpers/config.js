@@ -134,6 +134,24 @@ export const TextType = [
   },
 ]
 
+export const defaultTypes = ["BjCJ9brvUXkru0jJYZ6c", "Y3ScZ3EP9hhO7PB0EkJU"]
+
+export const defaultTags = {
+  BjCJ9brvUXkru0jJYZ6c: [
+    "8VKRmmsi1KOm9QtiraSl",
+    "LqoN88hEwKS5ttU283yU",
+    "ZT9kq2hhregSKPmVcEHh",
+    "hH5M4VZKHGyheC4QID2n",
+    "yEFXbvDC5slJxmMVOp3D",
+  ],
+  Y3ScZ3EP9hhO7PB0EkJU: [
+    "l0Du2A7l5CUCJLnmRZuP",
+    "7qzOkGy3a0F6kgDqu5ma",
+    "mkPSjbSrFD7ert0HosMg",
+    "b0htJEJVP9noZU8Tx200",
+  ],
+}
+
 export const create = {
   tags: [
     {
@@ -229,20 +247,8 @@ export const create = {
     title: "",
     users: [],
     tasks: [],
-    tags: ["Y3ScZ3EP9hhO7PB0EkJU", "BjCJ9brvUXkru0jJYZ6c"],
-    Y3ScZ3EP9hhO7PB0EkJU: [
-      "l0Du2A7l5CUCJLnmRZuP",
-      "7qzOkGy3a0F6kgDqu5ma",
-      "mkPSjbSrFD7ert0HosMg",
-      "b0htJEJVP9noZU8Tx200",
-    ],
-    BjCJ9brvUXkru0jJYZ6c: [
-      "8VKRmmsi1KOm9QtiraSl",
-      "LqoN88hEwKS5ttU283yU",
-      "ZT9kq2hhregSKPmVcEHh",
-      "hH5M4VZKHGyheC4QID2n",
-      "yEFXbvDC5slJxmMVOp3D",
-    ],
+    tags: [...defaultTypes],
+    ...defaultTags,
   },
   settings: {
     clockSettings: {

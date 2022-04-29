@@ -1,4 +1,5 @@
-import { create } from "./config"
+import { create, defaultTypes, defaultTags } from "./config"
+import { getTagList } from "./functions"
 import { initializeApp } from "firebase/app"
 import {
   getFirestore,
@@ -41,104 +42,7 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
-const defaultTags = [
-  {
-    createdBy: "0",
-    id: "7qzOkGy3a0F6kgDqu5ma",
-    index: 0,
-    name: "to do",
-    parent: "Y3ScZ3EP9hhO7PB0EkJU",
-    projectID: "",
-    type: "progress",
-  },
-  {
-    createdBy: "0",
-    id: "BjCJ9brvUXkru0jJYZ6c",
-    index: -1,
-    name: "priority",
-    parent: "",
-    projectID: [""],
-    type: "priority",
-  },
-  {
-    createdBy: "0",
-    id: "LqoN88hEwKS5ttU283yU",
-    index: 1,
-    name: "high",
-    parent: "BjCJ9brvUXkru0jJYZ6c",
-    projectID: "",
-    type: "priority",
-  },
-  {
-    createdBy: "0",
-    id: "Y3ScZ3EP9hhO7PB0EkJU",
-    index: -1,
-    name: "progress",
-    parent: "",
-    projectID: [""],
-    type: "progress",
-  },
-  {
-    createdBy: "0",
-    id: "ZT9kq2hhregSKPmVcEHh",
-    index: 2,
-    name: "normal",
-    parent: "BjCJ9brvUXkru0jJYZ6c",
-    projectID: "",
-    type: "priority",
-  },
-  {
-    createdBy: "0",
-    id: "b0htJEJVP9noZU8Tx200",
-    index: 2,
-    name: "done",
-    parent: "Y3ScZ3EP9hhO7PB0EkJU",
-    projectID: "",
-    type: "progress",
-  },
-  {
-    createdBy: "0",
-    id: "hH5M4VZKHGyheC4QID2n",
-    index: 0,
-    name: "urgent",
-    parent: "BjCJ9brvUXkru0jJYZ6c",
-    projectID: "",
-    type: "priority",
-  },
-  {
-    createdBy: "0",
-    id: "mkPSjbSrFD7ert0HosMg",
-    index: 1,
-    name: "in progress",
-    parent: "Y3ScZ3EP9hhO7PB0EkJU",
-    projectID: "",
-    type: "progress",
-  },
-  {
-    createdBy: "0",
-    id: "yEFXbvDC5slJxmMVOp3D",
-    index: 3,
-    name: "low",
-    parent: "BjCJ9brvUXkru0jJYZ6c",
-    projectID: "",
-    type: "priority",
-  },
-]
-const defaultSettings = []
-const defaultParentID = ["BjCJ9brvUXkru0jJYZ6c", "Y3ScZ3EP9hhO7PB0EkJU"]
-const defaultChildren = {
-  BjCJ9brvUXkru0jJYZ6c: [
-    "LqoN88hEwKS5ttU283yU",
-    "ZT9kq2hhregSKPmVcEHh",
-    "hH5M4VZKHGyheC4QID2n",
-    "yEFXbvDC5slJxmMVOp3D",
-  ],
-  Y3ScZ3EP9hhO7PB0EkJU: [
-    "7qzOkGy3a0F6kgDqu5ma",
-    "b0htJEJVP9noZU8Tx200",
-    "mkPSjbSrFD7ert0HosMg",
-  ],
-}
+
 export const firebase = {
   // auth: getAuth(app),
   db: getFirestore(app),
@@ -204,8 +108,8 @@ export const firebase = {
       const projectRef = doc(this.db, collectionName, projectID)
       const projectContent = {
         title: projectTitle,
-        tags: [...defaultParentID],
-        ...defaultChildren,
+        tags: [...defaultTypes],
+        ...defaultTags,
       }
       await setDoc(projectRef, projectContent)
       //create data in user
@@ -339,16 +243,6 @@ export const firebase = {
       console.error(err)
     }
   },
-  // saveDescription: async function (state) {
-  //   const collectionName = "tasks"
-  //   const subCollectionName = "descriptions"
-  //   const taskIdDescription = [this.db, collectionName, state.id, subCollectionName]
-  //   const { description } = state
-  //   description.forEach(async (line) => {
-  //     const eachLinePosition = doc(...taskIdDescription, line.id)
-  //     await setDoc(eachLinePosition, line)
-  //   })
-  // },
   saveTaskPartialContent: async function (stateId, content) {
     try {
       const collectionName = "tasks"
@@ -456,39 +350,59 @@ export const firebase = {
   },
 }
 
-function getTagList(defaultTagList) {
-  const tagsGroup = []
-  defaultTagList.forEach(async (doc) => {
-    if (doc.data().parent === "") {
-      const parentTags = {
-        id: doc.id,
-        type: doc.data().name,
-        children: [],
-      }
-      tagsGroup.push(parentTags)
-    }
-  })
-  defaultTagList.forEach(async (doc) => {
-    if (doc.data().parent !== "" && doc.data().parent !== "all") {
-      const childTags = {
-        id: doc.id,
-        name: doc.data().name,
-      }
-      tagsGroup
-        .find((parents) => parents.id === doc.data().parent)
-        .children.splice(doc.data().index, 0, childTags)
-    }
-  })
-  defaultTagList.forEach(async (doc) => {
-    if (doc.data().parent === "all") {
-      const childTag = {
-        id: doc.id,
-        name: doc.data().name,
-      }
-      tagsGroup.map((item) => {
-        item.children.unshift(childTag)
+export const login = {
+  auth: getAuth(app),
+  userSignUp: function (email, password) {
+    return createUserWithEmailAndPassword(this.auth, email, password)
+      .then((userCredential) => {
+        if (!userCredential) throw new Error("連線錯誤，請重新注冊")
+        const user = userCredential.user
+        return user
       })
+      .catch((error) => {
+        const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
+        if (errMsg === "weak password") {
+          alert("請輸入6位數字密碼")
+          return
+        }
+        alert(errMsg)
+        const errorCode = error.code
+        const errorMessage = error.message
+        throw new Error(errorCode, errorMessage)
+      })
+  },
+  userSignIn: function (email, password) {
+    return signInWithEmailAndPassword(this.auth, email, password)
+      .then((userCredential) => {
+        if (!userCredential) throw new Error("連線錯誤，請重新登入")
+        const user = userCredential.user
+        return user
+      })
+      .catch((error) => {
+        const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
+        alert(errMsg)
+        const errorCode = error.code
+        const errorMessage = error.message
+        throw new Error(errorCode, errorMessage)
+      })
+  },
+  userSignOut: async function () {
+    try {
+      await signOut(this.auth)
+    } catch (error) {
+      alert(error.message)
+      const errorCode = error.code
+      const errorMessage = error.message
+      throw new Error(errorCode, errorMessage)
     }
-  })
-  return tagsGroup
+  },
+  deleteProfile: function () {
+    deleteUser(this.auth.currentUser)
+      .then(() => {
+        console.log("deleted")
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  },
 }

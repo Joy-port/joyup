@@ -48,6 +48,42 @@ export function filterSelectedTypeTags(
   return [selectedColumns, selectedTasks]
 }
 
+export function getTagList(defaultTagList) {
+  const tagsGroup = []
+  defaultTagList.forEach(async (doc) => {
+    if (doc.data().parent === "") {
+      const parentTags = {
+        id: doc.id,
+        type: doc.data().name,
+        children: [],
+      }
+      tagsGroup.push(parentTags)
+    }
+  })
+  defaultTagList.forEach(async (doc) => {
+    if (doc.data().parent !== "" && doc.data().parent !== "all") {
+      const childTags = {
+        id: doc.id,
+        name: doc.data().name,
+      }
+      tagsGroup
+        .find((parents) => parents.id === doc.data().parent)
+        .children.splice(doc.data().index, 0, childTags)
+    }
+  })
+  defaultTagList.forEach(async (doc) => {
+    if (doc.data().parent === "all") {
+      const childTag = {
+        id: doc.id,
+        name: doc.data().name,
+      }
+      tagsGroup.map((item) => {
+        item.children.unshift(childTag)
+      })
+    }
+  })
+  return tagsGroup
+}
 export function getCalendarTime(timeInNanoSeconds) {
   return new Date(timeInNanoSeconds)
 }
