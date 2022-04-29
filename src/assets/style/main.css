@@ -1,6 +1,6 @@
 /*
 ! tailwindcss v3.0.23 | MIT License | https://tailwindcss.com
-*//*
+*/ /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
@@ -16,7 +16,7 @@
 
 ::before,
 ::after {
-  --tw-content: '';
+  --tw-content: "";
 }
 
 /*
@@ -104,7 +104,8 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -182,9 +183,9 @@ select {
 */
 
 button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
+[type="button"],
+[type="reset"],
+[type="submit"] {
   -webkit-appearance: button; /* 1 */
   background-color: transparent; /* 2 */
   background-image: none; /* 2 */
@@ -228,7 +229,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 2. Correct the outline style in Safari.
 */
 
-[type='search'] {
+[type="search"] {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
@@ -367,7 +368,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
-*, ::before, ::after {
+*,
+::before,
+::after {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-rotate: 0;
@@ -375,16 +378,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
+  --tw-pan-x: ;
+  --tw-pan-y: ;
+  --tw-pinch-zoom: ;
   --tw-scroll-snap-strictness: proximity;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
+  --tw-ordinal: ;
+  --tw-slashed-zero: ;
+  --tw-numeric-figure: ;
+  --tw-numeric-spacing: ;
+  --tw-numeric-fraction: ;
+  --tw-ring-inset: ;
   --tw-ring-offset-width: 0px;
   --tw-ring-offset-color: #fff;
   --tw-ring-color: rgb(59 130 246 / 0.5);
@@ -392,24 +395,24 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
+  --tw-blur: ;
+  --tw-brightness: ;
+  --tw-contrast: ;
+  --tw-grayscale: ;
+  --tw-hue-rotate: ;
+  --tw-invert: ;
+  --tw-saturate: ;
+  --tw-sepia: ;
+  --tw-drop-shadow: ;
+  --tw-backdrop-blur: ;
+  --tw-backdrop-brightness: ;
+  --tw-backdrop-contrast: ;
+  --tw-backdrop-grayscale: ;
+  --tw-backdrop-hue-rotate: ;
+  --tw-backdrop-invert: ;
+  --tw-backdrop-opacity: ;
+  --tw-backdrop-saturate: ;
+  --tw-backdrop-sepia: ;
 }
 .fixed {
   position: fixed;
@@ -486,6 +489,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .gap-3 {
   gap: 0.75rem;
 }
+.gap-1 {
+  gap: 0.25rem;
+}
 .rounded-sm {
   border-radius: 0.125rem;
 }
@@ -500,6 +506,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .border-r-2 {
   border-right-width: 2px;
+}
+.border-transparent {
+  border-color: transparent;
 }
 .border-transparent {
   border-color: transparent;
@@ -519,6 +528,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-light200 {
   --tw-bg-opacity: 1;
   background-color: rgb(172 186 195 / var(--tw-bg-opacity));
+}
+.bg-light100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 225 229 / var(--tw-bg-opacity));
+}
+.bg-light000 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
 }
 .p-3 {
   padding: 0.75rem;
@@ -604,7 +621,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(44 47 51 / var(--tw-text-opacity));
 }
 .filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
+    var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia)
+    var(--tw-drop-shadow);
 }
 .body {
   position: relative;
@@ -613,7 +632,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(35 39 42 / var(--tw-text-opacity));
 }
 @media (min-width: 768px) {
-
   .body {
     display: flex;
   }
@@ -640,7 +658,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   transition-duration: 150ms;
 }
 @media (min-width: 768px) {
-
   .menu-list {
     position: static;
   }
@@ -654,7 +671,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   }
 }
 @media (min-width: 976px) {
-
   .menu-list {
     width: 16rem;
   }
@@ -687,10 +703,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 100%;
   --tw-translate-x: -50%;
   --tw-translate-y: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   align-items: center;
   justify-content: center;
-  background-color: #23272A99;
+  background-color: #23272a99;
 }
 .modal-container {
   position: relative;
@@ -741,7 +759,7 @@ input::placeholder {
 input:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  outline-color: #4D5F6A;
+  outline-color: #4d5f6a;
 }
 select {
   border-radius: 0.25rem;
@@ -761,7 +779,7 @@ select::placeholder {
 select:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  outline-color: #4D5F6A;
+  outline-color: #4d5f6a;
 }
 .select-group {
   display: flex;
@@ -791,7 +809,6 @@ select:focus {
   padding-bottom: 0.25rem;
 }
 @media (min-width: 768px) {
-
   .button-group {
     flex-direction: row;
   }
@@ -1057,13 +1074,11 @@ select:focus {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 @media (min-width: 576px) {
-
   .sm\:block {
     display: block;
   }
 }
 @media (min-width: 768px) {
-
   .md\:hidden {
     display: none;
   }
@@ -1077,7 +1092,6 @@ select:focus {
   }
 }
 @media (min-width: 976px) {
-
   .lg\:block {
     display: block;
   }
