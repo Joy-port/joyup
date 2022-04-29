@@ -134,6 +134,129 @@ export const TextType = [
   },
 ]
 
+export const create = {
+  tags: [
+    {
+      createdBy: "0",
+      id: "7qzOkGy3a0F6kgDqu5ma",
+      index: 1,
+      name: "to do",
+      parent: "Y3ScZ3EP9hhO7PB0EkJU",
+      type: "progress",
+    },
+    {
+      createdBy: "0",
+      id: "8VKRmmsi1KOm9QtiraSl",
+      index: 0,
+      name: "no tags",
+      parent: "BjCJ9brvUXkru0jJYZ6c",
+      type: "priority",
+    },
+    {
+      createdBy: "0",
+      id: "BjCJ9brvUXkru0jJYZ6c",
+      index: -1,
+      name: "priority",
+      parent: "",
+      type: "priority",
+    },
+    {
+      createdBy: "0",
+      id: "LqoN88hEwKS5ttU283yU",
+      index: 2,
+      name: "high",
+      parent: "BjCJ9brvUXkru0jJYZ6c",
+      type: "priority",
+    },
+    {
+      createdBy: "0",
+      id: "Y3ScZ3EP9hhO7PB0EkJU",
+      index: -1,
+      name: "progress",
+      parent: "",
+      type: "progress",
+    },
+    {
+      createdBy: "0",
+      id: "ZT9kq2hhregSKPmVcEHh",
+      index: 3,
+      name: "normal",
+      parent: "BjCJ9brvUXkru0jJYZ6c",
+      type: "priority",
+    },
+    {
+      createdBy: "0",
+      id: "b0htJEJVP9noZU8Tx200",
+      index: 3,
+      name: "done",
+      parent: "Y3ScZ3EP9hhO7PB0EkJU",
+      type: "progress",
+    },
+    {
+      createdBy: "0",
+      id: "hH5M4VZKHGyheC4QID2n",
+      index: 1,
+      name: "urgent",
+      parent: "BjCJ9brvUXkru0jJYZ6c",
+      type: "priority",
+    },
+    {
+      createdBy: "0",
+      id: "l0Du2A7l5CUCJLnmRZuP",
+      index: 0,
+      name: "no tags",
+      parent: "Y3ScZ3EP9hhO7PB0EkJU",
+      type: "progress",
+    },
+    {
+      createdBy: "0",
+      id: "mkPSjbSrFD7ert0HosMg",
+      index: 2,
+      name: "in progress",
+      parent: "Y3ScZ3EP9hhO7PB0EkJU",
+      type: "progress",
+    },
+    {
+      createdBy: "0",
+      id: "yEFXbvDC5slJxmMVOp3D",
+      index: 4,
+      name: "low",
+      parent: "BjCJ9brvUXkru0jJYZ6c",
+      type: "priority",
+    },
+  ],
+  project: {
+    title: "",
+    users: [],
+    tasks: [],
+    tags: ["Y3ScZ3EP9hhO7PB0EkJU", "BjCJ9brvUXkru0jJYZ6c"],
+    Y3ScZ3EP9hhO7PB0EkJU: [
+      "l0Du2A7l5CUCJLnmRZuP",
+      "7qzOkGy3a0F6kgDqu5ma",
+      "mkPSjbSrFD7ert0HosMg",
+      "b0htJEJVP9noZU8Tx200",
+    ],
+    BjCJ9brvUXkru0jJYZ6c: [
+      "8VKRmmsi1KOm9QtiraSl",
+      "LqoN88hEwKS5ttU283yU",
+      "ZT9kq2hhregSKPmVcEHh",
+      "hH5M4VZKHGyheC4QID2n",
+      "yEFXbvDC5slJxmMVOp3D",
+    ],
+  },
+  settings: {
+    clockSettings: {
+      base: 15,
+      breakTime: 1,
+      workTime: 3,
+    },
+  },
+  userProjectList: {
+    collaborateProjects: [],
+    ownerProjects: [],
+  },
+}
+
 export const getSuggestionItems = (query) => {
   return [
     {

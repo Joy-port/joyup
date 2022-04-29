@@ -18,6 +18,7 @@ export const projects = {
       try {
         await firebase.getRealTimeData("tags", (tags) => {
           dispatch({ type: "projects/updateTagsDetail", payload: tags })
+          console.log(tags)
           // console.log("%c listen tagsDate ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {

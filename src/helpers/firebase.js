@@ -1,4 +1,4 @@
-import { async } from "@firebase/util"
+import { create } from "./config"
 import { initializeApp } from "firebase/app"
 import {
   getFirestore,
@@ -124,6 +124,7 @@ const defaultTags = [
     type: "priority",
   },
 ]
+const defaultSettings = []
 const defaultParentID = ["BjCJ9brvUXkru0jJYZ6c", "Y3ScZ3EP9hhO7PB0EkJU"]
 const defaultChildren = {
   BjCJ9brvUXkru0jJYZ6c: [
@@ -408,12 +409,51 @@ export const firebase = {
       console.error(error)
     }
   },
-  // saveDefaultTags: async function () {
-  //   const q = [this.db, "tags"]
-  //   defaultTags.forEach(async (tag) => {
-  //     await setDoc(doc(...q, tag.id), { ...tag })
-  //   })
-  // },
+  saveDefaultTagsToTags: async function () {
+    const q = [this.db, "tags"]
+    create.tags.forEach(async (tag) => {
+      await setDoc(doc(...q, tag.id), { ...tag })
+    })
+  },
+  createProjectWithDefaultTags: async function (title, userID) {
+    try {
+      const users = [userID]
+      const collectionName = "projects"
+      const projectRef = doc(collection(this.db, collectionName))
+      const projectID = projectRef.id
+      await setDoc(doc(this.db, collectionName, projectID), {
+        ...create.project,
+        title,
+        users,
+      })
+      const userProjectCollection = "userProjects"
+      const userProjectsRef = doc(this.db, userProjectCollection, userID)
+      await updateDoc(userProjectsRef, {
+        ownerProjects: arrayUnion(projectID),
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  },
+  createUserSettingsAndProjectList: async function (userID, name) {
+    try {
+      const settingsCollection = "userSettings"
+      const settingsRef = doc(this.db, settingsCollection, userID)
+      await setDoc(settingsRef, {
+        ...create.settings,
+        id: userID,
+        name,
+      })
+      const projectCollection = "userProjects"
+      const projectsRef = doc(this.db, projectCollection, userID)
+      await setDoc(projectsRef, {
+        ...create.userProjectList,
+        id: userID,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
 }
 
 function getTagList(defaultTagList) {
