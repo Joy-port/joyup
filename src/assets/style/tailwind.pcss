@@ -3,22 +3,68 @@
 @import "tailwindcss/utilities.css";
 
 .body {
-  @apply h-screen md:flex relative;
+  @apply h-screen md:flex relative text-slateDark;
 }
 .content {
   @apply grow p-3 flex flex-col overflow-x-hidden overflow-y-auto;
 }
 .menu-list {
-  @apply md:static md:h-screen lg:w-64 md:w-auto w-screen h-auto bg-slateDark flex flex-col transition-all py-3;
+  @apply md:static md:h-screen lg:w-64 md:w-auto w-screen h-auto bg-primary flex flex-col transition-all py-3;
 }
 .menu-item {
-  @apply w-full flex gap-2 rounded p-3 text-lightGray hover:bg-slateLight hover:text-white  cursor-pointer;
+  @apply w-full flex gap-2 rounded p-3 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer;
+}
+.modal-bg {
+  @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
 }
 
-.task-container {
-  @apply fixed inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 w-3/4 h-3/4 rounded-lg bg-gray-light text-slateDark p-3 flex flex-col;
+.modal-container {
+  @apply w-11/12 h-5/6 rounded-lg bg-light100 text-light300 p-6 pt-7 flex flex-col overflow-y-auto relative;
+}
+.modal-close {
+  @apply absolute top-2 right-2 block text-light300 font-bold;
+}
+.play-button {
+  @apply rounded-full p-2 flex items-center justify-center bg-white;
+}
+input {
+  @apply bg-white rounded px-2 py-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+}
+select {
+  @apply bg-light100 text-light300 rounded px-2 py-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
 }
 
+.select-group {
+  @apply flex gap-2 items-center justify-between rounded bg-white px-2 py-1;
+}
+.group-title {
+  @apply font-semibold text-slateLight;
+}
+
+.select-dropDown {
+  @apply w-2/4;
+}
+
+.button-group {
+  @apply flex flex-col md:flex-row md:justify-between md:items-center py-1;
+}
+
+.border-group-light200 {
+  @apply bg-white rounded px-2 py-1 flex flex-col gap-3;
+}
+.border-group-title {
+  @apply font-bold text-lg text-light300 text-center;
+}
+
+.editor {
+  @apply grow flex flex-col relative border-2 border-light300 bg-white rounded;
+}
+.editor-input {
+  @apply focus:outline-none px-3;
+}
+.editor-text {
+  @apply px-3 py-1;
+}
 .results {
   @apply border border-slateLight;
 }
@@ -28,11 +74,11 @@
 }
 
 .results__command--selected {
-  @apply bg-lightGray font-medium z-20;
+  @apply bg-light200 text-white font-medium z-20;
 }
 
 .editor-container {
-  @apply py-2 px-1 h-1/2 border border-lightGray rounded-lg bg-white;
+  @apply py-2 px-1 h-1/2 border border-light200 rounded-lg bg-white;
 }
 
 .heading-one {
@@ -61,9 +107,18 @@
 .quote-block {
   @apply border-l-4 border-slateDark text-lg font-semibold ml-5 pl-3;
 }
-
 .button {
-  @apply rounded bg-slateDark font-semibold px-2 py-2 text-white cursor-pointer;
+  @apply rounded font-semibold  text-center cursor-pointer px-2 py-1 border-2 border-transparent;
+}
+.button-dark {
+  @apply bg-light300 text-white hover:bg-light100 hover:text-slateLight hover:border-slateLight;
+}
+.button-outline-dark {
+  @apply text-light300 hover:text-white hover:bg-light300;
+}
+
+.button-light {
+  @apply bg-light200 text-white hover:bg-light000 hover:text-light300 hover:border-light300;
 }
 
 .results {
@@ -75,11 +130,11 @@
 }
 
 .results__command--selected {
-  @apply bg-lightGray font-medium z-20;
+  @apply bg-light200 font-medium z-20;
 }
 
 .editor-container {
-  @apply py-2 px-1 h-1/2 border border-lightGray rounded-lg bg-white;
+  @apply py-2 px-1 h-1/2 border border-light200 rounded-lg bg-white;
 }
 
 .selected-tag {
@@ -94,11 +149,11 @@
   @apply min-h-min p-2;
 }
 .task {
-  @apply flex justify-between align-middle border border-slateLight rounded-sm p-2 mb-3;
+  @apply flex justify-between items-center border border-slateLight rounded-sm p-2 mb-3;
 }
 
 .task-container {
-  @apply overflow-y-auto bg-gray-light;
+  @apply overflow-y-auto bg-light200;
 }
 
 .view-list {

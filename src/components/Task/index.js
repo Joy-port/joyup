@@ -9,6 +9,7 @@ import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
+import { Clock, X } from "react-feather"
 
 const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = () => {
@@ -75,10 +76,10 @@ const index = () => {
   }, [calendarDueDate])
 
   return (
-    <>
-      <div className="task-container">
+    <div className="modal-bg">
+      <div className="modal-container">
         <button
-          className="self-end"
+          className="modal-close"
           onClick={() => {
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
@@ -86,36 +87,42 @@ const index = () => {
             }
           }}
         >
-          X
+          <X size={20} />
         </button>
-        <select
-          value={projectID}
-          onChange={(e) => {
-            dispatch(task.saveTaskDetail("projectID", e.target.value))
-          }}
-        >
-          {userProjects &&
-            userProjects.map((projectID) => {
-              const projectDetail = totalProjectList[projectID]
-              return (
-                <option key={projectDetail.id} value={projectDetail.id}>
-                  {projectDetail.title}
-                </option>
-              )
-            })}
-        </select>
+
         <div className="flex flex-col gap-5 md:flex-row">
-          <div className="flex flex-col gap-3 w-3/4 mt-1">
+          <div className="flex flex-col gap-3 h-full md:w-3/4">
             <TitleEditor />
             <TextEditor />
-            <AddSubtask>AddSubtask</AddSubtask>
+            <AddSubtask />
           </div>
-          <div className="flex flex-col gap-3 mt-1">
+          <div className="flex flex-col gap-3">
+            <div className="select-group">
+              <p className="group-title">Project</p>
+              <select
+                className="select-dropDown"
+                value={projectID}
+                onChange={(e) => {
+                  dispatch(task.saveTaskDetail("projectID", e.target.value))
+                }}
+              >
+                {userProjects &&
+                  userProjects.map((projectID) => {
+                    const projectDetail = totalProjectList[projectID]
+                    return (
+                      <option key={projectDetail.id} value={projectDetail.id}>
+                        {projectDetail.title}
+                      </option>
+                    )
+                  })}
+              </select>
+            </div>
             {types &&
               types.map((item) => (
-                <div className="flex gap-2 rounded px-2 py-1 bg-white" key={item.id}>
-                  <p className="font-semibold">{item.type} </p>
+                <div className="select-group" key={item.id}>
+                  <p className="group-title">{item.type} </p>
                   <select
+                    className="select-dropDown"
                     value={
                       tagList.find((selected) => selected.parent === item.id)?.child ||
                       selectedColumnOrder[0]
@@ -138,65 +145,91 @@ const index = () => {
                   </select>
                 </div>
               ))}
-            <p>
-              Created date: <br />
-              {new Date(createdDate).toLocaleString()}
-            </p>
-            <div>Start Date</div>
-            <p>{dayjs(new Date(startDate).getTime()).format("MM/DD HH:mm ")}</p>
-            <DatePicker
-              date={calendarStartDate}
-              setDate={setCalendarStartDate}
-              showType={false}
-            />
-            <div>Due Date</div>
-            <p>{dayjs(new Date(dueDate).getTime()).format("MM/DD HH:mm ")}</p>
-            <DatePicker
-              date={calendarDueDate}
-              setDate={setCalendarDueDate}
-              showType={false}
-            />
-            <div
-              className="button"
-              onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
-            >
-              OpenClock
+            <div className="border-group-light200">
+              <h4 className="border-group-title">Date</h4>
+              <div className="button-group">
+                <p className="group-title">Created date:</p>
+                <p>{new Date(createdDate).toLocaleString()}</p>
+              </div>
+              <div className="button-group">
+                <p className="group-title">Start Date</p>
+                {/* <p>{dayjs(new Date(startDate).getTime()).format("MM/DD HH:mm ")}</p> */}
+                <DatePicker
+                  date={calendarStartDate}
+                  setDate={setCalendarStartDate}
+                  showType={false}
+                />
+              </div>
+              <div className="button-group">
+                <div className="group-title">Due Date</div>
+                {/* <p>{dayjs(new Date(dueDate).getTime()).format("MM/DD HH:mm ")}</p> */}
+                <DatePicker
+                  date={calendarDueDate}
+                  setDate={setCalendarDueDate}
+                  showType={false}
+                />
+              </div>
             </div>
-            <p>Total Time Spent: {getClockTime(totalTime)}</p>
-            <p>Already Run Clock Numbers: {clockNumber}</p>
-            <select
-              name="number"
-              value={requiredNumber || -1}
-              onChange={(e) => {
-                dispatch(
-                  task.saveTaskDetail("requiredNumber", parseFloat(e.target.value))
-                )
-              }}
-            >
-              <option value={-1} disabled>
-                Select needed Tomato
-              </option>
-              {total.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              placeholder="location"
-              value={address}
-              onChange={(e) => {
-                setAddress(e.target.value)
-                dispatch(task.saveTaskDetail("location", e.target.value))
-              }}
-              onKeyDown={(e) => {
-                setAddress(e.target.value)
-                dispatch(task.saveTaskDetail("location", e.target.value))
-              }}
-            />
+            <div className="border-group-light200">
+              <h4 className="border-group-title">Timer</h4>
+              <div className="flex justify-between">
+                <p className="group-title">Time:</p>
+                <p className="w-4/12 text-center">{getClockTime(totalTime)}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="group-title">Run Clocks:</p>
+                <p className="w-4/12 text-center">{clockNumber}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="group-title">Required Clocks:</p>
+                <select
+                  className="w-4/12 align-middle"
+                  name="number"
+                  value={requiredNumber || -1}
+                  onChange={(e) => {
+                    dispatch(
+                      task.saveTaskDetail("requiredNumber", parseFloat(e.target.value))
+                    )
+                  }}
+                >
+                  <option value={-1} disabled>
+                    0
+                  </option>
+                  {total.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div
+                className="button button-dark flex justify-center gap-3 mb-1"
+                onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
+              >
+                <Clock />
+                <p>Open Clock</p>
+              </div>
+            </div>
+            <div className="border-group-light200">
+              <div className="border-group-title">location</div>
+              <p className="text-light300">{location || "no selected location"}</p>
+              <input
+                className="select-group mb-1"
+                type="text"
+                placeholder="location"
+                value={address}
+                onChange={(e) => {
+                  setAddress(e.target.value)
+                  dispatch(task.saveTaskDetail("location", e.target.value))
+                }}
+                onKeyDown={(e) => {
+                  setAddress(e.target.value)
+                  dispatch(task.saveTaskDetail("location", e.target.value))
+                }}
+              />
+            </div>
             <button
-              className="bg-slateDark text-white px-2 py-1 rounded"
+              className="button button-dark"
               onClick={() => {
                 dispatch(task.saveTotalTask())
                 navigate(-1)
@@ -207,7 +240,7 @@ const index = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 export default index

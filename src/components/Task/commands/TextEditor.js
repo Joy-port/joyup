@@ -215,15 +215,16 @@ const TextEditor = () => {
   }
 
   return (
-    <div className="flex flex-col">
-      <>
+    <div className="flex flex-col min-h-1/4">
+      <div className="editor">
+        <p className="text-sm text-light300 pt-2 pl-3">description</p>
         {document &&
           document.map((item, index) => {
             const TagName = item.html.tag
             if (focusInput.current === item.id && isEditing) {
               return (
                 <input
-                  className={HTMLStyle.style || item.html.style}
+                  className={`editor-input ${HTMLStyle.style || item.html.style}`}
                   key={item.id}
                   id={item.id}
                   cols="30"
@@ -232,7 +233,6 @@ const TextEditor = () => {
                   onChange={(e) => onChange(e)}
                   onKeyDown={(e) => onKeyDown(e)}
                   ref={inputRef}
-                  placeholder="description..."
                   autoFocus
                 />
               )
@@ -255,7 +255,7 @@ const TextEditor = () => {
                 return (
                   <TagName
                     key={item.id}
-                    className={item.html.style}
+                    className={`editor-text ${item.html.style}`}
                     onClick={() => {
                       focusInput.current = item.id
                       setIsEditing(true)
@@ -285,22 +285,24 @@ const TextEditor = () => {
               }
             }
           })}
-      </>
-      <div className="results">
-        {matchingCommands.map((command, index) => (
-          <div
-            key={index}
-            onClick={() => selectCommand(command)}
-            onMouseOver={() => setSelectionIndex(index)}
-            className={
-              "results__command " +
-              (index == selectionIndex ? "results__command--selected" : "")
-            }
-          >
-            {command.name}
-          </div>
-        ))}
       </div>
+      {matchingCommands.length !== 0 && (
+        <div className="results">
+          {matchingCommands.map((command, index) => (
+            <div
+              key={index}
+              onClick={() => selectCommand(command)}
+              onMouseOver={() => setSelectionIndex(index)}
+              className={
+                "results__command " +
+                (index == selectionIndex ? "results__command--selected" : "")
+              }
+            >
+              {command.name}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

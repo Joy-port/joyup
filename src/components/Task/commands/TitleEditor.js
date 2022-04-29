@@ -270,10 +270,10 @@ const TitleEditor = () => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col rounded border-2 border-light300">
       {text !== "" && !isEditing ? (
         <div
-          className="heading-one"
+          className="heading-one bg-white px-2 py-1 rounded"
           onClick={() => {
             setIsEditing(true)
             setText(text)
@@ -294,36 +294,41 @@ const TitleEditor = () => {
           autoFocus
         />
       )}
-      <div className="results">
-        {matchingCommands.map((command, index) => (
-          <div
-            key={index}
-            onClick={() => selectCommand(command)}
-            onMouseOver={() => setSelectionIndex(index)}
-            className={
-              "results__command " +
-              (index == selectionIndex ? "results__command--selected" : "")
-            }
-          >
-            {command.name}
-          </div>
-        ))}
-      </div>
+      {matchingCommands.length !== 0 && (
+        <div className="results">
+          {matchingCommands.map((command, index) => (
+            <div
+              key={index}
+              onClick={() => selectCommand(command)}
+              onMouseOver={() => setSelectionIndex(index)}
+              className={
+                "results__command " +
+                (index == selectionIndex ? "results__command--selected" : "")
+              }
+            >
+              {command.name}
+            </div>
+          ))}
+        </div>
+      )}
       {isSettingTime && <DatePick date={date} setDate={setDate} showType={true} />}
-      {selectedTagType?.children &&
-        selectedTagType.children.map((child, index) => (
-          <div
-            key={child.id}
-            onClick={() => selectTags(child)}
-            onMouseOver={() => setSelectionIndex(index)}
-            className={
-              "results__command " +
-              (index == selectionIndex ? "results__command--selected" : "")
-            }
-          >
-            {child.name}
-          </div>
-        ))}
+      {selectedTagType?.children && (
+        <div className="results">
+          {selectedTagType.children.map((child, index) => (
+            <div
+              key={child.id}
+              onClick={() => selectTags(child)}
+              onMouseOver={() => setSelectionIndex(index)}
+              className={
+                "results__command " +
+                (index == selectionIndex ? "results__command--selected" : "")
+              }
+            >
+              {child.name}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

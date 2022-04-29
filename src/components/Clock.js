@@ -4,6 +4,8 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../helpers/functions"
 import { task } from "../sliceReducers/actions/taskAction"
+import { X, Play, Pause, RotateCcw, Settings, ArrowLeft, Save } from "react-feather"
+
 const Clock = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
@@ -85,10 +87,10 @@ const Clock = () => {
   if (seconds < 10) seconds = "0" + seconds
 
   return (
-    <>
-      <div className="task-container">
+    <div className="modal-bg">
+      <div className="modal-container">
         <button
-          className="self-end"
+          className="modal-close"
           onClick={() => {
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
@@ -96,10 +98,10 @@ const Clock = () => {
             }
           }}
         >
-          X
+          <X size={20} />
         </button>
-        <div className="flex justify-between grow align-middle">
-          <div className="w-1/2 my-0">
+        <div className="flex flex-col items-center gap-5 grow">
+          <div className="w-1/2">
             <CircularProgressbar
               value={percentage}
               text={minutes + ":" + seconds}
@@ -108,50 +110,65 @@ const Clock = () => {
           </div>
           <div className="flex flex-col justify-between">
             <div className="">
-              <button
-                onClick={() => {
-                  clockStatus("isPaused", false)
-                }}
-              >
-                Play
-              </button>
-              <button onClick={() => clockStatus("isPaused", true)}>Pause</button>
-              <button
-                onClick={() => {
-                  clockStatus("isPaused", true)
-                  resetTimer()
-                }}
-              >
-                Reset
-              </button>
-              <h3>work time: {workNumbers}</h3>
-              <h3>break time: {breakNumbers}</h3>
-              <h3>Total Time Spent:{getClockTime(totalSpendingSeconds)},</h3>
+              <div className="flex justify-center items-center gap-6 mb-4">
+                <button
+                  className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                  onClick={() => {
+                    clockStatus("isPaused", false)
+                  }}
+                >
+                  <Play size={28} />
+                </button>
+                <button
+                  className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                  onClick={() => clockStatus("isPaused", true)}
+                >
+                  <Pause size={28} />
+                </button>
+                <button
+                  className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                  onClick={() => {
+                    clockStatus("isPaused", true)
+                    resetTimer()
+                  }}
+                >
+                  <RotateCcw size={28} />
+                </button>
+              </div>
+              <div className="flex flex-col gap-2 font-semibold mb-5">
+                <div className="flex gap-2">
+                  <h3 className="button button-light grow">work time {workNumbers}</h3>
+                  <h3 className="button button-light grow">break time {breakNumbers}</h3>
+                </div>
+                <h3 className="button button-light">
+                  Total Spending Time {getClockTime(totalSpendingSeconds)}
+                </h3>
+              </div>
             </div>
-            <div className="flex gap-4">
-              <Link to="/settings" className="button">
-                Clock Settings
-              </Link>
+            <div className="flex justify-evenly ">
               <div
-                className="button"
+                className="button button-dark"
                 onClick={() => navigate(`/task/${taskID}`, { replace: true })}
               >
-                Back to Task
+                <ArrowLeft />
               </div>
+              <Link to="/settings" className="button button-dark">
+                <Settings />
+              </Link>
               <div
-                className="button"
+                className="button button-dark"
                 onClick={() => {
                   dispatch(task.saveTotalTask())
                   navigate(-1)
                 }}
               >
-                Save
+                <Save />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

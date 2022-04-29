@@ -14,6 +14,36 @@ const initialTaskState = {
         style: "",
       },
     },
+    {
+      id: uuidv4(),
+      content: "",
+      html: {
+        parent: "",
+        tag: "p",
+        name: "",
+        style: "",
+      },
+    },
+    {
+      id: uuidv4(),
+      content: "",
+      html: {
+        parent: "",
+        tag: "p",
+        name: "",
+        style: "",
+      },
+    },
+    {
+      id: uuidv4(),
+      content: "",
+      html: {
+        parent: "",
+        tag: "p",
+        name: "",
+        style: "",
+      },
+    },
   ],
   createdDate: new Date().getTime(),
   startDate: new Date().getTime(),
