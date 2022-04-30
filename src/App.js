@@ -11,7 +11,7 @@ import DragFunction from "./components/DragFunction"
 import Home from "./pages/Home"
 import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
-import ChatRoom from "./pages/ChatRoom"
+import Login from "./pages/Login"
 import TimeSetting from "./pages/TimeSetting"
 import { useDispatch, useSelector } from "react-redux"
 import { settings } from "./sliceReducers/actions/settingsAction"
@@ -23,7 +23,7 @@ const components = {
   Home,
   Report,
   Dashboard,
-  ChatRoom,
+  Login,
   TimeSetting,
 }
 
@@ -35,18 +35,28 @@ const viewComponents = {
 }
 
 function App() {
-  const userID = "dgus0WgwhRr5SOYhTpmi"
+  const userID = ""
+  // const userID = "dgus0WgwhRr5SOYhTpmi"
   const dispatch = useDispatch()
   const projectList = useSelector((state) => state.projects)
   const { selectedProjectID } = useSelector((state) => state.tags)
   const { ownerProjects } = useSelector((state) => state.user)
+
+  //get userID
   useEffect(() => {
-    dispatch(projects.updateProjects())
-    dispatch(projects.updateTags())
-    dispatch(projects.updateTasks())
-    dispatch(settings.getUserSettings(userID))
-    dispatch(user.getUserProjectList(userID))
-  }, [])
+    if (userID !== "") {
+      dispatch(projects.updateProjects())
+      dispatch(projects.updateTags())
+      dispatch(projects.updateTasks())
+    }
+  }, [userID])
+
+  useEffect(() => {
+    if (userID !== "") {
+      dispatch(user.getUserProjectList(userID))
+      dispatch(settings.getUserSettings(userID))
+    }
+  }, [userID])
 
   useEffect(() => {
     if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
@@ -60,58 +70,69 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        {pathInfo.map((path, index) => {
-          const Component = components[path.component]
-          const isHome = path.path === "/"
-          if (path.name !== "Dashboard") {
-            return (
-              <Route
-                key={index}
-                index={isHome}
-                path={path.path}
-                element={<Component />}
-              />
-            )
-          } else {
-            return
-          }
-        })}
-        <Route path="dashboard">
-          <Route index element={<ProjectList />} />
-          <Route path=":projectID" element={<Dashboard />}>
-            {viewInfo.map((view, index) => {
-              const Component = viewComponents[view.component]
-              let type = view.type || "none"
-              const isHome = view.path === "list"
+      {userID === "" ? (
+        <>
+          <Route path="/" element={<Navigate to="login" replace />} />
+          <Route path="login">
+            <Route index element={<Navigate to="sign-in" replace />} />
+            <Route path="sign-in" element={<Login />} />
+            <Route path="sign-up" element={<Login />} />
+          </Route>
+        </>
+      ) : (
+        <Route path="/" element={<Layout />}>
+          {pathInfo.map((path, index) => {
+            const Component = components[path.component]
+            const isHome = path.path === "/"
+            if (path.name !== "Dashboard") {
               return (
                 <Route
-                  index={isHome}
-                  path={view.path}
                   key={index}
-                  element={<Component type={type} />}
-                ></Route>
+                  index={isHome}
+                  path={path.path}
+                  element={<Component />}
+                />
               )
-            })}
+            } else {
+              return
+            }
+          })}
+          <Route path="dashboard">
+            <Route index element={<ProjectList />} />
+            <Route path=":projectID" element={<Dashboard />}>
+              {viewInfo.map((view, index) => {
+                const Component = viewComponents[view.component]
+                let type = view.type || "none"
+                const isHome = view.path === "list"
+                return (
+                  <Route
+                    index={isHome}
+                    path={view.path}
+                    key={index}
+                    element={<Component type={type} />}
+                  ></Route>
+                )
+              })}
+            </Route>
           </Route>
-        </Route>
-        <Route path="task">
-          <Route index element={<Navigate to="/" replace />} />
-          <Route path=":taskID" element={<Task />} />
-        </Route>
-        <Route path="clock">
-          <Route index element={<Navigate to="/" replace />} />
-          <Route path=":taskID" element={<Clock />} />
-        </Route>
+          <Route path="task">
+            <Route index element={<Navigate to="/" replace />} />
+            <Route path=":taskID" element={<Task />} />
+          </Route>
+          <Route path="clock">
+            <Route index element={<Navigate to="/" replace />} />
+            <Route path=":taskID" element={<Clock />} />
+          </Route>
 
-        {viewInfo.map((view) => (
-          <Route
-            path={`${view.path}/`}
-            key={view.path}
-            element={<Navigate to="/" replace />}
-          />
-        ))}
-      </Route>
+          {viewInfo.map((view) => (
+            <Route
+              path={`${view.path}/`}
+              key={view.path}
+              element={<Navigate to="/" replace />}
+            />
+          ))}
+        </Route>
+      )}
     </Routes>
   )
 }

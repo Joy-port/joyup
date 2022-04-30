@@ -16,6 +16,13 @@ import {
   onSnapshot,
   arrayRemove,
 } from "firebase/firestore"
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  deleteUser,
+} from "firebase/auth"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
 
@@ -44,7 +51,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 export const firebase = {
-  // auth: getAuth(app),
   db: getFirestore(app),
   getRealTimeData: async function (collectionName, callback) {
     const projectRef = collection(this.db, collectionName)
