@@ -1,11 +1,11 @@
 import { combineReducers } from "redux"
-import user from "./reducers/userReducer"
-import projects from "./reducers/projectReducer"
-import task from "./reducers/taskReducer"
-import tags from "./reducers/tagsReducer"
-import settings from "./reducers/settingsReducer"
-import clock from "./reducers/clockReducer"
-import status from "./reducers/statusReducer"
+import user from "./reducers/user"
+import projects from "./reducers/project"
+import task from "./reducers/task"
+import tags from "./reducers/tags"
+import settings from "./reducers/settings"
+import clock from "./reducers/clock"
+import status from "./reducers/status"
 
 const rootReducer = combineReducers({
   user,

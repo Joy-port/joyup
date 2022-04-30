@@ -1,7 +1,7 @@
 import { string } from "prop-types"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { tags } from "../../sliceReducers/actions/tagsAction"
+import { tags } from "../../sliceReducers/actions/tags"
 import DragFunction from "../DragFunction"
 
 const List = ({ type }) => {

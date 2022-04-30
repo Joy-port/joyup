@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../helpers/functions"
-import { task } from "../sliceReducers/actions/taskAction"
+import { task } from "../sliceReducers/actions/task"
 import { X, Play, Pause, RotateCcw, Settings, ArrowLeft, Save } from "react-feather"
 
 const Clock = () => {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react"
 import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
 import { useDispatch, useSelector } from "react-redux"
-import { task } from "../../../sliceReducers/actions/taskAction"
+import { task } from "../../../sliceReducers/actions/task"
 
 const TitleEditor = () => {
   const { title } = useSelector((state) => state.task)

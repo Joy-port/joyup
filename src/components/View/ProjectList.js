@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { css } from "@emotion/react"
 import PuffLoader from "react-spinners/ClipLoader"
-import { tags } from "../../sliceReducers/actions/tagsAction"
+import { tags } from "../../sliceReducers/actions/tags"
 
 const override = css`
   display: block;

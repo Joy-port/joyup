@@ -2,7 +2,7 @@ import React, { useCallback } from "react"
 import { DragDropContext } from "react-beautiful-dnd"
 import { useDispatch, useSelector } from "react-redux"
 import Column from "./components/Column"
-import { tags } from "../../sliceReducers/actions/tagsAction"
+import { tags } from "../../sliceReducers/actions/tags"
 
 const index = ({ type }) => {
   const { selectedTagColumns, selectedColumnOrder, selectedTagTasks, selectedType } =

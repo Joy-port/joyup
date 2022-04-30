@@ -5,7 +5,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar"
 import { v4 as uuidv4 } from "uuid"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 import moment from "moment"
-import { task } from "../../sliceReducers/actions/taskAction"
+import { task } from "../../sliceReducers/actions/task"
 
 const localizer = momentLocalizer(moment)
 // const DragDropCalendar = withDragAndDrop(Calendar)

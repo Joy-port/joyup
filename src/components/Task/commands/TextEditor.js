@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
-import { task } from "../../../sliceReducers/actions/taskAction"
+import { task } from "../../../sliceReducers/actions/task"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)

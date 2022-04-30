@@ -1,6 +1,6 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { settings } from "../sliceReducers/actions/settingsAction"
+import { settings } from "../sliceReducers/actions/settings"
 
 const TimeSetting = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)

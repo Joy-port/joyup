@@ -14,10 +14,10 @@ import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
 import TimeSetting from "./pages/TimeSetting"
 import { useDispatch, useSelector } from "react-redux"
-import { settings } from "./sliceReducers/actions/settingsAction"
-import { user } from "./sliceReducers/actions/userAction"
-import { projects } from "./sliceReducers/actions/projectAction"
-import { tags } from "./sliceReducers/actions/tagsAction"
+import { settings } from "./sliceReducers/actions/settings"
+import { user } from "./sliceReducers/actions/user"
+import { projects } from "./sliceReducers/actions/project"
+import { tags } from "./sliceReducers/actions/tags"
 
 const components = {
   Home,
