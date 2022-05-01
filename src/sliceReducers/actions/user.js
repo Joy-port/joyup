@@ -53,6 +53,7 @@ export const user = {
         const { id } = getState().user
         await login.userStatusChange(
           async (user) => {
+            console.log(user, "%c is login", "color: #ee5588;")
             if (user.id !== id) {
               dispatch({ type: "user/getUserID", payload: user.id })
               const { name } = await firebase.getUserSettings(user.id)
@@ -86,6 +87,7 @@ export const user = {
   getUserProjectList: (userID) => {
     return async (dispatch, getData) => {
       const userProjects = await firebase.getUserProjects(userID)
+      console.log("%c userProject", "color:#445566;", userProjects)
       dispatch({ type: "user/getUserOwnProjectList", payload: userProjects })
       const { ownerProjects, collaborateProjects } = userProjects
       dispatch({

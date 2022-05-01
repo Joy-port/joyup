@@ -42,12 +42,27 @@ export const project = {
       try {
         const { projectTitle, isPublic } = projectContent
         const type = !isPublic ? "ownerProjects" : "collaborateProjects"
+        const publicStatus = isPublic ? 1 : 0
         const { id } = getState().user
-        const projectID = await firebase.createProjectWithDefaultTags(projectTitle, id)
+        const projectID = await firebase.createProjectWithDefaultTags(
+          projectTitle,
+          id,
+          publicStatus
+        )
         await firebase.saveProjectToUserProjects(id, projectID, type)
         callback && callback()
       } catch (error) {
         dispatch({ type: "status/ERROR", payload: err })
+      }
+    }
+  },
+  deleteProject: function (projectID) {
+    return async (dispatch, getState) => {
+      try {
+        const { id } = getState().user
+        await firebase.deleteProject(projectID, id)
+      } catch (error) {
+        dispatch({ type: "status/ERROR", payload: error })
       }
     }
   },

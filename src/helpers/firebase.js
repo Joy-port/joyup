@@ -65,6 +65,7 @@ export const firebase = {
   },
   getUserSettings: async function (userID) {
     try {
+      console.log(userID)
       const collectionName = "userSettings"
       const userSettingsRef = doc(this.db, collectionName, userID)
       const userDoc = await getDoc(userSettingsRef)
@@ -330,7 +331,7 @@ export const firebase = {
       await setDoc(doc(...q, tag.id), { ...tag })
     })
   },
-  createProjectWithDefaultTags: async function (title, userID) {
+  createProjectWithDefaultTags: async function (title, userID, isPublic) {
     try {
       const users = [userID]
       const collectionName = "projects"
@@ -341,6 +342,7 @@ export const firebase = {
         title,
         users,
         id: projectID,
+        isPublic,
       })
       const userProjectCollection = "userProjects"
       const userProjectsRef = doc(this.db, userProjectCollection, userID)
@@ -381,6 +383,23 @@ export const firebase = {
         ...create.userProjectList,
         id: userID,
       })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  deleteProject: async function (projectID, userID) {
+    try {
+      const projectCollection = "projects"
+      const projectRef = doc(this.db, projectCollection, projectID)
+      const projectDetail = await getDoc(projectRef)
+      const type =
+        projectDetail.data().isPublic === 0 ? "ownerProjects" : "collaborateProjects"
+      const userCollection = "userProjects"
+      const userRef = doc(this.db, userCollection, userID)
+      await updateDoc(userRef, {
+        [type]: arrayRemove(projectID),
+      })
+      await deleteDoc(projectRef)
     } catch (error) {
       console.error(error)
     }
@@ -442,7 +461,7 @@ export const login = {
       })
   },
   userStatusChange: async function (isSignInCallBack, isSignOutCallBack) {
-    return onAuthStateChanged(auth, (user) => {
+    return onAuthStateChanged(this.auth, (user) => {
       if (user) {
         isSignInCallBack(user)
       } else {

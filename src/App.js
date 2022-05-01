@@ -39,9 +39,10 @@ function App() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const projectList = useSelector((state) => state.projects)
+  const { totalProjectList } = useSelector((state) => state.projects)
   const { selectedProjectID } = useSelector((state) => state.tags)
   const { ownerProjects } = useSelector((state) => state.user)
-  console.log("%c user ID ", "background: #ffcc88; color:white", id)
+  // console.log("%c user ID ", "background: #ffcc88; color:white", id)
 
   useEffect(() => {
     dispatch(project.updateProjects())
@@ -51,17 +52,18 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (id === "") {
+    if (id === undefined || id === "") {
       navigate("/login/sign-in")
     }
   }, [id])
 
   useEffect(() => {
-    if (id !== "" && JSON.stringify(projectList.totalProjectList) !== "{}") {
+    if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
+      console.log("change", projectList, id)
       dispatch(user.getUserProjectList(id)) //change to snapshot
       dispatch(settings.getUserSettings(id))
     }
-  }, [id, projectList])
+  }, [id, projectList, totalProjectList])
 
   useEffect(() => {
     if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
@@ -74,7 +76,7 @@ function App() {
   }, [projectList, ownerProjects])
   return (
     <Routes>
-      <Route path="/" element={id !== "" ? <Layout /> : <Outlet />}>
+      <Route path="/" element={id !== undefined && id !== "" ? <Layout /> : <Outlet />}>
         <Route path="login">
           <Route index element={<Navigate to="sign-in" replace />} />
           <Route path="sign-in" element={<Login pathname="sign-in" />} />

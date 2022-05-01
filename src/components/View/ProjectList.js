@@ -1,49 +1,58 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { FolderPlus } from "react-feather"
+import NewProject from "../NewProject"
 import { css } from "@emotion/react"
-import PuffLoader from "react-spinners/ClipLoader"
 import { tags } from "../../sliceReducers/actions/tags"
 import { project } from "../../sliceReducers/actions/project"
+// import PuffLoader from "react-spinners/ClipLoader"
+// import { project } from "../../sliceReducers/actions/project"
 
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: slateLight;
-`
+// const override = css`
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   z-index: 50;
+//   display: block;
+//   border-color: slateLight;
+//   background: slateLight;
+// `
+// const { isLoading } = useSelector((state) => state
+//<PuffLoader loading={isLoading} css={override} size={40} />
 
 const ProjectList = () => {
-  const { ownerProjects, collaborateProjects } = useSelector((state) => state.user)
+  const { ownerProjects, collaborateProjects, userProjects } = useSelector(
+    (state) => state.user
+  )
   const { totalProjectList } = useSelector((state) => state.projects)
-  const { isLoading } = useSelector((state) => state.status)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-  const [projectTitle, setProjectTitle] = useState("")
-  const [isPublic, setIsPublic] = useState(false)
   const onClick = (projectID) => {
     dispatch(tags.switchProject(projectID))
+    navigate(`${projectID}`)
   }
-
-  const createNewProject = (e) => {
-    e.preventDefault()
-    if (projectTitle.trim() === "") {
-      alert("please give the project a title")
-      return
+  const deleteProject = (projectID) => {
+    if (confirm("confirm to remove the project")) {
+      projectID !== "" && dispatch(project.deleteProject(projectID))
     }
-    const projectContent = {
-      projectTitle,
-      isPublic,
-    }
-    dispatch(
-      project.createNewProject(projectContent, () => {
-        setIsOpen(false)
-      })
-    )
   }
   return (
     <>
-      {JSON.stringify(totalProjectList) === "{}" ? (
-        <PuffLoader color="slateLight" loading={isLoading} css={override} size={150} />
+      {/* {JSON.stringify(totalProjectList) === "{}" &&  */}
+      {userProjects.length === 0 ? (
+        <>
+          <div
+            className="grow flex flex-col gap-5 justify-center items-center cursor-pointer"
+            onClick={() => setIsOpen(true)}
+          >
+            <FolderPlus size={40} strokeWidth={1} />
+            <p>Create New Project</p>
+          </div>
+          {isOpen && <NewProject setIsOpen={setIsOpen} />}
+        </>
       ) : (
         <>
           <div className="heading-four">Your Projects</div>
@@ -54,14 +63,17 @@ const ProjectList = () => {
               }
               const ownerProject = totalProjectList[projectID]
               return (
-                <Link
-                  to={`${ownerProject.id}`}
-                  key={ownerProject.id}
-                  className="task"
-                  onClick={() => onClick(ownerProject.id)}
-                >
-                  {ownerProject.title}
-                </Link>
+                <div key={ownerProject.id} className="task">
+                  <div
+                    className="grow cursor-pointer"
+                    onClick={() => {
+                      onClick(ownerProject.id)
+                    }}
+                  >
+                    {ownerProject.title}
+                  </div>
+                  <button onClick={() => deleteProject(ownerProject.id)}>Delete</button>
+                </div>
               )
             })}
           <div className="task cursor-pointer" onClick={() => setIsOpen(true)}>
@@ -72,69 +84,25 @@ const ProjectList = () => {
             collaborateProjects.map((projectID) => {
               const collaborateProject = totalProjectList[projectID]
               collaborateProject && (
-                <Link
-                  to={`${collaborateProject.id}`}
-                  key={collaborateProject.id}
-                  className="task"
-                  onClick={() => onClick(collaborateProject.id)}
-                >
-                  {collaborateProject.title}
-                </Link>
+                <div key={collaborateProject.id} className="task">
+                  <div
+                    className="grow cursor-pointer"
+                    onClick={() => {
+                      onClick(collaborateProject.id)
+                    }}
+                  >
+                    {collaborateProject.title}
+                  </div>
+                  <button onClick={() => deleteProject(collaborateProject.id)}>
+                    Delete
+                  </button>
+                </div>
               )
             })}
-          {isOpen && (
-            <div className="modal-bg">
-              <div className="modal-container">
-                <button
-                  className="modal-close"
-                  onClick={() => {
-                    if (confirm("do you want to leave the page without saving?")) {
-                      setProjectTitle("")
-                      setIsPublic(false)
-                      setIsOpen(false)
-                    }
-                  }}
-                >
-                  X
-                </button>
-                <h1 className="text-slateDark heading-two mb-4">Create New Project</h1>
-                <form className="flex flex-col" onSubmit={(e) => createNewProject(e)}>
-                  <label htmlFor="title">Project Title</label>
-                  <input
-                    type="text"
-                    id="title"
-                    required
-                    value={projectTitle}
-                    onChange={(e) => {
-                      if (e.target.value.trim() !== "") {
-                        setProjectTitle(e.target.value)
-                      }
-                    }}
-                  />
-                  <div className="flex items-center gap-4">
-                    <label htmlFor="public" className="mr-5">
-                      Public
-                    </label>
-                    <input
-                      className="block"
-                      type="checkbox"
-                      id="public"
-                      checked={isPublic}
-                      onChange={() => setIsPublic(!isPublic)}
-                    />
-                  </div>
-                  <button
-                    className="button button-dark"
-                    onClick={(e) => createNewProject(e)}
-                  >
-                    Create New Project
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
+          {isOpen && <NewProject setIsOpen={setIsOpen} />}
         </>
       )}
+      {/* } */}
     </>
   )
 }
