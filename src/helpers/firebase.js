@@ -340,14 +340,30 @@ export const firebase = {
         ...create.project,
         title,
         users,
+        id: projectID,
       })
       const userProjectCollection = "userProjects"
       const userProjectsRef = doc(this.db, userProjectCollection, userID)
       await updateDoc(userProjectsRef, {
         ownerProjects: arrayUnion(projectID),
       })
+      return projectID
     } catch (err) {
       console.error(err)
+    }
+  },
+  saveProjectToUserProjects: async function (userID, projectID, type) {
+    try {
+      const collectionName = "userProjects"
+      const projectRef = doc(this.db, collectionName, userID)
+      const userProjectList = await getDoc(projectRef)
+      if (!userProjectList.data()[type].some((item) => item === projectID)) {
+        await updateDoc(projectRef, {
+          [type]: arrayUnion(projectID),
+        })
+      }
+    } catch (error) {
+      console.error(error)
     }
   },
   createUserSettingsAndProjectList: async function (userID, name) {

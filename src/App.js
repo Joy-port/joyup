@@ -16,7 +16,7 @@ import TimeSetting from "./pages/TimeSetting"
 import { useDispatch, useSelector } from "react-redux"
 import { settings } from "./sliceReducers/actions/settings"
 import { user } from "./sliceReducers/actions/user"
-import { projects } from "./sliceReducers/actions/project"
+import { project } from "./sliceReducers/actions/project"
 import { tags } from "./sliceReducers/actions/tags"
 
 const components = {
@@ -36,7 +36,6 @@ const viewComponents = {
 
 function App() {
   const { id } = useSelector((state) => state.user)
-
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const projectList = useSelector((state) => state.projects)
@@ -45,9 +44,9 @@ function App() {
   console.log("%c user ID ", "background: #ffcc88; color:white", id)
 
   useEffect(() => {
-    dispatch(projects.updateProjects())
-    dispatch(projects.updateTags())
-    dispatch(projects.updateTasks())
+    dispatch(project.updateProjects())
+    dispatch(project.updateTags())
+    dispatch(project.updateTasks())
     dispatch(user.listenUserStatus())
   }, [])
 
@@ -58,11 +57,11 @@ function App() {
   }, [id])
 
   useEffect(() => {
-    if (id !== "") {
-      dispatch(user.getUserProjectList(id))
+    if (id !== "" && JSON.stringify(projectList.totalProjectList) !== "{}") {
+      dispatch(user.getUserProjectList(id)) //change to snapshot
       dispatch(settings.getUserSettings(id))
     }
-  }, [id])
+  }, [id, projectList])
 
   useEffect(() => {
     if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {

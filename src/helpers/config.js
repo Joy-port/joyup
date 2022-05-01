@@ -139,6 +139,15 @@ export const defaultTags = {
     "mkPSjbSrFD7ert0HosMg",
     "b0htJEJVP9noZU8Tx200",
   ],
+  "8VKRmmsi1KOm9QtiraSl": [],
+  LqoN88hEwKS5ttU283yU: [],
+  ZT9kq2hhregSKPmVcEHh: [],
+  hH5M4VZKHGyheC4QID2n: [],
+  yEFXbvDC5slJxmMVOp3D: [],
+  l0Du2A7l5CUCJLnmRZuP: [],
+  "7qzOkGy3a0F6kgDqu5ma": [],
+  mkPSjbSrFD7ert0HosMg: [],
+  b0htJEJVP9noZU8Tx200: [],
 }
 
 export const create = {

@@ -32,12 +32,14 @@ export function filterSelectedTypeTags(
   const selectedColumns = {}
   const selectedTasks = []
   const currentProject = totalProjectList[selectedProject]
+  console.log(currentProject, selectedType)
   currentProject[selectedType].forEach((tagID) => {
     selectedColumns[tagID] = {
       id: tagID,
       title: totalTagList[tagID].name,
       taskIds: currentProject[tagID] || [],
     }
+    console.log(currentProject, tagID, currentProject[tagID])
     currentProject[tagID].forEach((taskid) => {
       if (totalTaskList[taskid]) {
         selectedTasks.push(totalTaskList[taskid])

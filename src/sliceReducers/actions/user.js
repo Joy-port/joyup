@@ -51,7 +51,7 @@ export const user = {
     return async (dispatch, getState) => {
       try {
         const { id } = getState().user
-        await login.userStatus(
+        await login.userStatusChange(
           async (user) => {
             if (user.id !== id) {
               dispatch({ type: "user/getUserID", payload: user.id })
