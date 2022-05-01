@@ -6,7 +6,7 @@ import { array, string } from "prop-types"
 
 const MenuItem = ({ type, content }) => {
   return (
-    <>
+    <div>
       {type === "layout" ? (
         <>
           {pathInfo.map((item) => {
@@ -31,7 +31,7 @@ const MenuItem = ({ type, content }) => {
             ))}
         </>
       )}
-    </>
+    </div>
   )
 }
 

@@ -22,6 +22,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   deleteUser,
+  onAuthStateChanged,
 } from "firebase/auth"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
@@ -37,7 +38,7 @@ import {
 //   measurementId: "G-X689NX3J9C",
 // }
 
-//test account
+//test account for storage
 const firebaseConfig = {
   apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
   authDomain: "designworks-project.firebaseapp.com",
@@ -355,10 +356,9 @@ export const firebase = {
     }
   },
 }
-
 export const login = {
   auth: getAuth(app),
-  userSignUp: function (email, password) {
+  userSignUp: async function (email, password) {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         if (!userCredential) throw new Error("連線錯誤，請重新注冊")
@@ -377,7 +377,7 @@ export const login = {
         throw new Error(errorCode, errorMessage)
       })
   },
-  userSignIn: function (email, password) {
+  userSignIn: async function (email, password) {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         if (!userCredential) throw new Error("連線錯誤，請重新登入")
@@ -410,5 +410,14 @@ export const login = {
       .catch((error) => {
         console.error(error)
       })
+  },
+  userStatusChange: async function (isSignInCallBack, isSignOutCallBack) {
+    return onAuthStateChanged(auth, (user) => {
+      if (user) {
+        isSignInCallBack(user)
+      } else {
+        isSignOutCallBack()
+      }
+    })
   },
 }

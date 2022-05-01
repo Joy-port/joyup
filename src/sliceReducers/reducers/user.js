@@ -9,6 +9,13 @@ const initialUserState = {
 
 function userReducer(state = initialUserState, action) {
   switch (action.type) {
+    case "user/getUserID":
+      return { ...state, id: action.payload }
+    case "user/getUserName":
+      return { ...state, userName: action.payload }
+    case "user/clearUserData":
+      const clearUserData = { ...initialUserState }
+      return clearUserData
     case "user/getUserProjectList":
       return { ...state, userProjects: [...action.payload] }
     case "user/getUserOwnProjectList":
