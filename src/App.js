@@ -44,7 +44,7 @@ function App() {
   const projectList = useSelector((state) => state.projects)
   const { selectedProjectID } = useSelector((state) => state.tags)
   const { ownerProjects } = useSelector((state) => state.user)
-  console.log("%c user ID ", "background: #a12l8c; color:white", id)
+  console.log("%c user ID ", "background: #ffcc88; color:white", id)
   //get userID
   useEffect(() => {
     dispatch(projects.updateProjects())

@@ -26,7 +26,7 @@ export const settings = {
           ...getState().settings,
           [type]: duration,
         }
-        const { id } = getState().settings
+        const { id } = getState().user
         await firebase.editUserSettingsTimer(id, newValue)
         const settingContent = {
           type,

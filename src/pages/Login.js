@@ -15,7 +15,7 @@ const Login = ({ pathname }) => {
 
   useEffect(() => {
     if (id !== "") {
-      navigate("/home")
+      navigate("/")
     }
   }, [id])
 

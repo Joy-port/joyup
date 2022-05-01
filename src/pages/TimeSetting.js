@@ -1,21 +1,21 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { settings } from "../sliceReducers/actions/settings"
 
 const TimeSetting = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const dispatch = useDispatch()
-  const setTimer = (e, type, value) => {
+  const setTimer = useCallback((type, value) => {
+    dispatch(settings.editSettingsTimer(type, value))
+  })
+  const onKeyDown = (e, type, value) => {
     if (e.key === "Enter") {
       if (!value) {
         alert("please enter numbers")
         return
       }
-      dispatch(settings.editSettingsTimer(type, value))
+      setTimer(type, value)
     }
-  }
-  const saveToDataBase = () => {
-    console.log("connect to firebase")
   }
   return (
     <>
@@ -23,8 +23,8 @@ const TimeSetting = () => {
         <h2 className="text-bold">Timer Duration: {base} minutes</h2>
         <input
           type="number"
-          onChange={(e) => setTimer(e, "base", parseFloat(e.target.value.trim()))}
-          onKeyDown={(e) => setTimer(e, "base", parseFloat(e.target.value.trim()))}
+          // onChange={(e) => setTimer("base", parseFloat(e.target.value.trim()))}
+          onKeyDown={(e) => onKeyDown(e, "base", parseFloat(e.target.value.trim()))}
         />
       </div>
       <div>
@@ -33,8 +33,8 @@ const TimeSetting = () => {
           <h3>{base} X</h3>
           <input
             type="number"
-            onChange={(e) => setTimer(e, "workTime", parseFloat(e.target.value.trim()))}
-            onKeyDown={(e) => setTimer(e, "workTime", parseFloat(e.target.value.trim()))}
+            // onChange={(e) => setTimer("workTime", parseFloat(e.target.value.trim()))}
+            onKeyDown={(e) => onKeyDown(e, "workTime", parseFloat(e.target.value.trim()))}
           />
           {/* <button onClick={() => setWorkMinutes(workTimer)}>Confirm</button> */}
         </div>
@@ -45,14 +45,14 @@ const TimeSetting = () => {
           <h3>{base} X</h3>
           <input
             type="number"
-            onChange={(e) => setTimer(e, "breakTime", parseFloat(e.target.value.trim()))}
-            onKeyDown={(e) => setTimer(e, "breakTime", parseFloat(e.target.value.trim()))}
+            // onChange={(e) => setTimer("breakTime", parseFloat(e.target.value.trim()))}
+            onKeyDown={(e) =>
+              onKeyDown(e, "breakTime", parseFloat(e.target.value.trim()))
+            }
           />
-          {/* <button onClick={() => setBreakMinutes(breakTimer)}>Confirm</button> */}
         </div>
       </div>
-      <button>cancel</button>
-      <button onClick={saveToDataBase}>save</button>
+      <button onClick={() => {}}>save</button>
     </>
   )
 }

@@ -15,7 +15,7 @@ export const user = {
             })
             .then(() => {
               console.log(
-                "%c sign up success",
+                "%c sign up success ",
                 "background: #AC6B7D; color:#ffffff",
                 userData
               )
@@ -35,7 +35,7 @@ export const user = {
         console.log("login")
         const loginEmail = email.trim()
         const userData = await login.userSignIn(loginEmail, password)
-        console.log("%c sign up success", "background: #AC6B7D; color:#ffffff", userData)
+        console.log("%c sign in success ", "background: #AC6B7D; color:#ffffff", userData)
         dispatch({ type: "user/getUserID", payload: userData.uid })
       } catch (error) {
         dispatch({ type: "status/ERROR", payload: error })
