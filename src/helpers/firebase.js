@@ -78,13 +78,27 @@ export const firebase = {
   },
   editUserSettingsTimer: async function (userID, clockSettings) {
     try {
+      console.log(userID, clockSettings)
       const collectionName = "userSettings"
       const userSettingsRef = doc(this.db, collectionName, userID)
       await updateDoc(userSettingsRef, {
         clockSettings,
       })
+      alert("setting is saved successfully!")
     } catch (err) {
       console.error(err)
+    }
+  },
+  saveUserSettingsUserName: async function (user) {
+    try {
+      const collectionName = "userSettings"
+      const userSettingsRef = doc(this.db, collectionName, user.id)
+      await updateDoc(userSettingsRef, {
+        name: user.userName,
+      })
+      alert("user name is saved")
+    } catch (error) {
+      console.error(error)
     }
   },
   getTotalProjects: async function () {

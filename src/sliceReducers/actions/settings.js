@@ -11,7 +11,7 @@ export const settings = {
             id: userSettings.id,
             userName: userSettings.name,
           }
-          dispatch({ type: "settings/initializedSettings", payload: clockSettings })
+          dispatch({ type: "settings/editTotalTimer", payload: clockSettings })
           dispatch({ type: "user/getUserProfile", payload: userProfile })
         }
       } catch (err) {
@@ -19,20 +19,12 @@ export const settings = {
       }
     }
   },
-  editSettingsTimer: function (type, duration) {
+  editSettingsTimer: function () {
     return async (dispatch, getState) => {
       try {
-        const newValue = {
-          ...getState().settings,
-          [type]: duration,
-        }
+        const clockSettings = { ...getState().settings }
         const { id } = getState().user
-        await firebase.editUserSettingsTimer(id, newValue)
-        const settingContent = {
-          type,
-          duration,
-        }
-        dispatch({ type: "settings/editTimer", payload: settingContent })
+        await firebase.editUserSettingsTimer(id, clockSettings)
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
       }

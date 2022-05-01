@@ -6,14 +6,14 @@ const initialSettingsState = {
 
 function settingsReducer(state = initialSettingsState, action) {
   switch (action.type) {
-    case "settings/initializedSettings":
+    case "settings/editTotalTimer":
       const settings = action.payload
       return {
         base: settings.base,
         workTime: settings.workTime,
         breakTime: settings.breakTime,
       }
-    case "settings/editTimer":
+    case "settings/editSingleTimer":
       const { type, duration } = action.payload
       return { ...state, [type]: duration }
     default:

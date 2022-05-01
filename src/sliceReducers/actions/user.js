@@ -68,6 +68,21 @@ export const user = {
       }
     }
   },
+  saveUserName: (name) => {
+    return async (dispatch, getState) => {
+      try {
+        dispatch({ type: "user/getUserName", payload: name })
+        const user = getState().user
+        const userProfile = {
+          id: user.id,
+          userName: name,
+        }
+        await firebase.saveUserSettingsUserName(userProfile)
+      } catch (error) {
+        dispatch({ type: "status/ERROR", payload: error })
+      }
+    }
+  },
   getUserProjectList: (userID) => {
     return async (dispatch, getData) => {
       const userProjects = await firebase.getUserProjects(userID)
