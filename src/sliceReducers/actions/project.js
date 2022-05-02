@@ -6,7 +6,7 @@ export const project = {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
           dispatch({ type: "projects/updateProjects", payload: projects })
-          // console.log("%c listen projectData ", "background: #ffeecc; color:#225566")
+          // console.log("%c listen projectData", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })

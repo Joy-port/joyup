@@ -19,7 +19,6 @@ function clockReducer(state = initialClockState, action) {
       const { clockType } = action.payload
       return { ...state, [clockType]: state[clockType]++ }
     case "calculateTotalTime":
-      console.log(action.payload)
       return { ...state, totalSpendingSeconds: action.payload }
     default:
       return state

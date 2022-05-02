@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { v4 as uuidv4 } from "uuid"
-import { any } from "prop-types"
 import { Plus } from "react-feather"
+import { any } from "prop-types"
+import { v4 as uuidv4 } from "uuid"
+import { task } from "../../../sliceReducers/actions/task"
 
 const subTasks = [
   // {
@@ -12,7 +14,9 @@ const subTasks = [
 ]
 
 const AddSubtask = () => {
+  const { id } = useSelector((state) => state.task)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [inputTitle, setInputTitle] = useState()
   const [subTaskList, setSubTaskList] = useState(subTasks)
   const inputRef = useRef()
@@ -26,21 +30,23 @@ const AddSubtask = () => {
     const task = {
       id: uuidv4(),
       title: "",
+      parent: id,
     }
     setSubTaskList((prev) => {
       const prevArray = [...prev]
       prevArray.push(task)
       return [...prevArray]
     })
+    dispatch(task.saveSubtask())
   }
   const changeTitle = (id) => {
-    console.log(inputTitle)
+    // console.log(inputTitle)
     setInputTitle(inputTitle)
   }
 
   const openTask = (e, id) => {
     e.stopPropagation()
-    console.log(e.target.value, id)
+    // console.log(e.target.value, id)
     navigate(`/task/${id}`)
   }
   return (

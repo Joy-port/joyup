@@ -31,7 +31,6 @@ const NewProject = ({ setIsOpen }) => {
         <button
           className="modal-close block"
           onClick={() => {
-            console.log("close")
             setProjectTitle("")
             setIsPublic(false)
             setIsOpen(false)

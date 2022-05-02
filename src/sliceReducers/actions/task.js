@@ -1,4 +1,3 @@
-import { async } from "@firebase/util"
 import { firebase } from "../../helpers/firebase"
 export const task = {
   checkTaskIDToOpen: (taskID) => {
@@ -43,7 +42,6 @@ export const task = {
   saveTaskDetail: (type, content) => {
     return async (dispatch, getState) => {
       try {
-        console.log(type, content)
         const { id } = getState().task
         const actionType = `task/${type}`
         dispatch({ type: actionType, payload: content })

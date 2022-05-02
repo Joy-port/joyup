@@ -65,7 +65,6 @@ export const firebase = {
   },
   getUserSettings: async function (userID) {
     try {
-      console.log(userID)
       const collectionName = "userSettings"
       const userSettingsRef = doc(this.db, collectionName, userID)
       const userDoc = await getDoc(userSettingsRef)
@@ -79,7 +78,6 @@ export const firebase = {
   },
   editUserSettingsTimer: async function (userID, clockSettings) {
     try {
-      console.log(userID, clockSettings)
       const collectionName = "userSettings"
       const userSettingsRef = doc(this.db, collectionName, userID)
       await updateDoc(userSettingsRef, {
@@ -298,7 +296,6 @@ export const firebase = {
   },
   deleteTaskFromTaskAndProjects: async function (taskID, projectID, tagList) {
     try {
-      console.log(taskID, projectID, tagList)
       const collectionName = "tasks"
       const projectCollection = "projects"
       const taskRef = doc(this.db, collectionName, taskID)
@@ -320,7 +317,7 @@ export const firebase = {
           [tagID]: arrayRemove(taskID),
         })
       })
-      console.log(tags)
+      // console.log(tags)
     } catch (error) {
       console.error(error)
     }
@@ -451,15 +448,15 @@ export const login = {
       throw new Error(errorCode, errorMessage)
     }
   },
-  deleteProfile: function () {
-    deleteUser(this.auth.currentUser)
-      .then(() => {
-        console.log("deleted")
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  },
+  // deleteProfile: function () {
+  //   deleteUser(this.auth.currentUser)
+  //     .then(() => {
+  //       console.log("deleted")
+  //     })
+  //     .catch((error) => {
+  //       console.error(error)
+  //     })
+  // },
   userStatusChange: async function (isSignInCallBack, isSignOutCallBack) {
     return onAuthStateChanged(this.auth, (user) => {
       if (user) {

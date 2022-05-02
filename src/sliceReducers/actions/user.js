@@ -32,7 +32,6 @@ export const user = {
   nativeLogin: (email, password) => {
     return async (dispatch, getState) => {
       try {
-        console.log("login")
         const loginEmail = email.trim()
         const userData = await login.userSignIn(loginEmail, password)
         console.log("%c sign in success ", "background: #AC6B7D; color:#ffffff", userData)
@@ -53,7 +52,7 @@ export const user = {
         const { id } = getState().user
         await login.userStatusChange(
           async (user) => {
-            console.log(user, "%c is login", "color: #ee5588;")
+            console.log("%c user is login ", "background: #AC6B7D; color:#ffffff", user)
             if (user.id !== id) {
               dispatch({ type: "user/getUserID", payload: user.id })
               const { name } = await firebase.getUserSettings(user.id)
@@ -87,7 +86,7 @@ export const user = {
   getUserProjectList: (userID) => {
     return async (dispatch, getData) => {
       const userProjects = await firebase.getUserProjects(userID)
-      console.log("%c userProject", "color:#445566;", userProjects)
+      console.log("%c get user project list ", "color:#ee5588;", userProjects)
       dispatch({ type: "user/getUserOwnProjectList", payload: userProjects })
       const { ownerProjects, collaborateProjects } = userProjects
       dispatch({

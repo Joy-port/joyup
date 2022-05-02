@@ -52,10 +52,10 @@ const TextEditor = () => {
     })
   })
 
-  useEffect(() => {
-    if (!text) return
-    console.log(text)
-  }, [deleteSlashCommand])
+  // useEffect(() => {
+  //   if (!text) return
+  //   console.log(text)
+  // }, [deleteSlashCommand])
 
   useEffect(() => {
     dispatch(task.saveTaskDetail("editDescription", [...document]))
@@ -139,7 +139,6 @@ const TextEditor = () => {
         const nextBlock =
           currentBlock - 1 > 0 ? toSpecificBlock(currentBlock - 1) : toSpecificBlock(0)
         setText(nextBlock.content)
-        console.log(focusInput.current)
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {
@@ -169,7 +168,7 @@ const TextEditor = () => {
       }
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
-        console.log(matchingCommands[selectionIndex])
+        // console.log(matchingCommands[selectionIndex])
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
         changeTextStyle()
@@ -199,7 +198,7 @@ const TextEditor = () => {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
       // delete docs document block
-      console.log(text)
+      // console.log(text)
       if (text === "") {
         setIsEditing(false)
         const prevBlock = currentBlockIndex()

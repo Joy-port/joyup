@@ -29,25 +29,29 @@ async function taskReducer(state = initialTaskState, action) {
       }
       return { ...state, [name]: date }
     case "editDescription":
-      console.log("description", action.payload)
+      console.log("%c description ", "background: #Ea5dc8; color:#ffffff", action.payload)
       if (action.payload.content !== "") {
         await firebase.saveDescription(state)
       }
       return { ...state, description: [...action.payload] }
     case "requiredClock":
-      console.log("required clock", action.payload)
+      console.log(
+        "%c required clock ",
+        "background: #Ea5dc8; color:#ffffff",
+        action.payload
+      )
       firebase.saveTaskPartialContent(state.id, { requiredNumber: action.payload })
       return { ...state, requiredNumber: action.payload }
     case "setTaskID":
-      console.log("taskID", action.payload)
+      console.log("%c taskID ", "background: #Ea5dc8; color:#ffffff", action.payload)
       return { ...state, id: action.payload }
     case "setTitle":
       if (action.payload === "") return state
-      console.log("title", action.payload)
+      console.log("%c title ", "background: #Ea5dc8; color:#ffffff", action.payload)
       firebase.saveTaskPartialContent(state.id, { title: action.payload })
       return { ...state, title: action.payload }
     case "setLocation":
-      console.log("location", action.payload)
+      console.log("location", "background: #Ea5dc8; color:#ffffff", action.payload)
       return { ...state, location: action.payload }
     case "editTags":
       const { parent, child, index } = action.payload

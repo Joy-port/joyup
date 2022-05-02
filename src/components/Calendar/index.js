@@ -78,7 +78,6 @@ const index = () => {
     dispatch(task.saveTaskDate(startTime))
     dispatch(task.saveTaskDate(endTime))
     dispatch(task.saveTotalTask())
-    console.log(draggedEventData)
   }
 
   return (

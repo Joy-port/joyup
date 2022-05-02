@@ -59,7 +59,6 @@ function App() {
 
   useEffect(() => {
     if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-      console.log("change", projectList, id)
       dispatch(user.getUserProjectList(id)) //change to snapshot
       dispatch(settings.getUserSettings(id))
     }

@@ -42,7 +42,6 @@ const index = ({ type }) => {
         ...finishAtColumn,
         taskIds: finishColumnTaskIds,
       }
-      console.log("drag", newStartColumn.taskIds, newFinishColumn.taskIds)
       const taskContent = {
         taskId: draggableId,
         parent: selectedType.id,

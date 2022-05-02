@@ -19,7 +19,6 @@ export function timeReducer(state = initialTimeState, action) {
       return { ...state, [type]: status }
     case "addClockNumber":
       const { clockType } = action.payload
-      console.log(clockType, state[clockType])
       return { ...state, [clockType]: state[clockType]++ }
     default:
       return state
