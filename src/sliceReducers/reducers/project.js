@@ -8,6 +8,15 @@ const initialProjectState = {
 function projectReducer(state = initialProjectState, action) {
   switch (action.type) {
     case "projects/updateProjects":
+      // const projectDetail = { ...action.payload }
+      // const projectListWithTask = {}
+      // const projectIDs = Object.keys(action.payload)
+      // const userProjectList = projectIDs.map((id) => {
+      //   projectListWithTask = {
+      //     ...projectDetail[id][tasks],
+      //   }
+      // })
+
       return {
         ...state,
         totalProjectList: { ...action.payload },

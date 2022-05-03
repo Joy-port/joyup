@@ -3,6 +3,7 @@ const initialUserState = {
   collaborateProjects: [],
   ownerProjects: [],
   invitationProjects: [],
+  userTasks: [],
   userName: "",
   id: "",
 }
@@ -36,6 +37,11 @@ function userReducer(state = initialUserState, action) {
         ...state,
         userName,
         id,
+      }
+    case "user/getUserTasks":
+      return {
+        ...state,
+        userTasks: [...action.payload],
       }
     default:
       return state

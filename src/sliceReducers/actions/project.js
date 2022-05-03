@@ -6,6 +6,10 @@ export const project = {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
           dispatch({ type: "projects/updateProjects", payload: projects })
+          const projectTasks = Object.keys(projects).flatMap((projectID) => {
+            return projects[projectID].tasks
+          })
+          dispatch({ type: "user/getUserTasks", payload: projectTasks })
           // console.log("%c listen projectData", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
@@ -26,7 +30,7 @@ export const project = {
     }
   },
   updateTasks: function () {
-    return async function (dispatch) {
+    return async function (dispatch, getState) {
       try {
         await firebase.getRealTimeData("tasks", (tasks) => {
           dispatch({ type: "projects/updateAllTasks", payload: tasks })

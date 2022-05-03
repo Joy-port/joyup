@@ -3,24 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus } from "react-feather"
 import NewProject from "../NewProject"
-import { css } from "@emotion/react"
 import { tags } from "../../sliceReducers/actions/tags"
 import { project } from "../../sliceReducers/actions/project"
-// import PuffLoader from "react-spinners/ClipLoader"
-// import { project } from "../../sliceReducers/actions/project"
-
-// const override = css`
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-//   z-index: 50;
-//   display: block;
-//   border-color: slateLight;
-//   background: slateLight;
-// `
-// const { isLoading } = useSelector((state) => state
-//<PuffLoader loading={isLoading} css={override} size={40} />
 
 const ProjectList = () => {
   const { ownerProjects, collaborateProjects, userProjects } = useSelector(
@@ -41,7 +25,6 @@ const ProjectList = () => {
   }
   return (
     <>
-      {/* {JSON.stringify(totalProjectList) === "{}" &&  */}
       {userProjects.length === 0 ? (
         <>
           <div
@@ -102,7 +85,6 @@ const ProjectList = () => {
           {isOpen && <NewProject setIsOpen={setIsOpen} />}
         </>
       )}
-      {/* } */}
     </>
   )
 }

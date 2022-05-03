@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@atlaskit/table-tree": "^9.1.7",
+    "@d3fc/d3fc-discontinuous-scale": "^4.0.2",
     "@dicebear/avatars": "^4.10.2",
     "@draft-js-plugins/editor": "^4.1.2",
     "@reduxjs/toolkit": "^1.8.1",
@@ -11,7 +12,6 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.26.1",
-    "classnames": "^2.3.1",
     "dayjs": "^1.11.0",
     "firebase": "^9.6.11",
     "immer": "^9.0.12",
@@ -30,7 +30,8 @@
     "react-scripts": "5.0.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "victory": "^36.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

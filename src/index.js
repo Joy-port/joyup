@@ -6,6 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css"
 import App from "./App"
 import { store } from "./app/store"
 import { Provider } from "react-redux"
+import * as V from "victory"
 
 ReactDOM.render(
   <React.StrictMode>

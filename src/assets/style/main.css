@@ -448,6 +448,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mb-7 {
   margin-bottom: 1.75rem;
 }
+.ml-2 {
+  margin-left: 0.5rem;
+}
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -492,6 +495,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .flex-col {
   flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
 }
 .items-center {
   align-items: center;
