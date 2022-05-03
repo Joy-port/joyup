@@ -47,7 +47,6 @@ const Report = () => {
           }
         }
       }
-      console.log(total)
       return total
     }, {})
     return taskConvertToPie

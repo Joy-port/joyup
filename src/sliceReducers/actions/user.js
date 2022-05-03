@@ -44,20 +44,23 @@ export const user = {
   logout: () => {
     return async (dispatch, getState) => {
       await login.userSignOut()
+      dispatch({ type: "user/clearUserData" })
+      dispatch({ type: "tags/clearTagsData" })
     }
   },
   listenUserStatus: () => {
     return async (dispatch, getState) => {
       try {
-        const { id } = getState().user
         await login.userStatusChange(
-          async (user) => {
-            console.log("%c user is login ", "background: #AC6B7D; color:#ffffff", user)
-            if (user.id !== id) {
-              dispatch({ type: "user/getUserID", payload: user.id })
-              const { name } = await firebase.getUserSettings(user.id)
-              dispatch({ type: "user/getUserName", payload: name })
-            }
+          (user) => {
+            console.log(
+              "%c user is login ",
+              "background: #AC6B7D; color:#ffffff",
+              user.uid
+            )
+            dispatch({ type: "user/getUserID", payload: user.uid })
+            const { name } = firebase.getUserSettings(user.id)
+            dispatch({ type: "user/getUserName", payload: name })
           },
           () => {
             dispatch({ type: "user/clearUserData" })

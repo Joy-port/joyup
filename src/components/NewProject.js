@@ -2,11 +2,13 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { project } from "../sliceReducers/actions/project"
 import { func } from "prop-types"
+import { useNavigate } from "react-router-dom"
 
 const NewProject = ({ setIsOpen }) => {
   const [projectTitle, setProjectTitle] = useState("")
   const [isPublic, setIsPublic] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const createNewProject = (e) => {
     e.preventDefault()
@@ -23,6 +25,7 @@ const NewProject = ({ setIsOpen }) => {
         setIsOpen(false)
       })
     )
+    navigate(0)
   }
 
   return (

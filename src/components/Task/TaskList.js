@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from "uuid"
 const TaskList = () => {
   const dispatch = useDispatch()
   const { id } = useSelector((state) => state.task)
-  const { totalTaskList } = useSelector((state) => state.user)
-  const { totalTasksToSelect } = useSelector((state) => state.tags)
+  const { totalTaskList } = useSelector((state) => state.projects)
+  const { userTasks } = useSelector((state) => state.user)
   let navigate = useNavigate()
   const [taskID, setTaskID] = useState("")
   const createNewTask = useCallback(() => {
@@ -27,13 +27,13 @@ const TaskList = () => {
     <div className="fixed bottom-5 right-5 z-100">
       <select
         className="bg-slateDark text-white border-r-2 py-1 px-2"
-        value={id}
         onChange={(e) => onChange(e)}
       >
         <option value="default">Select A Task and Start</option>
-        {totalTasksToSelect &&
-          totalTasksToSelect.map((taskID) => {
+        {userTasks &&
+          userTasks.map((taskID) => {
             const task = totalTaskList[taskID]
+            if (!task) return
             return (
               <option value={task.id} key={task.id}>
                 {task.title}

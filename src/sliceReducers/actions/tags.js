@@ -1,4 +1,3 @@
-import { async } from "@firebase/util"
 import { firebase } from "../../helpers/firebase"
 import { filterSelectedTypeTags } from "../../helpers/functions"
 

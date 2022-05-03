@@ -55,6 +55,10 @@ function tagsReducer(state = initialTagState, action) {
         selectedTagColumns: newSelectedList,
         noneGroupTask: newNoTagList,
       }
+    case "tags/clearTagsData":
+      return {
+        ...JSON.parse(JSON.stringify(initialTagState)),
+      }
     case "getAllProjects":
       // const totalProjects = await firebase.getTotalProjects()
       return { ...state, totalProjectList: [...totalProjects] }

@@ -81,18 +81,11 @@ function App() {
           <Route path="sign-in" element={<Login pathname="sign-in" />} />
           <Route path="sign-up" element={<Login pathname="sign-up" />} />
         </Route>
+        <Route index element={<Home />} />
         {pathInfo.map((path, index) => {
           const Component = components[path.component]
-          const isHome = path.path === "/"
-          if (path.name !== "Dashboard") {
-            return (
-              <Route
-                key={index}
-                index={isHome}
-                path={path.path}
-                element={<Component />}
-              />
-            )
+          if (path.name !== "Dashboard" || path.name !== "Home") {
+            return <Route key={index} path={path.path} element={<Component />} />
           } else {
             return
           }
@@ -100,13 +93,12 @@ function App() {
         <Route path="dashboard">
           <Route index element={<ProjectList />} />
           <Route path=":projectID" element={<Dashboard />}>
+            <Route index element={<Navigate to="list" replace />} />
             {viewInfo.map((view, index) => {
               const Component = viewComponents[view.component]
               let type = view.type || "none"
-              const isHome = view.path === "list"
               return (
                 <Route
-                  index={isHome}
                   path={view.path}
                   key={index}
                   element={<Component type={type} />}
