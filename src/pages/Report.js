@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import {
   VictoryPie,
@@ -8,14 +8,20 @@ import {
   VictoryTheme,
   Slice,
 } from "victory"
-import { scaleDiscontinuous, discontinuityRange } from "@d3fc/d3fc-discontinuous-scale"
+// import {
+//   scaleDiscontinuous,
+//   discontinuitySkipWeekends,
+// } from "@d3fc/d3fc-discontinuous-scale"
+// import { scaleTime } from "d3-scale"
+import { getClockTime } from "../helpers/functions"
 
 const Report = () => {
   const { userTasks } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList, projectList } = useSelector(
     (state) => state.projects
   )
-  const [selectedProject, setSelectedProject] = useState("")
+  const tags = useSelector((state) => state.tag)
+  const [selectedProject, setSelectedProject] = useState(projectList[0])
   const [userTaskDetail, setUserTaskDetail] = useState(() => {
     return userTasks.map((taskID) => {
       const taskDetail = totalTaskList[taskID]
@@ -41,31 +47,44 @@ const Report = () => {
           }
         }
       }
+      console.log(total)
       return total
     }, {})
     return taskConvertToPie
   })
-
-  const [taskDateRange, setTaskDateRange] = useState(() => {
-    const combineTaskDate = userTaskDetail.map((task) => {
-      const taskDate = {
-        start: new Date(task.startDate),
-        end: new Date(task.dueDate),
-        x: new Date(task.startDate),
-        y: task.totalTime,
-      }
-      return taskDate
-    })
+  const switchProjectTasks = useCallback(() => {
+    const combineTaskDate = userTaskDetail
+      .filter((task) => task.projectID === selectedProject)
+      .map((task) => {
+        const taskDate = {
+          start: new Date(task.startDate),
+          end: new Date(task.dueDate),
+          x: new Date(new Date(task.startDate).toDateString()),
+          y: parseFloat(getClockTime(task.totalTime).split(":")[0]) || 0,
+          y0: parseFloat(getClockTime(task.totalTime).split(":")[1]) / 60,
+        }
+        return taskDate
+      })
+      .sort((a, b) => a.x - b.x)
     return combineTaskDate
   })
-  const discontinuousScale = scaleDiscontinuous(
-    d3Scale.scaleTime()
-  ).discontinuityProvider(discontinuitySkipWeekends())
+  const [taskDateRange, setTaskDateRange] = useState(() => {
+    const data = switchProjectTasks()
+    console.log(data)
+    return data
+  })
+
+  useEffect(() => {
+    setTaskDateRange(() => {
+      const data = switchProjectTasks()
+      return data
+    })
+  }, [selectedProject])
 
   return (
     <div className="grow flex flex-col flex-wrap">
       <h1>Report</h1>
-      <div className="w-1/2 text-sm">
+      <div className="w-1/2 text-sm mb-10">
         <h1>Total Time Spending</h1>
         <VictoryPie
           data={Object.values(taskPie)}
@@ -89,12 +108,12 @@ const Report = () => {
                           : { style: { fill: "#c43a31" } }
                       },
                     },
-                    {
-                      target: "labels",
-                      mutation: ({ text }) => {
-                        return text === "clicked" ? null : { text: "clicked" }
-                      },
-                    },
+                    // {
+                    //   target: "labels",
+                    //   mutation: ({ text }) => {
+                    //     return text === "clicked" ? null : { text: "clicked" }
+                    //   },
+                    // },
                   ]
                 },
               },
@@ -121,18 +140,12 @@ const Report = () => {
         </h1>
         <VictoryChart
           theme={VictoryTheme.material}
-          // scale={{ x: discontinuousScale }}
           animate={{
             duration: 2000,
             onLoad: { duration: 1000 },
           }}
-          scale={{ x: discontinuousScale }}
         >
-          <VictoryArea
-            // categories={{ x: projectList }}
-            style={{ data: { fill: "#c43a31" } }}
-            data={taskDateRange}
-          />
+          <VictoryArea style={{ data: { fill: "#c43a31" } }} data={taskDateRange} />
         </VictoryChart>
       </div>
     </div>
