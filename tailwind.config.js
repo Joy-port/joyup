@@ -19,6 +19,9 @@ module.exports = {
       light200: "#ACBAC3", // "#8492a6", //#ACBAC3
       light100: "#DCE1E5",
       light000: "#F3F5F6",
+      blue200: "#0a88c2",
+      blue100: "#33a7ff",
+      blue000: "#ebf8fe",
       warning: "#FFC533",
       danger: "#f54e4e",
       success: "#46AF6B",
@@ -43,7 +46,7 @@ module.exports = {
         1: "1px",
       },
       borderWidth: {
-        1: "1px",
+        1: "1.5px",
       },
       borderRadius: {
         "4xl": "2rem",

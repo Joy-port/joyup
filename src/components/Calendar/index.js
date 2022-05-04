@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from "uuid"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 import moment from "moment"
 import { task } from "../../sliceReducers/actions/task"
-
 const localizer = momentLocalizer(moment)
+
 // const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = () => {
@@ -17,6 +17,24 @@ const index = () => {
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const eventPropGetter = useCallback((event, start, end, isSelected) => {
+    // console.log(event)
+    return {
+      ...(isSelected && {
+        style: {
+          backgroundColor: "#000",
+        },
+      }),
+      // ...(moment(start).hour() > 12 && {
+      //   className: "text-info",
+      // }),
+      ...(event.title.toLowerCase().includes("meeting") && {
+        style: {
+          backgroundColor: "#46af6b",
+        },
+      }),
+    }
+  }, [])
   useEffect(() => {
     setEvents(Object.values(selectedProjectTaskList))
   }, [selectedProjectTaskList])
@@ -91,12 +109,7 @@ const index = () => {
         startAccessor="start"
         endAccessor="end"
         events={events}
-        views={{
-          day: true,
-          week: true,
-          month: true,
-          year: true,
-        }}
+        views={["day", "week", "month"]}
         resizable
         selectable
         // onDoubleClickEvent={onDoubleClickEvent} //onclick twice
@@ -105,6 +118,10 @@ const index = () => {
         // onEventResize={onEventResize}
         // onEventDrop={onEventDrop}
         // popup //problem will break the view
+        //style
+        eventPropGetter={eventPropGetter}
+        timeslots={2}
+        step={30}
       />
     </div>
   )

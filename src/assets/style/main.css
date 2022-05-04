@@ -430,6 +430,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 0px;
   margin-bottom: 0px;
 }
+.-mx-4 {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
 .mb-4 {
   margin-bottom: 1rem;
 }
@@ -466,6 +470,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .-mr-4 {
   margin-right: -1rem;
 }
+.-mt-3 {
+  margin-top: -0.75rem;
+}
 .block {
   display: block;
 }
@@ -490,6 +497,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .min-h-18 {
   min-height: 4.5rem;
 }
+.min-h-36 {
+  min-height: 9rem;
+}
 .min-h-1\/4 {
   min-height: 25%;
 }
@@ -507,6 +517,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .w-44 {
   width: 11rem;
+}
+.w-40 {
+  width: 10rem;
 }
 .grow {
   flex-grow: 1;
@@ -559,6 +572,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .rounded-sm {
   border-radius: 0.125rem;
 }
+.border-1 {
+  border-width: 1.5px;
+}
 .border-2 {
   border-width: 2px;
 }
@@ -576,6 +592,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-border-opacity: 1;
   border-color: rgb(172 186 195 / var(--tw-border-opacity));
 }
+.border-light300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(77 95 106 / var(--tw-border-opacity));
+}
 .border-transparent {
   border-color: transparent;
 }
@@ -583,20 +603,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
-.bg-slateDark {
-  --tw-bg-opacity: 1;
-  background-color: rgb(35 39 42 / var(--tw-bg-opacity));
-}
-.bg-light200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
+.bg-transparent {
+  background-color: transparent;
 }
 .bg-slateLight {
   --tw-bg-opacity: 1;
   background-color: rgb(44 47 51 / var(--tw-bg-opacity));
 }
-.bg-transparent {
-  background-color: transparent;
+.bg-light000 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
+}
+.bg-light200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
 }
 .p-5 {
   padding: 1.25rem;
@@ -623,6 +643,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 .pb-2 {
   padding-bottom: 0.5rem;
@@ -671,6 +695,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .font-bold {
   font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.uppercase {
+  text-transform: uppercase;
 }
 .italic {
   font-style: italic;
@@ -815,8 +845,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   cursor: pointer;
   justify-content: center;
   gap: 0.75rem;
-  border-left-width: 1px;
-  border-right-width: 1px;
+  border-radius: 0.125rem;
+  border-left-width: 1.5px;
+  border-right-width: 1.5px;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
@@ -912,7 +943,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .button {
   cursor: pointer;
   border-radius: 0.25rem;
-  border-width: 1px;
+  border-width: 1.5px;
   border-color: transparent;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1053,7 +1084,7 @@ input:focus {
 }
 .dropdown-list {
   border-radius: 0.125rem;
-  border-width: 1px;
+  border-width: 1.5px;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
@@ -1382,6 +1413,18 @@ input:focus {
 .hover\:border-slateLight:hover {
   --tw-border-opacity: 1;
   border-color: rgb(44 47 51 / var(--tw-border-opacity));
+}
+.hover\:border-light200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(172 186 195 / var(--tw-border-opacity));
+}
+.hover\:bg-light200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
+}
+.hover\:text-white:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .active\:border-slateLight:active {
   --tw-border-opacity: 1;

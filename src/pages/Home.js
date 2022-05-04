@@ -4,8 +4,11 @@ import moment from "moment"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { number } from "prop-types"
+// import Agenda from "../components/Calendar/Agenda"
 
 const localizer = momentLocalizer(moment)
+// Agenda.title = (date, { localizer }) => localizer.format(date, "yearHeaderFormat")
+
 const Home = () => {
   const { userTasks } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList } = useSelector((state) => state.projects)
@@ -43,14 +46,15 @@ const Home = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex">
-        <div className="button button-light" onClick={() => setType(0)}>
+      <div className="menu-container">
+        <div className="menu-item menu-item__dark" onClick={() => setType(0)}>
           Calendar
         </div>
-        <div className="button button-light" onClick={() => setType(1)}>
+        <div className="menu-item menu-item__dark" onClick={() => setType(1)}>
           List
         </div>
       </div>
+      <div className="-mt-5 min-h-18 mb-3"></div>
       {type === 0 ? (
         <Calendar
           dayLayoutAlgorithm="overlap"

@@ -1,0 +1,131 @@
+:root {
+  --primary: #23272a;
+  --secondary: #99aab5;
+  --slateDark: #23272a;
+  --slateLight: #2c2f33;
+  --light300: #4d5f6a;
+  --light200: #acbac3;
+  --light100: #dce1e5;
+  --light000: #f3f5f6;
+  --blue200: #0a88c2; /* #0a88c2; */
+  --blue100: #33a7ff; /* #ebf8fe; */
+  --blue000: #ebf8fe; /* #ebf8fe; */
+  --warning: #ffc533;
+  --danger: #f54e4e;
+  --success: #46af6b;
+  --info: #3e98c7;
+  --gray: #8492a6;
+  --white: #fff;
+  --black: #212121;
+  --transparentDark: #23272a99;
+  --transparentLight: #dce1e533;
+  --transparent: transparent;
+}
+
+/* container */
+.rbc-calendar {
+  color: var(--slateLight);
+}
+/* header buttons */
+.rbc-toolbar button {
+  color: var(--slateLight);
+  border: 1px solid var(--transparent);
+  box-shadow: none;
+  border-radius: 0px;
+}
+.rbc-toolbar button:hover {
+  color: var(--light300);
+  background-color: var(--light000);
+  border-color: var(--transparent);
+}
+.rbc-toolbar button.rbc-active {
+  background-color: var(--light000);
+  border-color: var(--light200);
+}
+.rbc-toolbar button:active,
+.rbc-toolbar button:focus,
+.rbc-toolbar button.rbc-active {
+  box-shadow: none;
+}
+.rbc-toolbar button:active,
+.rbc-toolbar button:focus,
+.rbc-toolbar button:active:hover,
+.rbc-toolbar button:active:focus,
+.rbc-toolbar button.rbc-active,
+.rbc-toolbar button.rbc-active:hover,
+.rbc-toolbar button.rbc-active:focus {
+  color: var(--light300);
+  background-color: var(--light000);
+  border-color: var(--transparent);
+}
+
+/* header Date Title */
+.rbc-toolbar-label {
+  font-size: 22px;
+}
+
+/* date */
+.rbc-today {
+  background-color: var(--blue000);
+}
+/* event */
+.rbc-event,
+.rbc-day-slot .rbc-background-event {
+  color: var(--white);
+  background-color: var(--blue200);
+  border-radius: 2px;
+  border: 1px solid var(--transparent);
+}
+.rbc-day-slot .rbc-event,
+.rbc-day-slot .rbc-background-event {
+  border: 1px solid var(--blue000);
+}
+.rbc-show-more {
+  color: var(--blue200);
+}
+.rbc-day-slot .rbc-event-content {
+  font-size: 18px;
+}
+.rbc-day-slot .rbc-event-label {
+  padding-right: 10px;
+}
+.rbc-agenda-view table.rbc-agenda-table,
+.rbc-time-view {
+  border: 1px solid var(--light000);
+}
+.rbc-header + .rbc-header,
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td {
+  border-left: 1px solid var(--light000);
+}
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  border-bottom: 1px solid var(--light000);
+}
+
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th,
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
+  padding: 10px 20px;
+}
+
+.rbc-agenda-time-cell,
+.rbc-agenda-event-cell {
+  background-color: var(--light000);
+  color: var(--slateLight);
+  cursor: pointer;
+  padding-top: 10px 20px;
+}
+
+.rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-time-cell,
+rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
+  background-color: var(--white);
+}
+
+.rbc-agenda-event-cell:hover {
+  background-color: var(--light200);
+  color: var(--white);
+  cursor: pointer;
+}
+
+/* slot */
+.rbc-timeslot-group {
+  min-height: 100px;
+}
