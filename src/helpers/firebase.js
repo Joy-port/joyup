@@ -393,6 +393,13 @@ export const firebase = {
         collection(this.db, taskCollection),
         where("projectID", "==", projectID)
       )
+      const taskSnapShot = await getDocs(taskQuery)
+      taskSnapShot.forEach(async (task) => {
+        console.log(task.id)
+        if (task.id) {
+          await deleteDoc(doc(this.db, taskCollection, task.id))
+        }
+      })
       const projectDetail = await getDoc(projectRef)
       const type =
         projectDetail.data().isPublic === 0 ? "ownerProjects" : "collaborateProjects"
@@ -400,10 +407,6 @@ export const firebase = {
       const userRef = doc(this.db, userCollection, userID)
       await updateDoc(userRef, {
         [type]: arrayRemove(projectID),
-      })
-      taskQuery?.forEach(async (task) => {
-        console.log(task.id)
-        await deleteDoc(doc(this.db, taskCollection, task.id))
       })
       await deleteDoc(projectRef)
     } catch (error) {

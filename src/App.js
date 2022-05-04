@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Routes, Route, Navigate, useNavigate, Outlet } from "react-router-dom"
+import { Helmet } from "react-helmet"
 import { pathInfo, viewInfo } from "./helpers/config"
+import Loader from "./components/Loader"
 import Layout from "./components/Layout"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
@@ -35,7 +37,8 @@ const viewComponents = {
 }
 
 function App() {
-  const { id } = useSelector((state) => state.user)
+  // const { id } = useSelector((state) => state.user)
+  const id = "VI3mUOQiM2RrYYvNagMuQU4fLgm1"
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const projectList = useSelector((state) => state.projects)
@@ -51,11 +54,11 @@ function App() {
     dispatch(user.listenUserStatus())
   }, [])
 
-  useEffect(() => {
-    if (id === undefined || id === "") {
-      navigate("/login/sign-in")
-    }
-  }, [id])
+  // useEffect(() => {
+  //   if (id === "") {
+  //     navigate("/login/sign-in")
+  //   }
+  // }, [id])
 
   useEffect(() => {
     if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
@@ -74,56 +77,65 @@ function App() {
     }
   }, [projectList, ownerProjects])
   return (
-    <Routes>
-      <Route path="/" element={id !== undefined && id !== "" ? <Layout /> : <Outlet />}>
-        <Route path="login">
-          <Route index element={<Navigate to="sign-in" replace />} />
-          <Route path="sign-in" element={<Login pathname="sign-in" />} />
-          <Route path="sign-up" element={<Login pathname="sign-up" />} />
-        </Route>
-        <Route index element={<Home />} />
-        {pathInfo.map((path, index) => {
-          const Component = components[path.component]
-          if (path.name !== "Dashboard" || path.name !== "Home") {
-            return <Route key={index} path={path.path} element={<Component />} />
-          } else {
-            return
-          }
-        })}
-        <Route path="dashboard">
-          <Route index element={<ProjectList />} />
-          <Route path=":projectID" element={<Dashboard />}>
-            <Route index element={<Navigate to="list" replace />} />
-            {viewInfo.map((view, index) => {
-              const Component = viewComponents[view.component]
-              let type = view.type || "none"
-              return (
-                <Route
-                  path={view.path}
-                  key={index}
-                  element={<Component type={type} />}
-                ></Route>
-              )
-            })}
+    <>
+      <Helmet>
+        <title>JoyUp | Task Management</title>
+      </Helmet>
+      {/* {id === undefined ? (
+        <Loader></Loader>
+      ) : ( */}
+      <Routes>
+        <Route path="/" element={id !== "" ? <Layout /> : <Outlet />}>
+          {/* <Route path="login">
+              <Route index element={<Navigate to="sign-in" replace />} />
+              <Route path="sign-in" element={<Login pathname="sign-in" />} />
+              <Route path="sign-up" element={<Login pathname="sign-up" />} />
+            </Route> */}
+          <Route index element={<Home />} />
+          {pathInfo.map((path, index) => {
+            const Component = components[path.component]
+            if (path.name !== "Dashboard" || path.name !== "Home") {
+              return <Route key={index} path={path.path} element={<Component />} />
+            } else {
+              return
+            }
+          })}
+          <Route path="dashboard">
+            <Route index element={<ProjectList />} />
+            <Route path=":projectID" element={<Dashboard />}>
+              <Route index element={<Navigate to="list" replace />} />
+              {viewInfo.map((view, index) => {
+                const Component = viewComponents[view.component]
+                let type = view.type || "none"
+                return (
+                  <Route
+                    path={view.path}
+                    key={index}
+                    element={<Component type={type} />}
+                  ></Route>
+                )
+              })}
+            </Route>
           </Route>
+          <Route path="task">
+            <Route index element={<Navigate to="/" replace />} />
+            <Route path=":taskID" element={<Task />} />
+          </Route>
+          <Route path="clock">
+            <Route index element={<Navigate to="/" replace />} />
+            <Route path=":taskID" element={<Clock />} />
+          </Route>
+          {viewInfo.map((view) => (
+            <Route
+              path={`${view.path}/`}
+              key={view.path}
+              element={<Navigate to="/" replace />}
+            />
+          ))}
         </Route>
-        <Route path="task">
-          <Route index element={<Navigate to="/" replace />} />
-          <Route path=":taskID" element={<Task />} />
-        </Route>
-        <Route path="clock">
-          <Route index element={<Navigate to="/" replace />} />
-          <Route path=":taskID" element={<Clock />} />
-        </Route>
-        {viewInfo.map((view) => (
-          <Route
-            path={`${view.path}/`}
-            key={view.path}
-            element={<Navigate to="/" replace />}
-          />
-        ))}
-      </Route>
-    </Routes>
+      </Routes>
+      {/* )} */}
+    </>
   )
 }
 

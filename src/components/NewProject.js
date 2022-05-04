@@ -20,12 +20,12 @@ const NewProject = ({ setIsOpen }) => {
       projectTitle,
       isPublic,
     }
+    console.log(projectContent)
     dispatch(
       project.createNewProject(projectContent, () => {
         setIsOpen(false)
       })
     )
-    navigate(0)
   }
 
   return (

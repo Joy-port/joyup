@@ -6,6 +6,7 @@ const initialUserState = {
   userTasks: [],
   userName: "",
   id: "",
+  loginStatus: false,
 }
 
 function userReducer(state = initialUserState, action) {
