@@ -57,7 +57,7 @@ const List = ({ type }) => {
           </select> */}
         </div>
       </div>
-      <div className="h-custom w-96 overflow-auto px-4 pb-2">
+      <div className="h-custom -ml-4 -mr-4 overflow-auto px-4 pb-2">
         <DragFunction type={type} />
       </div>
     </>

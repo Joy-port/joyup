@@ -24,9 +24,9 @@ const TaskList = () => {
     navigate(`/task/${taskID}`)
   }
   return (
-    <div className="fixed bottom-5 right-5 z-100">
+    <div className="fixed bottom-5 right-5 z-100 bg-transparent">
       <select
-        className="bg-slateDark text-white border-r-2 py-1 px-2"
+        className="bg-slateLight rounded-sm text-white border-r-2 py-2 px-3"
         onChange={(e) => onChange(e)}
       >
         <option value="default">Select A Task and Start</option>
@@ -41,7 +41,10 @@ const TaskList = () => {
             )
           })}
       </select>
-      <button className="bg-slateDark text-white py-1 px-2" onClick={createNewTask}>
+      <button
+        className="bg-slateLight text-white py-2 px-3  rounded-sm"
+        onClick={createNewTask}
+      >
         + Task
       </button>
     </div>

@@ -55,8 +55,8 @@ const index = ({ type }) => {
   })
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className={`view-${type}`}>
+    <div className={`view-${type}`}>
+      <DragDropContext onDragEnd={onDragEnd}>
         {selectedColumnOrder &&
           selectedColumnOrder.map((columnId) => {
             const column = selectedTagColumns[columnId]
@@ -85,8 +85,8 @@ const index = ({ type }) => {
               }
             }
           })}
-      </div>
-    </DragDropContext>
+      </DragDropContext>
+    </div>
   )
 }
 

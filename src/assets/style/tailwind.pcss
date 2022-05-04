@@ -7,12 +7,12 @@
   @apply h-screen flex flex-col md:flex-row relative text-slateDark;
 }
 .content {
-  @apply relative gap-3 w-full h-screen overflow-hidden;
+  @apply relative gap-3 w-full h-screen overflow-hidden py-3 px-4;
 }
 
 /* menu */
 .menu-container {
-  @apply fixed flex bg-light000 w-full py-3 px-4;
+  @apply fixed flex bg-light000 w-full py-3 px-4 -mx-4 -mt-3;
 }
 .menu-list {
   @apply md:static md:h-screen md:justify-between sm:w-screen md:w-20  lg:w-44 h-auto bg-primary flex flex-col transition-all py-3;
@@ -20,12 +20,19 @@
 .menu-item__light {
   @apply w-full flex gap-3 rounded py-3 px-7 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer tracking-wider;
 }
+
+.menu-item {
+  @apply px-4 py-2 border-x-1 cursor-pointer flex gap-3 justify-center transition-colors;
+}
 .menu-item__dark {
-  @apply px-4 py-2 rounded-sm border-x-1 border-transparentLight hover:text-white text-slateLight hover:bg-light200 hover:border-light200  cursor-pointer flex gap-3 justify-center;
+  @apply border-transparentLight hover:text-white text-slateLight hover:bg-light200 hover:border-light200;
+}
+.menu-item__dark--active {
+  @apply text-white bg-light200 border-light200;
 }
 
 .tool-bar {
-  @apply flex md:justify-end mb-3 px-3 py-2 rounded-sm;
+  @apply flex md:justify-end mb-3 rounded-sm;
 }
 
 /* modal */
@@ -196,26 +203,37 @@ input {
 }
 
 .view-board {
-  @apply w-full flex gap-3;
+  @apply w-full flex gap-3 h-full;
 }
 
 .column-list {
-  @apply border-1 border-light100 w-full;
+  @apply w-full;
 }
 .column-list h1 {
-  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm mb-3;
+  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm;
 }
 
 .column-list-dragging {
-  @apply bg-light000 shadow-inner;
+  @apply bg-light100 shadow-inner p-2 rounded-sm min-h-32;
+}
+.column-list-normal {
+  @apply bg-white min-h-20 border-2 border-light100 p-2 rounded-sm shadow-sm;
 }
 
 .column-board {
-  @apply bg-light100;
+  @apply bg-light100 min-w-96 h-full overflow-y-hidden;
 }
 
-.taskList {
-  @apply min-h-20 p-2;
+.column-board h1 {
+  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm mb-3;
+}
+
+.column-board-dragging {
+  @apply bg-white min-h-96 shadow-inner;
+}
+
+.column-board-normal {
+  @apply min-h-96;
 }
 .task-list {
   @apply shadow bg-white;
@@ -225,7 +243,7 @@ input {
   @apply shadow-lg;
 }
 .task-board {
-  @apply w-96;
+  @apply w-full bg-white shadow py-2 min-h-16 text-slateLight;
 }
 
 .close-button {

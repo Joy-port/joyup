@@ -2,7 +2,7 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { Draggable } from "react-beautiful-dnd"
 import { number, object, string } from "prop-types"
-import { List } from "react-feather"
+import { Menu } from "react-feather"
 import { useDispatch, useSelector } from "react-redux"
 
 const Task = ({ task, index, type }) => {
@@ -28,7 +28,7 @@ const Task = ({ task, index, type }) => {
               {task.title}
             </div>
             <div {...provided.dragHandleProps}>
-              <List />
+              <Menu strokeWidth={1} />
             </div>
           </div>
         )

@@ -439,14 +439,17 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mr-5 {
   margin-right: 1.25rem;
 }
+.-mt-5 {
+  margin-top: -1.25rem;
+}
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
 .-mt-32 {
   margin-top: -8rem;
 }
 .mb-10 {
   margin-bottom: 2.5rem;
-}
-.mb-3 {
-  margin-bottom: 0.75rem;
 }
 .mb-7 {
   margin-bottom: 1.75rem;
@@ -456,6 +459,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .mb-1 {
   margin-bottom: 0.25rem;
+}
+.-ml-4 {
+  margin-left: -1rem;
+}
+.-mr-4 {
+  margin-right: -1rem;
 }
 .block {
   display: block;
@@ -498,9 +507,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .w-44 {
   width: 11rem;
-}
-.w-96 {
-  width: 24rem;
 }
 .grow {
   flex-grow: 1;
@@ -550,6 +556,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .rounded {
   border-radius: 0.25rem;
 }
+.rounded-sm {
+  border-radius: 0.125rem;
+}
 .border-2 {
   border-width: 2px;
 }
@@ -581,6 +590,13 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-light200 {
   --tw-bg-opacity: 1;
   background-color: rgb(172 186 195 / var(--tw-bg-opacity));
+}
+.bg-slateLight {
+  --tw-bg-opacity: 1;
+  background-color: rgb(44 47 51 / var(--tw-bg-opacity));
+}
+.bg-transparent {
+  background-color: transparent;
 }
 .p-5 {
   padding: 1.25rem;
@@ -712,10 +728,17 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 100%;
   gap: 0.75rem;
   overflow: hidden;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 /* menu */
 .menu-container {
   position: fixed;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  margin-top: -0.75rem;
   display: flex;
   width: 100%;
   --tw-bg-opacity: 1;
@@ -787,19 +810,23 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.menu-item__dark {
+.menu-item {
   display: flex;
   cursor: pointer;
   justify-content: center;
   gap: 0.75rem;
-  border-radius: 0.125rem;
   border-left-width: 1px;
   border-right-width: 1px;
-  border-color: #DCE1E533;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.menu-item__dark {
+  border-color: #DCE1E533;
   --tw-text-opacity: 1;
   color: rgb(44 47 51 / var(--tw-text-opacity));
 }
@@ -811,14 +838,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.menu-item__dark--active {
+  --tw-border-opacity: 1;
+  border-color: rgb(172 186 195 / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
 .tool-bar {
   margin-bottom: 0.75rem;
   display: flex;
   border-radius: 0.125rem;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 @media (min-width: 768px) {
 
@@ -1236,17 +1267,14 @@ input:focus {
 }
 .view-board {
   display: flex;
+  height: 100%;
   width: 100%;
   gap: 0.75rem;
 }
 .column-list {
   width: 100%;
-  border-width: 1px;
-  --tw-border-opacity: 1;
-  border-color: rgb(220 225 229 / var(--tw-border-opacity));
 }
 .column-list h1 {
-  margin-bottom: 0.75rem;
   width: 8rem;
   border-radius: 0.125rem;
   --tw-bg-opacity: 1;
@@ -1263,19 +1291,62 @@ input:focus {
   color: rgb(77 95 106 / var(--tw-text-opacity));
 }
 .column-list-dragging {
+  min-height: 8rem;
+  border-radius: 0.125rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
+  background-color: rgb(220 225 229 / var(--tw-bg-opacity));
+  padding: 0.5rem;
   --tw-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: inset 0 2px 4px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.column-list-normal {
+  min-height: 5rem;
+  border-radius: 0.125rem;
+  border-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(220 225 229 / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding: 0.5rem;
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 .column-board {
+  height: 100%;
+  min-width: 24rem;
+  overflow-y: hidden;
   --tw-bg-opacity: 1;
   background-color: rgb(220 225 229 / var(--tw-bg-opacity));
 }
-.taskList {
-  min-height: 5rem;
-  padding: 0.5rem;
+.column-board h1 {
+  margin-bottom: 0.75rem;
+  width: 8rem;
+  border-radius: 0.125rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  --tw-text-opacity: 1;
+  color: rgb(77 95 106 / var(--tw-text-opacity));
+}
+.column-board-dragging {
+  min-height: 24rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  --tw-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: inset 0 2px 4px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.column-board-normal {
+  min-height: 24rem;
 }
 .task-list {
   --tw-bg-opacity: 1;
@@ -1290,7 +1361,17 @@ input:focus {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .task-board {
-  width: 24rem;
+  min-height: 4rem;
+  width: 100%;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(44 47 51 / var(--tw-text-opacity));
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .close-button {
   display: block;

@@ -20,6 +20,7 @@ const index = () => {
   )
   const {
     id,
+    title,
     projectID,
     createdDate,
     startDate,
@@ -243,6 +244,10 @@ const index = () => {
               <button
                 className="button button-dark flex justify-center gap-3 mb-1 grow"
                 onClick={() => {
+                  if (title === "") {
+                    alert("please fill in text title")
+                    return
+                  }
                   dispatch(task.saveTotalTask())
                   navigate(-1)
                 }}

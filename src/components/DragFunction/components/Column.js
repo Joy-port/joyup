@@ -11,10 +11,13 @@ const Column = ({ column, taskList, type }) => {
         {(provided, snapshot) => {
           const isDraggingOver = snapshot.isDraggingOver
             ? `column-${type}-dragging`
-            : "bg-white"
+            : `column-${type}-normal`
           return (
             <div
-              className={`taskList ${isDraggingOver}`}
+              className={`${isDraggingOver} h-full`}
+              style={{
+                overflowY: "auto",
+              }}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
