@@ -13,7 +13,7 @@ const MenuItem = ({ type, content }) => {
             const IconName = Icon[item.icon]
             return (
               <Link key={item.name} to={item.path}>
-                <button className="menu-item">
+                <button className="menu-item__light">
                   <IconName />
                   <p className="lg:block md:hidden sm:block">{item.name}</p>
                 </button>

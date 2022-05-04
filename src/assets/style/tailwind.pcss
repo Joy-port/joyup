@@ -2,18 +2,33 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 
+/* container */
 .body {
   @apply h-screen flex flex-col md:flex-row relative text-slateDark;
 }
 .content {
-  @apply grow p-3 flex flex-col overflow-x-hidden overflow-y-auto relative;
+  @apply relative gap-3 w-full h-screen overflow-hidden;
+}
+
+/* menu */
+.menu-container {
+  @apply fixed flex bg-light000 w-full py-3 px-4;
 }
 .menu-list {
-  @apply md:static md:h-screen md:justify-between lg:w-64 md:w-auto w-screen h-auto bg-primary flex flex-col transition-all py-3;
+  @apply md:static md:h-screen md:justify-between sm:w-screen md:w-20  lg:w-44 h-auto bg-primary flex flex-col transition-all py-3;
 }
-.menu-item {
-  @apply w-full flex gap-2 rounded p-3 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer;
+.menu-item__light {
+  @apply w-full flex gap-3 rounded py-3 px-7 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer tracking-wider;
 }
+.menu-item__dark {
+  @apply px-4 py-2 rounded-sm border-x-1 border-transparentLight hover:text-white text-slateLight hover:bg-light200 hover:border-light200  cursor-pointer flex gap-3 justify-center;
+}
+
+.tool-bar {
+  @apply flex md:justify-end mb-3 px-3 py-2 rounded-sm;
+}
+
+/* modal */
 .modal-bg {
   @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
 }
@@ -24,13 +39,39 @@
 .modal-close {
   @apply absolute top-2 right-2 block text-light300 font-bold;
 }
+
+/* button */
 .play-button {
   @apply rounded-full p-2 flex items-center justify-center bg-white;
 }
-input {
-  @apply bg-white rounded px-2 py-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+
+.button {
+  @apply rounded font-semibold text-center cursor-pointer px-2 py-1 border-1 border-transparent;
 }
-select {
+.button-dark {
+  @apply bg-light300 text-white hover:bg-light100 hover:text-slateLight hover:border-slateLight border-2 border-light300;
+}
+.button-outline-dark {
+  @apply text-light300 hover:text-white hover:bg-light300;
+}
+
+.button-light {
+  @apply bg-light200 text-white hover:bg-white hover:text-light300 hover:border-light300;
+}
+.button-outline-light {
+  @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
+}
+
+/* input */
+input {
+  @apply rounded px-2 py-1 focus:outline-1 focus:outline-light100;
+}
+.input-light300 {
+  @apply bg-white focus:outline-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+}
+
+/* selector */
+.select-light300 {
   @apply bg-light100 text-light300 rounded px-2 py-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
 }
 
@@ -45,6 +86,17 @@ select {
   @apply w-2/4;
 }
 
+/* dropdown group */
+.dropdown-container {
+  @apply absolute w-full left-0 mt-2;
+}
+.dropdown-list {
+  @apply border-1 rounded-sm bg-white;
+}
+.dropdown-item {
+  @apply px-2 py-1 hover:bg-light100;
+}
+
 .button-group {
   @apply flex flex-col md:flex-row md:justify-between md:items-center py-1;
 }
@@ -57,7 +109,7 @@ select {
 }
 
 .editor {
-  @apply grow flex flex-col relative border-2 border-light300 bg-white rounded;
+  @apply grow flex flex-col relative bg-white rounded;
 }
 .editor-input {
   @apply focus:outline-none px-3;
@@ -107,19 +159,6 @@ select {
 .quote-block {
   @apply border-l-4 border-slateDark text-lg font-semibold ml-5 pl-3;
 }
-.button {
-  @apply rounded font-semibold  text-center cursor-pointer px-2 py-1 border-2 border-transparent;
-}
-.button-dark {
-  @apply bg-light300 text-white hover:bg-light100 hover:text-slateLight hover:border-slateLight;
-}
-.button-outline-dark {
-  @apply text-light300 hover:text-white hover:bg-light300;
-}
-
-.button-light {
-  @apply bg-light200 text-white hover:bg-light000 hover:text-light300 hover:border-light300;
-}
 
 .results {
   @apply border border-slateLight;
@@ -142,14 +181,10 @@ select {
 }
 
 .column {
-  @apply border rounded-sm;
-}
-
-.task-list {
-  @apply min-h-min p-2;
+  @apply rounded p-3;
 }
 .task {
-  @apply flex justify-between items-center border border-slateLight rounded-sm p-2 mb-3;
+  @apply flex justify-between items-center rounded-sm p-2 mb-3;
 }
 
 .task-container {
@@ -161,10 +196,35 @@ select {
 }
 
 .view-board {
-  @apply flex grow gap-3;
+  @apply w-full flex gap-3;
 }
 
-.view-board-column {
+.column-list {
+  @apply border-1 border-light100 w-full;
+}
+.column-list h1 {
+  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm mb-3;
+}
+
+.column-list-dragging {
+  @apply bg-light000 shadow-inner;
+}
+
+.column-board {
+  @apply bg-light100;
+}
+
+.taskList {
+  @apply min-h-20 p-2;
+}
+.task-list {
+  @apply shadow bg-white;
+}
+
+.task-list-dragging {
+  @apply shadow-lg;
+}
+.task-board {
   @apply w-96;
 }
 

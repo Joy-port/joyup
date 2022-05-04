@@ -223,7 +223,9 @@ const TextEditor = () => {
             if (focusInput.current === item.id && isEditing) {
               return (
                 <input
-                  className={`editor-input ${HTMLStyle.style || item.html.style}`}
+                  className={`input-light300 editor-input ${
+                    HTMLStyle.style || item.html.style
+                  }`}
                   key={item.id}
                   id={item.id}
                   cols="30"

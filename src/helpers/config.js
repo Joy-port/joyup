@@ -28,30 +28,34 @@ export const viewInfo = [
   {
     name: "List",
     path: "list",
+    icon: "List",
     component: "List",
     type: "list",
   },
   {
     name: "Board",
     path: "board",
+    icon: "Columns",
     component: "List",
     type: "board",
   },
   {
     name: "Calendar",
     path: "calendar",
+    icon: "Calendar",
     component: "Calendar",
   },
   {
     name: "Map",
     path: "location",
+    icon: "MapPin",
     component: "DragFunction",
   },
-  {
-    name: "Mind Map",
-    path: "mind-map",
-    component: "DragFunction",
-  },
+  // {
+  //   name: "Mind Map",
+  //   path: "mind-map",
+  //   component: "DragFunction",
+  // },
 ]
 
 export const TextType = [

@@ -1,18 +1,50 @@
 import { string } from "prop-types"
-import React from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { tags } from "../../sliceReducers/actions/tags"
 import DragFunction from "../DragFunction"
+import { Search } from "react-feather"
 
 const List = ({ type }) => {
   const { types, selectedType } = useSelector((state) => state.tags)
   const dispatch = useDispatch()
+  const [openSelector, setOpenSelector] = useState(false)
   return (
-    <div>
-      <div className="flex align-bottom">
-        <div className="">
-          <p>group by</p>
-          <select
+    <>
+      <div className="tool-bar">
+        {/* <div className="flex">
+          <input type="text" placeholder="Search" />
+          <Search />
+        </div> */}
+        <div className="text-center rounded button-outline-light">
+          <div
+            className="group-title relative w-44 px-2 py-1"
+            onClick={() => {
+              setOpenSelector(!openSelector)
+            }}
+          >
+            Group By {selectedType.type}
+            {openSelector && (
+              <div className="dropdown-container">
+                <ul className="dropdown-list">
+                  {types.map((type) => (
+                    <li
+                      className="dropdown-item"
+                      value={type.id}
+                      key={type.id}
+                      onClick={() => {
+                        dispatch(tags.switchType(type.id))
+                        setOpenSelector(false)
+                      }}
+                    >
+                      {type.type}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+          {/* <select
             value={selectedType.id || -1}
             onChange={(e) => dispatch(tags.switchType(e.target.value))}
           >
@@ -22,11 +54,13 @@ const List = ({ type }) => {
                 {type.type}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
       </div>
-      <DragFunction type={type} />
-    </div>
+      <div className="h-custom w-96 overflow-auto px-4 pb-2">
+        <DragFunction type={type} />
+      </div>
+    </>
   )
 }
 

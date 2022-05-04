@@ -283,7 +283,7 @@ const TitleEditor = () => {
         </div>
       ) : (
         <input
-          className={style}
+          className={`input-light300 ${style}`}
           cols="30"
           rows="10"
           value={text}

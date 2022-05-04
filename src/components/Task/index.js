@@ -100,7 +100,7 @@ const index = () => {
             <div className="select-group">
               <p className="group-title">Project</p>
               <select
-                className="select-dropDown"
+                className="select-light300 select-dropDown"
                 value={projectID}
                 onChange={(e) => {
                   dispatch(task.saveTaskDetail("projectID", e.target.value))
@@ -122,7 +122,7 @@ const index = () => {
                 <div className="select-group" key={item.id}>
                   <p className="group-title">{item.type} </p>
                   <select
-                    className="select-dropDown"
+                    className="select-light300 select-dropDown"
                     value={
                       tagList.find((selected) => selected.parent === item.id)?.child ||
                       selectedColumnOrder[0]
@@ -183,7 +183,7 @@ const index = () => {
               <div className="flex justify-between">
                 <p className="group-title">Required Clocks:</p>
                 <select
-                  className="w-4/12 align-middle"
+                  className="select-light300 w-4/12 align-middle"
                   name="number"
                   value={requiredNumber || -1}
                   onChange={(e) => {
@@ -214,7 +214,7 @@ const index = () => {
               <div className="border-group-title">location</div>
               <p className="text-light300">{location || "no selected location"}</p>
               <input
-                className="select-group mb-1"
+                className="input-light300 select-group mb-1"
                 type="text"
                 placeholder="location"
                 value={address}

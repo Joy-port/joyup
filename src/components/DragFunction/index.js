@@ -61,13 +61,27 @@ const index = ({ type }) => {
           selectedColumnOrder.map((columnId) => {
             const column = selectedTagColumns[columnId]
             if (!column?.taskIds) {
-              return <Column key={column.id} column={column} taskList={column?.taskIds} />
+              return (
+                <Column
+                  key={column.id}
+                  column={column}
+                  taskList={column?.taskIds}
+                  type={type}
+                />
+              )
             } else {
               const taskList = column.taskIds
                 .map((taskId) => selectedTagTasks.find((task) => task.id === taskId))
                 .filter((task) => task !== undefined)
               if (taskList) {
-                return <Column key={column.id} column={column} taskList={taskList} />
+                return (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    taskList={taskList}
+                    type={type}
+                  />
+                )
               }
             }
           })}

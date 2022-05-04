@@ -17,9 +17,9 @@ const Layout = () => {
       <div className="body">
         <nav className="menu-list">
           <MenuItem type="layout" />
-          <button className="menu-item" onClick={onClick}>
+          <button className="menu-item__light" onClick={onClick}>
             <LogOut />
-            <p className="lg:block md:hidden sm:block">Logout</p>
+            <p className="transition-all lg:block md:hidden sm:block">Logout</p>
           </button>
         </nav>
         <TaskList />

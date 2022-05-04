@@ -1,24 +1,26 @@
 import React from "react"
 import { Droppable } from "react-beautiful-dnd"
 import Task from "./Task"
-import { array, object } from "prop-types"
+import { array, object, string } from "prop-types"
 
-const Column = ({ column, taskList }) => {
+const Column = ({ column, taskList, type }) => {
   return (
-    <div className="column view-board-column">
-      <h1 className="heading-four">{column.title}</h1>
+    <div className={`column column-${type}`}>
+      <h1>{column.title}</h1>
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => {
-          const isDraggingOver = snapshot.isDraggingOver ? "bg-blue" : "bg-white"
+          const isDraggingOver = snapshot.isDraggingOver
+            ? `column-${type}-dragging`
+            : "bg-white"
           return (
             <div
-              className={`task-list ${isDraggingOver}`}
+              className={`taskList ${isDraggingOver}`}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {taskList &&
                 taskList.map((item, index) => (
-                  <Task key={item.id} task={item} index={index} />
+                  <Task key={item.id} task={item} index={index} type={type} />
                 ))}
               {provided.placeholder}
             </div>
@@ -31,6 +33,7 @@ const Column = ({ column, taskList }) => {
 Column.propTypes = {
   column: object,
   taskList: array,
+  type: string,
 }
 
 export default Column
