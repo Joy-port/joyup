@@ -21,21 +21,23 @@ const TaskList = () => {
 
   const onChange = (e) => {
     const taskID = e.target.value
+    const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
+    dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/task/${taskID}`)
   }
   return (
     <div className="fixed bottom-5 right-5 z-100 bg-transparent">
       <select
-        className="bg-slateLight rounded-sm text-white border-r-2 py-2 px-3"
+        className="bg-slateLight rounded-sm text-white border-r-2 py-2 px-3 w-32"
         onChange={(e) => onChange(e)}
       >
-        <option value="default">Select A Task and Start</option>
+        <option value="default">Tasks</option>
         {userTasks &&
           userTasks.map((taskID) => {
             const task = totalTaskList[taskID]
             if (!task) return
             return (
-              <option value={task.id} key={task.id}>
+              <option value={task.id} key={task.id} className="w-full truncate">
                 {task.title}
               </option>
             )

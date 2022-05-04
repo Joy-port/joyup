@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { User, Clock, Save, Edit } from "react-feather"
 import { settings } from "../sliceReducers/actions/settings"
 import { user } from "../sliceReducers/actions/user"
 
@@ -7,6 +8,7 @@ const TimeSetting = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const { userName } = useSelector((state) => state.user)
   const [isEditName, setIsEditName] = useState(false)
+  const [settingType, setSettingType] = useState(0)
   const nameRef = useRef()
   const dispatch = useDispatch()
   const setTimer = useCallback((type, duration) => {
@@ -17,11 +19,18 @@ const TimeSetting = () => {
     dispatch({ type: "settings/editSingleTimer", payload: settingContent })
     // dispatch(settings.editSettingsTimer(type, value))
   })
+  // useEffect(() => {
+  //   if (isEditName &&) {
+  //     nameRef.current.focus()
+  //   }
+  // }, [isEditName])
   useEffect(() => {
-    if (nameRef.current) {
+    if (isEditName && nameRef.current) {
       nameRef.current.focus()
+    } else if (!isEditName && nameRef.current) {
+      nameRef = null
     }
-  }, [nameRef.current])
+  }, [isEditName, nameRef.current])
   const onKeyDown = (e, type, value) => {
     if (e.key === "Enter") {
       if (!value) {
@@ -34,71 +43,110 @@ const TimeSetting = () => {
   }
   return (
     <>
-      {userName && !isEditName ? (
-        <h1
-          className="heading-four px-2 py-1"
-          onClick={() => {
-            setIsEditName(true)
-          }}
+      <div className="menu-container">
+        <div className="menu-item cursor-none" onClick={() => setSettingType(0)}>
+          <User size={30} strokeWidth={1} />
+          {userName && !isEditName ? (
+            <h1
+              className="px-2 py-1"
+              onClick={() => {
+                setIsEditName(true)
+              }}
+            >
+              {userName}
+            </h1>
+          ) : (
+            <input
+              type="text"
+              // value={userName || "name"}
+              onKeyDown={(e) => {
+                if (e.target.value.trim() === "") return
+                if (e.key === "Enter") {
+                  dispatch(user.saveUserName(e.target.value))
+                  setIsEditName(false)
+                }
+              }}
+              onBlur={() => setIsEditName(false)}
+              placeholder={userName || "edit your user name"}
+              ref={nameRef}
+            />
+          )}
+        </div>
+      </div>
+      <div className="-mt-5 min-h-18 mb-5"></div>
+      <div className=" flex flex-col gap-3 w-96 border-1 border-light300 rounded py-2 px-3">
+        <div className="flex gap-2 items-center w-full justify-between">
+          <Clock strokeWidth={2} />
+          <div className="flex gap-2 items-center">
+            <input
+              className="border-1 border-light200 w-16"
+              type="number"
+              value={base}
+              onChange={(e) => {
+                if (e.target.value <= 0) {
+                  return
+                }
+                setTimer("base", parseFloat(e.target.value.trim()))
+              }}
+              onKeyDown={(e) => {
+                if (e.target.value.trim() === "") return
+                onKeyDown(e, "base", parseFloat(e.target.value.trim()))
+              }}
+            />
+            <p className="py-1 px-2">minutes</p>
+          </div>
+        </div>
+        <div className="flex gap-2 items-center w-full justify-between">
+          <p>Work Time = {base * workTime} minutes</p>
+          <div className="flex gap-2 items-center">
+            <input
+              className="border-1 border-light200 w-12"
+              type="number"
+              value={workTime}
+              onChange={(e) => {
+                if (e.target.value <= 0) {
+                  return
+                }
+                setTimer("workTime", parseFloat(e.target.value.trim()))
+              }}
+              onKeyDown={(e) => {
+                if (e.target.value.trim() === "") return
+                onKeyDown(e, "workTime", parseFloat(e.target.value.trim()))
+              }}
+            />
+            *
+            <Clock strokeWidth={2} />
+          </div>
+        </div>
+        <div className="flex gap-2 items-center w-full justify-between">
+          <p>Break Time = {base * breakTime} minutes</p>
+          <div className="flex gap-2 items-center">
+            <input
+              className="border-1 border-light200 w-12"
+              type="number"
+              value={breakTime}
+              onChange={(e) => {
+                if (e.target.value <= 0) {
+                  return
+                }
+                setTimer("breakTime", parseFloat(e.target.value.trim()))
+              }}
+              onKeyDown={(e) => {
+                if (e.target.value.trim() === "") return
+                onKeyDown(e, "breakTime", parseFloat(e.target.value.trim()))
+              }}
+            />
+            *
+            <Clock strokeWidth={2} />
+          </div>
+        </div>
+        <button
+          className="button button-light self-end"
+          onClick={() => dispatch(settings.editSettingsTimer())}
         >
-          {userName}
-        </h1>
-      ) : (
-        <input
-          className="heading-four"
-          type="text"
-          // value={userName || "name"}
-          onKeyDown={(e) => {
-            if (e.target.value.trim() === "") return
-            if (e.key === "Enter") {
-              dispatch(user.saveUserName(e.target.value))
-              setIsEditName(false)
-            }
-          }}
-          onBlur={() => setIsEditName(false)}
-          placeholder={userName || "edit your user name"}
-          ref={nameRef}
-        />
-      )}
-      <div>
-        <h2 className="text-bold">Timer Duration: {base} minutes</h2>
-        <input
-          type="number"
-          onChange={(e) => setTimer("base", parseFloat(e.target.value.trim()))}
-          onKeyDown={(e) => onKeyDown(e, "base", parseFloat(e.target.value.trim()))}
-        />
+          <Save strokeWidth={1} />
+        </button>
       </div>
-      <div>
-        <h2>Working Time Length: {base * workTime} minutes</h2>
-        <div className="flex">
-          <h3>{base} X</h3>
-          <input
-            type="number"
-            onChange={(e) => setTimer("workTime", parseFloat(e.target.value.trim()))}
-            onKeyDown={(e) => onKeyDown(e, "workTime", parseFloat(e.target.value.trim()))}
-          />
-          {/* <button onClick={() => setWorkMinutes(workTimer)}>Confirm</button> */}
-        </div>
-      </div>
-      <div>
-        <h2>Break Timer Length: {base * breakTime} minutes</h2>
-        <div className="flex">
-          <h3>{base} X</h3>
-          <input
-            type="number"
-            onChange={(e) => setTimer("breakTime", parseFloat(e.target.value.trim()))}
-            onKeyDown={(e) =>
-              onKeyDown(e, "breakTime", parseFloat(e.target.value.trim()))
-            }
-          />
-        </div>
-      </div>
-      <button
-        className="button button-dark w-1/4"
-        onClick={() => dispatch(settings.editSettingsTimer())}
-      >
-        save
-      </button>
     </>
   )
 }

@@ -50,6 +50,7 @@ module.exports = {
       },
       borderRadius: {
         "4xl": "2rem",
+        // full: "9999px",
       },
       height: {
         custom: "calc(100vh - 130px)",

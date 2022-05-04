@@ -509,8 +509,17 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-full {
   width: 100%;
 }
-.w-1\/4 {
-  width: 25%;
+.w-96 {
+  width: 24rem;
+}
+.w-16 {
+  width: 4rem;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-32 {
+  width: 8rem;
 }
 .w-4\/12 {
   width: 33.333333%;
@@ -523,6 +532,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .grow {
   flex-grow: 1;
+}
+.cursor-none {
+  cursor: none;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -560,8 +572,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .gap-3 {
   gap: 0.75rem;
 }
+.self-end {
+  align-self: flex-end;
+}
 .overflow-auto {
   overflow: auto;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .rounded-xl {
   border-radius: 0.75rem;
@@ -636,13 +656,13 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 .py-3 {
   padding-top: 0.75rem;
@@ -728,6 +748,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-slateLight {
   --tw-text-opacity: 1;
   color: rgb(44 47 51 / var(--tw-text-opacity));
+}
+.blur {
+  --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -846,8 +870,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   justify-content: center;
   gap: 0.75rem;
   border-radius: 0.125rem;
-  border-left-width: 1.5px;
-  border-right-width: 1.5px;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
@@ -1018,6 +1040,10 @@ input {
 input:focus {
   outline-width: 1px;
   outline-color: #DCE1E5;
+}
+select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 .input-light300 {
   --tw-bg-opacity: 1;

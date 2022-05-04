@@ -45,12 +45,22 @@ const Home = () => {
   }, [totalTaskList])
 
   return (
-    <div className="flex flex-col">
+    <>
       <div className="menu-container">
-        <div className="menu-item menu-item__dark" onClick={() => setType(0)}>
+        <div
+          className={`menu-item  ${
+            type === 0 ? "menu-item__dark--active" : "menu-item__dark"
+          }`}
+          onClick={() => setType(0)}
+        >
           Calendar
         </div>
-        <div className="menu-item menu-item__dark" onClick={() => setType(1)}>
+        <div
+          className={`menu-item  ${
+            type !== 0 ? "menu-item__dark--active" : "menu-item__dark"
+          }`}
+          onClick={() => setType(1)}
+        >
           List
         </div>
       </div>
@@ -81,7 +91,7 @@ const Home = () => {
       ) : (
         <div className="list">List</div>
       )}
-    </div>
+    </>
   )
 }
 

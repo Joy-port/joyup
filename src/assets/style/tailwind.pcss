@@ -22,7 +22,7 @@
 }
 
 .menu-item {
-  @apply px-4 py-2 border-x-1 cursor-pointer flex gap-3 justify-center transition-colors rounded-sm;
+  @apply px-4 py-2 cursor-pointer flex gap-3 justify-center transition-colors rounded-sm;
 }
 .menu-item__dark {
   @apply border-transparentLight hover:text-white text-slateLight hover:bg-light200 hover:border-light200;
@@ -72,6 +72,9 @@
 /* input */
 input {
   @apply rounded px-2 py-1 focus:outline-1 focus:outline-light100;
+}
+select {
+  @apply focus:outline-none;
 }
 .input-light300 {
   @apply bg-white focus:outline-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
