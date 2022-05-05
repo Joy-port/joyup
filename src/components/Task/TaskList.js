@@ -21,8 +21,7 @@ const TaskList = () => {
     navigate(`/task/${taskID}`)
   }, [taskID])
 
-  const onChange = (e) => {
-    const taskID = e.target.value
+  const onClick = (taskID) => {
     const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/task/${taskID}`)
@@ -52,8 +51,7 @@ const TaskList = () => {
                       value={task.id}
                       key={task.id}
                       onClick={() => {
-                        dispatch({ type: "task/openSavedTask", payload: task })
-                        navigate(`/task/${id}`)
+                        onClick(task.id)
                         setOpenSelector(false)
                       }}
                     >

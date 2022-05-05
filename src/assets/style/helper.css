@@ -61,6 +61,11 @@
 .react-datepicker-wrapper {
   width: auto;
 }
+
+/* circular progress bar */
+.CircularProgressbar-text {
+  transform: translate(-15px, 5px);
+}
 /* loader */
 .lds-ripple {
   display: flex;

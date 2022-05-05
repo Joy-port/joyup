@@ -484,6 +484,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mb-1 {
   margin-bottom: 0.25rem;
 }
+.mr-3 {
+  margin-right: 0.75rem;
+}
 .-ml-4 {
   margin-left: -1rem;
 }
@@ -495,9 +498,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .mt-1 {
   margin-top: 0.25rem;
-}
-.mr-3 {
-  margin-right: 0.75rem;
 }
 .block {
   display: block;
@@ -574,9 +574,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-40 {
   width: 10rem;
 }
-.w-72 {
-  width: 18rem;
-}
 .min-w-32 {
   min-width: 8rem;
 }
@@ -600,9 +597,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .items-center {
   align-items: center;
-}
-.justify-end {
-  justify-content: flex-end;
 }
 .justify-center {
   justify-content: center;
@@ -746,9 +740,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .pb-2 {
   padding-bottom: 0.5rem;
 }
-.pr-6 {
-  padding-right: 1.5rem;
-}
 .text-center {
   text-align: center;
 }
@@ -831,6 +822,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .transition-all {
   transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -1057,9 +1053,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  padding: 0.5rem;
 }
 .button {
   cursor: pointer;
@@ -1612,10 +1605,6 @@ select:focus {
   }
 }
 @media (min-width: 768px) {
-
-  .md\:ml-0 {
-    margin-left: 0px;
-  }
 
   .md\:ml-auto {
     margin-left: auto;

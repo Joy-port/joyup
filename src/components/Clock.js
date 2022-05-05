@@ -4,12 +4,21 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
 import { getClockTime } from "../helpers/functions"
 import { task } from "../sliceReducers/actions/task"
-import { X, Play, Pause, RotateCcw, Settings, ArrowLeft, Save } from "react-feather"
+import {
+  X,
+  PlayCircle,
+  PauseCircle,
+  XCircle,
+  Settings,
+  ArrowLeft,
+  Save,
+} from "react-feather"
 
 const Clock = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
     useSelector((state) => state.clock)
+  const { totalTaskList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const secondsLeftRef = useRef(secondsLeft)
@@ -40,7 +49,7 @@ const Clock = () => {
         return switchMode()
       }
       tickTime()
-    }, [100])
+    }, [1000])
 
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft])
@@ -75,10 +84,11 @@ const Clock = () => {
     clockStatus("secondsLeft", secondsLeftRef.current)
   }
   const TimerContent = {
-    textColor: "#000",
+    textColor: mode === 0 ? "#3A0303" : "#3e98c7",
     pathColor: mode === 0 ? "#f54e4e" : "#3e98c7",
     trailColor: "transparent",
     strokeLinecap: "round",
+    x: 38,
   }
   const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
@@ -88,7 +98,11 @@ const Clock = () => {
 
   return (
     <div className="modal-bg">
-      <div className={`modal-container modal-lg ${mode ? "bg-blue000" : "bg-work000"}`}>
+      <div
+        className={`transition-colors modal-container modal-lg ${
+          mode ? "bg-blue000" : "bg-work000"
+        }`}
+      >
         <button
           className="modal-header self-end"
           onClick={() => {
@@ -100,7 +114,7 @@ const Clock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body task-scrollbar flex flex-col items-center gap-5 grow">
+        <div className="modal-body flex flex-col items-center">
           <div className="flex flex-col w-1/2 gap-5">
             <div className="grow">
               <CircularProgressbar
@@ -115,7 +129,7 @@ const Clock = () => {
                   className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
                   onClick={() => clockStatus("isPaused", true)}
                 >
-                  <Pause size={30} />
+                  <PauseCircle size={50} strokeWidth={0.8} />
                 </button>
               )}
               {isPaused && (
@@ -126,7 +140,7 @@ const Clock = () => {
                       clockStatus("isPaused", false)
                     }}
                   >
-                    <Play size={30} />
+                    <PlayCircle size={50} strokeWidth={0.8} />
                   </button>
                   <button
                     className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
@@ -135,7 +149,7 @@ const Clock = () => {
                       resetTimer()
                     }}
                   >
-                    <RotateCcw size={30} />
+                    <XCircle size={50} strokeWidth={0.8} />
                   </button>
                 </>
               )}
@@ -156,7 +170,13 @@ const Clock = () => {
             <div className="flex justify-between">
               <div
                 className="button"
-                onClick={() => navigate(`/task/${taskID}`, { replace: true })}
+                onClick={() => {
+                  const taskDetail = totalTaskList[taskID]
+                  if (taskDetail) {
+                    dispatch({ type: "task/openSavedTask", payload: taskDetail })
+                  }
+                  navigate(`/task/${taskID}`, { replace: true })
+                }}
               >
                 <ArrowLeft />
               </div>
