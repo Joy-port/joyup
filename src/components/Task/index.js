@@ -90,7 +90,7 @@ const index = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col gap-5 md:flex-row u-fancy-scrollbar">
+        <div className="modal-body flex flex-col gap-5 md:flex-row task-scrollbar">
           <div className="flex flex-col gap-3 h-full md:w-3/4">
             <div className="flex gap-3">
               <Edit />

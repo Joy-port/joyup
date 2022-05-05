@@ -99,7 +99,7 @@ const index = () => {
   }
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="h-custom-m overflow-y-auto pb-20 scrollbar">
       <Calendar
         dayLayoutAlgorithm="overlap"
         localizer={localizer}

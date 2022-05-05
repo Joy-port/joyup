@@ -64,7 +64,7 @@ const ProjectList = () => {
                   return (
                     <div
                       key={ownerProject.id}
-                      className="shadow-md bg-white hover:bg-light200 hover:text-white rounded flex justify-between"
+                      className="shadow-md border-1 border-light000 bg-white hover:bg-light200 hover:text-white hover:border-light200 rounded flex justify-between"
                     >
                       <div
                         className="uppercase cursor-pointer px-4 py-3 grow"
@@ -107,7 +107,7 @@ const ProjectList = () => {
                 collaborateProject && (
                   <div
                     key={collaborateProject.id}
-                    className="shadow-md bg-white hover:bg-light200 hover:text-white rounded flex justify-between"
+                    className="shadow-md border-1 border-light000 bg-white hover:bg-light200 hover:text-white hover:border-light200 rounded flex justify-between"
                   >
                     <div
                       className="uppercase cursor-pointer px-4 py-3 grow"

@@ -71,7 +71,7 @@ const Home = () => {
           localizer={localizer}
           defaultDate={new Date()}
           defaultView="day"
-          style={{ height: "calc(100vh - 50px)" }}
+          style={{ height: "calc(100vh - 145px)" }}
           startAccessor="start"
           endAccessor="end"
           events={events}

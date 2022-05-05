@@ -88,9 +88,9 @@ const Clock = () => {
 
   return (
     <div className="modal-bg">
-      <div className="modal-container">
+      <div className="modal-container modal-lg">
         <button
-          className="modal-close"
+          className="modal-header self-end"
           onClick={() => {
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
@@ -100,7 +100,7 @@ const Clock = () => {
         >
           <X size={20} />
         </button>
-        <div className="flex flex-col items-center gap-5 grow">
+        <div className="modal-body task-scrollbar flex flex-col items-center gap-5 grow">
           <div className="w-1/2">
             <CircularProgressbar
               value={percentage}

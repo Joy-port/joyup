@@ -1,16 +1,16 @@
-.u-fancy-scrollbar {
+.task-scrollbar {
   -webkit-overflow-scrolling: touch;
   -webkit-transform: translateZ(0);
 }
-.u-fancy-scrollbar::-webkit-scrollbar-track-piece {
+.task-scrollbar::-webkit-scrollbar-track-piece {
   background: #dce1e5;
 }
-.u-fancy-scrollbar::-webkit-scrollbar-track {
+.task-scrollbar::-webkit-scrollbar-track {
 }
-.u-fancy-scrollbar::-webkit-scrollbar {
+.task-scrollbar::-webkit-scrollbar {
   width: 14px;
 }
-.u-fancy-scrollbar::-webkit-scrollbar-thumb {
+.task-scrollbar::-webkit-scrollbar-thumb {
   background: #4d5f6a80;
   border-right: 3px solid #dce1e5;
   border-left: 3px solid #dce1e5;

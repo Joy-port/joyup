@@ -83,9 +83,14 @@
   .rbc-toolbar .rbc-btn-group:first-child {
     display: flex;
   }
-  .rbc-toolbar .rbc-btn-group:first-child :first-child {
+  /* hide today button */
+  /* .rbc-toolbar .rbc-btn-group:first-child :first-child {
     display: none;
-  }
+  } */
+  /* hide back next button */
+  /* .rbc-toolbar .rbc-btn-group:first-child :not(:first-child) {
+    display: none;
+  } */
 }
 
 /* date */

@@ -517,11 +517,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-28 {
   height: 7rem;
 }
-.h-custom {
+.h-custom-l {
   height: calc(100vh - 130px);
 }
-.max-h-32 {
-  max-height: 8rem;
+.h-custom-m {
+  height: calc(100vh - 64px);
 }
 .max-h-56 {
   max-height: 14rem;
@@ -721,6 +721,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .pb-2 {
   padding-bottom: 0.5rem;
+}
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+.pb-20 {
+  padding-bottom: 5rem;
 }
 .text-center {
   text-align: center;
@@ -1574,6 +1580,10 @@ select:focus {
 .hover\:border-slateLight:hover {
   --tw-border-opacity: 1;
   border-color: rgb(44 47 51 / var(--tw-border-opacity));
+}
+.hover\:border-light200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(172 186 195 / var(--tw-border-opacity));
 }
 .hover\:bg-light200:hover {
   --tw-bg-opacity: 1;

@@ -54,7 +54,8 @@ module.exports = {
         // full: "9999px",
       },
       height: {
-        custom: "calc(100vh - 130px)",
+        "custom-m": "calc(100vh - 64px)",
+        "custom-l": "calc(100vh - 130px)",
       },
       width: {
         "custom-m": "calc(100vw - 80px)",
