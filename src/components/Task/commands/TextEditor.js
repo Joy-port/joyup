@@ -223,21 +223,40 @@ const TextEditor = () => {
             const firstInput = index === 0
             if (focusInput.current === item.id && isEditing) {
               return (
-                <input
-                  className={`input-light300 editor-input ${
-                    HTMLStyle.style || item.html.style
-                  }`}
-                  key={item.id}
-                  id={item.id}
-                  cols="30"
-                  rows="10"
-                  value={text}
-                  onChange={(e) => onChange(e)}
-                  onKeyDown={(e) => onKeyDown(e)}
-                  ref={inputRef}
-                  autoFocus
-                  placeholder={firstInput ? `Description or type '/' for commands` : ""}
-                />
+                <div className="relative">
+                  <input
+                    className={`input-light300 editor-input ${
+                      HTMLStyle.style || item.html.style
+                    }`}
+                    key={item.id}
+                    id={item.id}
+                    cols="30"
+                    rows="10"
+                    value={text}
+                    onChange={(e) => onChange(e)}
+                    onKeyDown={(e) => onKeyDown(e)}
+                    ref={inputRef}
+                    autoFocus
+                    placeholder={firstInput ? `Description or type '/' for commands` : ""}
+                  />
+                  {matchingCommands.length !== 0 && (
+                    <div className="border-1 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 max-h-56 overflow-y-auto">
+                      {matchingCommands.map((command, index) => (
+                        <div
+                          key={index}
+                          onClick={() => selectCommand(command)}
+                          onMouseOver={() => setSelectionIndex(index)}
+                          className={
+                            "results__command " +
+                            (index == selectionIndex ? "results__command--selected" : "")
+                          }
+                        >
+                          {command.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )
             } else {
               if (!item.content) {
@@ -289,7 +308,7 @@ const TextEditor = () => {
             }
           })}
       </div>
-      {matchingCommands.length !== 0 && (
+      {/* {matchingCommands.length !== 0 && (
         <div className="results">
           {matchingCommands.map((command, index) => (
             <div
@@ -305,7 +324,7 @@ const TextEditor = () => {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   )
 }

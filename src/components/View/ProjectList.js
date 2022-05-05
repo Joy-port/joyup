@@ -28,7 +28,7 @@ const ProjectList = () => {
       {userProjects.length === 0 ? (
         <>
           <div
-            className="grow flex flex-col gap-5 justify-center items-center cursor-pointer"
+            className="h-full flex flex-col gap-5 justify-center items-center cursor-pointer"
             onClick={() => setIsOpen(true)}
           >
             <FolderPlus size={40} strokeWidth={1} />

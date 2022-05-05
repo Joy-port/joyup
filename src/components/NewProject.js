@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { project } from "../sliceReducers/actions/project"
 import { func } from "prop-types"
 import { useNavigate } from "react-router-dom"
+import { FolderPlus } from "react-feather"
 
 const NewProject = ({ setIsOpen }) => {
   const [projectTitle, setProjectTitle] = useState("")
@@ -30,20 +31,24 @@ const NewProject = ({ setIsOpen }) => {
 
   return (
     <div className="modal-bg">
-      <div className="modal-container">
-        <button
-          className="modal-close block"
-          onClick={() => {
-            setProjectTitle("")
-            setIsPublic(false)
-            setIsOpen(false)
-          }}
+      <div className="modal-container modal-sm">
+        <div className="modal-header flex justify-between items-start">
+          <h1 className="text-light300 heading-three mt-2">Project</h1>
+          <button
+            onClick={() => {
+              setProjectTitle("")
+              setIsPublic(false)
+              setIsOpen(false)
+            }}
+          >
+            X
+          </button>
+        </div>
+        <form
+          className="modal-body flex flex-col gap-3"
+          onSubmit={(e) => createNewProject(e)}
         >
-          X
-        </button>
-        <h1 className="text-slateDark heading-two mb-4">Create New Project</h1>
-        <form className="flex flex-col" onSubmit={(e) => createNewProject(e)}>
-          <label htmlFor="title">Project Title</label>
+          <label htmlFor="title">Title</label>
           <input
             type="text"
             id="title"
@@ -67,10 +72,16 @@ const NewProject = ({ setIsOpen }) => {
               onChange={() => setIsPublic(!isPublic)}
             />
           </div>
-          <button className="button button-dark" onClick={(e) => createNewProject(e)}>
+        </form>
+        <div className="modal-footer">
+          <button
+            className="w-full button button-dark flex items-center justify-center gap-3"
+            onClick={(e) => createNewProject(e)}
+          >
+            <FolderPlus />
             Create New Project
           </button>
-        </form>
+        </div>
       </div>
     </div>
   )

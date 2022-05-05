@@ -78,7 +78,7 @@ const index = () => {
 
   return (
     <div className="modal-bg">
-      <div className="modal-container">
+      <div className="modal-container modal-lg">
         <button
           className="modal-header self-end"
           onClick={() => {
@@ -238,7 +238,7 @@ const index = () => {
             </div>
           </div>
         </div>
-        <div className="modal-footer pr-3 flex justify-end gap-2">
+        <div className="modal-footer px-3 flex gap-2 justify-end w-full">
           <button
             className="button button-light flex justify-center items-center gap-3 w-1/2 md:w-32"
             onClick={() => {

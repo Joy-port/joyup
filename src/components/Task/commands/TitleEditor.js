@@ -270,7 +270,7 @@ const TitleEditor = () => {
   }
 
   return (
-    <div className="flex flex-col rounded border-2 border-transparent ">
+    <div className="flex flex-col rounded relative">
       {text !== "" && !isEditing ? (
         <div
           className="heading-four bg-light200 text-slateLight px-2 py-1 rounded"
@@ -295,7 +295,7 @@ const TitleEditor = () => {
         />
       )}
       {matchingCommands.length !== 0 && (
-        <div className="results">
+        <div className="border-1 border-t-0 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 ">
           {matchingCommands.map((command, index) => (
             <div
               key={index}
@@ -313,7 +313,7 @@ const TitleEditor = () => {
       )}
       {isSettingTime && <DatePick date={date} setDate={setDate} showType={true} />}
       {selectedTagType?.children && (
-        <div className="results">
+        <div className="border border-slateLight w-full absolute top-8 mt-1 bg-light000 z-10">
           {selectedTagType.children.map((child, index) => (
             <div
               key={child.id}

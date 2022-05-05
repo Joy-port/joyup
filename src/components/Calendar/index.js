@@ -99,7 +99,7 @@ const index = () => {
   }
 
   return (
-    <div className="overflow-y-auto">
+    <div className="h-full overflow-y-auto">
       <Calendar
         dayLayoutAlgorithm="overlap"
         localizer={localizer}
@@ -112,8 +112,8 @@ const index = () => {
         views={["day", "week", "month"]}
         resizable
         selectable
-        // onDoubleClickEvent={onDoubleClickEvent} //onclick twice
-        onSelectEvent={handleSelectEvent} //onclick once
+        onDoubleClickEvent={handleSelectEvent} //onclick twice
+        // onSelectEvent={handleSelectEvent} //onclick once
         onSelectSlot={handleSelectSlot} //add event
         // onEventResize={onEventResize}
         // onEventDrop={onEventDrop}

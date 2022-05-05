@@ -64,6 +64,29 @@
 .rbc-toolbar-label {
   font-size: 22px;
 }
+.rbc-toolbar .rbc-btn-group:first-child {
+  display: none;
+}
+.rbc-toolbar .rbc-toolbar-label {
+  text-align: left;
+}
+.rbc-toolbar {
+  /* flex-direction: column; */
+}
+@media (min-width: 768px) {
+  .rbc-toolbar {
+    flex-direction: row;
+  }
+  .rbc-toolbar .rbc-toolbar-label {
+    text-align: center;
+  }
+  .rbc-toolbar .rbc-btn-group:first-child {
+    display: flex;
+  }
+  .rbc-toolbar .rbc-btn-group:first-child :first-child {
+    display: none;
+  }
+}
 
 /* date */
 .rbc-today {
@@ -153,13 +176,7 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
 .rbc-date-cell {
   padding-right: 10px;
 }
-
-.rbc-button-link {
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.rbc-header .rbc-button-link span[role="columnheader"] {
+.rbc-button-link .rbc-show-more .rbc-header .rbc-button-link span[role="columnheader"] {
   vertical-align: top;
   margin-top: -2px;
 }

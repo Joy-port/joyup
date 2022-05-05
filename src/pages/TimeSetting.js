@@ -28,7 +28,7 @@ const TimeSetting = () => {
     if (isEditName && nameRef.current) {
       nameRef.current.focus()
     } else if (!isEditName && nameRef.current) {
-      nameRef = null
+      nameRef.current = null
     }
   }, [isEditName, nameRef.current])
   const onKeyDown = (e, type, value) => {
