@@ -6,7 +6,6 @@ import {
   VictoryChart,
   VictoryArea,
   VictoryTheme,
-  Slice,
 } from "victory"
 // import {
 //   scaleDiscontinuous,
@@ -16,11 +15,13 @@ import {
 import { getClockTime } from "../helpers/functions"
 
 const Report = () => {
+  const [openSelector, setOpenSelector] = useState(false)
   const { userTasks } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList, projectList } = useSelector(
     (state) => state.projects
   )
   const tags = useSelector((state) => state.tag)
+  const [type, setType] = useState(0)
   const [selectedProject, setSelectedProject] = useState(projectList[0])
   const [userTaskDetail, setUserTaskDetail] = useState(() => {
     return userTasks.map((taskID) => {
@@ -81,73 +82,111 @@ const Report = () => {
   }, [selectedProject])
 
   return (
-    <div className="grow flex flex-col flex-wrap">
-      <h1>Report</h1>
-      <div className="w-1/2 text-sm mb-10">
-        <h1>Total Time Spending</h1>
-        <VictoryPie
-          data={Object.values(taskPie)}
-          colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
-          containerComponent={<VictoryContainer preserveAspectRatio="none" />}
-          animate={{
-            duration: 2000,
-          }}
-          events={[
-            {
-              target: "data",
-              eventHandlers: {
-                onClick: () => {
-                  return [
-                    {
-                      target: "data",
-                      mutation: ({ slice, style }) => {
-                        setSelectedProject(slice.data.id)
-                        return style.fill === "#c43a31"
-                          ? null
-                          : { style: { fill: "#c43a31" } }
+    <>
+      <div className="menu-container">
+        <div className="heading-four font-medium">Time Spending</div>
+      </div>
+      <div className="-mt-5 min-h-18 mb-3"></div>
+
+      <div className="grow flex flex-col flex-wrap">
+        <div className="w-1/2 text-sm mb-10">
+          <h1 className="tag-light200 w-56 px-2 py-1 text-center">Total Time Spending</h1>
+          {Object.values(taskPie).length === 0 && (
+            <div className="border-rounded-light000">
+              <VictoryPie
+                data={Object.values(taskPie)}
+                colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+                containerComponent={<VictoryContainer preserveAspectRatio="none" />}
+                animate={{
+                  duration: 2000,
+                }}
+                events={[
+                  {
+                    target: "data",
+                    eventHandlers: {
+                      onClick: () => {
+                        return [
+                          {
+                            target: "data",
+                            mutation: ({ slice, style }) => {
+                              setSelectedProject(slice.data.id)
+                              return style.fill === "#c43a31"
+                                ? null
+                                : { style: { fill: "#c43a31" } }
+                            },
+                          },
+                          // {
+                          //   target: "labels",
+                          //   mutation: ({ text }) => {
+                          //     return text === "clicked" ? null : { text: "clicked" }
+                          //   },
+                          // },
+                        ]
                       },
                     },
-                    // {
-                    //   target: "labels",
-                    //   mutation: ({ text }) => {
-                    //     return text === "clicked" ? null : { text: "clicked" }
-                    //   },
-                    // },
-                  ]
-                },
-              },
-            },
-          ]}
-        />
+                  },
+                ]}
+              />
+            </div>
+          )}
+        </div>
+        <div className="text-sm">
+          <h1 className="tag-light200 w-56 px-2 py-1 text-center">
+            Project Time Spending
+          </h1>
+          <div className="border-rounded-light000 w-full">
+            <div className="text-center rounded">
+              <div
+                className="group-title border-1 border-light000 rounded relative w-44 px-2 py-1"
+                onClick={() => {
+                  setOpenSelector(!openSelector)
+                }}
+              >
+                Project: {totalProjectList[selectedProject].title}
+                {openSelector && (
+                  <div className="dropdown-container">
+                    <ul className="dropdown-list">
+                      {projectList.map((id) => {
+                        const projectDetail = totalProjectList[id]
+                        return (
+                          <li
+                            className="dropdown-item"
+                            value={projectDetail.id}
+                            key={projectDetail.id}
+                            onClick={() => {
+                              setSelectedProject(projectDetail.id)
+                              setOpenSelector(false)
+                            }}
+                          >
+                            {projectDetail.title}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="w-1/2">
+              {taskDateRange.length === 0 && (
+                <VictoryChart
+                  theme={VictoryTheme.material}
+                  animate={{
+                    duration: 2000,
+                    onLoad: { duration: 1000 },
+                  }}
+                >
+                  <VictoryArea
+                    style={{ data: { fill: "#c43a31" } }}
+                    data={taskDateRange}
+                  />
+                </VictoryChart>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="w-1/2 text-sm">
-        <h1>
-          Project Time Spending
-          <select
-            value={selectedProject}
-            className="ml-2"
-            onChange={(e) => {
-              setSelectedProject(e.target.value)
-            }}
-          >
-            {projectList.map((projectID) => (
-              <option value={projectID} key={projectID}>
-                {totalProjectList[projectID].title}
-              </option>
-            ))}
-          </select>
-        </h1>
-        <VictoryChart
-          theme={VictoryTheme.material}
-          animate={{
-            duration: 2000,
-            onLoad: { duration: 1000 },
-          }}
-        >
-          <VictoryArea style={{ data: { fill: "#c43a31" } }} data={taskDateRange} />
-        </VictoryChart>
-      </div>
-    </div>
+    </>
   )
 }
 

@@ -1,3 +1,15 @@
+.u-fancy-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0);
+}
+.u-fancy-scrollbar::-webkit-scrollbar-track-piece {
+  background: #091e4214;
+}
+.u-fancy-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
 /* loader */
 .lds-ripple {
   display: flex;

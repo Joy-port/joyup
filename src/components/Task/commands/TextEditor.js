@@ -216,7 +216,6 @@ const TextEditor = () => {
   return (
     <div className="flex flex-col min-h-1/4">
       <div className="editor">
-        <p className="text-sm text-light300 pt-2 pl-3">description</p>
         {document &&
           document.map((item, index) => {
             const TagName = item.html.tag

@@ -3,7 +3,6 @@ import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { tags } from "../../sliceReducers/actions/tags"
 import DragFunction from "../DragFunction"
-import { Search } from "react-feather"
 
 const List = ({ type }) => {
   const { types, selectedType } = useSelector((state) => state.tags)
@@ -18,7 +17,7 @@ const List = ({ type }) => {
         </div> */}
         <div className="text-center rounded button-outline-light">
           <div
-            className="group-title relative w-44 px-2 py-1"
+            className="group-title border-1 border-light000 rounded relative w-44 px-2 py-1"
             onClick={() => {
               setOpenSelector(!openSelector)
             }}

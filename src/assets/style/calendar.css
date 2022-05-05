@@ -31,7 +31,8 @@
   color: var(--slateLight);
   border: 1px solid var(--transparent);
   box-shadow: none;
-  border-radius: 0px;
+  border-radius: 5px;
+  padding: 0.75rem 1.5rem;
 }
 .rbc-toolbar button:hover {
   color: var(--light300);
@@ -68,12 +69,18 @@
 .rbc-today {
   background-color: var(--blue000);
 }
+.rbc-day-bg {
+  padding: 5px;
+}
+.rbc-row-segment {
+  padding: 3px 5px;
+}
 /* event */
 .rbc-event,
 .rbc-day-slot .rbc-background-event {
   color: var(--white);
   background-color: var(--blue200);
-  border-radius: 2px;
+  border-radius: 6px;
   border: 1px solid var(--transparent);
 }
 .rbc-day-slot .rbc-event,
@@ -128,4 +135,31 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
 /* slot */
 .rbc-timeslot-group {
   min-height: 100px;
+}
+
+/* month view */
+
+.rbc-header {
+  background: var(--light000);
+  color: var(--transparentDark);
+  flex: 1 0;
+  line-height: 16px;
+  padding: 3px;
+  font-weight: 500;
+  font-size: 16px;
+  border-bottom: 2px solid var(--light000);
+}
+
+.rbc-date-cell {
+  padding-right: 10px;
+}
+
+.rbc-button-link {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.rbc-header .rbc-button-link span[role="columnheader"] {
+  vertical-align: top;
+  margin-top: -2px;
 }

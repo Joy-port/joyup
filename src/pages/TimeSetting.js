@@ -43,7 +43,7 @@ const TimeSetting = () => {
   }
   return (
     <>
-      <div className="menu-container">
+      <div className="menu-container justify-between items-center">
         <div className="menu-item cursor-none" onClick={() => setSettingType(0)}>
           <User size={30} strokeWidth={1} />
           {userName && !isEditName ? (
@@ -72,80 +72,84 @@ const TimeSetting = () => {
             />
           )}
         </div>
-      </div>
-      <div className="-mt-5 min-h-18 mb-5"></div>
-      <div className=" flex flex-col gap-3 w-96 border-1 border-light300 rounded py-2 px-3">
-        <div className="flex gap-2 items-center w-full justify-between">
-          <Clock strokeWidth={2} />
-          <div className="flex gap-2 items-center">
-            <input
-              className="border-1 border-light200 w-16"
-              type="number"
-              value={base}
-              onChange={(e) => {
-                if (e.target.value <= 0) {
-                  return
-                }
-                setTimer("base", parseFloat(e.target.value.trim()))
-              }}
-              onKeyDown={(e) => {
-                if (e.target.value.trim() === "") return
-                onKeyDown(e, "base", parseFloat(e.target.value.trim()))
-              }}
-            />
-            <p className="py-1 px-2">minutes</p>
-          </div>
-        </div>
-        <div className="flex gap-2 items-center w-full justify-between">
-          <p>Work Time = {base * workTime} minutes</p>
-          <div className="flex gap-2 items-center">
-            <input
-              className="border-1 border-light200 w-12"
-              type="number"
-              value={workTime}
-              onChange={(e) => {
-                if (e.target.value <= 0) {
-                  return
-                }
-                setTimer("workTime", parseFloat(e.target.value.trim()))
-              }}
-              onKeyDown={(e) => {
-                if (e.target.value.trim() === "") return
-                onKeyDown(e, "workTime", parseFloat(e.target.value.trim()))
-              }}
-            />
-            *
-            <Clock strokeWidth={2} />
-          </div>
-        </div>
-        <div className="flex gap-2 items-center w-full justify-between">
-          <p>Break Time = {base * breakTime} minutes</p>
-          <div className="flex gap-2 items-center">
-            <input
-              className="border-1 border-light200 w-12"
-              type="number"
-              value={breakTime}
-              onChange={(e) => {
-                if (e.target.value <= 0) {
-                  return
-                }
-                setTimer("breakTime", parseFloat(e.target.value.trim()))
-              }}
-              onKeyDown={(e) => {
-                if (e.target.value.trim() === "") return
-                onKeyDown(e, "breakTime", parseFloat(e.target.value.trim()))
-              }}
-            />
-            *
-            <Clock strokeWidth={2} />
-          </div>
-        </div>
         <button
-          className="button button-light self-end"
+          className="button button-light flex gap-2 items-center"
           onClick={() => dispatch(settings.editSettingsTimer())}
         >
-          <Save strokeWidth={1} />
+          <Save />
+          Save
         </button>
+      </div>
+      <div className="-mt-5 min-h-18 mb-5"></div>
+      <div className="w-96">
+        <h1 className="w-44 tag-light200 text-center p-2">Clock Setting</h1>
+        <div className="flex flex-col gap-3 border-rounded-light000">
+          <div className="flex gap-2 items-center w-full justify-between">
+            <Clock strokeWidth={2} />
+            <div className="flex gap-2 items-center">
+              <input
+                className="border-1 border-light200 w-16"
+                type="number"
+                value={base}
+                onChange={(e) => {
+                  if (e.target.value <= 0) {
+                    return
+                  }
+                  setTimer("base", parseFloat(e.target.value.trim()))
+                }}
+                onKeyDown={(e) => {
+                  if (e.target.value.trim() === "") return
+                  onKeyDown(e, "base", parseFloat(e.target.value.trim()))
+                }}
+              />
+              <p className="py-1 px-2">minutes</p>
+            </div>
+          </div>
+          <div className="flex gap-2 items-center w-full justify-between">
+            <p>Work Time = {base * workTime} minutes</p>
+            <div className="flex gap-2 items-center">
+              <input
+                className="border-1 border-light200 w-12"
+                type="number"
+                value={workTime}
+                onChange={(e) => {
+                  if (e.target.value <= 0) {
+                    return
+                  }
+                  setTimer("workTime", parseFloat(e.target.value.trim()))
+                }}
+                onKeyDown={(e) => {
+                  if (e.target.value.trim() === "") return
+                  onKeyDown(e, "workTime", parseFloat(e.target.value.trim()))
+                }}
+              />
+              *
+              <Clock strokeWidth={2} />
+            </div>
+          </div>
+          <div className="flex gap-2 items-center w-full justify-between">
+            <p>Break Time = {base * breakTime} minutes</p>
+            <div className="flex gap-2 items-center">
+              <input
+                className="border-1 border-light200 w-12"
+                type="number"
+                value={breakTime}
+                onChange={(e) => {
+                  if (e.target.value <= 0) {
+                    return
+                  }
+                  setTimer("breakTime", parseFloat(e.target.value.trim()))
+                }}
+                onKeyDown={(e) => {
+                  if (e.target.value.trim() === "") return
+                  onKeyDown(e, "breakTime", parseFloat(e.target.value.trim()))
+                }}
+              />
+              *
+              <Clock strokeWidth={2} />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

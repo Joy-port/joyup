@@ -12,7 +12,7 @@
 
 /* menu */
 .menu-container {
-  @apply fixed flex bg-light000 w-full py-3 px-4 -mx-4 -mt-3;
+  @apply fixed flex bg-light000 w-full md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3;
 }
 .menu-list {
   @apply md:static md:h-screen md:justify-between sm:w-screen md:w-20  lg:w-44 h-auto bg-primary flex flex-col transition-all py-3;
@@ -53,7 +53,7 @@
 }
 
 .button {
-  @apply rounded font-semibold text-center cursor-pointer px-2 py-1 border-1 border-transparent;
+  @apply rounded font-medium text-lg text-center cursor-pointer px-2 py-1 border-1 border-transparent;
 }
 .button-dark {
   @apply bg-light300 text-white hover:bg-light100 hover:text-slateLight hover:border-slateLight border-2 border-light300;
@@ -63,7 +63,7 @@
 }
 
 .button-light {
-  @apply bg-light200 text-white hover:bg-white hover:text-light300 hover:border-light300;
+  @apply bg-light200 text-white hover:bg-white hover:text-light300 hover:border-light300 hover:bg-transparent;
 }
 .button-outline-light {
   @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
@@ -89,7 +89,7 @@ select {
   @apply flex gap-2 items-center justify-between rounded bg-white px-2 py-1;
 }
 .group-title {
-  @apply font-semibold text-slateLight;
+  @apply font-medium text-slateLight;
 }
 
 .select-dropDown {
@@ -101,7 +101,7 @@ select {
   @apply absolute w-full left-0 mt-2;
 }
 .dropdown-list {
-  @apply border-1 rounded-sm bg-white;
+  @apply border-1 border-light000 rounded-sm bg-white;
 }
 .dropdown-item {
   @apply px-2 py-1 hover:bg-light100;
@@ -190,11 +190,8 @@ select {
   @apply font-semibold text-gray text-3xl capitalize;
 }
 
-.column {
-  @apply rounded p-3;
-}
 .task {
-  @apply flex justify-between items-center rounded-sm p-2 mb-3;
+  @apply flex justify-between items-center rounded-sm p-2 mt-3;
 }
 
 .task-container {
@@ -210,25 +207,36 @@ select {
 }
 
 .column-list {
-  @apply w-full;
+  @apply w-full mt-3;
 }
 .column-list h1 {
-  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm;
+  @apply px-2 py-1 text-light000 bg-light200 w-32 uppercase tracking-wider rounded-t-sm text-sm;
 }
 
 .column-list-dragging {
-  @apply bg-light100 shadow-inner p-2 rounded-sm min-h-32;
+  @apply bg-light100 shadow-inner px-2 pb-2 rounded-sm min-h-32;
 }
 .column-list-normal {
-  @apply bg-white min-h-20 border-2 border-light100 p-2 rounded-sm shadow-sm;
+  @apply bg-white min-h-20 border-2 border-light100 px-2 pb-3  rounded-sm;
 }
 
 .column-board {
-  @apply bg-light100 min-w-96 h-full overflow-y-hidden;
+  @apply bg-light100 min-w-96 h-full overflow-y-hidden rounded;
 }
 
 .column-board h1 {
-  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm mb-3;
+  @apply px-2 py-1 text-light300 bg-light000 w-32 uppercase tracking-wider rounded-sm text-sm;
+}
+
+.tag-light200 {
+  @apply rounded-t-sm text-white bg-light200 uppercase tracking-wider;
+}
+
+.tag-light000 {
+  @apply rounded-t-sm text-light300 bg-light000 uppercase tracking-wider;
+}
+.border-rounded-light000 {
+  @apply border-1 border-light000 rounded py-2 px-3;
 }
 
 .column-board-dragging {
@@ -236,17 +244,17 @@ select {
 }
 
 .column-board-normal {
-  @apply min-h-96;
+  @apply min-h-96 p-2;
 }
 .task-list {
-  @apply shadow bg-white;
+  @apply shadow bg-white hover:bg-light000 active:bg-light000 focus:bg-light000;
 }
 
 .task-list-dragging {
   @apply shadow-lg;
 }
 .task-board {
-  @apply w-full bg-white shadow py-2 min-h-16 text-slateLight;
+  @apply w-full bg-white hover:bg-light000 active:bg-light000 focus:bg-light000 shadow py-2 min-h-16 text-slateLight mt-3;
 }
 
 .close-button {

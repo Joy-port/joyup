@@ -93,7 +93,9 @@ const index = () => {
 
         <div className="flex flex-col gap-5 md:flex-row">
           <div className="flex flex-col gap-3 h-full md:w-3/4">
+            <p className="text-sm text-light300 pt-2 pl-3">Title</p>
             <TitleEditor />
+            <p className="text-sm text-light300 pt-2 pl-3">Description</p>
             <TextEditor />
             <AddSubtask />
           </div>
@@ -229,34 +231,34 @@ const index = () => {
                 }}
               />
             </div>
-            <div className="flex justify-between gap-2">
-              <button
-                className="button button-dark flex justify-center gap-3 mb-1"
-                onClick={() => {
-                  if (confirm("confirm to delete the task ")) {
-                    dispatch(task.deleteCurrentTask())
-                    navigate(-1)
-                  }
-                }}
-              >
-                <Archive />
-              </button>
-              <button
-                className="button button-dark flex justify-center gap-3 mb-1 grow"
-                onClick={() => {
-                  if (title === "") {
-                    alert("please fill in text title")
-                    return
-                  }
-                  dispatch(task.saveTotalTask())
-                  navigate(-1)
-                }}
-              >
-                <Save />
-                Save
-              </button>
-            </div>
           </div>
+        </div>
+        <div className="flex justify-between gap-2">
+          <button
+            className="button button-light flex justify-center gap-3 mb-1"
+            onClick={() => {
+              if (confirm("confirm to delete the task ")) {
+                dispatch(task.deleteCurrentTask())
+                navigate(-1)
+              }
+            }}
+          >
+            <Archive />
+          </button>
+          <button
+            className="button button-dark flex justify-center gap-3 mb-1 grow"
+            onClick={() => {
+              if (title === "") {
+                alert("please fill in text title")
+                return
+              }
+              dispatch(task.saveTotalTask())
+              navigate(-1)
+            }}
+          >
+            <Save />
+            Save
+          </button>
         </div>
       </div>
     </div>

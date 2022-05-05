@@ -12,7 +12,8 @@ module.exports = {
     },
     colors: {
       primary: "#23272A",
-      secondary: "#99AAB5",
+      secondary: "#4D5F6A",
+      accent: "#ACBAC3",
       slateDark: "#23272A",
       slateLight: "#2C2F33",
       light300: "#4D5F6A",
@@ -54,6 +55,10 @@ module.exports = {
       },
       height: {
         custom: "calc(100vh - 130px)",
+      },
+      width: {
+        "custom-m": "calc(100vw - 80px)",
+        "custom-l": "calc(100vw - 177px)",
       },
       minHeight: {
         0.5: "0.125rem",
