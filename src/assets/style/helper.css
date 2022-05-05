@@ -58,6 +58,9 @@
 .react-datepicker__input-container {
   display: block;
 }
+.react-datepicker-wrapper {
+  width: auto;
+}
 /* loader */
 .lds-ripple {
   display: flex;

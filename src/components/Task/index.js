@@ -78,7 +78,7 @@ const index = () => {
 
   return (
     <div className="modal-bg">
-      <div className="modal-container modal-lg">
+      <div className="modal-container bg-light100 modal-lg">
         <button
           className="modal-header self-end"
           onClick={() => {
@@ -242,9 +242,9 @@ const index = () => {
             </div>
           </div>
         </div>
-        <div className="modal-footer px-3 flex gap-2 justify-end w-full">
+        <div className="modal-footer mr-3 flex gap-2 w-full md:w-72 md:ml-auto">
           <button
-            className="button button-light flex justify-center items-center gap-3 w-1/2 md:w-32"
+            className="button button-light flex justify-center items-center gap-3 w-1/2"
             onClick={() => {
               if (confirm("confirm to delete the task ")) {
                 dispatch(task.deleteCurrentTask())
@@ -256,7 +256,7 @@ const index = () => {
             Archive
           </button>
           <button
-            className="button button-dark flex justify-center gap-3 w-1/2 md:w-32"
+            className="button button-dark flex justify-center gap-3 w-1/2"
             onClick={() => {
               if (title === "") {
                 alert("please fill in text title")

@@ -88,7 +88,7 @@ const Clock = () => {
 
   return (
     <div className="modal-bg">
-      <div className="modal-container modal-lg">
+      <div className={`modal-container modal-lg ${mode ? "bg-blue000" : "bg-work000"}`}>
         <button
           className="modal-header self-end"
           onClick={() => {
@@ -101,41 +101,47 @@ const Clock = () => {
           <X size={20} />
         </button>
         <div className="modal-body task-scrollbar flex flex-col items-center gap-5 grow">
-          <div className="w-1/2">
-            <CircularProgressbar
-              value={percentage}
-              text={minutes + ":" + seconds}
-              styles={buildStyles(TimerContent)}
-            />
-          </div>
-          <div className="flex flex-col justify-between">
-            <div className="">
-              <div className="flex justify-center items-center gap-6 mb-4">
-                <button
-                  className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
-                  onClick={() => {
-                    clockStatus("isPaused", false)
-                  }}
-                >
-                  <Play size={28} />
-                </button>
+          <div className="flex flex-col w-1/2 gap-5">
+            <div className="grow">
+              <CircularProgressbar
+                value={percentage}
+                text={minutes + ":" + seconds}
+                styles={buildStyles(TimerContent)}
+              />
+            </div>
+            <div className="flex justify-center items-center gap-6">
+              {!isPaused && (
                 <button
                   className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
                   onClick={() => clockStatus("isPaused", true)}
                 >
-                  <Pause size={28} />
+                  <Pause size={30} />
                 </button>
-                <button
-                  className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
-                  onClick={() => {
-                    clockStatus("isPaused", true)
-                    resetTimer()
-                  }}
-                >
-                  <RotateCcw size={28} />
-                </button>
-              </div>
-              <div className="flex flex-col gap-2 font-semibold mb-5">
+              )}
+              {isPaused && (
+                <>
+                  <button
+                    className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                    onClick={() => {
+                      clockStatus("isPaused", false)
+                    }}
+                  >
+                    <Play size={30} />
+                  </button>
+                  <button
+                    className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                    onClick={() => {
+                      clockStatus("isPaused", true)
+                      resetTimer()
+                    }}
+                  >
+                    <RotateCcw size={30} />
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+          {/* <div className="flex flex-col gap-2 font-semibold mb-5">
                 <div className="flex gap-2">
                   <h3 className="button button-light grow">work time {workNumbers}</h3>
                   <h3 className="button button-light grow">break time {breakNumbers}</h3>
@@ -143,29 +149,33 @@ const Clock = () => {
                 <h3 className="button button-light">
                   Total Spending Time {getClockTime(totalSpendingSeconds)}
                 </h3>
-              </div>
-            </div>
-            <div className="flex justify-evenly ">
+              </div> */}
+        </div>
+        <div className="modal-footer">
+          {isPaused && (
+            <div className="flex justify-between">
               <div
-                className="button button-dark"
+                className="button"
                 onClick={() => navigate(`/task/${taskID}`, { replace: true })}
               >
                 <ArrowLeft />
               </div>
-              <Link to="/settings" className="button button-dark">
-                <Settings />
-              </Link>
-              <div
-                className="button button-dark"
-                onClick={() => {
-                  dispatch(task.saveTotalTask())
-                  navigate(-1)
-                }}
-              >
-                <Save />
+              <div className="flex gap-5">
+                <Link to="/settings" className="button">
+                  <Settings />
+                </Link>
+                <div
+                  className="button button-dark"
+                  onClick={() => {
+                    dispatch(task.saveTotalTask())
+                    navigate(-1)
+                  }}
+                >
+                  <Save />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

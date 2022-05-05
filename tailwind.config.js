@@ -23,6 +23,8 @@ module.exports = {
       blue200: "#0a88c2",
       blue100: "#33a7ff",
       blue000: "#ebf8fe",
+      break000: "#E8E8E4",
+      work000: "#F8EDEB",
       warning: "#FFC533",
       danger: "#f54e4e",
       success: "#46AF6B",

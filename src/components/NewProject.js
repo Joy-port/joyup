@@ -31,7 +31,7 @@ const NewProject = ({ setIsOpen }) => {
 
   return (
     <div className="modal-bg">
-      <div className="modal-container modal-sm">
+      <div className="modal-container modal-sm bg-light100">
         <div className="modal-header flex justify-between items-start">
           <h1 className="text-light300 heading-three mt-2">Project</h1>
           <button
