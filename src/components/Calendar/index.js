@@ -99,7 +99,7 @@ const index = () => {
   }
 
   return (
-    <div className="">
+    <div className="overflow-y-auto">
       <Calendar
         dayLayoutAlgorithm="overlap"
         localizer={localizer}

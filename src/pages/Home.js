@@ -64,7 +64,7 @@ const Home = () => {
           List
         </div>
       </div>
-      <div className="-mt-5 min-h-18 mb-3"></div>
+      <div className="hidden md:block -mt-5 min-h-18 mb-3"></div>
       {type === 0 ? (
         <Calendar
           dayLayoutAlgorithm="overlap"

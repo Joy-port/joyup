@@ -7,15 +7,15 @@
   @apply h-screen flex flex-col md:flex-row relative text-slateDark;
 }
 .content {
-  @apply relative gap-3 w-full h-screen overflow-hidden py-3 px-4;
+  @apply relative gap-3 w-full h-screen md:overflow-hidden py-3 px-4;
 }
 
 /* menu */
 .menu-container {
-  @apply fixed flex bg-light000 w-full md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3;
+  @apply md:fixed flex bg-light000 md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3 mb-3 md:mb-0;
 }
 .menu-list {
-  @apply md:static md:h-screen md:justify-between sm:w-screen md:w-20  lg:w-44 h-auto bg-primary flex flex-col transition-all py-3;
+  @apply md:static md:h-screen md:justify-between md:w-20  lg:w-44 h-auto bg-primary flex flex-col transition-all py-3;
 }
 .menu-item__light {
   @apply w-full flex gap-3 rounded py-3 px-7 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer tracking-wider;
@@ -41,10 +41,16 @@
 }
 
 .modal-container {
-  @apply w-11/12 h-5/6 rounded-lg bg-light200 text-light300 p-6 pt-7 flex flex-col overflow-y-auto relative;
+  @apply w-11/12 h-5/6 rounded-lg bg-light100 text-light300 px-3 flex flex-col overflow-y-auto relative;
 }
-.modal-close {
-  @apply absolute top-2 right-2 block text-light300 font-bold;
+.modal-header {
+  @apply flex py-2;
+}
+.modal-body {
+  @apply grow overflow-y-auto;
+}
+.modal-footer {
+  @apply py-2;
 }
 
 /* button */
@@ -56,7 +62,7 @@
   @apply rounded font-medium text-lg text-center cursor-pointer px-2 py-1 border-1 border-transparent;
 }
 .button-dark {
-  @apply bg-light300 text-white hover:bg-light100 hover:text-slateLight hover:border-slateLight border-2 border-light300;
+  @apply bg-light300 text-white hover:bg-transparent hover:text-light300 hover:border-light300 border-1 border-light300;
 }
 .button-outline-dark {
   @apply text-light300 hover:text-white hover:bg-light300;
@@ -119,7 +125,7 @@ select {
 }
 
 .editor {
-  @apply grow flex flex-col relative bg-white rounded;
+  @apply grow flex flex-col relative bg-white rounded py-1;
 }
 .editor-input {
   @apply focus:outline-none px-3;

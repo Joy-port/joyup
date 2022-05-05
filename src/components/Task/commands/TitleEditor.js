@@ -18,7 +18,7 @@ const TitleEditor = () => {
   const [isSettingTime, setIsSettingTime] = useState(false)
   const [date, setDate] = useState(new Date())
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
-  const [style, setStyle] = useState("heading-one")
+  const [style, setStyle] = useState("heading-four")
   const [isEditingTags, setIsEditingTags] = useState(false)
   const [selectedTagType, setSelectedTagType] = useState(null)
   const [selectedTag, setSelectedTag] = useState(null)
@@ -62,7 +62,7 @@ const TitleEditor = () => {
         return name + ":" + selectedDate
       })
       timeRef.current = dayjs(date).format("HH:mm")
-      setStyle("heading-one")
+      setStyle("heading-four")
       setIsSettingTime(false)
       setText("")
       deleteSlashCommand()
@@ -227,7 +227,7 @@ const TitleEditor = () => {
     dispatch(task.saveTaskTag(tagType))
     setSelectedTagType(null)
     setText("")
-    setStyle("heading-one")
+    setStyle("heading-four")
     setIsEditing(false)
   }
 
@@ -273,7 +273,7 @@ const TitleEditor = () => {
     <div className="flex flex-col rounded border-2 border-transparent ">
       {text !== "" && !isEditing ? (
         <div
-          className="heading-one bg-light200 text-slateLight px-2 py-1 rounded"
+          className="heading-four bg-light200 text-slateLight px-2 py-1 rounded"
           onClick={() => {
             setIsEditing(true)
             setText(text)
@@ -290,7 +290,7 @@ const TitleEditor = () => {
           onChange={(e) => onChange(e)}
           onKeyDown={(e) => onKeyDown(e)}
           ref={inputRef}
-          placeholder="Title..."
+          placeholder="Task name or type ' / ' for commands "
           autoFocus
         />
       )}

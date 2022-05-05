@@ -216,9 +216,11 @@ const TextEditor = () => {
   return (
     <div className="flex flex-col min-h-1/4">
       <div className="editor">
+        {/* <p className="text-light200 py-2 px-3">{`Description or type '/' for commands`}</p> */}
         {document &&
           document.map((item, index) => {
             const TagName = item.html.tag
+            const firstInput = index === 0
             if (focusInput.current === item.id && isEditing) {
               return (
                 <input
@@ -234,6 +236,7 @@ const TextEditor = () => {
                   onKeyDown={(e) => onKeyDown(e)}
                   ref={inputRef}
                   autoFocus
+                  placeholder={firstInput ? `Description or type '/' for commands` : ""}
                 />
               )
             } else {

@@ -9,7 +9,7 @@ import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
-import { Clock, X, Archive, Save } from "react-feather"
+import { Clock, X, Archive, Save, Edit, Type } from "react-feather"
 
 const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = () => {
@@ -80,7 +80,7 @@ const index = () => {
     <div className="modal-bg">
       <div className="modal-container">
         <button
-          className="modal-close"
+          className="modal-header self-end"
           onClick={() => {
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
@@ -90,12 +90,17 @@ const index = () => {
         >
           <X size={20} />
         </button>
-
-        <div className="flex flex-col gap-5 md:flex-row">
+        <div className="modal-body flex flex-col gap-5 md:flex-row u-fancy-scrollbar">
           <div className="flex flex-col gap-3 h-full md:w-3/4">
-            <p className="text-sm text-light300 pt-2 pl-3">Title</p>
+            <div className="flex gap-3">
+              <Edit />
+              <h1 className="text-lg">Task</h1>
+            </div>
             <TitleEditor />
-            <p className="text-sm text-light300 pt-2 pl-3">Description</p>
+            <div className="flex gap-3">
+              <Type></Type>
+              <h1 className="text-lg">Description</h1>
+            </div>
             <TextEditor />
             <AddSubtask />
           </div>
@@ -233,9 +238,9 @@ const index = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between gap-2">
+        <div className="modal-footer pr-3 flex justify-end gap-2">
           <button
-            className="button button-light flex justify-center gap-3 mb-1"
+            className="button button-light flex justify-center items-center gap-3 w-1/2 md:w-32"
             onClick={() => {
               if (confirm("confirm to delete the task ")) {
                 dispatch(task.deleteCurrentTask())
@@ -244,9 +249,10 @@ const index = () => {
             }}
           >
             <Archive />
+            Archive
           </button>
           <button
-            className="button button-dark flex justify-center gap-3 mb-1 grow"
+            className="button button-dark flex justify-center gap-3 w-1/2 md:w-32"
             onClick={() => {
               if (title === "") {
                 alert("please fill in text title")

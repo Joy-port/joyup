@@ -80,7 +80,7 @@ const TimeSetting = () => {
           Save
         </button>
       </div>
-      <div className="-mt-5 min-h-18 mb-5"></div>
+      <div className="hidden md:block -mt-5 min-h-18 mb-5"></div>
       <div className="w-96">
         <h1 className="w-44 tag-light200 text-center p-2">Clock Setting</h1>
         <div className="flex flex-col gap-3 border-rounded-light000">
