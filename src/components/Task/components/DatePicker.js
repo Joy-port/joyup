@@ -1,10 +1,23 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, forwardRef } from "react"
 import DatePicker from "react-datepicker"
-import { any, bool, func } from "prop-types"
+import { any, bool, func, string } from "prop-types"
 import dayjs from "dayjs"
-import "react-datepicker/dist/react-datepicker.css"
 
-const DatePick = ({ date, setDate, showType }) => {
+const CustomInput = ({ onChange, placeholder, value, isSecure, id, onClick }) => {
+  return (
+    <input
+      className="bg-light100 w-36"
+      onChange={onChange}
+      placeholder={placeholder}
+      value={value}
+      isSecure={isSecure}
+      id={id}
+      onClick={onClick}
+    />
+  )
+}
+
+const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
   const current = new Date()
   const addTime = (addTime) => {
     const nowTime = current.getTime()
@@ -46,6 +59,7 @@ const DatePick = ({ date, setDate, showType }) => {
       })
     }
   }
+
   return (
     <DatePicker
       showTimeSelect
@@ -59,16 +73,26 @@ const DatePick = ({ date, setDate, showType }) => {
         onChange(date)
       }}
       onChangeRaw={(event) => handleChangeRaw(event.target.value)}
-      dateFormat="MMMM d, yyyy h:mm aa"
+      dateFormat="MMM dd, HH:mm"
       inline={showType}
+      customInput={<CustomInput />}
     />
   )
 }
 
+CustomInput.propTypes = {
+  onChange: func,
+  placeholder: string,
+  value: any,
+  isSecure: bool,
+  id: any,
+  onClick: func,
+}
 DatePick.propTypes = {
   date: any,
   setDate: func,
   showType: bool,
+  hasCustomButton: bool,
 }
 
 export default DatePick

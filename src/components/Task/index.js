@@ -91,7 +91,7 @@ const index = () => {
           <X size={20} />
         </button>
         <div className="modal-body flex flex-col gap-5 md:flex-row task-scrollbar">
-          <div className="flex flex-col gap-3 h-full md:w-3/4">
+          <div className="flex flex-col gap-3 h-full grow">
             <div className="flex gap-3">
               <Edit />
               <h1 className="text-lg">Task</h1>
@@ -104,7 +104,7 @@ const index = () => {
             <TextEditor />
             <AddSubtask />
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 w-full md:w-72">
             <div className="select-group">
               <p className="group-title">Project</p>
               <select
@@ -156,25 +156,29 @@ const index = () => {
             <div className="border-group-light200">
               <h4 className="border-group-title">Date</h4>
               <div className="button-group">
-                <p className="group-title">Created date:</p>
-                <p>{new Date(createdDate).toLocaleString()}</p>
+                <p className="group-title w-28">Created Date:</p>
+                <p className="rounded px-2 py-1  w-36">
+                  {dayjs(createdDate).format("MMM DD, HH:mm")}
+                </p>
               </div>
               <div className="button-group">
-                <p className="group-title">Start Date</p>
+                <p className="group-title w-28">Start Date</p>
                 {/* <p>{dayjs(new Date(startDate).getTime()).format("MM/DD HH:mm ")}</p> */}
                 <DatePicker
                   date={calendarStartDate}
                   setDate={setCalendarStartDate}
                   showType={false}
+                  hasCustomButton={true}
                 />
               </div>
               <div className="button-group">
-                <div className="group-title">Due Date</div>
+                <div className="group-title w-28">Due Date</div>
                 {/* <p>{dayjs(new Date(dueDate).getTime()).format("MM/DD HH:mm ")}</p> */}
                 <DatePicker
                   date={calendarDueDate}
                   setDate={setCalendarDueDate}
                   showType={false}
+                  hasCustomButton={true}
                 />
               </div>
             </div>

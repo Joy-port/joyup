@@ -54,6 +54,10 @@
   border-radius: 9999px;
 }
 
+/* date picker*/
+.react-datepicker__input-container {
+  display: block;
+}
 /* loader */
 .lds-ripple {
   display: flex;

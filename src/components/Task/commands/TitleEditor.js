@@ -311,7 +311,11 @@ const TitleEditor = () => {
           ))}
         </div>
       )}
-      {isSettingTime && <DatePick date={date} setDate={setDate} showType={true} />}
+      {isSettingTime && (
+        <div className="absolute top-10 mt-1 z-10">
+          <DatePick date={date} setDate={setDate} showType={true} />
+        </div>
+      )}
       {selectedTagType?.children && (
         <div className="border border-slateLight w-full absolute top-8 mt-1 bg-light000 z-10">
           {selectedTagType.children.map((child, index) => (

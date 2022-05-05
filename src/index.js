@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter as Router } from "react-router-dom"
+import "react-datepicker/dist/react-datepicker.css"
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import "./assets/style/main.css"
 import "./assets/style/helper.css"
