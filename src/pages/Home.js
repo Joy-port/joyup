@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState, useMemo } from "react"
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { number } from "prop-types"
+import DayToolbar from "../components/Calendar/Toolbar/Day"
+import AgendaToolbar from "../components/Calendar/Toolbar/Agenda"
+import { Views } from "react-big-calendar"
 // import Agenda from "../components/Calendar/Agenda"
-
 const localizer = momentLocalizer(moment)
 // Agenda.title = (date, { localizer }) => localizer.format(date, "yearHeaderFormat")
 
@@ -30,6 +31,7 @@ const Home = () => {
     return newEvents
   })
   const [type, setType] = useState(0)
+
   const handleSelectEvent = useCallback((event) => {
     if (totalTaskList[event.id]) {
       dispatch({ type: "task/openSavedTask", payload: event })
@@ -43,6 +45,23 @@ const Home = () => {
       return newEvents
     })
   }, [totalTaskList])
+
+  const DayViewToolBar = useMemo(
+    () => ({
+      components: {
+        toolbar: DayToolbar,
+      },
+    }),
+    []
+  )
+  const AgendaViewToolBar = useMemo(
+    () => ({
+      components: {
+        toolbar: AgendaToolbar,
+      },
+    }),
+    []
+  )
 
   return (
     <>
@@ -61,12 +80,13 @@ const Home = () => {
           }`}
           onClick={() => setType(1)}
         >
-          List
+          Agenda
         </div>
       </div>
       <div className="hidden md:block -mt-5 min-h-18 mb-3"></div>
       {type === 0 ? (
         <Calendar
+          components={DayViewToolBar.components}
           dayLayoutAlgorithm="overlap"
           localizer={localizer}
           defaultDate={new Date()}
@@ -75,10 +95,29 @@ const Home = () => {
           startAccessor="start"
           endAccessor="end"
           events={events}
-          views={{
-            day: true,
-            agenda: true,
-          }}
+          views={{ day: true, week: true }}
+          resizable
+          selectable
+          scrollToTime={new Date()}
+          onSelectEvent={handleSelectEvent} //onclick once
+          // onDoubleClickEvent={onDoubleClickEvent} //onclick twice
+          // onSelectSlot={handleSelectSlot} //add event
+          // onEventResize={onEventResize}
+          // onEventDrop={onEventDrop}
+          // popup //problem will break the view
+        />
+      ) : (
+        <Calendar
+          components={AgendaViewToolBar.components}
+          dayLayoutAlgorithm="overlap"
+          localizer={localizer}
+          defaultDate={new Date()}
+          defaultView="agenda"
+          style={{ height: "calc(100vh - 145px)" }}
+          startAccessor="start"
+          endAccessor="end"
+          events={events}
+          view={Views.AGENDA}
           resizable
           selectable
           onSelectEvent={handleSelectEvent} //onclick once
@@ -88,15 +127,9 @@ const Home = () => {
           // onEventDrop={onEventDrop}
           // popup //problem will break the view
         />
-      ) : (
-        <div className="list">List</div>
       )}
     </>
   )
-}
-
-Home.propTypes = {
-  type: number.isRequired,
 }
 
 export default Home

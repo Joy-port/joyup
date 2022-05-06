@@ -1,16 +1,25 @@
-import React, { useState, useCallback, useEffect } from "react"
+import React, { useState, useCallback, useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Calendar, momentLocalizer } from "react-big-calendar"
-import { v4 as uuidv4 } from "uuid"
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 import moment from "moment"
-import { task } from "../../sliceReducers/actions/task"
 const localizer = momentLocalizer(moment)
+import MonthToolbar from "./Toolbar/Month"
+import { v4 as uuidv4 } from "uuid"
+import { task } from "../../sliceReducers/actions/task"
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 
 // const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = () => {
+  const { components } = useMemo(
+    () => ({
+      components: {
+        toolbar: MonthToolbar,
+      },
+    }),
+    []
+  )
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
   const { totalTaskList } = useSelector((state) => state.projects)
   // const task = useSelector((state) => state.task)
@@ -122,6 +131,7 @@ const index = () => {
         eventPropGetter={eventPropGetter}
         timeslots={2}
         step={30}
+        components={components}
       />
     </div>
   )

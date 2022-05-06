@@ -604,6 +604,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .items-center {
   align-items: center;
 }
+.justify-start {
+  justify-content: flex-start;
+}
 .justify-center {
   justify-content: center;
 }
@@ -866,12 +869,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: -0.75rem;
   margin-bottom: 0.75rem;
   display: flex;
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
+  border-bottom-width: 2px;
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(243 245 246 / var(--tw-border-opacity));
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 @media (min-width: 768px) {
 
@@ -966,23 +973,15 @@ Ensure the default browser behavior of the `hidden` attribute.
 .menu-item__dark {
   border-color: #DCE1E533;
   --tw-text-opacity: 1;
-  color: rgb(44 47 51 / var(--tw-text-opacity));
+  color: rgb(172 186 195 / var(--tw-text-opacity));
 }
 .menu-item__dark:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(172 186 195 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(44 47 51 / var(--tw-text-opacity));
 }
 .menu-item__dark--active {
-  --tw-border-opacity: 1;
-  border-color: rgb(172 186 195 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(44 47 51 / var(--tw-text-opacity));
 }
 .tool-bar {
   margin-bottom: 0.75rem;
