@@ -21,7 +21,7 @@ export const pathInfo = [
     name: "Settings",
     path: "settings",
     icon: "Settings",
-    component: "TimeSetting",
+    component: "Settings",
   },
 ]
 export const viewInfo = [

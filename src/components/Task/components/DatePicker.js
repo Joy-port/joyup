@@ -81,18 +81,18 @@ const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
 }
 
 CustomInput.propTypes = {
-  onChange: func,
-  placeholder: string,
-  value: any,
-  isSecure: bool,
-  id: any,
-  onClick: func,
+  onChange: func.isRequired,
+  placeholder: string.isRequired,
+  value: any.isRequired,
+  isSecure: bool.isRequired,
+  id: any.isRequired,
+  onClick: func.isRequired,
 }
 DatePick.propTypes = {
-  date: any,
-  setDate: func,
-  showType: bool,
-  hasCustomButton: bool,
+  date: any.isRequired,
+  setDate: func.isRequired,
+  showType: bool.isRequired,
+  hasCustomButton: bool.isRequired,
 }
 
 export default DatePick

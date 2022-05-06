@@ -96,7 +96,7 @@ const Home = () => {
 }
 
 Home.propTypes = {
-  type: number,
+  type: number.isRequired,
 }
 
 export default Home

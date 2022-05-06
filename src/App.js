@@ -14,7 +14,7 @@ import Home from "./pages/Home"
 import Report from "./pages/Report"
 import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
-import TimeSetting from "./pages/TimeSetting"
+import Settings from "./pages/Settings"
 import { useDispatch, useSelector } from "react-redux"
 import { settings } from "./sliceReducers/actions/settings"
 import { user } from "./sliceReducers/actions/user"
@@ -26,7 +26,7 @@ const components = {
   Report,
   Dashboard,
   Login,
-  TimeSetting,
+  Settings,
 }
 
 const viewComponents = {

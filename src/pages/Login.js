@@ -117,7 +117,7 @@ const Login = ({ pathname }) => {
 }
 
 Login.propTypes = {
-  pathname: string,
+  pathname: string.isRequired,
 }
 
 export default Login

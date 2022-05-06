@@ -34,9 +34,9 @@ const Column = ({ column, taskList, type }) => {
   )
 }
 Column.propTypes = {
-  column: object,
-  taskList: array,
-  type: string,
+  column: object.isRequired,
+  taskList: array.isRequired,
+  type: string.isRequired,
 }
 
 export default Column

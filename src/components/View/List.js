@@ -64,7 +64,7 @@ const List = ({ type }) => {
 }
 
 List.propTypes = {
-  type: string,
+  type: string.isRequired,
 }
 
 export default List

@@ -49,7 +49,7 @@ const Clock = () => {
         return switchMode()
       }
       tickTime()
-    }, [1000])
+    }, [100])
 
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft])
@@ -84,15 +84,16 @@ const Clock = () => {
     clockStatus("secondsLeft", secondsLeftRef.current)
   }
   const TimerContent = {
-    textColor: mode === 0 ? "#3A0303" : "#3e98c7",
-    pathColor: mode === 0 ? "#f54e4e" : "#3e98c7",
+    textColor: mode === 0 ? "#E56544" : "#669FBA",
+    pathColor: mode === 0 ? "#E56544" : "#669FBA",
     trailColor: "transparent",
     strokeLinecap: "round",
     x: 38,
   }
   const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
   const percentage = Math.round((secondsLeft / totalSeconds) * 100)
-  const minutes = Math.floor(secondsLeft / 60)
+  let minutes = Math.floor(secondsLeft / 60)
+  if (minutes < 10) minutes = "0" + minutes
   let seconds = secondsLeft % 60
   if (seconds < 10) seconds = "0" + seconds
 
@@ -100,7 +101,7 @@ const Clock = () => {
     <div className="modal-bg">
       <div
         className={`transition-colors modal-container modal-lg ${
-          mode ? "bg-blue000" : "bg-work000"
+          mode ? "bg-blue000" : "bg-red000"
         }`}
       >
         <button
@@ -114,7 +115,7 @@ const Clock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col items-center">
+        <div className="modal-body flex flex-col items-center justify-center">
           <div className="flex flex-col w-1/2 gap-5">
             <div className="grow">
               <CircularProgressbar
@@ -165,37 +166,37 @@ const Clock = () => {
                 </h3>
               </div> */}
         </div>
-        <div className="modal-footer">
-          {isPaused && (
-            <div className="flex justify-between">
+        <div
+          className={`modal-footer transition-all ${isPaused ? "visible" : "invisible"}`}
+        >
+          <div className="flex justify-between">
+            <div
+              className="button"
+              onClick={() => {
+                const taskDetail = totalTaskList[taskID]
+                if (taskDetail) {
+                  dispatch({ type: "task/openSavedTask", payload: taskDetail })
+                }
+                navigate(`/task/${taskID}`, { replace: true })
+              }}
+            >
+              <ArrowLeft />
+            </div>
+            <div className="flex gap-5">
+              <Link to="/settings" className="button">
+                <Settings />
+              </Link>
               <div
-                className="button"
+                className="button button-dark"
                 onClick={() => {
-                  const taskDetail = totalTaskList[taskID]
-                  if (taskDetail) {
-                    dispatch({ type: "task/openSavedTask", payload: taskDetail })
-                  }
-                  navigate(`/task/${taskID}`, { replace: true })
+                  dispatch(task.saveTotalTask())
+                  navigate(-1)
                 }}
               >
-                <ArrowLeft />
-              </div>
-              <div className="flex gap-5">
-                <Link to="/settings" className="button">
-                  <Settings />
-                </Link>
-                <div
-                  className="button button-dark"
-                  onClick={() => {
-                    dispatch(task.saveTotalTask())
-                    navigate(-1)
-                  }}
-                >
-                  <Save />
-                </div>
+                <Save />
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

@@ -88,7 +88,7 @@ const NewProject = ({ setIsOpen }) => {
 }
 
 NewProject.propTypes = {
-  setIsOpen: func,
+  setIsOpen: func.isRequired,
 }
 
 export default NewProject

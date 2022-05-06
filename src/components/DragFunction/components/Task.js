@@ -41,9 +41,9 @@ const Task = ({ task, index, type }) => {
   )
 }
 Task.propTypes = {
-  task: object,
-  index: number,
-  type: string,
+  task: object.isRequired,
+  index: number.isRequired,
+  type: string.isRequired,
 }
 
 export default Task

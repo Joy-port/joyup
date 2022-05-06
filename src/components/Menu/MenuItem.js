@@ -36,8 +36,8 @@ const MenuItem = ({ type, content }) => {
 }
 
 MenuItem.propTypes = {
-  type: string,
-  content: array,
+  type: string.isRequired,
+  content: array.isRequired,
 }
 
 export default MenuItem

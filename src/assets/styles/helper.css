@@ -64,7 +64,7 @@
 
 /* circular progress bar */
 .CircularProgressbar-text {
-  transform: translate(-15px, 5px);
+  transform: translate(-17%, 5px);
 }
 /* loader */
 .lds-ripple {

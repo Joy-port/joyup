@@ -38,8 +38,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix './src/**/*.{js,jsx}'",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
-    "watch:css": "TAILWIND_MODE=watch postcss src/assets/style/tailwind.pcss -o src/assets/style/main.css --watch",
-    "build:css": "postcss src/assets/style/tailwind.pcss -o src/assets/style/main.css --minify"
+    "watch:css": "TAILWIND_MODE=watch postcss src/assets/styles/tailwind.pcss -o src/assets/styles/main.css --watch",
+    "build:css": "postcss src/assets/styles/tailwind.pcss -o src/assets/styles/main.css --minify"
   },
   "eslintConfig": {
     "extends": [
