@@ -11,8 +11,8 @@ module.exports = {
       xl: "1440px",
     },
     colors: {
-      primary: "#23272A",
-      secondary: "#4D5F6A",
+      primary: "#669FBA",
+      secondary: "#9CC2D3",
       accent: "#ACBAC3",
       slateDark: "#23272A",
       slateLight: "#2C2F33",
@@ -61,7 +61,7 @@ module.exports = {
       },
       height: {
         "custom-m": "calc(100vh - 64px)",
-        "custom-l": "calc(100vh - 130px)",
+        "custom-l": "calc(100vh - 135px)",
       },
       width: {
         "custom-m": "calc(100vw - 80px)",
@@ -206,6 +206,8 @@ module.exports = {
         80: "80",
         90: "90",
         100: "100",
+        110: "110",
+        150: "150",
       },
     },
   },

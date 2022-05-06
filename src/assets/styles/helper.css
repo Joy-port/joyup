@@ -1,3 +1,11 @@
+.hide .show {
+  display: none;
+}
+
+.hide:hover .show {
+  display: block;
+}
+
 .task-scrollbar {
   -webkit-overflow-scrolling: touch;
   -webkit-transform: translateZ(0);

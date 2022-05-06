@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
+import { BarChart2 } from "react-feather"
 import {
   VictoryPie,
   VictoryContainer,
@@ -31,6 +32,7 @@ const Report = () => {
   })
   const [taskPie, setTaskPie] = useState(() => {
     const taskConvertToPie = userTaskDetail.reduce((total, task) => {
+      if (!totalProjectList) return {}
       const taskProject = totalProjectList[task.projectID]
       if (!total[taskProject.id]) {
         total[taskProject.id] = {
@@ -84,7 +86,10 @@ const Report = () => {
   return (
     <>
       <div className="menu-container">
-        <div className="heading-four font-medium">Time Spending</div>
+        <div className="menu-item">
+          <BarChart2 />
+          Time Spending
+        </div>
       </div>
       <div className="-mt-5 min-h-18 mb-3"></div>
 

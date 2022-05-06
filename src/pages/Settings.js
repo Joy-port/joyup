@@ -77,7 +77,6 @@ const TimeSetting = () => {
           onClick={() => dispatch(settings.editSettingsTimer())}
         >
           <Save />
-          Save
         </button>
       </div>
       <div className="hidden md:block -mt-5 min-h-18 mb-5"></div>

@@ -76,6 +76,18 @@ export const firebase = {
       console.error(err)
     }
   },
+  getUserProjects: async function (userID, callback) {
+    const userProjectsRef = collection(this.db, "userProjects")
+    let dataObject = {}
+    onSnapshot(userProjectsRef, { includeMetadataChanges: false }, (userProjectData) => {
+      userProjectData.forEach((userProjectDoc) => {
+        if (userProjectDoc.id === userID) {
+          dataObject = { ...userProjectDoc.data() }
+        }
+      })
+      callback(dataObject)
+    })
+  },
   editUserSettingsTimer: async function (userID, clockSettings) {
     try {
       const collectionName = "userSettings"
@@ -110,16 +122,16 @@ export const firebase = {
     })
     return totalProjects
   },
-  getUserProjects: async function (userID) {
-    //has problem to fix
-    const userCollection = "userProjects"
-    const userRef = doc(this.db, userCollection, userID)
-    const userProjects = await getDoc(userRef)
-    if (!userProjects.exists()) return {}
-    const ownerProjects = userProjects.data().ownerProjects || []
-    const collaborateProjects = userProjects.data().collaborateProjects || []
-    return { ownerProjects, collaborateProjects }
-  },
+  // getUserProjects: async function (userID) {
+  //   //has problem to fix
+  //   const userCollection = "userProjects"
+  //   const userRef = doc(this.db, userCollection, userID)
+  //   const userProjects = await getDoc(userRef)
+  //   if (!userProjects.exists()) return {}
+  //   const ownerProjects = userProjects.data().ownerProjects || []
+  //   const collaborateProjects = userProjects.data().collaborateProjects || []
+  //   return { ownerProjects, collaborateProjects }
+  // },
   createNewProject: async function (projectID, projectTitle, userID) {
     //when created project with defaultTags
     try {
@@ -356,7 +368,7 @@ export const firebase = {
       const collectionName = "userProjects"
       const projectRef = doc(this.db, collectionName, userID)
       const userProjectList = await getDoc(projectRef)
-      if (!userProjectList.data()[type].some((item) => item === projectID)) {
+      if (userProjectList.data()[type].some((item) => item === projectID)) {
         await updateDoc(projectRef, {
           [type]: arrayUnion(projectID),
         })

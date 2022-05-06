@@ -221,3 +221,9 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   height: 3px;
   background-color: var(--success);
 }
+
+/* header home */
+.rbc-time-header.rbc-overflowing {
+  border-right: 1px solid var(--transparent);
+  margin-right: 13px !important;
+}

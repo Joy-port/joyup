@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react"
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
+import * as Icon from "react-feather"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import DayToolbar from "../components/Calendar/Toolbar/Day"
@@ -84,6 +85,7 @@ const Home = () => {
           }`}
           onClick={() => setType(0)}
         >
+          <Icon.Calendar />
           Calendar
         </div>
         <div
@@ -92,6 +94,7 @@ const Home = () => {
           }`}
           onClick={() => setType(1)}
         >
+          <Icon.Layout />
           Agenda
         </div>
       </div>

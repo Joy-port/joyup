@@ -15,7 +15,7 @@ const TaskList = () => {
   const createNewTask = useCallback(() => {
     const newTaskID = uuidv4()
     setTaskID(newTaskID)
-    dispatch({ type: "createNewTask", payload: newTaskID })
+    dispatch({ type: "task/createNewTask", payload: newTaskID })
   })
   useEffect(() => {
     navigate(`/task/${taskID}`)

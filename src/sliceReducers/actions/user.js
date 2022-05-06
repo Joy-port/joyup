@@ -88,13 +88,14 @@ export const user = {
   },
   getUserProjectList: (userID) => {
     return async (dispatch, getData) => {
-      const userProjects = await firebase.getUserProjects(userID)
-      console.log("%c get user project list ", "color:#ee5588;", userProjects)
-      dispatch({ type: "user/getUserOwnProjectList", payload: userProjects })
-      const { ownerProjects, collaborateProjects } = userProjects
-      dispatch({
-        type: "user/getUserProjectList",
-        payload: ownerProjects.concat(collaborateProjects),
+      await firebase.getUserProjects(userID, (userProjects) => {
+        const { ownerProjects, collaborateProjects } = userProjects
+        dispatch({ type: "user/getUserOwnProjectList", payload: userProjects })
+        dispatch({
+          type: "user/getUserProjectList",
+          payload: ownerProjects.concat(collaborateProjects),
+        })
+        console.log("%c get user project list ", "color:#ee5588;", userProjects)
       })
     }
   },

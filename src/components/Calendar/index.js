@@ -69,7 +69,7 @@ const index = () => {
       name: "dueDate",
       date: end,
     }
-    dispatch({ type: "createNewTask", payload: newTaskID })
+    dispatch({ type: "task/createNewTask", payload: newTaskID })
     dispatch({ type: "task/editDate", payload: startTime })
     dispatch({ type: "task/editDate", payload: endTime })
     navigate(`/task/${newTaskID}`)
@@ -114,7 +114,7 @@ const index = () => {
         localizer={localizer}
         defaultDate={new Date()}
         defaultView="month"
-        style={{ height: "calc(100vh - 50px)" }}
+        style={{ height: "calc(100vh - 150px)" }}
         startAccessor="start"
         endAccessor="end"
         events={events}

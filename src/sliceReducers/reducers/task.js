@@ -99,7 +99,7 @@ function taskReducer(state = initialTaskState, action) {
     case "deleteTag":
       const leftTags = state.tagList.filter((tag) => tag.parent !== action.payload)
       return { ...state, tagList: [...leftTags] }
-    case "createNewTask":
+    case "task/createNewTask":
       const newState = {
         ...initialTaskState,
         id: action.payload,
