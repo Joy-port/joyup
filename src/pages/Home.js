@@ -46,7 +46,7 @@ const Home = () => {
     })
   }, [totalTaskList])
 
-  const DayViewToolBar = useMemo(
+  const DayView = useMemo(
     () => ({
       components: {
         toolbar: DayToolbar,
@@ -54,10 +54,22 @@ const Home = () => {
     }),
     []
   )
-  const AgendaViewToolBar = useMemo(
+  const AgendaView = useMemo(
     () => ({
       components: {
         toolbar: AgendaToolbar,
+      },
+      formats: {
+        agendaHeaderFormat: ({ start, end }, culture, localizer) =>
+          localizer.format(start, "MMM DD", culture) +
+          " - " +
+          localizer.format(end, "MMM DD", culture),
+        agendaDateFormat: (date, culture, localizer) =>
+          localizer.format(date, "MMM DD", culture),
+        agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
+          localizer.format(start, "HH:mm", culture) +
+          " - " +
+          localizer.format(end, "HH:mm", culture),
       },
     }),
     []
@@ -83,14 +95,14 @@ const Home = () => {
           Agenda
         </div>
       </div>
-      <div className="hidden md:block -mt-5 min-h-18 mb-3"></div>
+      <div className="hidden md:block -mt-5 min-h-18 mb-5"></div>
       {type === 0 ? (
         <Calendar
-          components={DayViewToolBar.components}
+          components={DayView.components}
           dayLayoutAlgorithm="overlap"
           localizer={localizer}
           defaultDate={new Date()}
-          defaultView="day"
+          defaultView="week"
           style={{ height: "calc(100vh - 145px)" }}
           startAccessor="start"
           endAccessor="end"
@@ -108,18 +120,20 @@ const Home = () => {
         />
       ) : (
         <Calendar
-          components={AgendaViewToolBar.components}
+          components={AgendaView.components}
           dayLayoutAlgorithm="overlap"
           localizer={localizer}
           defaultDate={new Date()}
           defaultView="agenda"
+          view={Views.AGENDA}
           style={{ height: "calc(100vh - 145px)" }}
           startAccessor="start"
           endAccessor="end"
           events={events}
-          view={Views.AGENDA}
+          formats={AgendaView.formats}
           resizable
           selectable
+          length={0.25}
           onSelectEvent={handleSelectEvent} //onclick once
           // onDoubleClickEvent={onDoubleClickEvent} //onclick twice
           // onSelectSlot={handleSelectSlot} //add event

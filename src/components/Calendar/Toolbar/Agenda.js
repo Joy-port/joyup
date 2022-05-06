@@ -1,10 +1,10 @@
-import { func, object } from "prop-types"
+import { func, object, any } from "prop-types"
 import React, { useCallback, useEffect, useState } from "react"
 import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
 
 const Day = ({ onView, onNavigate, date }) => {
-  const [viewState, setViewState] = useState("agenda")
+  const [viewState, setViewState] = useState("day")
   const [isToday, setIsToday] = useState(true)
 
   const addMonths = useCallback((date, months) => {
@@ -13,6 +13,7 @@ const Day = ({ onView, onNavigate, date }) => {
     if (date.getDate() != d) {
       date.setDate(0)
     }
+    // console.log(date)
     return date
   })
 
@@ -23,8 +24,26 @@ const Day = ({ onView, onNavigate, date }) => {
 
   const addDays = useCallback((date, days) => {
     date.setDate(date.getDate() + days)
+    // console.log(date)
     return date
   })
+
+  const goToAgendaView = () => {
+    onView("agenda")
+    setViewState("agenda")
+  }
+  const goToDayView = () => {
+    onView("day")
+    setViewState("day")
+  }
+  const goToWeekView = () => {
+    onView("week")
+    setViewState("week")
+  }
+  // const goToMonthView = () => {
+  //   onView("month")
+  //   setViewState("month")
+  // }
 
   const goToBack = () => {
     if (viewState === "month") {
@@ -65,7 +84,7 @@ const Day = ({ onView, onNavigate, date }) => {
   return (
     <div>
       <div className="rbc-toolbar-label text-center">{moment(date).format("MMM DD")}</div>
-      <div className="rbc-toolbar justify-start">
+      <div className="rbc-toolbar justify-between">
         <div className="rbc-btn-group">
           <button type="button" onClick={() => goToBack()}>
             <ChevronLeft />
@@ -81,11 +100,6 @@ const Day = ({ onView, onNavigate, date }) => {
             <ChevronRight />
           </button>
         </div>
-        {/* <div className="rbc-btn-group">
-          <button onClick={() => goToMonthView()}>Month</button>
-          <button onClick={() => goToWeekView()}>Week</button>
-          <button onClick={() => goToDayView()}>Day</button>
-        </div> */}
       </div>
     </div>
   )
