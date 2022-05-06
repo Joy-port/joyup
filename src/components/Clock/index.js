@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
-import { getClockTime } from "../helpers/functions"
-import { task } from "../sliceReducers/actions/task"
+import Circular from "./Circular"
+import { getClockTime } from "../../helpers/functions"
+import { task } from "../../sliceReducers/actions/task"
 import {
   X,
   PlayCircle,
@@ -84,8 +85,8 @@ const Clock = () => {
     clockStatus("secondsLeft", secondsLeftRef.current)
   }
   const TimerContent = {
-    textColor: mode === 0 ? "#E56544" : "#669FBA",
-    pathColor: mode === 0 ? "#E56544" : "#669FBA",
+    textColor: "#ffffff",
+    pathColor: "#ffffff",
     trailColor: "transparent",
     strokeLinecap: "round",
     x: 38,
@@ -96,16 +97,27 @@ const Clock = () => {
   if (minutes < 10) minutes = "0" + minutes
   let seconds = secondsLeft % 60
   if (seconds < 10) seconds = "0" + seconds
-
+  const modeBackground = mode
+    ? "linear-gradient(305deg,#669FBA,#84E0D1)"
+    : "linear-gradient(305deg,#E56544,#FF6A99)"
+  //FF6A99
+  //F571AE
+  //FF6AA0
+  //E5666E
+  //3e98c7
+  //f54e4e
   return (
     <div className="modal-bg">
       <div
         className={`transition-colors modal-container modal-lg ${
-          mode ? "bg-blue000" : "bg-red000"
+          mode ? "bg-blue200" : "bg-red200"
         }`}
+        style={{
+          background: modeBackground,
+        }}
       >
         <button
-          className="modal-header self-end"
+          className="modal-header self-end text-white"
           onClick={() => {
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
@@ -117,17 +129,18 @@ const Clock = () => {
         </button>
         <div className="modal-body flex flex-col items-center justify-center">
           <div className="flex flex-col w-1/2 gap-5">
-            <div className="grow">
+            <div className="grow mb-10">
               <CircularProgressbar
                 value={percentage}
                 text={minutes + ":" + seconds}
                 styles={buildStyles(TimerContent)}
               />
+              <Circular minutes={minutes} seconds={seconds} />
             </div>
             <div className="flex justify-center items-center gap-6">
               {!isPaused && (
                 <button
-                  className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                  className={`play-button text-white  hover:text-transparentWhite`}
                   onClick={() => clockStatus("isPaused", true)}
                 >
                   <PauseCircle size={50} strokeWidth={0.8} />
@@ -136,7 +149,7 @@ const Clock = () => {
               {isPaused && (
                 <>
                   <button
-                    className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                    className={`play-button text-white  hover:text-transparentWhite`}
                     onClick={() => {
                       clockStatus("isPaused", false)
                     }}
@@ -144,7 +157,7 @@ const Clock = () => {
                     <PlayCircle size={50} strokeWidth={0.8} />
                   </button>
                   <button
-                    className={`play-button ${mode === 0 ? "text-danger" : "text-info"}`}
+                    className={`play-button text-white  hover:text-transparentWhite`}
                     onClick={() => {
                       clockStatus("isPaused", true)
                       resetTimer()
@@ -171,7 +184,7 @@ const Clock = () => {
         >
           <div className="flex justify-between">
             <div
-              className="button"
+              className="button text-white hover:text-transparentWhite"
               onClick={() => {
                 const taskDetail = totalTaskList[taskID]
                 if (taskDetail) {
@@ -183,11 +196,14 @@ const Clock = () => {
               <ArrowLeft />
             </div>
             <div className="flex gap-5">
-              <Link to="/settings" className="button">
+              <Link
+                to="/settings"
+                className="button text-white hover:text-transparentWhite"
+              >
                 <Settings />
               </Link>
               <div
-                className="button button-dark"
+                className="button text-white hover:text-transparentWhite"
                 onClick={() => {
                   dispatch(task.saveTotalTask())
                   navigate(-1)

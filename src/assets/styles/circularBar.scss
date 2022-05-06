@@ -1,0 +1,118 @@
+/// Mixin to place items on a circle
+/// @author Kitty Giraudel
+/// @author Ana Tudor
+/// @param {Integer} $item-count - Number of items on the circle
+/// @param {Length} $circle-size - Large circle size
+/// @param {Length} $item-size - Single item size
+@mixin screen-xs {
+  @media (min-width: 360px) {
+    @content;
+  }
+}
+@mixin screen-sm {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+@mixin screen-md {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+@mixin screen-lg {
+  @media (min-width: 976px) {
+    @content;
+  }
+}
+@mixin on-circle($item-count, $circle-size, $item-size) {
+  position: relative;
+  // width: $circle-size;
+  height: $circle-size;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+
+  > * {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: $item-size;
+    height: $item-size;
+    margin: -($item-size / 2);
+
+    $angle: calc(360 / $item-count);
+    $rot: -90;
+    $direction: calc($angle / 45);
+
+    @for $i from 1 through $item-count {
+      &:nth-of-type(#{$i}) {
+        transform: rotate(calc($rot * 1deg))
+          translate(calc($circle-size / 2))
+          rotate(calc($i / $item-count * 1deg + 270deg));
+      }
+      // &:nth-of-type(#{$i}) {
+      //   transform: rotate($rot * 1deg) translate($circle-size / 2) rotate($rot * -1deg);
+      // }
+
+      $rot: $rot + $angle;
+    }
+  }
+}
+.circular {
+  &-container {
+    @include on-circle($item-count: 16, $circle-size: 8em, $item-size: 18px);
+    margin: 5em auto 0;
+
+    @include screen-xs {
+      @include on-circle($item-count: 16, $circle-size: 18em, $item-size: 18px);
+      margin: 5em auto 0;
+    }
+    @include screen-sm {
+      @include on-circle($item-count: 16, $circle-size: 24em, $item-size: 18px);
+      margin: 5em auto 0;
+    }
+    @include screen-md {
+      @include on-circle($item-count: 16, $circle-size: 28em, $item-size: 18px);
+      margin: 5em auto 0;
+    }
+    @include screen-lg {
+      @include on-circle($item-count: 16, $circle-size: 30em, $item-size: 18px);
+      margin: 5em auto 0;
+    }
+  }
+
+  &-outer-item {
+    display: block;
+    max-width: 100%;
+    border-radius: 50%;
+    filter: grayscale(100%);
+    // border: solid 5px tomato;
+    transition: 0.15s;
+
+    &:hover,
+    &:active {
+      filter: grayscale(0);
+    }
+  }
+  &-inner-item {
+    display: flex;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    font-size: 24px;
+    font-weight: 300;
+    @include screen-xs {
+      font-size: 36px;
+    }
+    @include screen-sm {
+      font-size: 50px;
+    }
+    @include screen-md {
+      font-size: 64px;
+    }
+  }
+}

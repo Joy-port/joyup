@@ -23,14 +23,14 @@ module.exports = {
       blue200: "#669FBA",
       blue100: "#9CC2D3",
       blue000: "#E3EDF2", //E2EDF3
-      red200: "#FFD860",
+      red200: "#E56544",
       red100: "#EB886F",
       red000: "#FDF0ED",
       green200: "#60AF7B",
       green100: "#92C8A5",
       green000: "#FDF0ED",
       warning: "#FFD860",
-      danger: "#E56544",
+      danger: "#E56544", //f54e4e
       success: "#60AF7B",
       info: "#669FBA",
       gray: "#8492a6",
@@ -39,6 +39,7 @@ module.exports = {
       transparentDark: "#23272A99",
       transparentLight: "#DCE1E533",
       transparent: "transparent",
+      transparentWhite: "#ffffff99",
     },
     fontFamily: {
       sans: ["Graphik", "sans-serif"],
@@ -207,7 +208,6 @@ module.exports = {
         90: "90",
         100: "100",
         110: "110",
-        150: "150",
       },
     },
   },
