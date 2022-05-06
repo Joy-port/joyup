@@ -12,6 +12,7 @@ const Layout = () => {
     dispatch(user.logout())
     navigate(0)
   }
+
   return (
     <div>
       <div className="body">
