@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { project } from "../sliceReducers/actions/project"
-import { func } from "prop-types"
+import { bool, func } from "prop-types"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus } from "react-feather"
 
@@ -21,12 +21,12 @@ const NewProject = ({ setIsOpen }) => {
       projectTitle,
       isPublic,
     }
-    console.log(projectContent)
     dispatch(
       project.createNewProject(projectContent, () => {
         setIsOpen(false)
       })
     )
+    navigate("/dashboard")
   }
 
   return (
