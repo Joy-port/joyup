@@ -10,7 +10,7 @@ export const project = {
             return projects[projectID].tasks
           })
           dispatch({ type: "user/getUserTasks", payload: projectTasks })
-          // console.log("%c listen projectData", "background: #ffeecc; color:#225566")
+          console.log("%c listen project update", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
@@ -22,7 +22,7 @@ export const project = {
       try {
         await firebase.getRealTimeData("tags", (tags) => {
           dispatch({ type: "projects/updateTagsDetail", payload: tags })
-          // console.log("%c listen tagsDate ", "background: #ffeecc; color:#225566")
+          console.log("%c listen tags update ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
@@ -34,7 +34,7 @@ export const project = {
       try {
         await firebase.getRealTimeData("tasks", (tasks) => {
           dispatch({ type: "projects/updateAllTasks", payload: tasks })
-          // console.log("%c listen tasksDate ", "background: #ffeecc; color:#225566")
+          console.log("%c listen tasks update ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })

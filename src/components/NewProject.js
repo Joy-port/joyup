@@ -45,7 +45,7 @@ const NewProject = ({ setIsOpen }) => {
           </button>
         </div>
         <form
-          className="modal-body flex flex-col gap-3"
+          className="modal-body overflow-y-auto flex flex-col gap-3"
           onSubmit={(e) => createNewProject(e)}
         >
           <label htmlFor="title">Title</label>

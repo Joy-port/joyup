@@ -95,7 +95,7 @@ export const user = {
           type: "user/getUserProjectList",
           payload: ownerProjects.concat(collaborateProjects),
         })
-        console.log("%c get user project list ", "color:#ee5588;", userProjects)
+        console.log("%c listen user project list ", "color:#ee5588;", userProjects)
       })
     }
   },

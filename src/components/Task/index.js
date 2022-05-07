@@ -90,7 +90,7 @@ const index = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col gap-5 md:flex-row task-scrollbar">
+        <div className="modal-body overflow-y-auto flex flex-col gap-5 md:flex-row task-scrollbar">
           <div className="flex flex-col gap-3 h-full grow">
             <div className="flex gap-3">
               <Edit />
@@ -215,14 +215,14 @@ const index = () => {
                 </select>
               </div>
               <div
-                className="button button-dark flex justify-center gap-3 mb-1"
+                className="button text-primary flex justify-center gap-3 mb-1"
                 onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
               >
                 <Clock />
-                <p>Open Clock</p>
+                <p>Start Focus</p>
               </div>
             </div>
-            <div className="border-group-light200">
+            {/* <div className="border-group-light200">
               <div className="border-group-title">location</div>
               <p className="text-light300">{location || "no selected location"}</p>
               <input
@@ -239,10 +239,10 @@ const index = () => {
                   dispatch(task.saveTaskDetail("location", e.target.value))
                 }}
               />
-            </div>
+            </div> */}
           </div>
         </div>
-        <div className="modal-footer mr-3 flex gap-2 w-full md:w-72 md:ml-auto">
+        <div className="modal-footer flex gap-2 w-full md:w-72 md:ml-auto">
           <button
             className="button button-light flex justify-center items-center gap-3 w-1/2"
             onClick={() => {
@@ -253,10 +253,9 @@ const index = () => {
             }}
           >
             <Trash />
-            Delete
           </button>
           <button
-            className="button button-dark flex justify-center gap-3 w-1/2"
+            className="button button-primary flex justify-center gap-3 w-1/2"
             onClick={() => {
               if (title === "") {
                 alert("please fill in text title")
@@ -267,7 +266,6 @@ const index = () => {
             }}
           >
             <Save />
-            Save
           </button>
         </div>
       </div>

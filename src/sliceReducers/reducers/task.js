@@ -50,7 +50,7 @@ const initialTaskState = {
   dueDate: new Date(new Date().setHours(new Date().getHours() + 1)).getTime(),
   allDay: false,
   clockNumber: 0,
-  requiredNumber: -1,
+  requiredNumber: 0,
   totalTime: 0,
   location: "",
   parent: "",

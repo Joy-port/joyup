@@ -3,16 +3,16 @@ import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
 import dayjs from "dayjs"
 
-const CustomInput = ({ onChange, placeholder, value, isSecure, id, onClick }) => {
+const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
     <input
       className="bg-light100 w-36"
       onChange={onChange}
       placeholder={placeholder}
       value={value}
-      isSecure={isSecure}
       id={id}
       onClick={onClick}
+      // isSecure={isSecure}
     />
   )
 }
@@ -81,12 +81,12 @@ const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
 }
 
 CustomInput.propTypes = {
-  onChange: func.isRequired,
-  placeholder: string.isRequired,
-  value: any.isRequired,
-  isSecure: bool.isRequired,
-  id: any.isRequired,
-  onClick: func.isRequired,
+  onChange: func,
+  placeholder: string,
+  value: any,
+  id: any,
+  onClick: func,
+  // isSecure: bool.isRequired,
 }
 DatePick.propTypes = {
   date: any.isRequired,

@@ -83,7 +83,6 @@ const ProjectList = () => {
                       onClick={() => {
                         onClick(ownerProject.id)
                       }}
-                      onHov
                     >
                       <div className="capitalize font-semibold">{ownerProject.title}</div>
                       <button

@@ -16,10 +16,11 @@ function clockReducer(state = initialClockState, action) {
     case "clockAction":
       const { type, status } = action.payload
       return { ...state, [type]: status }
-    case "addClockNumber":
-      const { clockType } = action.payload
-      return { ...state, [clockType]: state[clockType]++ }
-    case "calculateTotalTime":
+    case "clock/addClockNumber":
+      const clockType = action.payload
+      const addOnce = state[clockType] + 1
+      return { ...state, [clockType]: addOnce }
+    case "clock/calculateTotalTime":
       return { ...state, totalSpendingSeconds: action.payload }
     default:
       return state

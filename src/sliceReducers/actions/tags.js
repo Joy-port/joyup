@@ -104,7 +104,7 @@ export const tags = {
         dispatch({ type: "tags/getProjectTasks", payload: projectTaskDetail })
         dispatch({ type: "tags/getProjectInitialTypes", payload: projectTotalTypes })
         dispatch({ type: "tags/switchType", payload: selectedTag })
-        console.log("%c switch projectData ", "background: #ffeecc; color:#225566")
+        // console.log("%c switch projectData ", "background: #ffeecc; color:#225566")
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
       }

@@ -56,7 +56,7 @@
   @apply flex py-2;
 }
 .modal-body {
-  @apply grow overflow-y-auto;
+  @apply grow;
 }
 .modal-footer {
   @apply py-2;
@@ -73,15 +73,18 @@
 .button-primary {
   @apply bg-primary text-white hover:bg-secondary rounded;
 }
+.button-outline-primary {
+  @apply text-primary hover:text-secondary;
+}
 .button-dark {
-  @apply bg-light300 text-white hover:bg-transparent hover:text-light300 hover:border-light300 border-1 border-light300;
+  @apply text-light300  hover:text-transparentDark;
 }
 .button-outline-dark {
   @apply text-light300 hover:text-white hover:bg-light300;
 }
 
 .button-light {
-  @apply text-light200 hover:bg-white hover:text-slateLight;
+  @apply text-light200 hover:text-slateLight;
 }
 .button-outline-light {
   @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;

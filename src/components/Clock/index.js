@@ -1,20 +1,11 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useCallback } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Circular from "./Circular"
 import { task } from "../../sliceReducers/actions/task"
-import {
-  X,
-  PlayCircle,
-  PauseCircle,
-  XCircle,
-  Settings,
-  ArrowLeft,
-  Save,
-  List,
-} from "react-feather"
+import { X, Settings, ArrowLeft, Save, Clock } from "react-feather"
 
-const Clock = () => {
+const PromodoroClock = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
   const {
     isPaused,
@@ -26,6 +17,7 @@ const Clock = () => {
     totalSpendingSeconds,
   } = useSelector((state) => state.clock)
   const { totalTaskList } = useSelector((state) => state.projects)
+  const taskDetail = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const secondsLeftRef = useRef(secondsLeft)
@@ -34,10 +26,46 @@ const Clock = () => {
   const { taskID } = useParams()
   const setTimer = (clockType) => {
     dispatch({
-      type: "addClockNumber",
-      payload: { clockType: clockType },
+      type: "clock/addClockNumber",
+      payload: clockType,
     })
+    if (clockType === "workNumbers") {
+      dispatch({
+        type: "task/clockNumber",
+        payload: workNumbers,
+      })
+    }
   }
+  const clockShowNumberIcons = useCallback(() => {
+    if (!taskDetail.requiredNumber > 0 || !taskDetail.clockNumber > 0) return
+    if (taskDetail.clockNumber >= taskDetail.requiredNumber) {
+      console.log(taskDetail.clockNumber, taskDetail.requiredNumber)
+      return Object.keys(Array.apply(0, Array(taskDetail.clockNumber))).map(
+        (_, index) => {
+          return (
+            <div key={index}>
+              <Clock opacity={1} />
+            </div>
+          )
+        }
+      )
+    } else {
+      return Object.keys(Array.apply(0, Array(taskDetail.requiredNumber))).map(
+        (_, index) => {
+          const hasSpend = index + 1 <= taskDetail.clockNumber
+          return (
+            <div className="" key={index}>
+              <Clock opacity={hasSpend ? 1 : 0.5} />
+            </div>
+          )
+        }
+      )
+    }
+  })
+
+  useEffect(() => {
+    clockShowNumberIcons()
+  }, [clockShowNumberIcons])
   const clockStatus = (type, status) => {
     dispatch({
       type: "clockAction",
@@ -45,17 +73,15 @@ const Clock = () => {
     })
   }
   useEffect(() => {
-    dispatch(task.saveTaskDetail("totalTime", parseFloat(totalSpendingSeconds)))
-  }, [totalSpendingSeconds])
+    if (isPaused) {
+      dispatch(task.saveTaskDetail("totalTime", parseFloat(totalSpendingSeconds)))
+    }
+  }, [totalSpendingSeconds, isPaused])
   useEffect(() => {
     dispatch(task.saveTaskDetail("clockNumber", parseFloat(workNumbers)))
   }, [workNumbers])
   useEffect(() => {
     const timer = setInterval(() => {
-      // console.log(secondsRunRef.current)
-      // if (secondsLeftRef.current === 0) {
-      //   return switchMode()
-      // }
       if (isPaused) return
       const totalRunTime = mode === 0 ? base * workTime * 60 : base * breakTime * 60
       if (secondsRunRef.current === totalRunTime && secondsLeftRef.current === 0) {
@@ -78,7 +104,7 @@ const Clock = () => {
     // if (secondsLeft === 3600 || isPaused === true) return
     if (secondsRunRef === 0 || isPaused === true) return
     totalTimeRef.current += 1
-    dispatch({ type: "calculateTotalTime", payload: totalTimeRef.current })
+    dispatch({ type: "clock/calculateTotalTime", payload: totalTimeRef.current })
   }, [secondsRun])
 
   const switchMode = () => {
@@ -103,14 +129,7 @@ const Clock = () => {
     secondsLeftRef.current = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
     clockStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
-    clockStatus("secondsRun", secondsLeftRef.current)
-  }
-  const TimerContent = {
-    textColor: "#ffffff",
-    pathColor: "#ffffff",
-    trailColor: "transparent",
-    strokeLinecap: "round",
-    x: 38,
+    clockStatus("secondsRun", secondsRunRef.current)
   }
   const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
   // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
@@ -149,24 +168,40 @@ const Clock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col items-center justify-center relative">
-          {totalTaskList && taskID && totalTaskList[taskID] && (
-            <div className="absolute top-0 left-50 bg-white rounded-md text-red200 p-3 w-5/6">
-              <div className="flex justify-between">
-                <div className="text-lg">{totalTaskList[taskID].title}</div>
-                <div className="flex gap-2">
-                  <div className="text-red200">
-                    <List />
-                  </div>
+        <div className="modal-body flex flex-col items-center justify-center overflow-y-hidden">
+          {taskDetail.id === taskID && (
+            <div
+              className={`absolute top-10 left-50 md:left-10 bg-white rounded-md  p-3 w-5/6 md:w-3/12 shadow cursor-pointer transition-colors ${
+                mode ? "text-blue200" : "text-red200"
+              } ${isPaused ? "" : "opacity-50"}`}
+              onClick={() => {
+                const taskDetail = totalTaskList[taskID]
+                if (taskDetail) {
+                  dispatch({ type: "task/openSavedTask", payload: taskDetail })
+                }
+                navigate(`/task/${taskID}`, { replace: true })
+              }}
+            >
+              <div className="flex justify-between items-center">
+                <div className={`text-lg ${taskDetail.title !== "" ? "" : "opacity-50"}`}>
+                  {taskDetail.title || "New Task"}
+                </div>
+                <div className={`flex gap-2 ${mode ? "text-blue200" : "text-red200"}`}>
+                  {clockShowNumberIcons()}
                 </div>
               </div>
             </div>
           )}
-          <div className="flex flex-col w-1/2 gap-5">
+          <div className="flex flex-col w-1/2">
             <div className="grow mb-10">
-              <Circular minutes={minutes} seconds={seconds} percentage={percentage} />
+              <Circular
+                minutes={minutes.toString()}
+                seconds={seconds.toString()}
+                percentage={percentage}
+                resetTimer={resetTimer}
+              />
             </div>
-            <div className="flex justify-center items-center gap-6">
+            {/* <div className="flex justify-center items-center gap-6">
               {!isPaused && (
                 <button
                   className={`play-button text-white  hover:text-transparentWhite`}
@@ -196,17 +231,8 @@ const Clock = () => {
                   </button>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
-          {/* <div className="flex flex-col gap-2 font-semibold mb-5">
-                <div className="flex gap-2">
-                  <h3 className="button button-light grow">work time {workNumbers}</h3>
-                  <h3 className="button button-light grow">break time {breakNumbers}</h3>
-                </div>
-                <h3 className="button button-light">
-                  Total Spending Time {getClockTime(totalSpendingSeconds)}
-                </h3>
-              </div> */}
         </div>
         <div
           className={`modal-footer transition-all ${isPaused ? "visible" : "invisible"}`}
@@ -248,4 +274,4 @@ const Clock = () => {
   )
 }
 
-export default Clock
+export default PromodoroClock
