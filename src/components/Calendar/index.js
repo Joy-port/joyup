@@ -1,42 +1,55 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react"
+import React, { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
-const localizer = momentLocalizer(moment)
 import MonthToolbar from "./Toolbar/Month"
 import { v4 as uuidv4 } from "uuid"
 import { task } from "../../sliceReducers/actions/task"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 
+const localizer = momentLocalizer(moment)
 // const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = () => {
-  const { components } = useMemo(
+  const currentRef = useRef()
+  const { calendarView } = useParams()
+  const bigCalendar = useMemo(
     () => ({
       components: {
         toolbar: MonthToolbar,
       },
+      dayLayoutAlgorithm: "overlap",
+      localizer: localizer,
+      defaultDate: new Date(),
+      defaultView: calendarView,
+      startAccessor: "start",
+      endAccessor: "end",
+      views: ["day", "week", "month"],
     }),
     []
   )
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
+  const taskDetail = useSelector((state) => state.task)
   const { totalTaskList } = useSelector((state) => state.projects)
   // const task = useSelector((state) => state.task)
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(currentRef?.current)
+    }
+  }, [])
+
   const eventPropGetter = useCallback((event, start, end, isSelected) => {
-    // console.log(event)
     return {
       ...(isSelected && {
         style: {
           backgroundColor: "#000",
         },
       }),
-      // ...(moment(start).hour() > 12 && {
-      //   className: "text-info",
-      // }),
       ...(event.title.toLowerCase().includes("meeting") && {
         style: {
           backgroundColor: "#46af6b",
@@ -44,37 +57,27 @@ const index = () => {
       }),
     }
   }, [])
+  const openTaskModal = useCallback((event) => {
+    window.clearTimeout(currentRef?.current)
+    currentRef.current = window.setTimeout(() => {
+      if (totalTaskList[event.id]) {
+        dispatch({ type: "task/openSavedTask", payload: event })
+        navigate(`/task/${event.id}`)
+      }
+    }, 100)
+  }, [])
+  const createTaskWhenSelected = useCallback(({ slot, start, end }) => {
+    window.clearTimeout(currentRef?.current)
+    currentRef.current = window.setTimeout(() => {
+      const newTaskID = uuidv4()
+      dispatch(task.createTaskFromCalendar(newTaskID, start, end))
+      dispatch(task.saveTotalTask())
+    }, 100)
+  }, [])
+
   useEffect(() => {
     setEvents(Object.values(selectedProjectTaskList))
   }, [selectedProjectTaskList])
-  // const onDoubleClickEvent = (e) => {
-  //   if (totalTaskList[e.id]) {
-  //     dispatch({ type: "task/openSavedTask", payload: e })
-  //     navigate(`/task/${e.id}`)
-  //   }
-  // }
-  const handleSelectEvent = useCallback((event) => {
-    if (totalTaskList[event.id]) {
-      dispatch({ type: "task/openSavedTask", payload: event })
-      navigate(`/task/${event.id}`)
-    }
-  })
-  const handleSelectSlot = useCallback(({ start, end }) => {
-    const newTaskID = uuidv4()
-    const startTime = {
-      name: "startDate",
-      date: start,
-    }
-    const endTime = {
-      name: "dueDate",
-      date: end,
-    }
-    dispatch({ type: "task/createNewTask", payload: newTaskID })
-    dispatch({ type: "task/editDate", payload: startTime })
-    dispatch({ type: "task/editDate", payload: endTime })
-    navigate(`/task/${newTaskID}`)
-    navigate(0) // cause rerender QQ
-  })
 
   const onEventResize = (data) => {
     const { start, end } = data
@@ -110,28 +113,27 @@ const index = () => {
   return (
     <div className="h-custom-m overflow-y-auto pb-20 scrollbar">
       <Calendar
-        dayLayoutAlgorithm="overlap"
-        localizer={localizer}
-        defaultDate={new Date()}
-        defaultView="month"
+        dayLayoutAlgorithm={bigCalendar.dayLayoutAlgorithm}
+        localizer={bigCalendar.localizer}
+        defaultDate={bigCalendar.defaultDate}
+        defaultView={bigCalendar.defaultView}
         style={{ height: "calc(100vh - 150px)" }}
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor={bigCalendar.startAccessor}
+        endAccessor={bigCalendar.endAccessor}
         events={events}
-        views={["day", "week", "month"]}
+        views={bigCalendar.views}
         resizable
         selectable
-        onDoubleClickEvent={handleSelectEvent} //onclick twice
-        // onSelectEvent={handleSelectEvent} //onclick once
-        onSelectSlot={handleSelectSlot} //add event
+        // onDoubleClickEvent={openTaskModal} //onclick twice
+        // onSelectSlot={createTaskWhenSelected} //add event
+        onSelecting={createTaskWhenSelected} //add event
+        onSelectEvent={openTaskModal} //onclick once
         // onEventResize={onEventResize}
         // onEventDrop={onEventDrop}
-        // popup //problem will break the view
-        //style
         eventPropGetter={eventPropGetter}
         timeslots={2}
         step={30}
-        components={components}
+        components={bigCalendar.components}
       />
     </div>
   )

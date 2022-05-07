@@ -13,10 +13,11 @@ const Dashboard = () => {
         {viewInfo.map((view) => {
           const IconName = Icon[view.icon]
           const isActive = pathname.split("/").at(-1) === view.path
+          const calendarDefaultView = view.name === "Calendar" ? "/month" : ""
           return (
             <Link
               key={view.path}
-              to={`/dashboard/${state.selectedProjectID}/${view.path}`}
+              to={`/dashboard/${state.selectedProjectID}/${view.path}${calendarDefaultView}`}
               className={`menu-item ${
                 isActive ? "menu-item__dark--active" : "menu-item__dark"
               }`}

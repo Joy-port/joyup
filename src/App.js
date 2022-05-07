@@ -52,7 +52,7 @@ function App() {
     dispatch(project.updateProjects())
     dispatch(project.updateTags())
     dispatch(project.updateTasks())
-    dispatch(user.listenUserStatus())
+    // dispatch(user.listenUserStatus())
   }, [])
 
   // useEffect(() => {
@@ -60,10 +60,14 @@ function App() {
   //     navigate("/login/sign-in")
   //   }
   // }, [id])
-
   useEffect(() => {
     if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-      dispatch(user.getUserProjectList(id)) //change to snapshot
+      dispatch(user.getUserProjectList(id))
+    }
+  }, [id])
+  useEffect(() => {
+    if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
+      // dispatch(user.getUserProjectList(id))
       dispatch(settings.getUserSettings(id))
     }
   }, [id, projectList, totalProjectList])
@@ -108,9 +112,10 @@ function App() {
               {viewInfo.map((view, index) => {
                 const Component = viewComponents[view.component]
                 let type = view.type || "none"
+                const calendarParams = view.name === "Calendar"
                 return (
                   <Route
-                    path={view.path}
+                    path={`${view.path}${calendarParams ? "/:calendarView" : ""}`}
                     key={index}
                     element={<Component type={type} />}
                   ></Route>

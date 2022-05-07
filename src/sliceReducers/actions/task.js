@@ -1,4 +1,16 @@
 import { firebase } from "../../helpers/firebase"
+const getDefaultTags = (types) => {
+  const taskTagDetail = types.map((type) => {
+    const defaultTag = {
+      parent: type.id,
+      child: type.children[0].id,
+      type: type.type,
+    }
+    return defaultTag
+  })
+  return taskTagDetail
+}
+
 export const task = {
   checkTaskIDToOpen: (taskID) => {
     return async (dispatch, getState) => {
@@ -69,6 +81,30 @@ export const task = {
           // await firebase.saveTagsToProjectIDfromTask(content)
         })
       } catch (err) {
+        dispatch({ type: "status/ERROR", payload: err })
+      }
+    }
+  },
+  createTaskFromCalendar: (taskID, start, end) => {
+    return async (dispatch, getState) => {
+      try {
+        const { types, selectedProjectID } = getState().tags
+        const defaultTagList = getDefaultTags(types)
+        const startTime = {
+          name: "startDate",
+          date: new Date(start).getTime(),
+        }
+        const endTime = {
+          name: "dueDate",
+          date: new Date(end).getTime(),
+        }
+        dispatch({ type: "task/createNewTask", payload: taskID })
+        dispatch({ type: "task/editDate", payload: startTime })
+        dispatch({ type: "task/editDate", payload: endTime })
+        dispatch({ type: "task/title", payload: "New Event" })
+        dispatch({ type: "task/projectID", payload: selectedProjectID })
+        dispatch({ type: "task/editTags", payload: defaultTagList })
+      } catch (error) {
         dispatch({ type: "status/ERROR", payload: err })
       }
     }
