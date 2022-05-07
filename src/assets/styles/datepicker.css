@@ -1,0 +1,78 @@
+.react-datepicker {
+  border: 1px solid var(--blue000);
+  color: var(--light300);
+}
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::after {
+  border-top: 0px solid transparent;
+  border-bottom-color: var(--blue000);
+}
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: var(--light300);
+}
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
+  border-color: var(--light300);
+  border-width: 1px 1px 0 0;
+  height: 9px;
+  top: 6px;
+  width: 9px;
+}
+.react-datepicker__day-name,
+.react-datepicker__time-name {
+  color: var(--blue200);
+}
+.react-datepicker__day {
+  color: var(--light300);
+}
+
+.react-datepicker__header {
+  background-color: var(--blue000);
+  border-bottom: 1px solid var(--blue000);
+  border-top-left-radius: 0.3rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+  background-color: var(--blue200);
+  color: var(--white);
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected {
+  background-color: var(--blue200);
+}
+.react-datepicker__header--time {
+  height: 64px;
+  line-height: 54px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.react-datepicker__input-container {
+  display: block;
+}
+.react-datepicker-wrapper {
+  width: auto;
+}
+
+.react-datepicker__navigation {
+  line-height: 1;
+}
