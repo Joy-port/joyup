@@ -63,6 +63,7 @@ module.exports = {
       height: {
         "custom-m": "calc(100vh - 64px)",
         "custom-l": "calc(100vh - 135px)",
+        "custom-xl": "calc(100vh - 200px)",
       },
       width: {
         "custom-m": "calc(100vw - 80px)",

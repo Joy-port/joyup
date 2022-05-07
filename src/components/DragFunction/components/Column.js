@@ -14,10 +14,7 @@ const Column = ({ column, taskList, type }) => {
             : `column-${type}-normal`
           return (
             <div
-              className={`${isDraggingOver} h-full`}
-              style={{
-                overflowY: "auto",
-              }}
+              className={`${isDraggingOver} h-custom-xl overflow-y-auto`}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

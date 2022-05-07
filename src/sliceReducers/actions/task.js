@@ -101,7 +101,7 @@ export const task = {
         dispatch({ type: "task/createNewTask", payload: taskID })
         dispatch({ type: "task/editDate", payload: startTime })
         dispatch({ type: "task/editDate", payload: endTime })
-        dispatch({ type: "task/title", payload: "New Event" })
+        dispatch({ type: "task/title", payload: "New Task" })
         dispatch({ type: "task/projectID", payload: selectedProjectID })
         dispatch({ type: "task/editTags", payload: defaultTagList })
       } catch (error) {

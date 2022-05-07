@@ -6,12 +6,16 @@ import moment from "moment"
 import MonthToolbar from "./Toolbar/Month"
 import { v4 as uuidv4 } from "uuid"
 import { task } from "../../sliceReducers/actions/task"
+import EventModal from "./EventModal"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 
 const localizer = momentLocalizer(moment)
 // const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = () => {
+  const [onClickPlace, setOnClickPlace] = useState({})
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [actionType, setActionType] = useState("")
   const currentRef = useRef()
   const { calendarView } = useParams()
   const bigCalendar = useMemo(
@@ -30,18 +34,11 @@ const index = () => {
     []
   )
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
-  const taskDetail = useSelector((state) => state.task)
   const { totalTaskList } = useSelector((state) => state.projects)
   // const task = useSelector((state) => state.task)
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    return () => {
-      window.clearTimeout(currentRef?.current)
-    }
-  }, [])
 
   const eventPropGetter = useCallback((event, start, end, isSelected) => {
     return {
@@ -66,14 +63,45 @@ const index = () => {
       }
     }, 100)
   }, [])
-  const createTaskWhenSelected = useCallback(({ slot, start, end }) => {
+  const createTaskWhenSelected = useCallback(({ box, start, end, action, bounds }) => {
+    console.log(action, event)
+    if (action === undefined) return
+    console.log(action)
     window.clearTimeout(currentRef?.current)
     currentRef.current = window.setTimeout(() => {
       const newTaskID = uuidv4()
-      dispatch(task.createTaskFromCalendar(newTaskID, start, end))
-      dispatch(task.saveTotalTask())
+      if (action === "select") {
+        if (bounds === undefined) return
+        setActionType("select")
+        console.log(action, bounds, start, end)
+        setOnClickPlace(bounds)
+        dispatch(task.createTaskFromCalendar(newTaskID, start, end))
+        dispatch(task.saveTotalTask())
+        setIsOpenModal(true)
+      } else if (action === "doubleClick") {
+        if (box === undefined) return
+        setActionType("click")
+        setOnClickPlace(box)
+
+        dispatch(task.createTaskFromCalendar(newTaskID, start, end))
+        dispatch(task.saveTotalTask())
+        setIsOpenModal(true)
+      }
     }, 100)
   }, [])
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(currentRef?.current)
+    }
+  }, [createTaskWhenSelected, openTaskModal])
+  useEffect(() => {
+    if (isOpenModal) {
+      dispatch(task.deleteCurrentTask())
+      dispatch({ type: "task/clearTaskWithoutSaving" })
+      setIsOpenModal(false)
+    }
+  }, [calendarView])
 
   useEffect(() => {
     setEvents(Object.values(selectedProjectTaskList))
@@ -111,7 +139,7 @@ const index = () => {
   }
 
   return (
-    <div className="h-custom-m overflow-y-auto pb-20 scrollbar">
+    <div className="h-custom-m overflow-y-auto pb-20 scrollbar relative">
       <Calendar
         dayLayoutAlgorithm={bigCalendar.dayLayoutAlgorithm}
         localizer={bigCalendar.localizer}
@@ -124,10 +152,11 @@ const index = () => {
         views={bigCalendar.views}
         resizable
         selectable
-        // onDoubleClickEvent={openTaskModal} //onclick twice
-        // onSelectSlot={createTaskWhenSelected} //add event
-        onSelecting={createTaskWhenSelected} //add event
+        longPressThreshold={20}
+        onSelectSlot={createTaskWhenSelected} //add event
         onSelectEvent={openTaskModal} //onclick once
+        // onDoubleClickEvent={openTaskModal} //onclick twice
+        // onSelecting={createTaskWhenSelected} //add event
         // onEventResize={onEventResize}
         // onEventDrop={onEventDrop}
         eventPropGetter={eventPropGetter}
@@ -135,6 +164,15 @@ const index = () => {
         step={30}
         components={bigCalendar.components}
       />
+
+      {isOpenModal && (
+        <EventModal
+          type={actionType}
+          isOpenModal={isOpenModal}
+          setIsOpenModal={setIsOpenModal}
+          position={onClickPlace}
+        />
+      )}
     </div>
   )
 }

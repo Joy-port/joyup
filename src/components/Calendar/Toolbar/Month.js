@@ -1,11 +1,14 @@
 import { func, object } from "prop-types"
 import React, { useCallback, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
 
 const Month = ({ onView, onNavigate, date }) => {
-  const [viewState, setViewState] = useState("month")
+  const { calendarView } = useParams()
+  const [viewState, setViewState] = useState(() => {
+    return calendarView
+  })
   const [isToday, setIsToday] = useState(true)
   const navigate = useNavigate()
   const addMonths = useCallback((date, months) => {
@@ -31,17 +34,17 @@ const Month = ({ onView, onNavigate, date }) => {
   const goToDayView = () => {
     onView("day")
     setViewState("day")
-    navigate("../calendar/day", { replace: true })
+    navigate("../calendar/day")
   }
   const goToWeekView = () => {
     onView("week")
     setViewState("week")
-    navigate("../calendar/week", { replace: true })
+    navigate("../calendar/week")
   }
   const goToMonthView = () => {
     onView("month")
     setViewState("month")
-    navigate("../calendar/month", { replace: true })
+    navigate("../calendar/month")
   }
 
   const goToBack = () => {

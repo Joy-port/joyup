@@ -12,7 +12,7 @@ const Dashboard = () => {
       <div className="menu-container">
         {viewInfo.map((view) => {
           const IconName = Icon[view.icon]
-          const isActive = pathname.split("/").at(-1) === view.path
+          const isActive = pathname.split("/").includes(view.path)
           const calendarDefaultView = view.name === "Calendar" ? "/month" : ""
           return (
             <Link

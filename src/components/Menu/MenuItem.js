@@ -17,7 +17,7 @@ const MenuItem = ({ type, content }) => {
             if (item.path === "/") {
               isActive = pathname === item.path
             } else {
-              isActive = pathname.replace("/", "") === item.path
+              isActive = pathname.replace("/", "").includes(item.path)
             }
             return (
               <Link key={item.name} to={item.path}>

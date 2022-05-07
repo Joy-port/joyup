@@ -8,20 +8,20 @@ import { useDispatch } from "react-redux"
 const Layout = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const onClick = () => {
-    dispatch(user.logout())
-    navigate(0)
-  }
+  // const onClick = () => {
+  //   dispatch(user.logout())
+  //   navigate(0)
+  // }
 
   return (
     <div>
       <div className="body">
         <nav className="menu-list">
           <MenuItem type="layout" />
-          <button className="menu-item__light" onClick={onClick}>
+          {/* <button className="menu-item__light" onClick={onClick}>
             <LogOut />
             <p className="transition-all lg:block md:hidden sm:block">Logout</p>
-          </button>
+          </button> */}
         </nav>
         <TaskList />
         <main className="content">
