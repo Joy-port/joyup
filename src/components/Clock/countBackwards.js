@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import { useDispatch, useSelector } from "react-redux"
 import Circular from "./Circular"
+import { getClockTime } from "../../helpers/functions"
 import { task } from "../../sliceReducers/actions/task"
 import {
   X,
@@ -11,25 +13,16 @@ import {
   Settings,
   ArrowLeft,
   Save,
-  List,
 } from "react-feather"
 
 const Clock = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
-  const {
-    isPaused,
-    mode,
-    secondsLeft,
-    secondsRun,
-    workNumbers,
-    breakNumbers,
-    totalSpendingSeconds,
-  } = useSelector((state) => state.clock)
+  const { isPaused, mode, secondsLeft, workNumbers, breakNumbers, totalSpendingSeconds } =
+    useSelector((state) => state.clock)
   const { totalTaskList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const secondsLeftRef = useRef(secondsLeft)
-  const secondsRunRef = useRef(secondsRun)
   const totalTimeRef = useRef(0)
   const { taskID } = useParams()
   const setTimer = (clockType) => {
@@ -52,58 +45,44 @@ const Clock = () => {
   }, [workNumbers])
   useEffect(() => {
     const timer = setInterval(() => {
-      // console.log(secondsRunRef.current)
-      // if (secondsLeftRef.current === 0) {
-      //   return switchMode()
-      // }
       if (isPaused) return
-      const totalRunTime = mode === 0 ? base * workTime * 60 : base * breakTime * 60
-      if (secondsRunRef.current === totalRunTime && secondsLeftRef.current === 0) {
+      if (secondsLeftRef.current === 0) {
         return switchMode()
       }
       tickTime()
     }, [100])
 
     return () => clearInterval(timer)
-  }, [isPaused, mode, secondsLeft, secondsRun])
+  }, [isPaused, mode, secondsLeft])
 
   useEffect(() => {
     secondsLeftRef.current = base * workTime * 60
     clockStatus("secondsLeft", secondsLeftRef.current)
-    secondsRunRef.current = 0
-    clockStatus("secondsRun", secondsRunRef.current)
   }, [])
 
   useEffect(() => {
-    // if (secondsLeft === 3600 || isPaused === true) return
-    if (secondsRunRef === 0 || isPaused === true) return
+    if (secondsLeft === 3600 || isPaused === true) return
     totalTimeRef.current += 1
     dispatch({ type: "calculateTotalTime", payload: totalTimeRef.current })
-  }, [secondsRun])
+  }, [secondsLeft])
 
   const switchMode = () => {
     mode === 0 ? setTimer("workNumbers") : setTimer("breakNumbers")
     const nextMode = mode === 0 ? 1 : 0
     const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60 * base
     secondsLeftRef.current = nextSeconds
-    secondsRunRef.current = 0
     clockStatus("secondsLeft", nextSeconds)
-    clockStatus("secondsRun", secondsRunRef.current)
     clockStatus("mode", parseFloat(nextMode))
   }
 
   const tickTime = () => {
     secondsLeftRef.current--
     clockStatus("secondsLeft", secondsLeftRef.current)
-    secondsRunRef.current++
-    clockStatus("secondsRun", secondsRunRef.current)
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
     secondsLeftRef.current = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
     clockStatus("secondsLeft", secondsLeftRef.current)
-    secondsRunRef.current = 0
-    clockStatus("secondsRun", secondsLeftRef.current)
   }
   const TimerContent = {
     textColor: "#ffffff",
@@ -113,8 +92,7 @@ const Clock = () => {
     x: 38,
   }
   const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
-  // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
-  const percentage = Math.round((secondsRun / totalSeconds) * 100)
+  const percentage = Math.round((secondsLeft / totalSeconds) * 100)
   let minutes = Math.floor(secondsLeft / 60)
   if (minutes < 10) minutes = "0" + minutes
   let seconds = secondsLeft % 60
@@ -132,7 +110,7 @@ const Clock = () => {
     <div className="modal-bg">
       <div
         className={`transition-colors modal-container modal-lg ${
-          mode === 0 ? "bg-red200" : "bg-blue200"
+          mode ? "bg-blue200" : "bg-red200"
         }`}
         style={{
           background: modeBackground,
@@ -149,22 +127,15 @@ const Clock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col items-center justify-center relative">
-          {totalTaskList && taskID && totalTaskList[taskID] && (
-            <div className="absolute top-0 left-50 bg-white rounded-md text-red200 p-3 w-5/6">
-              <div className="flex justify-between">
-                <div className="text-lg">{totalTaskList[taskID].title}</div>
-                <div className="flex gap-2">
-                  <div className="text-red200">
-                    <List />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="modal-body flex flex-col items-center justify-center">
           <div className="flex flex-col w-1/2 gap-5">
             <div className="grow mb-10">
-              <Circular minutes={minutes} seconds={seconds} percentage={percentage} />
+              <CircularProgressbar
+                value={percentage}
+                text={minutes + ":" + seconds}
+                styles={buildStyles(TimerContent)}
+              />
+              <Circular minutes={minutes} seconds={seconds} />
             </div>
             <div className="flex justify-center items-center gap-6">
               {!isPaused && (

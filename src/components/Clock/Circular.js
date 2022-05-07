@@ -1,28 +1,52 @@
-import { number } from "prop-types"
-import React, { useState } from "react"
-import { Droplet } from "react-feather"
+import { number, string } from "prop-types"
+import React from "react"
+import { Droplet, Coffee, Sun } from "react-feather"
+import { useSelector } from "react-redux"
 import "../../assets/styles/circularBar.scss"
 
 const dropArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
-const Circular = ({ minutes, seconds }) => {
-  const [isFill, setIsFill] = useState(false)
+const Circular = ({ minutes, seconds, percentage }) => {
+  const { mode } = useSelector((state) => state.clock)
   return (
     <div className="circular-container text-white">
       {dropArray.map((item) => {
-        const fill = isFill ? "white" : "transparent"
+        const base = Math.round((1 / dropArray.length) * 100)
+        const iconPercentage = Math.round((item / dropArray.length) * 100) - base
+        {
+          /* console.log("%c icon", "color:#ffcc88", iconPercentage, percentage) */
+        }
+        const fill = iconPercentage >= percentage ? "transparent" : "#ffffff"
+
         return (
           <div className="circular-outer-item" key={item}>
-            <Droplet fill={fill} strokeWidth={0.8} size={18} />
+            <Droplet fill={fill} strokeWidth={1} size={20} stroke="#ffffff" />
           </div>
         )
       })}
-      <div className="circular-inner-item">{minutes + ":" + seconds}</div>
+      <div className="circular-inner-item">
+        <div className="invisible">
+          {mode ? (
+            <Coffee size={60} strokeWidth={0.35} />
+          ) : (
+            <Sun size={60} strokeWidth={0.35} />
+          )}
+        </div>
+        <div className="middle">{minutes + ":" + seconds}</div>
+        <div className="bottom">
+          {mode ? (
+            <Coffee size={60} strokeWidth={0.35} />
+          ) : (
+            <Sun size={60} strokeWidth={0.35} />
+          )}
+        </div>
+      </div>
     </div>
   )
 }
 Circular.propTypes = {
-  minutes: number.isRequired,
-  seconds: number.isRequired,
+  minutes: string.isRequired,
+  seconds: string.isRequired,
+  percentage: number.isRequired,
 }
 export default Circular

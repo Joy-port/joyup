@@ -2,6 +2,7 @@ const initialClockState = {
   isPaused: true,
   mode: 0,
   secondsLeft: 0,
+  secondsRun: 0,
   workNumbers: 0,
   breakNumbers: 0,
   startTime: null,
