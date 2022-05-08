@@ -23,11 +23,6 @@ const DateModal = ({ setIsOpenDateModal }) => {
     }
   }, [])
   useEffect(() => {
-    // if (!focusInput.current) {
-    //   focusInput.current = "startDate"
-    //   setStartTimeSelectedStyle({ borderColor: "#669FBA" })
-    //   return
-    // }
     const dateContent = {
       name: focusInput.current,
       date: selectedDate,
@@ -35,28 +30,10 @@ const DateModal = ({ setIsOpenDateModal }) => {
     dispatch(task.saveTaskDate(dateContent))
   }, [setSelectedDate, selectedDate])
 
-  // useEffect(() => {
-  //   if (calendarDueDate < calendarStartDate) {
-  //     setCalendarDueDate(() => {
-  //       const afterStartDate = startDate
-  //       return afterStartDate
-  //     })
-  //   }
-  // }, [calendarStartDate])
-  // useEffect(() => {
-  //   const date = new Date(calendarStartDate).getTime()
-  //   const dateContent = { name: "startDate", date }
-  //   dispatch(task.saveTaskDate(dateContent))
-  // }, [calendarStartDate])
-  // useEffect(() => {
-  //   const date = new Date(calendarDueDate).getTime()
-  //   const dateContent = { name: "dueDate", date }
-  //   dispatch(task.saveTaskDate(dateContent))
-  // }, [calendarDueDate])
   return (
-    <div className="modal-container-popUp hide text-light300 z-30 min-w-96 min-h-28 max-h-max overflow-y-auto top-12 right-0">
+    <div className="modal-container-popUp hide text-light300 z-30 w-full md:min-w-96 min-h-28 max-h-max overflow-y-auto top-12 right-0">
       <div className="flex justify-between mb-2">
-        <p className="grow text-center text-lg font-medium">
+        <p className="grow text-center border-group-title">
           Select {focusInput.current === "startDate" ? "Start Date" : "Due Date"}
         </p>
         <div

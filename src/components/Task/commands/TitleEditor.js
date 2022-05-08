@@ -82,7 +82,14 @@ const TitleEditor = () => {
       setSlashCharacterPosition(null)
     }
   }, [setEditRequiredNumber, editRequiredNumber, text])
-
+  useEffect(() => {
+    if (inputRef.current) return
+    if (slashCharacterPosition === null && selectedTagType === null) {
+      if (text.trim() === "") return
+      dispatch(task.saveTaskDetail("title", text))
+      setIsEditing(false)
+    }
+  }, [text])
   const commands = [
     {
       name: "Start Date",

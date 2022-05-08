@@ -5,7 +5,11 @@ import { array, object, string } from "prop-types"
 
 const Column = ({ column, taskList, type }) => {
   return (
-    <div className={`column column-${type} ${taskList.length <= 0 ? "hidden" : ""}`}>
+    <div
+      className={`column column-${type} ${
+        taskList.length <= 0 && type === "list" ? "hidden" : ""
+      }`}
+    >
       <h1 className={`tag`}>{column.title}</h1>
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => {

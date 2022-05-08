@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { getClockTime } from "../../helpers/functions"
+import { getHourTime } from "../../helpers/functions"
 import { tags } from "../../sliceReducers/actions/tags"
 import { task } from "../../sliceReducers/actions/task"
 import TitleEditor from "./commands/TitleEditor"
@@ -15,15 +15,15 @@ import {
   Trash,
   Save,
   Edit,
-  Type,
+  Play,
   Calendar,
   Folder,
   Flag,
   CheckSquare,
   Tag,
 } from "react-feather"
+import TimeModal from "./components/TimeModal"
 
-const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = () => {
   const { totalTaskList, userProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
@@ -35,16 +35,17 @@ const index = () => {
     title,
     projectID,
     startDate,
-    clockNumber,
-    requiredNumber,
     parent,
     tagList,
+    clockNumber,
+    requiredNumber,
     totalTime,
   } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const { taskID } = useParams()
   const navigate = useNavigate()
   const [isOpenDateModal, setIsOpenDateModal] = useState(false)
+  const [isOpenTimeModal, setIsOpenTimeModal] = useState(false)
   useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
   }, [selectedProjectID])
@@ -63,6 +64,16 @@ const index = () => {
   useEffect(() => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
+  useEffect(() => {
+    if (isOpenDateModal && isOpenTimeModal) {
+      setIsOpenTimeModal(false)
+    }
+  }, [setIsOpenDateModal, isOpenDateModal])
+  useEffect(() => {
+    if (isOpenTimeModal && isOpenDateModal) {
+      setIsOpenDateModal(false)
+    }
+  }, [setIsOpenTimeModal, isOpenTimeModal])
 
   return (
     <div className="modal-bg">
@@ -155,7 +166,7 @@ const index = () => {
                   <div className="group-title">Date</div>
                 </div>
                 <div
-                  className="select-light300 w-1/2"
+                  className="select-light300 w-1/2 cursor-pointer"
                   onClick={() => {
                     setIsOpenDateModal(!isOpenDateModal)
                   }}
@@ -165,46 +176,49 @@ const index = () => {
                 </div>
                 {isOpenDateModal && <DateModal setIsOpenDateModal={setIsOpenDateModal} />}
               </div>
-              <div className="border-group-light200">
-                <h4 className="border-group-title">Timer</h4>
-                <div className="flex justify-between">
-                  <p className="group-title">Time:</p>
-                  <p className="w-4/12 text-center">{getClockTime(totalTime)}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="group-title">Run Clocks:</p>
-                  <p className="w-4/12 text-center">{clockNumber}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="group-title">Required Clocks:</p>
-                  <select
-                    className="select-light300 w-4/12 align-middle"
-                    name="number"
-                    value={requiredNumber || -1}
-                    onChange={(e) => {
-                      dispatch(
-                        task.saveTaskDetail("requiredNumber", parseFloat(e.target.value))
-                      )
-                    }}
-                  >
-                    <option value={-1} disabled>
-                      0
-                    </option>
-                    {total.map((item) => (
-                      <option value={item} key={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
+              <div className="select-group relative">
+                <div className="flex gap-2 items-center max-w-24">
+                  <Clock strokeWidth={1} />
+                  <div className="group-title">Tracker</div>
                 </div>
                 <div
-                  className="button text-primary flex justify-center gap-3 mb-1"
-                  onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
+                  className="select-light300 w-1/2  cursor-pointer flex justify-center gap-4"
+                  onClick={() => {
+                    setIsOpenTimeModal(!isOpenTimeModal)
+                  }}
+                  onBlur={() => setIsOpenTimeModal(false)}
                 >
-                  <Clock />
-                  <p>Start Focus</p>
+                  <div
+                    className={`flex gap-1 text-red200 transition-opacity ${
+                      clockNumber ? "" : "opacity-50"
+                    }`}
+                  >
+                    <Clock color="#DCE1E5" fill="#E56544" />
+                    {clockNumber}
+                  </div>
+                  /
+                  <div
+                    className={`flex gap-1 text-red200 transition-opacity ${
+                      requiredNumber ? "" : "opacity-50"
+                    }`}
+                  >
+                    <Clock color="#DCE1E5" fill="#E56544" />
+                    {requiredNumber}
+                  </div>
                 </div>
+                {isOpenTimeModal && <TimeModal setIsOpenTimeModal={setIsOpenTimeModal} />}
               </div>
+
+              <div
+                className="button button-primary flex justify-center items-center gap-3 h-12 "
+                onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
+              >
+                <Play />
+                <p>
+                  {getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}
+                </p>
+              </div>
+
               {/* <div className="border-group-light200">
               <div className="border-group-title">location</div>
               <p className="text-light300">{location || "no selected location"}</p>
