@@ -277,6 +277,7 @@ export const firebase = {
   },
   saveTaskPartialContent: async function (stateId, content) {
     try {
+      console.log(stateId, content)
       const collectionName = "tasks"
       const taskContentRef = [this.db, collectionName, stateId]
       const taskHasSavedInDataBase = await getDoc(doc(...taskContentRef))

@@ -17,12 +17,12 @@ export const pathInfo = [
     icon: "Folder",
     component: "Dashboard",
   },
-  {
-    name: "Settings",
-    path: "settings",
-    icon: "Settings",
-    component: "Settings",
-  },
+  // {
+  //   name: "Settings",
+  //   path: "settings",
+  //   icon: "Settings",
+  //   component: "Settings",
+  // },
 ]
 export const viewInfo = [
   {

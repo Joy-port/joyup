@@ -19,10 +19,13 @@ const initialTaskState = {
   startDate: new Date().getTime(),
   dueDate: new Date(new Date().setHours(new Date().getHours() + 1)).getTime(),
   allDay: false,
-  clockNumber: 0,
-  requiredNumber: 0,
+  mode: 0,
   totalTime: 0,
-  workMode: 0,
+  breakTime: 5,
+  workTime: 25,
+  clockNumber: 0, //workTime
+  requiredTime: 0,
+  requiredNumber: 0, //totalRequired clock number
   location: "",
   parent: "",
   tagList: [],
@@ -53,8 +56,6 @@ function taskReducer(state = initialTaskState, action) {
       //   await firebase.saveDescription(state)
       // }
       return { ...state, description: [...action.payload] }
-    case "task/requiredNumber":
-      return { ...state, requiredNumber: action.payload }
     case "task/title":
       return { ...state, title: action.payload }
     case "setTaskID":
@@ -65,6 +66,24 @@ function taskReducer(state = initialTaskState, action) {
       return { ...state, tagList: [...action.payload] }
     case "task/totalTime":
       return { ...state, totalTime: action.payload }
+    case "task/mode":
+      return { ...state, mode: action.payload }
+    case "task/requiredNumber":
+      const newRequiredTime = parseFloat(action.payload * state.workTime)
+      return { ...state, requiredNumber: action.payload, requiredTime: newRequiredTime }
+    case "task/breakTime":
+      return { ...state, breakTime: action.payload }
+    case "task/requiredTime":
+      const newClockNumber = Math.round(
+        parseFloat(action.payload) / (state.workTime + state.breakTime)
+      )
+      return { ...state, requiredTime: action.payload, requiredNumber: newClockNumber }
+    case "task/workTime":
+      let newRequiredNumber = 0
+      if (state.requiredTime !== 0) {
+        newRequiredNumber = Math.round(parseFloat(state.requiredTime / action.payload))
+      }
+      return { ...state, workTime: action.payload, requiredNumber: newRequiredNumber }
     case "task/clockNumber":
       return { ...state, clockNumber: action.payload }
     case "deleteTag":

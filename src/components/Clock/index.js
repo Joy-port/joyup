@@ -5,8 +5,7 @@ import Circular from "./Circular"
 import { task } from "../../sliceReducers/actions/task"
 import {
   X,
-  Settings,
-  FileText,
+  CornerDownLeft,
   Save,
   Clock,
   PlayCircle,
@@ -15,10 +14,11 @@ import {
 } from "react-feather"
 
 const PromodoroClock = () => {
-  const { base, workTime, breakTime } = useSelector((state) => state.settings)
+  // const { workTime, breakTime } = useSelector((state) => state.settings)
+  const { workTime, breakTime, mode } = useSelector((state) => state.task)
   const {
     isPaused,
-    mode,
+    // mode,
     secondsLeft,
     secondsRun,
     workNumbers,
@@ -91,18 +91,18 @@ const PromodoroClock = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       if (isPaused) return
-      const totalRunTime = mode === 0 ? base * workTime * 60 : base * breakTime * 60
+      const totalRunTime = mode === 0 ? workTime * 60 : breakTime * 60
       if (secondsRunRef.current === totalRunTime && secondsLeftRef.current === 0) {
         return switchMode()
       }
       tickTime()
-    }, [100])
+    }, [1000])
 
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft, secondsRun])
 
   useEffect(() => {
-    secondsLeftRef.current = base * workTime * 60
+    secondsLeftRef.current = workTime * 60
     clockStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
     clockStatus("secondsRun", secondsRunRef.current)
@@ -118,12 +118,13 @@ const PromodoroClock = () => {
   const switchMode = () => {
     mode === 0 ? setTimer("workNumbers") : setTimer("breakNumbers")
     const nextMode = mode === 0 ? 1 : 0
-    const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60 * base
+    const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60
     secondsLeftRef.current = nextSeconds
     secondsRunRef.current = 0
     clockStatus("secondsLeft", nextSeconds)
     clockStatus("secondsRun", secondsRunRef.current)
     clockStatus("mode", parseFloat(nextMode))
+    dispatch({ type: "task/workMode", payload: mode })
   }
 
   const tickTime = () => {
@@ -134,12 +135,12 @@ const PromodoroClock = () => {
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
-    secondsLeftRef.current = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
+    secondsLeftRef.current = mode === 0 ? workTime * 60 : breakTime * 60
     clockStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
     clockStatus("secondsRun", secondsRunRef.current)
   }
-  const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
+  const totalSeconds = mode === 0 ? workTime * 60 : breakTime * 60
   // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
   const percentage = Math.round((secondsRun / totalSeconds) * 100)
   let minutes = Math.floor(secondsLeft / 60)
@@ -256,15 +257,15 @@ const PromodoroClock = () => {
                 navigate(`/task/${taskID}`, { replace: true })
               }}
             >
-              <FileText />
+              <CornerDownLeft />
             </div>
             <div className="flex gap-5">
-              <Link
+              {/* <Link
                 to="/settings"
                 className="button text-white hover:text-transparentWhite"
               >
                 <Settings />
-              </Link>
+              </Link> */}
               <div
                 className="button text-white hover:text-transparentWhite"
                 onClick={() => {

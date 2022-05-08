@@ -32,6 +32,7 @@ const index = () => {
   )
   const {
     id,
+    mode,
     title,
     projectID,
     startDate,
@@ -210,7 +211,9 @@ const index = () => {
               </div>
 
               <div
-                className="button button-primary flex justify-center items-center gap-3 h-12 "
+                className={`button flex justify-center items-center gap-3 h-12 ${
+                  mode === 0 ? "button-outline-danger" : "button-primary"
+                }`}
                 onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
               >
                 <Play />

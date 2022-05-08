@@ -559,17 +559,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-custom-m {
   height: calc(100vh - 64px);
 }
+.h-12 {
+  height: 3rem;
+}
 .h-custom-l {
   height: calc(100vh - 135px);
 }
 .h-24 {
   height: 6rem;
-}
-.h-20 {
-  height: 5rem;
-}
-.h-12 {
-  height: 3rem;
 }
 .max-h-28 {
   max-height: 7rem;
@@ -604,9 +601,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-96 {
   width: 24rem;
 }
-.w-16 {
-  width: 4rem;
-}
 .w-12 {
   width: 3rem;
 }
@@ -622,9 +616,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-32 {
   width: 8rem;
 }
-.w-4\/12 {
-  width: 33.333333%;
-}
 .w-40 {
   width: 10rem;
 }
@@ -634,17 +625,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-330 {
   width: 330px;
 }
+.w-7 {
+  width: 1.75rem;
+}
+.w-4\/12 {
+  width: 33.333333%;
+}
 .min-w-32 {
   min-width: 8rem;
-}
-.min-w-96 {
-  min-width: 24rem;
-}
-.min-w-80 {
-  min-width: 20rem;
-}
-.min-w-72 {
-  min-width: 18rem;
 }
 .grow {
   flex-grow: 1;
@@ -751,6 +739,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .border-t-0 {
   border-top-width: 0px;
 }
+.border-b-1 {
+  border-bottom-width: 1.5px;
+}
 .border-slateLight {
   --tw-border-opacity: 1;
   border-color: rgb(44 47 51 / var(--tw-border-opacity));
@@ -784,6 +775,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .border-l-transparent {
   border-left-color: transparent;
+}
+.border-b-light100 {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(220 225 229 / var(--tw-border-opacity));
 }
 .bg-light100 {
   --tw-bg-opacity: 1;
@@ -824,6 +819,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .p-4 {
   padding: 1rem;
 }
+.p-1 {
+  padding: 0.25rem;
+}
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -848,10 +846,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
 }
-.py-5 {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
 .pb-20 {
   padding-bottom: 5rem;
 }
@@ -866,9 +860,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .text-right {
   text-align: right;
-}
-.align-middle {
-  vertical-align: middle;
 }
 .font-sans {
   font-family: Graphik, sans-serif;
@@ -894,9 +885,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .font-semibold {
   font-weight: 600;
-}
-.font-medium {
-  font-weight: 500;
 }
 .uppercase {
   text-transform: uppercase;
@@ -931,22 +919,20 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(229 101 68 / var(--tw-text-opacity));
 }
-.text-primary {
-  --tw-text-opacity: 1;
-  color: rgb(102 159 186 / var(--tw-text-opacity));
-}
 .text-light000 {
   --tw-text-opacity: 1;
   color: rgb(243 245 246 / var(--tw-text-opacity));
 }
+.text-light100 {
+  --tw-text-opacity: 1;
+  color: rgb(220 225 229 / var(--tw-text-opacity));
+}
+.text-primary {
+  --tw-text-opacity: 1;
+  color: rgb(102 159 186 / var(--tw-text-opacity));
+}
 .opacity-50 {
   opacity: 0.5;
-}
-.opacity-70 {
-  opacity: 0.7;
-}
-.opacity-60 {
-  opacity: 0.6;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -1273,6 +1259,17 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(156 194 211 / var(--tw-bg-opacity));
 }
+.button-danger {
+  border-radius: 0.25rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 101 68 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.button-danger:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(235 136 111 / var(--tw-bg-opacity));
+}
 .button-outline-primary {
   --tw-text-opacity: 1;
   color: rgb(102 159 186 / var(--tw-text-opacity));
@@ -1280,6 +1277,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 .button-outline-primary:hover {
   --tw-text-opacity: 1;
   color: rgb(156 194 211 / var(--tw-text-opacity));
+}
+.button-outline-danger {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 101 68 / var(--tw-border-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(229 101 68 / var(--tw-text-opacity));
+}
+.button-outline-danger:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(235 136 111 / var(--tw-border-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(235 136 111 / var(--tw-text-opacity));
 }
 .button-dark {
   --tw-text-opacity: 1;
@@ -1865,12 +1874,12 @@ select:focus {
     width: 18rem;
   }
 
-  .md\:min-w-72 {
-    min-width: 18rem;
-  }
-
   .md\:min-w-96 {
     min-width: 24rem;
+  }
+
+  .md\:min-w-72 {
+    min-width: 18rem;
   }
 
   .md\:grow {

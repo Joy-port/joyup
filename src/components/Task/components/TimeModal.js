@@ -2,19 +2,19 @@ import React, { useState } from "react"
 import { task } from "../../../sliceReducers/actions/task"
 import { getClockTime, getHourTime } from "../../../helpers/functions"
 import { useDispatch, useSelector } from "react-redux"
-import { X, Clock, Circle } from "react-feather"
+import { X, Clock, Circle, FileText } from "react-feather"
 import { func } from "prop-types"
 const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const TimeModal = ({ setIsOpenTimeModal }) => {
   const dispatch = useDispatch()
-  const { clockNumber, requiredNumber, totalTime } = useSelector((state) => state.task)
-  const { workTime, breakTime } = useSelector((state) => state.settings)
+  const { workTime, breakTime, clockNumber, requiredTime, requiredNumber, totalTime } =
+    useSelector((state) => state.task)
   const [isOpenRequiredSelection, setIsOpenRequiredSelection] = useState(false)
   return (
     <div className="modal-container-popUp hide text-light300 z-30 w-full md:min-w-72 min-h-28 max-h-max overflow-y-auto top-12 right-0">
       <div className="border-group-light200">
         <div className="flex">
-          <h4 className="border-group-title text-center grow">Tracker Settings</h4>
+          <h4 className="border-group-title text-center grow">Timer</h4>
           <div
             className="text-right w-6 text-light000 hover:text-transparentDark cursor-pointer "
             onClick={() => setIsOpenTimeModal(false)}
@@ -22,41 +22,94 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
             <X />
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center pb-2 ">
           <div className="flex gap-4 items-center">
-            <Circle strokeWidth={1} size={10} fill="#ACBAC3" color="#ACBAC3" />
-            <p className="group-title">Work Time</p>
+            <Clock strokeWidth={1} fill="#E56544" color="#ffffff" />
+            <p className="group-title">Work Duration</p>
           </div>
-          <form className="w-4/12">
+          <div className="flex gap-2">
             <input
-              className="select-light300 w-full align-middle"
-              type="number"
+              className="w-7 bg-light100 text-light300 rounded  p-1"
+              type="text"
               value={workTime || 0}
               onChange={(e) => {
+                console.log(e.target.value)
                 if (e.target.value < 0) return
-                dispatch(task.saveTaskDetail("work", parseFloat(e.target.value)))
+                dispatch({
+                  type: "task/workTime",
+                  payload: parseFloat(e.target.value),
+                })
               }}
             />
-          </form>
+            <p className="">mins</p>
+          </div>
+        </div>
+        <div className="flex justify-between items-center pb-2 border-b-1 border-b-light100">
+          <div className="flex gap-4 items-center">
+            <Clock strokeWidth={1} fill="#ACBAC3" color="#ffffff" />
+            <p className="group-title">Break Duration</p>
+          </div>
+          <div className="flex gap-2">
+            <input
+              className="w-7 bg-light100 text-light300 rounded  p-1"
+              type="text"
+              value={breakTime || 0}
+              onChange={(e) => {
+                console.log(e.target.value)
+                if (e.target.value < 0) return
+                dispatch({
+                  type: "task/breakTime",
+                  payload: parseFloat(e.target.value),
+                })
+              }}
+            />
+            <p className="">mins</p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 justify-between pb-2 border-b-1 border-b-light100">
+          <div className="flex gap-2 items-center">
+            <Circle strokeWidth={1} size={10} fill="#E56544" color="#ACBAC3" />
+            <p className="group-title">Total Task Required Time</p>
+          </div>
+          <div className="flex gap-2 items-center">
+            =
+            <input
+              className=" text-light300 rounded p-1 border-light100 border-1 "
+              type="text"
+              value={requiredTime || 0}
+              onChange={(e) => {
+                console.log(e.target.value)
+                if (e.target.value < 0) return
+                dispatch({
+                  type: "task/requiredTime",
+                  payload: parseFloat(e.target.value),
+                })
+              }}
+            />
+            mins
+          </div>
+          <div className="flex gap-2 items-center">
+            =
+            <div
+              className={`flex gap-1 text-red200 transition-opacity ${
+                requiredNumber ? "" : "opacity-50"
+              }`}
+            >
+              <Clock color="#fff" fill="#E56544" strokeWidth={1} />
+              {requiredNumber}
+            </div>
+          </div>
         </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-4 items-center">
             <Circle strokeWidth={1} size={10} fill="#ACBAC3" color="#ACBAC3" />
-            <p className="group-title">Required Time</p>
+            <p className="group-title">Task Recording</p>
           </div>
-          <form className="w-4/12">
-            <input
-              className="select-light300 w-full align-middle"
-              type="number"
-              value={requiredNumber || 0}
-              onChange={(e) => {
-                if (e.target.value < 0) return
-                dispatch(
-                  task.saveTaskDetail("requiredNumber", parseFloat(e.target.value))
-                )
-              }}
-            />
-          </form>
+          <div
+            className={`w-4/12 ${getHourTime(totalTime) === 0 ? "text-light100" : ""}`}
+          >
+            {getHourTime(totalTime) === 0 ? "none" : getHourTime(totalTime)}
+          </div>
         </div>
         {/* <div
           className="button text-primary flex justify-center items-center gap-3 mb-1"
