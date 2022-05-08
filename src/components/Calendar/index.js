@@ -66,7 +66,6 @@ const index = ({ type }) => {
     }, 100)
   }, [])
   const createTaskWhenSelected = useCallback(({ box, start, end, action, bounds }) => {
-    console.log(action, event)
     if (action === undefined) return
     window.clearTimeout(currentRef?.current)
     currentRef.current = window.setTimeout(() => {
@@ -74,7 +73,6 @@ const index = ({ type }) => {
       if (action === "select") {
         if (bounds === undefined) return
         setActionType("select")
-        console.log(action, bounds, start, end)
         setOnClickPlace(bounds)
         dispatch(task.createTaskFromCalendar(newTaskID, start, end))
         dispatch(task.saveTotalTask())
@@ -83,7 +81,6 @@ const index = ({ type }) => {
         if (box === undefined) return
         setActionType("click")
         setOnClickPlace(box)
-
         dispatch(task.createTaskFromCalendar(newTaskID, start, end))
         dispatch(task.saveTotalTask())
         setIsOpenModal(true)

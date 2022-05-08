@@ -55,11 +55,16 @@ const DateModal = ({ setIsOpenDateModal }) => {
   // }, [calendarDueDate])
   return (
     <div className="modal-container-popUp hide text-light300 z-30 min-w-96 min-h-28 max-h-max overflow-y-auto top-12 right-0">
-      <div
-        className="text-right w-6 text-light000 hover:text-transparentDark cursor-pointer ml-auto mb-2"
-        onClick={() => setIsOpenDateModal(false)}
-      >
-        <X />
+      <div className="flex justify-between mb-2">
+        <p className="grow text-center text-lg font-medium">
+          Select {focusInput.current === "startDate" ? "Start Date" : "Due Date"}
+        </p>
+        <div
+          className="text-right w-6 text-light000 hover:text-transparentDark cursor-pointer "
+          onClick={() => setIsOpenDateModal(false)}
+        >
+          <X />
+        </div>
       </div>
       <div className="button-group gap-3 w-330 mx-auto mb-3">
         <div

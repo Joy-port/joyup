@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 const localizer = momentLocalizer(moment)
-// Agenda.title = (date, { localizer }) => localizer.format(date, "yearHeaderFormat")
 
 const Home = () => {
   const { userTasks } = useSelector((state) => state.user)
@@ -46,14 +45,6 @@ const Home = () => {
     })
   }, [totalTaskList])
 
-  // const DayView = useMemo(
-  //   () => ({
-  //     components: {
-  //       toolbar: DayToolbar,
-  //     },
-  //   }),
-  //   []
-  // )
   const AgendaView = useMemo(
     () => ({
       components: {

@@ -649,6 +649,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .flex-col {
   flex-direction: column;
 }
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -749,6 +752,13 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-border-opacity: 1;
   border-color: rgb(220 225 229 / var(--tw-border-opacity));
 }
+.border-light300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(77 95 106 / var(--tw-border-opacity));
+}
+.border-transparent {
+  border-color: transparent;
+}
 .border-t-light100 {
   --tw-border-opacity: 1;
   border-top-color: rgb(220 225 229 / var(--tw-border-opacity));
@@ -756,6 +766,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .border-t-light000 {
   --tw-border-opacity: 1;
   border-top-color: rgb(243 245 246 / var(--tw-border-opacity));
+}
+.border-l-transparent {
+  border-left-color: transparent;
 }
 .bg-light100 {
   --tw-bg-opacity: 1;
@@ -783,10 +796,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-light000 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 245 246 / var(--tw-bg-opacity));
-}
-.bg-light200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(172 186 195 / var(--tw-bg-opacity));
 }
 .p-5 {
   padding: 1.25rem;
@@ -866,6 +875,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .font-semibold {
   font-weight: 600;
+}
+.font-medium {
+  font-weight: 500;
 }
 .uppercase {
   text-transform: uppercase;
@@ -1278,17 +1290,22 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(220 225 229 / var(--tw-bg-opacity));
 }
-/* input */
+/* input px-2 py-1 */
 input {
-  border-radius: 0.25rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 input:focus {
-  outline-width: 1px;
-  outline-color: #DCE1E5;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+input:active {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+select {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 select:focus {
   outline: 2px solid transparent;
@@ -1296,7 +1313,7 @@ select:focus {
 }
 .input-light300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
 }
 .input-light300::placeholder {
   --tw-text-opacity: 1;
@@ -1305,8 +1322,6 @@ select:focus {
 .input-light300:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  outline-width: 1px;
-  outline-color: #4D5F6A;
 }
 /* selector */
 .select-light300 {
@@ -1337,16 +1352,17 @@ select:focus {
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 .group-title {
   white-space: nowrap;
   font-weight: 500;
+  text-transform: capitalize;
   --tw-text-opacity: 1;
-  color: rgb(44 47 51 / var(--tw-text-opacity));
+  color: rgb(77 95 106 / var(--tw-text-opacity));
 }
 .select-dropDown {
   width: 50%;
@@ -1415,20 +1431,22 @@ select:focus {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
-}
-.editor-input {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+}
+.editor-input {
+  border-left-width: 2px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
+  line-height: 1.75rem;
 }
 .editor-input:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
 .editor-text {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  border-left-width: 2px;
+  line-height: 1.75rem;
 }
 .results {
   border-width: 1px;
@@ -1464,7 +1482,7 @@ select:focus {
 .heading-one {
   font-size: 2.25rem;
   line-height: 2.5rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 .heading-two {
   font-size: 1.875rem;
@@ -1474,7 +1492,7 @@ select:focus {
 .heading-three {
   font-size: 1.5rem;
   line-height: 2rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 .heading-four {
   font-size: 1.125rem;
@@ -1496,6 +1514,7 @@ select:focus {
   list-style-type: decimal;
   padding-left: 0.75rem;
 }
+/*ml-5*/
 .quote-block {
   margin-left: 1.25rem;
   border-left-width: 4px;
@@ -1818,6 +1837,10 @@ select:focus {
 
   .md\:grow {
     flex-grow: 1;
+  }
+
+  .md\:grow-0 {
+    flex-grow: 0;
   }
 
   .md\:grid-cols-3 {

@@ -93,15 +93,15 @@
   @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
 }
 
-/* input */
+/* input px-2 py-1 */
 input {
-  @apply rounded px-2 py-1 focus:outline-1 focus:outline-light100;
+  @apply outline-none focus:outline-none active:outline-none;
 }
 select {
-  @apply focus:outline-none;
+  @apply outline-none focus:outline-none;
 }
 .input-light300 {
-  @apply bg-white focus:outline-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+  @apply bg-light000 focus:bg-white placeholder:text-light200;
 }
 
 /* selector */
@@ -110,10 +110,10 @@ select {
 }
 
 .select-group {
-  @apply flex gap-2 items-center rounded justify-between px-2 py-1 bg-white;
+  @apply flex gap-2 items-center rounded justify-between px-3 py-2 bg-white;
 }
 .group-title {
-  @apply font-medium whitespace-nowrap text-slateLight;
+  @apply capitalize font-medium whitespace-nowrap text-light300;
 }
 
 .select-dropDown {
@@ -143,13 +143,13 @@ select {
 }
 
 .editor {
-  @apply grow flex flex-col relative bg-white rounded py-1;
+  @apply grow flex flex-col relative bg-white rounded py-1  px-3;
 }
 .editor-input {
-  @apply focus:outline-none px-3;
+  @apply focus:outline-none bg-light000 leading-7 border-l-2;
 }
 .editor-text {
-  @apply px-3 py-1;
+  @apply leading-7 border-l-2;
 }
 .results {
   @apply border border-slateLight;
@@ -168,13 +168,13 @@ select {
 }
 
 .heading-one {
-  @apply text-4xl font-bold;
+  @apply text-4xl font-semibold;
 }
 .heading-two {
   @apply text-3xl font-semibold;
 }
 .heading-three {
-  @apply text-2xl font-semibold;
+  @apply text-2xl font-medium;
 }
 .heading-four {
   @apply text-lg font-normal;
@@ -189,7 +189,7 @@ select {
 .ordered-list {
   @apply list-decimal ml-5 pl-3;
 }
-
+/*ml-5*/
 .quote-block {
   @apply border-l-4 border-slateDark text-lg font-semibold ml-5 pl-3;
 }

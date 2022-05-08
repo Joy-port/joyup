@@ -18,7 +18,7 @@ const TitleEditor = () => {
   const [isSettingTime, setIsSettingTime] = useState(false)
   const [date, setDate] = useState(new Date())
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
-  const [style, setStyle] = useState("heading-four")
+  const [style, setStyle] = useState("heading-three")
   const [isEditingTags, setIsEditingTags] = useState(false)
   const [selectedTagType, setSelectedTagType] = useState(null)
   const [selectedTag, setSelectedTag] = useState(null)
@@ -62,7 +62,7 @@ const TitleEditor = () => {
         return name + ":" + selectedDate
       })
       timeRef.current = dayjs(date).format("HH:mm")
-      setStyle("heading-four")
+      setStyle("heading-three")
       setIsSettingTime(false)
       setText("")
       deleteSlashCommand()
@@ -227,7 +227,7 @@ const TitleEditor = () => {
     dispatch(task.saveTaskTag(tagType))
     setSelectedTagType(null)
     setText("")
-    setStyle("heading-four")
+    setStyle("heading-three")
     setIsEditing(false)
   }
 
@@ -270,10 +270,10 @@ const TitleEditor = () => {
   }
 
   return (
-    <div className="flex flex-col rounded relative">
+    <div className="flex flex-col rounded relative w-full">
       {text !== "" && !isEditing ? (
         <div
-          className="heading-four bg-light200 text-slateLight px-2 py-1 rounded"
+          className="heading-three text-light300 px-2 py-1 rounded"
           onClick={() => {
             setIsEditing(true)
             setText(text)
@@ -283,7 +283,7 @@ const TitleEditor = () => {
         </div>
       ) : (
         <input
-          className={`input-light300 ${style}`}
+          className={`rounded input-light300 px-2 py-1 ${style}`}
           cols="30"
           rows="10"
           value={text}

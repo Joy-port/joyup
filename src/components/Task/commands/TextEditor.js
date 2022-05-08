@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
 import { task } from "../../../sliceReducers/actions/task"
+import { Type } from "react-feather"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)
   const dispatch = useDispatch()
-  const [isEditing, setIsEditing] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
   const [document, setDocument] = useState(description)
   const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
@@ -214,18 +215,26 @@ const TextEditor = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-1/4">
-      <div className="editor">
-        {/* <p className="text-light200 py-2 px-3">{`Description or type '/' for commands`}</p> */}
+    <div className="flex flex-col min-h-1/4 grow md:grow-0">
+      <div
+        className={`editor border-1 ${
+          isEditing ? "border-light300" : "border-transparent"
+        }`}
+      >
+        <p className="flex gap-5 items-center text-light300 py-2">
+          <Type />
+          Description
+        </p>
         {document &&
           document.map((item, index) => {
             const TagName = item.html.tag
             const firstInput = index === 0
             if (focusInput.current === item.id && isEditing) {
+              console.log(isEditing, focusInput.current)
               return (
-                <div className="relative">
+                <div className="relative grow flex flex-col">
                   <input
-                    className={`input-light300 editor-input ${
+                    className={`editor-input border-l-transparent ${
                       HTMLStyle.style || item.html.style
                     }`}
                     key={item.id}
@@ -237,7 +246,11 @@ const TextEditor = () => {
                     onKeyDown={(e) => onKeyDown(e)}
                     ref={inputRef}
                     autoFocus
-                    placeholder={firstInput ? `Description or type '/' for commands` : ""}
+                    placeholder={
+                      firstInput
+                        ? `Description or type '/' for commands`
+                        : "Type '/' for commands "
+                    }
                   />
                   {matchingCommands.length !== 0 && (
                     <div className="border-1 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 max-h-56 overflow-y-auto">
@@ -263,7 +276,8 @@ const TextEditor = () => {
                 return (
                   <p
                     key={item.id}
-                    onClick={() => {
+                    onClick={(e) => {
+                      console.log(e, item.id)
                       focusInput.current = item.id
                       setIsEditing(true)
                       setText(item.content)
@@ -277,7 +291,7 @@ const TextEditor = () => {
                 return (
                   <TagName
                     key={item.id}
-                    className={`editor-text ${item.html.style}`}
+                    className={`editor-text border-l-transparent ${item.html.style}`}
                     onClick={() => {
                       focusInput.current = item.id
                       setIsEditing(true)
