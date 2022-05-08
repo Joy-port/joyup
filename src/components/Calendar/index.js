@@ -1,18 +1,21 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
-import { Calendar, momentLocalizer } from "react-big-calendar"
+import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import moment from "moment"
+import DayToolbar from "./Toolbar/Day"
 import MonthToolbar from "./Toolbar/Month"
+import AgendaToolbar from "./Toolbar/Agenda"
 import { v4 as uuidv4 } from "uuid"
 import { task } from "../../sliceReducers/actions/task"
 import EventModal from "./EventModal"
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
+import { string } from "prop-types"
+// import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 
 const localizer = momentLocalizer(moment)
 // const DragDropCalendar = withDragAndDrop(Calendar)
 
-const index = () => {
+const index = ({ type }) => {
   const [onClickPlace, setOnClickPlace] = useState({})
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [actionType, setActionType] = useState("")
@@ -21,21 +24,20 @@ const index = () => {
   const bigCalendar = useMemo(
     () => ({
       components: {
-        toolbar: MonthToolbar,
+        toolbar: type === "day" ? DayToolbar : MonthToolbar,
       },
       dayLayoutAlgorithm: "overlap",
       localizer: localizer,
       defaultDate: new Date(),
-      defaultView: calendarView,
+      defaultView: type === "day" ? "week" : calendarView,
       startAccessor: "start",
       endAccessor: "end",
-      views: ["day", "week", "month"],
+      views: { day: true, week: true, month: true },
     }),
     []
   )
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
   const { totalTaskList } = useSelector((state) => state.projects)
-  // const task = useSelector((state) => state.task)
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -66,7 +68,6 @@ const index = () => {
   const createTaskWhenSelected = useCallback(({ box, start, end, action, bounds }) => {
     console.log(action, event)
     if (action === undefined) return
-    console.log(action)
     window.clearTimeout(currentRef?.current)
     currentRef.current = window.setTimeout(() => {
       const newTaskID = uuidv4()
@@ -175,6 +176,10 @@ const index = () => {
       )}
     </div>
   )
+}
+
+index.propTypes = {
+  type: string,
 }
 
 export default index

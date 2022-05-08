@@ -453,9 +453,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .top-8 {
   top: 2rem;
 }
-.-right-2 {
-  right: -0.5rem;
-}
 .top-12 {
   top: 3rem;
 }
@@ -535,15 +532,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mt-1 {
   margin-top: 0.25rem;
 }
-.mr-auto {
-  margin-right: auto;
-}
-.-mr-2 {
-  margin-right: -0.5rem;
-}
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
 .block {
   display: block;
 }
@@ -582,9 +570,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .max-h-56 {
   max-height: 14rem;
-}
-.max-h-96 {
-  max-height: 24rem;
 }
 .max-h-max {
   max-height: max-content;
@@ -637,11 +622,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-40 {
   width: 10rem;
 }
-.w-330 {
-  width: 330px;
-}
 .w-6 {
   width: 1.5rem;
+}
+.w-330 {
+  width: 330px;
 }
 .min-w-32 {
   min-width: 8rem;
@@ -1783,9 +1768,6 @@ select:focus {
 .hover\:text-white:hover {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-.hover\:text-transparentLight:hover {
-  color: #DCE1E533;
 }
 .hover\:text-transparentDark:hover {
   color: #23272A99;
