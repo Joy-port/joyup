@@ -43,7 +43,7 @@
   @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
 }
 .modal-container-popUp {
-  @apply absolute rounded-lg bg-white p-3 h-36 w-60 text-slateDark  shadow-lg shadow-light200 border-light000 border-1;
+  @apply absolute rounded-lg bg-white p-3 text-slateDark  shadow-lg shadow-light200 border-light000 border-1;
 }
 .modal-container {
   @apply rounded-lg text-light300 px-3 flex flex-col overflow-y-auto relative;
@@ -110,7 +110,7 @@ select {
 }
 
 .select-group {
-  @apply flex gap-2 items-center justify-between rounded bg-white px-2 py-1;
+  @apply flex gap-2 items-center rounded justify-between px-2 py-1 bg-white;
 }
 .group-title {
   @apply font-medium whitespace-nowrap text-slateLight;
@@ -128,7 +128,7 @@ select {
   @apply border-1 border-light000 rounded-sm bg-white;
 }
 .dropdown-item {
-  @apply px-2 py-1 hover:bg-light100;
+  @apply px-2 py-1 hover:bg-light100 cursor-pointer;
 }
 
 .button-group {
@@ -272,7 +272,7 @@ select {
 }
 
 .column-board-normal {
-  @apply min-h-96 p-2;
+  @apply min-h-96 p-2 h-custom-xl;
 }
 .task-list {
   @apply bg-white hover:bg-light000 active:bg-light000 focus:bg-light000;

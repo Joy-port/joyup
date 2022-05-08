@@ -3,7 +3,16 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Circular from "./Circular"
 import { task } from "../../sliceReducers/actions/task"
-import { X, Settings, ArrowLeft, Save, Clock } from "react-feather"
+import {
+  X,
+  Settings,
+  FileText,
+  Save,
+  Clock,
+  PlayCircle,
+  PauseCircle,
+  XCircle,
+} from "react-feather"
 
 const PromodoroClock = () => {
   const { base, workTime, breakTime } = useSelector((state) => state.settings)
@@ -62,7 +71,6 @@ const PromodoroClock = () => {
       )
     }
   })
-
   useEffect(() => {
     clockShowNumberIcons()
   }, [clockShowNumberIcons])
@@ -201,7 +209,7 @@ const PromodoroClock = () => {
                 resetTimer={resetTimer}
               />
             </div>
-            {/* <div className="flex justify-center items-center gap-6">
+            <div className="flex justify-center items-center gap-6">
               {!isPaused && (
                 <button
                   className={`play-button text-white  hover:text-transparentWhite`}
@@ -231,7 +239,7 @@ const PromodoroClock = () => {
                   </button>
                 </>
               )}
-            </div> */}
+            </div>
           </div>
         </div>
         <div
@@ -248,7 +256,7 @@ const PromodoroClock = () => {
                 navigate(`/task/${taskID}`, { replace: true })
               }}
             >
-              <ArrowLeft />
+              <FileText />
             </div>
             <div className="flex gap-5">
               <Link

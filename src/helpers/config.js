@@ -45,15 +45,16 @@ export const viewInfo = [
     icon: "Calendar",
     component: "Calendar",
   },
-  {
-    name: "Map",
-    path: "location",
-    icon: "MapPin",
-    component: "DragFunction",
-  },
+  // {
+  //   name: "Map",
+  //   path: "location",
+  //   icon: "MapPin",
+  //   component: "DragFunction",
+  // },
   // {
   //   name: "Mind Map",
   //   path: "mind-map",
+  // icon: "MapPin",
   //   component: "DragFunction",
   // },
 ]

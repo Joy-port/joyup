@@ -35,7 +35,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
     <>
       {JSON.stringify(taskDetail) !== "{}" && (
         <div
-          className={`modal-container-popUp hide text-light300 z-110 ${
+          className={`modal-container-popUp h-36 w-60 hide text-light300 z-110 ${
             isOpenModal ? "" : "hidden"
           }`}
           style={{ left, top }}

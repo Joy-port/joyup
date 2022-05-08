@@ -8,8 +8,21 @@ import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
+import DateModal from "./components/DateModal"
 import dayjs from "dayjs"
-import { Clock, X, Trash, Save, Edit, Type } from "react-feather"
+import {
+  Clock,
+  X,
+  Trash,
+  Save,
+  Edit,
+  Type,
+  Calendar,
+  Folder,
+  Flag,
+  CheckSquare,
+  Tag,
+} from "react-feather"
 
 const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = () => {
@@ -22,12 +35,9 @@ const index = () => {
     id,
     title,
     projectID,
-    createdDate,
     startDate,
-    dueDate,
     clockNumber,
     requiredNumber,
-    location,
     parent,
     tagList,
     totalTime,
@@ -35,10 +45,7 @@ const index = () => {
   const dispatch = useDispatch()
   const { taskID } = useParams()
   const navigate = useNavigate()
-  const [address, setAddress] = useState(location)
-  const [calendarStartDate, setCalendarStartDate] = useState(startDate)
-  const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
-
+  const [isOpenDateModal, setIsOpenDateModal] = useState(false)
   useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
   }, [selectedProjectID])
@@ -57,24 +64,24 @@ const index = () => {
   useEffect(() => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
-  useEffect(() => {
-    if (calendarDueDate < calendarStartDate) {
-      setCalendarDueDate(() => {
-        const afterStartDate = startDate
-        return afterStartDate
-      })
-    }
-  }, [calendarStartDate])
-  useEffect(() => {
-    const date = new Date(calendarStartDate).getTime()
-    const dateContent = { name: "startDate", date }
-    dispatch(task.saveTaskDate(dateContent))
-  }, [calendarStartDate])
-  useEffect(() => {
-    const date = new Date(calendarDueDate).getTime()
-    const dateContent = { name: "dueDate", date }
-    dispatch(task.saveTaskDate(dateContent))
-  }, [calendarDueDate])
+  // useEffect(() => {
+  //   if (calendarDueDate < calendarStartDate) {
+  //     setCalendarDueDate(() => {
+  //       const afterStartDate = startDate
+  //       return afterStartDate
+  //     })
+  //   }
+  // }, [calendarStartDate])
+  // useEffect(() => {
+  //   const date = new Date(calendarStartDate).getTime()
+  //   const dateContent = { name: "startDate", date }
+  //   dispatch(task.saveTaskDate(dateContent))
+  // }, [calendarStartDate])
+  // useEffect(() => {
+  //   const date = new Date(calendarDueDate).getTime()
+  //   const dateContent = { name: "dueDate", date }
+  //   dispatch(task.saveTaskDate(dateContent))
+  // }, [calendarDueDate])
 
   return (
     <div className="modal-bg">
@@ -106,9 +113,12 @@ const index = () => {
           </div>
           <div className="flex flex-col gap-3 w-full md:w-72">
             <div className="select-group">
-              <p className="group-title">Project</p>
+              <div className="flex gap-2 items-center max-w-24">
+                <Folder strokeWidth={1} />
+                <p className="group-title">Project</p>
+              </div>
               <select
-                className="select-light300 select-dropDown"
+                className="select-light300 w-1/2"
                 value={projectID}
                 onChange={(e) => {
                   dispatch(task.saveTaskDetail("projectID", e.target.value))
@@ -128,9 +138,18 @@ const index = () => {
             {types &&
               types.map((item) => (
                 <div className="select-group" key={item.id}>
-                  <p className="group-title">{item.type} </p>
+                  <div className="flex gap-2 items-center max-w-24">
+                    {item.type === "priority" ? (
+                      <Flag strokeWidth={1} />
+                    ) : item.type === "progress" ? (
+                      <CheckSquare strokeWidth={1} />
+                    ) : (
+                      <Tag strokeWidth={1} />
+                    )}
+                    <p className="group-title">{item.type} </p>
+                  </div>
                   <select
-                    className="select-light300 select-dropDown"
+                    className="select-light300 w-1/2"
                     value={
                       tagList.find((selected) => selected.parent === item.id)?.child ||
                       selectedColumnOrder[0]
@@ -153,34 +172,21 @@ const index = () => {
                   </select>
                 </div>
               ))}
-            <div className="border-group-light200">
-              <h4 className="border-group-title">Date</h4>
-              <div className="button-group">
-                <p className="group-title w-28">Created Date:</p>
-                <p className="rounded px-2 py-1  w-36">
-                  {dayjs(createdDate).format("MMM DD, HH:mm")}
-                </p>
+            <div className="select-group relative">
+              <div className="flex gap-2 items-center max-w-24">
+                <Calendar strokeWidth={1} />
+                <div className="group-title">Date</div>
               </div>
-              <div className="button-group">
-                <p className="group-title w-28">Start Date</p>
-                {/* <p>{dayjs(new Date(startDate).getTime()).format("MM/DD HH:mm ")}</p> */}
-                <DatePicker
-                  date={calendarStartDate}
-                  setDate={setCalendarStartDate}
-                  showType={false}
-                  hasCustomButton={true}
-                />
+              <div
+                className="select-light300 w-1/2"
+                onClick={() => {
+                  setIsOpenDateModal(!isOpenDateModal)
+                }}
+                onBlur={() => setIsOpenDateModal(false)}
+              >
+                {dayjs(startDate).format("MMM DD, HH:mm") || "Date"}
               </div>
-              <div className="button-group">
-                <div className="group-title w-28">Due Date</div>
-                {/* <p>{dayjs(new Date(dueDate).getTime()).format("MM/DD HH:mm ")}</p> */}
-                <DatePicker
-                  date={calendarDueDate}
-                  setDate={setCalendarDueDate}
-                  showType={false}
-                  hasCustomButton={true}
-                />
-              </div>
+              {isOpenDateModal && <DateModal setIsOpenDateModal={setIsOpenDateModal} />}
             </div>
             <div className="border-group-light200">
               <h4 className="border-group-title">Timer</h4>

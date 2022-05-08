@@ -149,7 +149,7 @@ const Report = () => {
               >
                 Project: {totalProjectList[selectedProject].title}
                 {openSelector && (
-                  <div className="dropdown-container">
+                  <div className="dropdown-container z-20">
                     <ul className="dropdown-list">
                       {projectList.map((id) => {
                         const projectDetail = totalProjectList[id]

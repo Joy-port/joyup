@@ -30,7 +30,11 @@ const Month = ({ onView, onNavigate, date }) => {
     // console.log(date)
     return date
   })
-
+  const goToAgendaView = () => {
+    onView("agenda")
+    setViewState("agenda")
+    navigate("../calendar/agenda")
+  }
   const goToDayView = () => {
     onView("day")
     setViewState("day")

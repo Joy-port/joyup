@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
     <input
-      className="bg-light100 w-36"
+      className="bg-light100 w-full"
       onChange={onChange}
       placeholder={placeholder}
       value={value}
@@ -17,7 +17,7 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   )
 }
 
-const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
+const DatePick = ({ date, setDate, showType }) => {
   const current = new Date()
   const addTime = (addTime) => {
     const nowTime = current.getTime()
@@ -41,7 +41,7 @@ const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
     } else {
       setMaxTime(addTime(requiredTime()))
     }
-    return setDate(date)
+    return setDate(new Date(date).getTime())
   }
   const handleChangeRaw = (value) => {
     if (value === undefined) return
@@ -92,7 +92,7 @@ DatePick.propTypes = {
   date: any.isRequired,
   setDate: func.isRequired,
   showType: bool.isRequired,
-  hasCustomButton: bool.isRequired,
+  // hasCustomButton: bool.isRequired,
 }
 
 export default DatePick
