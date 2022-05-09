@@ -3,13 +3,22 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Circular from "./Circular"
 import { task } from "../../sliceReducers/actions/task"
-import { X, Settings, ArrowLeft, Save, Clock } from "react-feather"
+import {
+  X,
+  CornerDownLeft,
+  Save,
+  Clock,
+  PlayCircle,
+  PauseCircle,
+  XCircle,
+} from "react-feather"
 
 const PromodoroClock = () => {
-  const { base, workTime, breakTime } = useSelector((state) => state.settings)
+  // const { workTime, breakTime } = useSelector((state) => state.settings)
+  const { workTime, breakTime, mode } = useSelector((state) => state.task)
   const {
     isPaused,
-    mode,
+    // mode,
     secondsLeft,
     secondsRun,
     workNumbers,
@@ -62,7 +71,6 @@ const PromodoroClock = () => {
       )
     }
   })
-
   useEffect(() => {
     clockShowNumberIcons()
   }, [clockShowNumberIcons])
@@ -83,18 +91,18 @@ const PromodoroClock = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       if (isPaused) return
-      const totalRunTime = mode === 0 ? base * workTime * 60 : base * breakTime * 60
+      const totalRunTime = mode === 0 ? workTime * 60 : breakTime * 60
       if (secondsRunRef.current === totalRunTime && secondsLeftRef.current === 0) {
         return switchMode()
       }
       tickTime()
-    }, [100])
+    }, [1000])
 
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft, secondsRun])
 
   useEffect(() => {
-    secondsLeftRef.current = base * workTime * 60
+    secondsLeftRef.current = workTime * 60
     clockStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
     clockStatus("secondsRun", secondsRunRef.current)
@@ -110,12 +118,13 @@ const PromodoroClock = () => {
   const switchMode = () => {
     mode === 0 ? setTimer("workNumbers") : setTimer("breakNumbers")
     const nextMode = mode === 0 ? 1 : 0
-    const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60 * base
+    const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60
     secondsLeftRef.current = nextSeconds
     secondsRunRef.current = 0
     clockStatus("secondsLeft", nextSeconds)
     clockStatus("secondsRun", secondsRunRef.current)
     clockStatus("mode", parseFloat(nextMode))
+    dispatch({ type: "task/workMode", payload: mode })
   }
 
   const tickTime = () => {
@@ -126,12 +135,12 @@ const PromodoroClock = () => {
   }
   const resetTimer = () => {
     confirm("do you really want to reset and clear current progress?")
-    secondsLeftRef.current = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
+    secondsLeftRef.current = mode === 0 ? workTime * 60 : breakTime * 60
     clockStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
     clockStatus("secondsRun", secondsRunRef.current)
   }
-  const totalSeconds = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
+  const totalSeconds = mode === 0 ? workTime * 60 : breakTime * 60
   // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
   const percentage = Math.round((secondsRun / totalSeconds) * 100)
   let minutes = Math.floor(secondsLeft / 60)
@@ -168,10 +177,10 @@ const PromodoroClock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col items-center justify-center overflow-y-hidden">
+        <div className="modal-body flex flex-col items-center justify-center overflow-y-auto">
           {taskDetail.id === taskID && (
             <div
-              className={`absolute top-10 left-50 md:left-10 bg-white rounded-md  p-3 w-5/6 md:w-3/12 shadow cursor-pointer transition-colors ${
+              className={`absolute top-5 left-50 bg-white rounded-md p-3 w-5/6 shadow cursor-pointer transition-colors ${
                 mode ? "text-blue200" : "text-red200"
               } ${isPaused ? "" : "opacity-50"}`}
               onClick={() => {
@@ -234,12 +243,12 @@ const PromodoroClock = () => {
             </div> */}
           </div>
         </div>
-        <div
-          className={`modal-footer transition-all ${isPaused ? "visible" : "invisible"}`}
-        >
-          <div className="flex justify-between">
+        <div className={`modal-footer transition-all pb-3`}>
+          <div className={`flex justify-between items-end`}>
             <div
-              className="button text-white hover:text-transparentWhite"
+              className={`button text-white hover:text-transparentWhite ${
+                isPaused ? "visible" : "invisible"
+              }`}
               onClick={() => {
                 const taskDetail = totalTaskList[taskID]
                 if (taskDetail) {
@@ -248,15 +257,46 @@ const PromodoroClock = () => {
                 navigate(`/task/${taskID}`, { replace: true })
               }}
             >
-              <ArrowLeft />
+              <CornerDownLeft />
             </div>
-            <div className="flex gap-5">
-              <Link
+            <div className="flex justify-center items-center gap-6">
+              {!isPaused && (
+                <button
+                  className={`play-button text-white  hover:text-transparentWhite`}
+                  onClick={() => clockStatus("isPaused", true)}
+                >
+                  <PauseCircle size={50} strokeWidth={0.8} />
+                </button>
+              )}
+              {isPaused && (
+                <>
+                  <button
+                    className={`play-button text-white  hover:text-transparentWhite`}
+                    onClick={() => {
+                      clockStatus("isPaused", false)
+                    }}
+                  >
+                    <PlayCircle size={50} strokeWidth={0.8} />
+                  </button>
+                  <button
+                    className={`play-button text-white  hover:text-transparentWhite`}
+                    onClick={() => {
+                      clockStatus("isPaused", true)
+                      resetTimer()
+                    }}
+                  >
+                    <XCircle size={50} strokeWidth={0.8} />
+                  </button>
+                </>
+              )}
+            </div>
+            <div className={`flex gap-5 ${isPaused ? "visible" : "invisible"}`}>
+              {/* <Link
                 to="/settings"
                 className="button text-white hover:text-transparentWhite"
               >
                 <Settings />
-              </Link>
+              </Link> */}
               <div
                 className="button text-white hover:text-transparentWhite"
                 onClick={() => {

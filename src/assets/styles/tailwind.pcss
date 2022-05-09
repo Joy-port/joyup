@@ -2,69 +2,70 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 
-/* container */
-.body {
-  @apply h-screen flex flex-col md:flex-row relative text-slateDark;
-}
-.content {
-  @apply relative gap-3 w-full h-screen md:overflow-hidden py-3 px-4;
-}
+@layer components {
+  /* container */
+  .body {
+    @apply h-screen flex flex-col md:flex-row relative text-slateDark;
+  }
+  .content {
+    @apply relative gap-3 w-full h-screen md:overflow-hidden py-3 px-4;
+  }
 
-/* menu */
-.menu-container {
-  @apply md:fixed flex border-b-2 border-b-light000 shadow-sm md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3 mb-3 md:mb-0;
-}
-.menu-list {
-  @apply md:static md:h-screen md:justify-between md:w-20  lg:w-44 h-auto bg-slateDark flex flex-col transition-all py-3;
-}
-.menu-item__light {
-  @apply w-full flex gap-3 rounded py-3 px-7 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer tracking-wider;
-}
-.menu-item__light--active {
-  @apply bg-slateLight text-white;
-}
+  /* menu */
+  .menu-container {
+    @apply md:fixed flex border-b-2 border-b-light000 shadow-sm md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3 mb-3 md:mb-0;
+  }
+  .menu-list {
+    @apply md:static md:h-screen md:justify-between md:w-20  lg:w-44 h-auto bg-slateDark flex flex-col transition-all py-3;
+  }
+  .menu-item__light {
+    @apply w-full flex gap-3 rounded py-3 px-7 text-light200 hover:bg-slateLight hover:text-white  cursor-pointer tracking-wider;
+  }
+  .menu-item__light--active {
+    @apply bg-slateLight text-white;
+  }
 
-.menu-item {
-  @apply px-4 py-2 cursor-pointer flex gap-3 justify-center transition-colors rounded-sm;
-}
-.menu-item__dark {
-  @apply border-transparentLight text-light200 hover:text-slateLight;
-}
-.menu-item__dark--active {
-  @apply text-slateLight;
-}
+  .menu-item {
+    @apply px-4 py-2 cursor-pointer flex gap-3 justify-center transition-colors rounded-sm;
+  }
+  .menu-item__dark {
+    @apply border-transparentLight text-light200 hover:text-slateLight;
+  }
+  .menu-item__dark--active {
+    @apply text-slateLight;
+  }
 
-.tool-bar {
-  @apply flex md:justify-between items-center gap-3 mb-3 rounded-sm;
-}
+  .tool-bar {
+    @apply flex md:justify-between items-center gap-3 mb-3 rounded-sm;
+  }
 
-/* modal */
-.modal-bg {
-  @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
-}
-.modal-container-popUp {
-  @apply absolute rounded-lg bg-white p-3 h-36 w-60 text-slateDark  shadow-lg shadow-light200 border-light000 border-1;
-}
-.modal-container {
-  @apply rounded-lg text-light300 px-3 flex flex-col overflow-y-auto relative;
-}
-.modal-lg {
-  @apply w-full h-5/6 md:w-11/12 md:h-5/6;
-}
-.modal-sm {
-  @apply w-full h-2/6 md:w-5/12;
-}
+  /* modal */
+  .modal-bg {
+    @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
+  }
+  .modal-container-popUp {
+    @apply absolute rounded-lg bg-white p-3 text-slateDark  shadow-lg shadow-light200 border-light000 border-1;
+  }
+  .modal-container {
+    @apply rounded-lg text-light300 px-3 flex flex-col overflow-y-auto relative;
+  }
+  .modal-lg {
+    @apply w-full h-5/6 md:w-11/12 md:h-5/6;
+  }
+  .modal-sm {
+    @apply w-full h-2/6 md:w-5/12;
+  }
 
-.modal-header {
-  @apply flex py-2;
+  .modal-header {
+    @apply flex py-2;
+  }
+  .modal-body {
+    @apply grow;
+  }
+  .modal-footer {
+    @apply py-2;
+  }
 }
-.modal-body {
-  @apply grow;
-}
-.modal-footer {
-  @apply py-2;
-}
-
 /* button */
 .play-button {
   @apply rounded-full flex items-center justify-center;
@@ -76,8 +77,14 @@
 .button-primary {
   @apply bg-primary text-white hover:bg-secondary rounded;
 }
+.button-danger {
+  @apply bg-danger text-white hover:bg-red100 rounded;
+}
 .button-outline-primary {
   @apply text-primary hover:text-secondary;
+}
+.button-outline-danger {
+  @apply text-danger  hover:text-red100 hover:border-red100 border-red200;
 }
 .button-dark {
   @apply text-light300  hover:text-transparentDark;
@@ -93,27 +100,27 @@
   @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
 }
 
-/* input */
+/* input px-2 py-1 */
 input {
-  @apply rounded px-2 py-1 focus:outline-1 focus:outline-light100;
+  @apply outline-none focus:outline-none active:outline-none;
 }
 select {
-  @apply focus:outline-none;
+  @apply outline-none focus:outline-none;
 }
 .input-light300 {
-  @apply bg-white focus:outline-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+  @apply bg-light000 focus:bg-white placeholder:text-light200;
 }
 
 /* selector */
 .select-light300 {
-  @apply bg-light100 text-light300 rounded px-2 py-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+  @apply bg-light100 text-light300 rounded px-2 py-1 placeholder:text-light200 focus:bg-light000;
 }
 
 .select-group {
-  @apply flex gap-2 items-center justify-between rounded bg-white px-2 py-1;
+  @apply flex gap-2 items-center rounded justify-between px-3 py-2 bg-white;
 }
 .group-title {
-  @apply font-medium whitespace-nowrap text-slateLight;
+  @apply capitalize font-medium whitespace-nowrap text-light300;
 }
 
 .select-dropDown {
@@ -128,7 +135,7 @@ select {
   @apply border-1 border-light000 rounded-sm bg-white;
 }
 .dropdown-item {
-  @apply px-2 py-1 hover:bg-light100;
+  @apply px-2 py-1 hover:bg-light100 cursor-pointer;
 }
 
 .button-group {
@@ -143,20 +150,20 @@ select {
 }
 
 .editor {
-  @apply grow flex flex-col relative bg-white rounded py-1;
+  @apply grow flex flex-col relative bg-white rounded py-1  px-3;
 }
 .editor-input {
-  @apply focus:outline-none px-3;
+  @apply focus:outline-none bg-light000 leading-7 border-l-2;
 }
 .editor-text {
-  @apply px-3 py-1;
+  @apply leading-7 border-l-2;
 }
 .results {
-  @apply border border-slateLight;
+  @apply border-1 border-light100 shadow shadow-light300 rounded-sm w-full absolute bg-white overflow-y-auto;
 }
 
 .results__command {
-  @apply p-3 cursor-pointer z-20;
+  @apply capitalize flex gap-2 items-center p-3 cursor-pointer z-20;
 }
 
 .results__command--selected {
@@ -168,7 +175,7 @@ select {
 }
 
 .heading-one {
-  @apply text-4xl font-bold;
+  @apply text-4xl font-semibold;
 }
 .heading-two {
   @apply text-3xl font-semibold;
@@ -177,25 +184,27 @@ select {
   @apply text-2xl font-semibold;
 }
 .heading-four {
-  @apply text-lg font-normal;
+  @apply text-xl font-medium;
 }
-.heading-five {
-  @apply text-lg font-normal;
-}
+/*ml-5 pl-3*/
 .unordered-list {
-  @apply list-disc ml-5 pl-3;
+  @apply list-disc pl-4;
 }
 
+/*ml-5 pl-3*/
 .ordered-list {
-  @apply list-decimal ml-5 pl-3;
+  @apply list-decimal pl-4;
 }
-
+/*ml-5 pl-3*/
 .quote-block {
-  @apply border-l-4 border-slateDark text-lg font-semibold ml-5 pl-3;
+  @apply border-l-4 border-light300 font-semibold pl-3;
 }
 
-.results {
-  @apply border border-slateLight;
+.text-bold {
+  @apply font-medium;
+}
+.text-italic {
+  @apply italic;
 }
 
 .results__command {
@@ -234,22 +243,23 @@ select {
   @apply w-full mt-3;
 }
 .column-list h1 {
-  @apply text-light000 bg-light200 w-32 rounded-t-sm;
+  @apply text-light000 bg-light200 max-w-fit rounded-t-sm;
 }
-
+/*  min-h-32 */
 .column-list-dragging {
-  @apply bg-light100 shadow-inner px-2 pb-2 rounded-sm min-h-32;
+  @apply bg-light100 shadow-inner;
 }
+/* min-h-20 */
 .column-list-normal {
-  @apply bg-white min-h-20 shadow-light200 shadow-md px-2 pb-3  rounded-sm;
+  @apply bg-white  shadow-light200 shadow-md rounded-sm border-t-1 border-t-light000;
 }
 
 .column-board {
-  @apply bg-light100 min-w-96 h-full overflow-y-hidden rounded shadow-transparentDark shadow-md;
+  @apply bg-light100 min-w-96 h-full rounded shadow-transparentDark shadow-md;
 }
 
 .column-board h1 {
-  @apply text-light300 bg-light000 w-32 tracking-wider rounded-sm;
+  @apply text-light300 bg-light000 max-w-fit tracking-wider rounded-sm;
 }
 
 .tag {
@@ -272,7 +282,7 @@ select {
 }
 
 .column-board-normal {
-  @apply min-h-96 p-2;
+  @apply min-h-96 p-2 h-custom-lg;
 }
 .task-list {
   @apply bg-white hover:bg-light000 active:bg-light000 focus:bg-light000;

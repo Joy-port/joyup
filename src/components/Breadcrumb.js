@@ -9,7 +9,10 @@ const Breadcrumb = () => {
   return (
     <div className="flex text-light200">
       <Link to="/dashboard">
-        {totalProjectList && projectID && totalProjectList[projectID].isPublic
+        {totalProjectList &&
+        projectID &&
+        totalProjectList[projectID] &&
+        totalProjectList[projectID].isPublic
           ? "Collaborate Projects"
           : "Personal Projects"}
       </Link>
@@ -17,7 +20,9 @@ const Breadcrumb = () => {
         <>
           <div className="px-3"> / </div>
           <div className="text-slateLight capitalize">
-            {totalProjectList && totalProjectList[projectID].title}
+            {totalProjectList &&
+              totalProjectList[projectID] &&
+              totalProjectList[projectID].title}
           </div>
         </>
       )}

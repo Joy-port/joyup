@@ -1,32 +1,35 @@
 import React, { useState, useRef, useCallback, useEffect } from "react"
-import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
 import { useDispatch, useSelector } from "react-redux"
 import { task } from "../../../sliceReducers/actions/task"
+import * as Icon from "react-feather"
 
 const TitleEditor = () => {
-  const { title } = useSelector((state) => state.task)
-  const { types } = useSelector((state) => state.tags)
+  const { title, startDate, dueDate } = useSelector((state) => state.task)
   const dispatch = useDispatch()
+  const { types } = useSelector((state) => state.tags)
   const [isEditing, setIsEditing] = useState(true)
   const [text, setText] = useState(title)
   const [query, setQuery] = useState(null)
   const [tagsQuery, setTagsQuery] = useState(null)
+  const [timeQuery, setTimeQuery] = useState(null)
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
   const [tagCharacterPosition, setTagCharacterPosition] = useState(null)
+  const [timeCharacterPosition, setTimeCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
-  const [isSettingTime, setIsSettingTime] = useState(false)
-  const [date, setDate] = useState(new Date())
+  // const [isSettingTime, setIsSettingTime] = useState(false)
+  const [style, setStyle] = useState("heading-four font-semibold")
+  const [dateType, setDateType] = useState(null)
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
-  const [style, setStyle] = useState("heading-four")
-  const [isEditingTags, setIsEditingTags] = useState(false)
   const [selectedTagType, setSelectedTagType] = useState(null)
+  const [isEditingTags, setIsEditingTags] = useState(false)
   const [selectedTag, setSelectedTag] = useState(null)
   const inputRef = useRef()
   const timeRef = useRef()
+  const titleRef = useRef()
   const setTagsAction = useCallback((tagsName) => {
     setIsEditing(true)
-    setStyle("selected-tag")
+    setStyle("heading-four font-semibold")
     setText(() => {
       const newText = `/${tagsName}`
       return newText
@@ -34,129 +37,244 @@ const TitleEditor = () => {
     setIsEditingTags(true)
   })
 
-  useEffect(() => {
-    if (!date || !text || !text.includes("/")) return
-    if (date) {
-      if (!timeRef) return
-      const hourMinutes = dayjs(date).format("HH:mm")
-      if (hourMinutes === timeRef.current) return
-      let name = ""
-      if (!text) return
-      if (text.includes("Start")) {
-        name = "/Start Date"
-        const dateContent = {
-          name: "startDate",
-          date,
-        }
-        dispatch(task.saveTaskDate(dateContent))
-      } else if (text.includes("Due")) {
-        name = "/Due Date"
-        const dateContent = {
-          name: "dueDate",
-          date,
-        }
-        dispatch(task.saveTaskDate(dateContent))
-      }
-      setText(() => {
-        const selectedDate = dayjs(date).format("MM/DD HH:mm")
-        return name + ":" + selectedDate
-      })
-      timeRef.current = dayjs(date).format("HH:mm")
-      setStyle("heading-four")
-      setIsSettingTime(false)
-      setText("")
-      deleteSlashCommand()
-    }
-  }, [date])
+  // useEffect(() => {
+  //   if (!date || !text || !text.includes("/")) return
+  //   if (date) {
+  //     if (!timeRef) return
+  //     const hourMinutes = dayjs(date).format("HH:mm")
+  //     if (hourMinutes === timeRef.current) return
+  //     let name = ""
+  //     if (!text) return
+  //     if (text.includes("Start")) {
+  //       name = "/Start Date"
+  //       const dateContent = {
+  //         name: "startDate",
+  //         date,
+  //       }
+  //       dispatch(task.saveTaskDate(dateContent))
+  //     } else if (text.includes("Due")) {
+  //       name = "/Due Date"
+  //       const dateContent = {
+  //         name: "dueDate",
+  //         date,
+  //       }
+  //       dispatch(task.saveTaskDate(dateContent))
+  //     }
+  //     setText(() => {
+  //       const selectedDate = dayjs(date).format("MM/DD HH:mm")
+  //       return name + ":" + selectedDate
+  //     })
+  //     timeRef.current = dayjs(date).format("HH:mm")
+  //     setStyle("heading-three")
+  //     setIsSettingTime(false)
+  //     titleRef.current ? setText(titleRef.current) : setText("")
+  //     deleteSlashCommand()
+  //   }
+  // }, [date])
 
+  // useEffect(() => {
+  //   if (!text) return
+  //   if (editRequiredNumber) {
+  //     if (!text.includes("Required")) return
+  //     const number = parseFloat(text.split(":")[1].trim())
+  //     if (!number) return
+  //     dispatch(task.saveTaskDetail("requiredNumber", parseFloat(number)))
+  //     setText("")
+  //     setQuery(null)
+  //     deleteSlashCommand()
+  //     setSlashCharacterPosition(null)
+  //   }
+  // }, [setEditRequiredNumber, editRequiredNumber, text])
+  //save text
   useEffect(() => {
-    if (!text) return
-    if (editRequiredNumber) {
-      if (!text.includes("Required")) return
-      const number = parseFloat(text.split(":")[1].trim())
-      if (!number) return
-      dispatch(task.saveTaskDetail("requiredNumber", parseFloat(number)))
-      setText("")
-      setQuery(null)
-      deleteSlashCommand()
-      setSlashCharacterPosition(null)
+    // if (!inputRef.current) return
+    if (
+      slashCharacterPosition === null &&
+      selectedTagType === null &&
+      timeCharacterPosition === null &&
+      tagCharacterPosition === null
+    ) {
+      if (text.trim() === "") return
+      console.log(text)
+      titleRef.current = text
+      console.log("save", text)
+      console.log(titleRef.current)
+      dispatch(task.saveTaskDetail("title", text))
+      // setIsEditing(false)
     }
-  }, [setEditRequiredNumber, editRequiredNumber, text])
-
+  }, [text])
   const commands = [
     {
+      icon: "Calendar",
       name: "Start Date",
       style: "",
       action: () => {
         setIsEditing(true)
-        setIsSettingTime(true)
+        setTimeQuery("")
+        setTimeCharacterPosition(inputRef.current.selectionStart - 1)
         setText(() => {
-          const newText = "/Start Date"
+          const newText = titleRef.current + "/Start date:"
           return newText
         })
-        setStyle("selected-tag")
-        setQuery(null)
+        setStyle("heading-four font-semibold text-light200")
+        //clear first level command element
         setSlashCharacterPosition(null)
+        setQuery(null)
+        setSelectionIndex(0)
+        setDateType("startDate")
       },
     },
     {
+      icon: "Sunset",
       name: "Due Date",
       style: "",
       action: function () {
         setIsEditing(true)
-        setIsSettingTime(true)
+        setTimeQuery("")
+        setTimeCharacterPosition(inputRef.current.selectionStart - 1)
         setText(() => {
-          const newText = "/Due Date"
+          const newText = titleRef.current + "/Due date:"
           return newText
         })
-        setStyle("selected-tag")
-        setQuery(null)
+        setStyle("heading-four font-semibold text-light200")
+        //clear first level command element
         setSlashCharacterPosition(null)
+        setQuery(null)
+        setSelectionIndex(0)
+        setDateType("dueDate")
       },
     },
     {
-      name: "required clock numbers",
-      action: () => {
-        setEditRequiredNumber(true)
-        setText(() => {
-          const newText = "/Required Clocks:"
-          return newText
-        })
-        dispatch(task.saveTaskDetail("requiredNumber", 0))
-      },
-    },
-    {
+      icon: "Flag",
       name: "priority",
       action: function () {
         setIsEditing(true)
+        setTagCharacterPosition(inputRef.current.selectionStart - 1)
+        setTagsQuery("")
         setText(() => {
-          const newText = "/Priority :"
+          const newText = titleRef.current + "/Priority:"
           return newText
         })
-        setStyle("selected-tag")
+        setStyle("heading-four font-semibold text-light200")
         setSelectedTagType(types.find((item) => item.type === this.name))
-        setSlashCharacterPosition(null)
         setQuery(null)
+        setSlashCharacterPosition(null)
+        setSelectionIndex(0)
       },
     },
     {
+      icon: "CheckCircle",
       name: "progress",
       action: function () {
         setIsEditing(true)
+        setTagCharacterPosition(inputRef.current.selectionStart - 1)
+        setTagsQuery("")
         setText(() => {
-          const newText = "/Progress :"
+          const newText = titleRef.current + "/Progress:"
           return newText
         })
-        setStyle("selected-tag")
+        setStyle("heading-four font-semibold text-light200")
         setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
+        setSelectionIndex(0)
+      },
+    },
+    // {
+    //   icon: "Clock",
+    //   name: "Required time",
+    //   action: () => {
+    //     setEditRequiredNumber(true)
+    //     setText(() => {
+    //       const newText = titleRef.current + "/Required Clocks:"
+    //       return newText
+    //     })
+    //     setStyle("heading-four font-semibold text-light200")
+    //     dispatch(task.saveTaskDetail("requiredNumber", 0))
+    //   },
+    // },
+  ]
+  const dateCommands = [
+    {
+      icon: "Moon",
+      name: "today",
+      action: () => {
+        const date = new Date().getTime()
+        const dateContent = { name: dateType, date }
+        dispatch(task.saveTaskDate(dateContent))
+        setText((text) => {
+          const string =
+            text.substring(0, timeCharacterPosition) +
+            text.substring(inputRef.current?.selectionStart)
+          return string
+        })
+        setDateType(null)
+        setTimeCharacterPosition(null)
+        setTimeQuery(null)
+        setSelectionIndex(0)
       },
     },
     {
-      name: "create new tags",
+      icon: "Sun",
+      name: "tomorrow",
       action: () => {
-        setText("")
+        const date = new Date(new Date().setDate(new Date().getDate() + 1)).getTime()
+        const dateContent = { name: dateType, date }
+        dispatch(task.saveTaskDate(dateContent))
+        setText((text) => {
+          const string =
+            text.substring(0, timeCharacterPosition) +
+            text.substring(inputRef.current?.selectionStart)
+          return string
+        })
+        setDateType(null)
+        setTimeCharacterPosition(null)
+        setTimeQuery(null)
+        setSelectionIndex(0)
+      },
+    },
+    {
+      icon: "Sunrise",
+      name: "this friday",
+      action: () => {
+        const rangeFromToday =
+          new Date().getDay() < 5
+            ? 5 - new Date().getDay() + 7
+            : 7 - new Date().getDay() + 5
+        const date = new Date(
+          new Date().setDate(new Date().getDate() + rangeFromToday)
+        ).getTime()
+        const dateContent = { name: dateType, date }
+        dispatch(task.saveTaskDate(dateContent))
+        setText((text) => {
+          const string =
+            text.substring(0, timeCharacterPosition) +
+            text.substring(inputRef.current?.selectionStart)
+          return string
+        })
+        setDateType(null)
+        setTimeCharacterPosition(null)
+        setTimeQuery(null)
+        setSelectionIndex(0)
+      },
+    },
+    {
+      icon: "Calendar",
+      name: "next week",
+      action: () => {
+        const date = new Date(new Date().setDate(new Date().getDate() + 7)).getTime()
+        const dateContent = { name: dateType, date }
+        dispatch(task.saveTaskDate(dateContent))
+        setText((text) => {
+          const string =
+            text.substring(0, timeCharacterPosition) +
+            text.substring(inputRef.current?.selectionStart)
+          return string
+        })
+        setDateType(null)
+        setTimeCharacterPosition(null)
+        setTimeQuery(null)
+        setSelectionIndex(0)
       },
     },
   ]
@@ -177,16 +295,25 @@ const TitleEditor = () => {
         )
       : []
 
+  console.log(selectedTagType)
   const matchingTags =
     tagsQuery !== null
       ? selectedTagType.children.filter((child) =>
           child.name.toLowerCase().match(tagsQuery.toLowerCase())
         )
       : []
-
-  const onChange = (e) => {
-    const newText = e.target.value
+  const matchingTimeSettings =
+    timeQuery !== null
+      ? dateCommands.filter((command) =>
+          command.name.toLowerCase().match(timeQuery.toLowerCase())
+        )
+      : []
+  const getFirstLayerQueryCommandContents = (inputTextContent) => {
+    const newText = inputTextContent
     setText(newText)
+    console.log("first layer commands", slashCharacterPosition)
+    console.log("second layer commands", "tag", tagCharacterPosition)
+    console.log("second layer commands", "time", timeCharacterPosition)
     if (slashCharacterPosition !== null) {
       const isSlashStillActive = newText[slashCharacterPosition] === "/"
       if (isSlashStillActive) {
@@ -198,83 +325,132 @@ const TitleEditor = () => {
         setSlashCharacterPosition(null)
         setQuery(null)
       }
-    }
-    if (tagCharacterPosition !== null) {
+    } else if (tagCharacterPosition !== null) {
       const isSlashStillActive = newText[tagCharacterPosition] === ":"
       if (isSlashStillActive) {
-        setQuery(
+        setTagsQuery(
           newText.substring(tagCharacterPosition + 1, inputRef.current?.selectionStart)
         )
         setSelectionIndex(0)
       } else {
         setTagCharacterPosition(null)
-        setQuery(null)
+        setTagsQuery(null)
       }
+    } else if (timeCharacterPosition !== null) {
+      console.log("run TIME layer command")
+      const isSlashStillActive = newText[timeCharacterPosition] === "/"
+      console.log(isSlashStillActive, timeCharacterPosition)
+      if (isSlashStillActive) {
+        setTimeQuery(
+          newText.substring(timeCharacterPosition + 1, inputRef.current?.selectionStart)
+        )
+        setSelectionIndex(0)
+      }
+    } else {
+      setTimeCharacterPosition(null)
+      setTimeQuery(null)
     }
   }
 
   const selectCommand = (command) => {
+    console.log(command)
     command.action()
     setSelectionIndex(0)
   }
-  const selectTags = (tag) => {
+
+  const selectTags = (child) => {
     const tagType = {
       parent: selectedTagType.id,
-      child: tag.id,
+      child: child.id,
       type: selectedTagType.type,
     }
-    setSelectedTag(tag.id)
+    setSelectedTag(child.id)
     dispatch(task.saveTaskTag(tagType))
     setSelectedTagType(null)
-    setText("")
-    setStyle("heading-four")
+    setText((text) => {
+      const string =
+        text.substring(0, tagCharacterPosition) +
+        text.substring(inputRef.current?.selectionStart)
+      return string
+    })
+    setStyle("heading-three")
     setIsEditing(false)
+    setSelectionIndex(0)
+    setTagsQuery(null)
   }
 
   const onKeyDown = (e) => {
+    console.log("keypress listening", tagCharacterPosition, e.key)
     if (e.key === "ArrowUp") {
-      if (slashCharacterPosition === null) {
-        return
-      } else {
+      if (slashCharacterPosition !== null) {
+        setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
+        e.stopPropagation()
+        e.preventDefault()
+      } else if (tagCharacterPosition !== null) {
+        setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
+        e.stopPropagation()
+        e.preventDefault()
+      } else if (timeCharacterPosition !== null) {
         setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
         e.stopPropagation()
         e.preventDefault()
       }
+      return
     } else if (e.key === "ArrowDown") {
-      if (slashCharacterPosition === null) {
-        return
-      } else {
+      if (slashCharacterPosition !== null) {
         setSelectionIndex((prevIndex) =>
           Math.min(matchingCommands.length - 1, prevIndex + 1)
         )
         e.stopPropagation()
         e.preventDefault()
+      } else if (tagCharacterPosition !== null) {
+        setSelectionIndex((prevIndex) => Math.min(matchingTags.length - 1, prevIndex + 1))
+        e.stopPropagation()
+        e.preventDefault()
+      } else if (timeCharacterPosition !== null) {
+        setSelectionIndex((prevIndex) =>
+          Math.min(matchingTimeSettings.length - 1, prevIndex + 1)
+        )
+        e.stopPropagation()
+        e.preventDefault()
       }
+      return
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
         selectCommand(matchingCommands[selectionIndex])
         // setIsEditing(true)
+      } else if (matchingTags[selectionIndex]) {
+        selectTags(matchingTags[selectionIndex])
+      } else if (matchingTimeSettings[selectionIndex]) {
+        selectCommand(matchingTimeSettings[selectionIndex])
       } else if (selectedTagType !== null) {
         selectTags()
       } else if (slashCharacterPosition === null && selectedTagType === null) {
-        if (text.trim() === "") return
-        dispatch(task.saveTaskDetail("title", text))
-        setIsEditing(false)
         e.stopPropagation()
         e.preventDefault()
+        if (text.trim() === "") return
+        titleRef.current = text
+        dispatch(task.saveTaskDetail("title", text))
+        // setIsEditing(false)
         return
       }
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
+    } else if (e.key === "Backspace") {
+      if (!text.includes("/")) {
+        setQuery(null)
+        setTagsQuery(null)
+      }
     }
   }
 
   return (
-    <div className="flex flex-col rounded relative">
+    <div className="flex flex-col rounded relative w-full">
       {text !== "" && !isEditing ? (
         <div
-          className="heading-four bg-light200 text-slateLight px-2 py-1 rounded"
+          className="heading-four font-semibold text-light300 px-2 py-1 rounded"
           onClick={() => {
+            // inputRef.current = null
             setIsEditing(true)
             setText(text)
           }}
@@ -283,11 +459,11 @@ const TitleEditor = () => {
         </div>
       ) : (
         <input
-          className={`input-light300 ${style}`}
+          className={`rounded input-light300 px-2 py-1 ${style}`}
           cols="30"
           rows="10"
           value={text}
-          onChange={(e) => onChange(e)}
+          onChange={(e) => getFirstLayerQueryCommandContents(e.target.value)}
           onKeyDown={(e) => onKeyDown(e)}
           ref={inputRef}
           placeholder="Task name or type ' / ' for commands "
@@ -295,42 +471,83 @@ const TitleEditor = () => {
         />
       )}
       {matchingCommands.length !== 0 && (
-        <div className="border-1 border-t-0 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 ">
-          {matchingCommands.map((command, index) => (
-            <div
-              key={index}
-              onClick={() => selectCommand(command)}
-              onMouseOver={() => setSelectionIndex(index)}
-              className={
-                "results__command " +
-                (index == selectionIndex ? "results__command--selected" : "")
-              }
-            >
-              {command.name}
-            </div>
-          ))}
+        <div className="results top-10 mt-1 z-10 ">
+          {matchingCommands.map((command, index) => {
+            const IconName = Icon[command.icon]
+            return (
+              <div
+                key={index}
+                onClick={() => selectCommand(command)}
+                onMouseOver={() => setSelectionIndex(index)}
+                className={`
+                  results__command 
+                  ${index == selectionIndex ? "results__command--selected" : ""}
+                `}
+              >
+                <IconName />
+                <p className="text-lg">{command.name}</p>
+              </div>
+            )
+          })}
         </div>
       )}
-      {isSettingTime && (
-        <div className="absolute top-10 mt-1 z-10">
-          <DatePick date={date} setDate={setDate} showType={true} />
+      {matchingTimeSettings.length !== 0 && (
+        <div className="results top-10 mt-1 z-10">
+          {matchingTimeSettings.map((command, index) => {
+            const IconName = Icon[command.icon]
+            return (
+              <div
+                key={index}
+                onClick={() => selectCommand(command)}
+                onMouseOver={() => setSelectionIndex(index)}
+                className={`
+                  results__command 
+                  ${index == selectionIndex ? "results__command--selected" : ""}
+                `}
+              >
+                <IconName strokeWidth={1} />
+                <p className="text-lg">{command.name}</p>
+              </div>
+            )
+          })}
         </div>
       )}
-      {selectedTagType?.children && (
-        <div className="border border-slateLight w-full absolute top-8 mt-1 bg-light000 z-10">
-          {selectedTagType.children.map((child, index) => (
-            <div
-              key={child.id}
-              onClick={() => selectTags(child)}
-              onMouseOver={() => setSelectionIndex(index)}
-              className={
-                "results__command " +
-                (index == selectionIndex ? "results__command--selected" : "")
-              }
-            >
-              {child.name}
-            </div>
-          ))}
+      {matchingTags.length !== 0 && (
+        <div className="results top-10 mt-1 z-10 ">
+          {matchingTags.map((child, index) => {
+            return (
+              <div
+                key={child.id}
+                onClick={() => selectTags(child)}
+                onMouseOver={() => setSelectionIndex(index)}
+                className={
+                  "results__command " +
+                  (index == selectionIndex ? "results__command--selected" : "")
+                }
+              >
+                <Icon.Tag strokeWidth={1} />
+                <p className="text-lg">{child.name}</p>
+              </div>
+            )
+          })}
+          {/* {selectedTagType?.child && (
+        <div className="results top-10 mt-1 z-10 ">
+          {selectedTagType.child.map((child, index) => {
+            return (
+              <div
+                key={child.id}
+                onClick={() => selectTags(child.id)}
+                onMouseOver={() => setSelectionIndex(index)}
+                className={
+                  "results__command " +
+                  (index == selectionIndex ? "results__command--selected" : "")
+                }
+              >
+                <Icon.Tag strokeWidth={1} />
+                <p className="text-lg">{child.name}</p>
+              </div>
+            )
+          })} */}
         </div>
       )}
     </div>

@@ -13,6 +13,7 @@ import {
 //   discontinuitySkipWeekends,
 // } from "@d3fc/d3fc-discontinuous-scale"
 // import { scaleTime } from "d3-scale"
+// import CalendarHeatmap from "reactjs-calendar-heatmap"
 import { getClockTime } from "../helpers/functions"
 
 const Report = () => {
@@ -38,7 +39,7 @@ const Report = () => {
         total[taskProject.id] = {
           id: taskProject.id,
           x: taskProject.title,
-          y: task.totalTime,
+          y: task.totalTime / 3600,
           tasks: [...taskProject.tasks],
         }
       } else {
@@ -62,8 +63,8 @@ const Report = () => {
           start: new Date(task.startDate),
           end: new Date(task.dueDate),
           x: new Date(new Date(task.startDate).toDateString()),
-          y: parseFloat(getClockTime(task.totalTime).split(":")[0]) || 0,
-          y0: parseFloat(getClockTime(task.totalTime).split(":")[1]) / 60,
+          y: parseFloat(getClockTime(task.totalTime / 3600).split(":")[0]) || 0,
+          y0: parseFloat(getClockTime(task.totalTime / 60).split(":")[1]),
         }
         return taskDate
       })
@@ -82,7 +83,7 @@ const Report = () => {
       return data
     })
   }, [selectedProject])
-
+  console.log(taskPie)
   return (
     <>
       <div className="menu-container">
@@ -93,10 +94,10 @@ const Report = () => {
       </div>
       <div className="-mt-5 min-h-18 mb-3"></div>
 
-      <div className="grow flex flex-col flex-wrap">
+      <div className="grow flex flex-col flex-wrap overflow-y-auto scrollbar">
         <div className="w-1/2 text-sm mb-10">
           <h1 className="tag-light200 w-56 px-2 py-1 text-center">Total Time Spending</h1>
-          {Object.values(taskPie).length === 0 && (
+          {taskPie && (
             <div className="border-rounded-light000">
               <VictoryPie
                 data={Object.values(taskPie)}
@@ -142,14 +143,14 @@ const Report = () => {
           <div className="border-rounded-light000 w-full">
             <div className="text-center rounded">
               <div
-                className="group-title border-1 border-light000 rounded relative w-44 px-2 py-1"
+                className="group-title border-1 border-light000 rounded relative  px-2 py-1 z-20 max-w-min min-w-44"
                 onClick={() => {
                   setOpenSelector(!openSelector)
                 }}
               >
-                Project: {totalProjectList[selectedProject].title}
+                {totalProjectList[selectedProject].title}
                 {openSelector && (
-                  <div className="dropdown-container">
+                  <div className="dropdown-container z-20">
                     <ul className="dropdown-list">
                       {projectList.map((id) => {
                         const projectDetail = totalProjectList[id]
@@ -173,20 +174,15 @@ const Report = () => {
               </div>
             </div>
             <div className="w-1/2">
-              {taskDateRange.length === 0 && (
-                <VictoryChart
-                  theme={VictoryTheme.material}
-                  animate={{
-                    duration: 2000,
-                    onLoad: { duration: 1000 },
-                  }}
-                >
-                  <VictoryArea
-                    style={{ data: { fill: "#c43a31" } }}
-                    data={taskDateRange}
-                  />
-                </VictoryChart>
-              )}
+              <VictoryChart
+                theme={VictoryTheme.grayscale}
+                animate={{
+                  duration: 2000,
+                  onLoad: { duration: 1000 },
+                }}
+              >
+                <VictoryArea style={{ data: { fill: "#c43a31" } }} data={taskDateRange} />
+              </VictoryChart>
             </div>
           </div>
         </div>

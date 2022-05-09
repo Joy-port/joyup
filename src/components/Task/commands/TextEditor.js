@@ -3,20 +3,25 @@ import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
 import { task } from "../../../sliceReducers/actions/task"
+import * as Icon from "react-feather"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)
   const dispatch = useDispatch()
-  const [isEditing, setIsEditing] = useState(true)
-  const [document, setDocument] = useState(description)
+  const [isEditing, setIsEditing] = useState(false)
+  // const [document, setDocument] = useState(description)
   const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
   const [text, setText] = useState("")
   const [query, setQuery] = useState(null)
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
+  const [isOnComposition, setIsOnComposition] = useState(true)
   const inputRef = useRef()
   const focusInput = useRef()
+  const updateDescription = (newDescription) => {
+    dispatch({ type: "task/description", payload: newDescription })
+  }
   const changeTextStyle = useCallback(() => {
     const content = {
       id: inputRef.current.id,
@@ -25,41 +30,41 @@ const TextEditor = () => {
     }
     if (content.length) {
       setTextContent({ ...content })
-      const newDoc = [...document]
+      const newDoc = [...description]
       const index = newDoc.findIndex((item) => item.id === content.id)
       newDoc.splice(index, 1, content)
-      setDocument(newDoc)
+      updateDescription(newDoc)
     }
   })
   const addNewBlock = useCallback((index, content) => {
-    const newDoc = [...document]
+    const newDoc = [...description]
     newDoc.splice(index, 0, content)
-    setDocument(newDoc)
+    updateDescription(newDoc)
+  })
+  const deleteBlock = useCallback((index) => {
+    const newDoc = [...description]
+    newDoc.splice(index, 1)
+    updateDescription(newDoc)
   })
   const currentBlockIndex = useCallback(() => {
-    return document.findIndex((item) => item.id === inputRef.current.id)
+    return description.findIndex((item) => item.id === inputRef.current.id)
   })
   const toSpecificBlock = useCallback((index) => {
-    return document.find((item, i) => i === index)
+    return description.find((_, i) => i === index)
   })
   const deleteSlashCommand = useCallback(() => {
     setText((text) => {
       const string =
         text.substring(0, slashCharacterPosition) +
         text.substring(inputRef.current?.selectionStart)
-      document.find((item) => item.id === inputRef.current.id).content = string
+      description.find((item) => item.id === inputRef.current.id).content = string
       return string
     })
   })
 
-  // useEffect(() => {
-  //   if (!text) return
-  //   console.log(text)
-  // }, [deleteSlashCommand])
-
   useEffect(() => {
-    dispatch(task.saveTaskDetail("editDescription", [...document]))
-  }, [document])
+    dispatch(task.saveTaskDetail("editDescription", [...description]))
+  }, [description])
 
   const matchingCommands =
     query !== null
@@ -71,7 +76,7 @@ const TextEditor = () => {
   const onChange = (e) => {
     const newText = e.target.value
     setText(newText)
-    document.find((item) => item.id === inputRef.current.id).content = newText
+    description.find((item) => item.id === inputRef.current.id).content = newText
     if (slashCharacterPosition !== null) {
       const isSlashStillActive = newText[slashCharacterPosition] === "/"
       if (isSlashStillActive) {
@@ -88,17 +93,40 @@ const TextEditor = () => {
 
   const selectCommand = (command) => {
     deleteSlashCommand()
-    document.find((item) => item.id === inputRef.current.id).html = command
-    const index = document.findIndex((item) => item.id === inputRef.current.id)
+    description.find((item) => item.id === inputRef.current.id).html = command
+    // if (command.combine) {
+    //   const currentHTMLStyle = HTMLStyle.style
+    //   const addStyle = `${currentHTMLStyle} ${command.style}`
+    //   const newStyle = { ...HTMLStyle.style, style: addStyle }
+    //   selectCommand((prevStyle) => {
+    //     return {
+    //       ...prevStyle,
+    //       style: addStyle,
+    //     }
+    //   })
+    //   setHTMLStyle(newStyle)
+    //   console.log(command)
+    //   console.log(HTMLStyle)
+    //   setSlashCharacterPosition(null)
+    //   setQuery(null)
+    //   return
+    // }
     setHTMLStyle(command)
+    setSlashCharacterPosition(null)
+    setQuery(null)
+  }
+
+  const switchToNextLine = useCallback(() => {
     setIsEditing(false)
-    if (document[index + 1]) {
-      setText(document[index + 1].content)
-      focusInput.current = document[index + 1].id
+    const index = description.findIndex((item) => item.id === inputRef.current.id)
+    if (description[index + 1]) {
+      setText(description[index + 1].content)
+      focusInput.current = description[index + 1].id
       setIsEditing(true)
       setSlashCharacterPosition(null)
       setQuery(null)
     } else {
+      setHTMLStyle({})
       const blank = {
         content: "",
         id: uuidv4(),
@@ -111,34 +139,25 @@ const TextEditor = () => {
       addNewBlock(index + 1, blank)
       setTextContent(blank)
       setText(blank.content)
-      setHTMLStyle(blank.html)
+      setHTMLStyle({ ...blank.html })
       focusInput.current = blank.id
       setIsEditing(true)
       setSlashCharacterPosition(null)
       setQuery(null)
     }
-  }
-  // const addNewBlock = (index, content) => {
-  //   const newDoc = [...document]
-  //   newDoc.splice(index, 0, content)
-  //   setDocument(newDoc)
-  // }
-  // const currentBlockIndex = () => {
-  //   return document.findIndex((item) => item.id === inputRef.current.id)
-  // }
-  // const toSpecificBlock = (index) => {
-  //   return document.find((item, i) => i === index)
-  // }
+  })
 
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
       if (slashCharacterPosition === null) {
         changeTextStyle()
+
         setIsEditing(false)
         const currentBlock = currentBlockIndex()
         const nextBlock =
           currentBlock - 1 > 0 ? toSpecificBlock(currentBlock - 1) : toSpecificBlock(0)
         setText(nextBlock.content)
+        setHTMLStyle(nextBlock.html)
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {
@@ -150,13 +169,15 @@ const TextEditor = () => {
       if (slashCharacterPosition === null) {
         changeTextStyle()
         setIsEditing(false)
-        const totalLength = document.length
+        const totalLength = description.length
         const currentBlock = currentBlockIndex()
         const nextBlock =
-          currentBlock + 1 > totalLength
-            ? toSpecificBlock(currentBlock + 1)
-            : toSpecificBlock(totalLength - 1)
+          currentBlock + 1 === totalLength
+            ? toSpecificBlock(0)
+            : toSpecificBlock(currentBlock + 1)
+
         setText(nextBlock.content)
+        setHTMLStyle(nextBlock.html)
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {
@@ -167,8 +188,8 @@ const TextEditor = () => {
         e.preventDefault()
       }
     } else if (e.key === "Enter") {
+      if (isOnComposition) return
       if (matchingCommands[selectionIndex]) {
-        // console.log(matchingCommands[selectionIndex])
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
         changeTextStyle()
@@ -197,63 +218,114 @@ const TextEditor = () => {
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
-      // delete docs document block
-      // console.log(text)
+      if (isOnComposition) return
       if (text === "") {
-        setIsEditing(false)
         const prevBlock = currentBlockIndex()
-        const currentBlock =
-          prevBlock + 1 > document.length
-            ? toSpecificBlock(prevBlock + 1)
-            : toSpecificBlock(document.length - 1)
-        setText(currentBlock.content)
-        focusInput.current = currentBlock.id
-        setIsEditing(true)
+        if (toSpecificBlock(prevBlock).html.name !== "Text") {
+          selectCommand({
+            parent: "",
+            tag: "p",
+            name: "Text",
+            style: "",
+          })
+          return
+        }
+        const currentBlock = prevBlock - 1 < 0 ? prevBlock : prevBlock - 1
+        if (prevBlock !== currentBlock) {
+          setIsEditing(false)
+          deleteBlock(prevBlock)
+          const currentContent = toSpecificBlock(currentBlock)
+          setTextContent(currentContent)
+          setText(currentContent.content)
+          setHTMLStyle(currentContent.html)
+          focusInput.current = currentContent.id
+          setIsEditing(true)
+          // description.filter((item) => item.id !== inputRef.current.id)
+          // focusInput.current = toSpecificBlock(currentBlock).id
+          // setText(toSpecificBlock(currentBlock).content)
+        }
       }
     }
   }
+  const compositionStatus = (e) => {
+    if (e.type === "compositionend") {
+      setIsOnComposition(false)
+      setText(e.target.value)
+      return
+    }
+    setIsOnComposition(true)
+  }
 
   return (
-    <div className="flex flex-col min-h-1/4">
-      <div className="editor">
-        {/* <p className="text-light200 py-2 px-3">{`Description or type '/' for commands`}</p> */}
-        {document &&
-          document.map((item, index) => {
+    <div className="flex flex-col min-h-1/4 grow md:grow-0">
+      <div
+        className={`editor border-1 ${
+          isEditing ? "border-light300" : "border-transparent"
+        }`}
+      >
+        <p className="flex gap-5 items-center text-light300 py-2">
+          <Icon.Type />
+          Description
+        </p>
+        {description &&
+          description.map((item, index) => {
             const TagName = item.html.tag
             const firstInput = index === 0
             if (focusInput.current === item.id && isEditing) {
               return (
-                <div className="relative">
+                <div className="relative grow flex flex-col" key={item.id}>
                   <input
-                    className={`input-light300 editor-input ${
+                    className={`editor-input border-l-transparent ${
                       HTMLStyle.style || item.html.style
                     }`}
-                    key={item.id}
                     id={item.id}
                     cols="30"
                     rows="10"
                     value={text}
                     onChange={(e) => onChange(e)}
                     onKeyDown={(e) => onKeyDown(e)}
+                    onCompositionStart={(e) => compositionStatus(e)}
+                    onCompositionUpdate={(e) => compositionStatus(e)}
+                    onCompositionEnd={(e) => compositionStatus(e)}
                     ref={inputRef}
                     autoFocus
-                    placeholder={firstInput ? `Description or type '/' for commands` : ""}
+                    placeholder={
+                      firstInput
+                        ? `Description or type '/' for commands`
+                        : "Type '/' for commands "
+                    }
                   />
                   {matchingCommands.length !== 0 && (
-                    <div className="border-1 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 max-h-56 overflow-y-auto">
-                      {matchingCommands.map((command, index) => (
-                        <div
-                          key={index}
-                          onClick={() => selectCommand(command)}
-                          onMouseOver={() => setSelectionIndex(index)}
-                          className={
-                            "results__command " +
-                            (index == selectionIndex ? "results__command--selected" : "")
-                          }
-                        >
-                          {command.name}
-                        </div>
-                      ))}
+                    <div className="results top-8 mt-1 z-10  max-h-56 ">
+                      {matchingCommands.map((command, index) => {
+                        const IconName = Icon[command.icon]
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => selectCommand(command)}
+                            onMouseOver={() => setSelectionIndex(index)}
+                            className={`
+                              results__command
+                              ${
+                                index == selectionIndex
+                                  ? "results__command--selected"
+                                  : ""
+                              }`}
+                          >
+                            <IconName
+                              strokeWidth={command.iconWidth}
+                              size={command.iconSize}
+                            />
+                            <p
+                              className={`text-lg ${command.style} ${
+                                command.name.includes("List") ? "-ml-4" : ""
+                              }`}
+                            >
+                              {command.name}
+                            </p>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>
@@ -262,6 +334,7 @@ const TextEditor = () => {
               if (!item.content) {
                 return (
                   <p
+                    className={`editor-text border-l-transparent ${item.html.style}`}
                     key={item.id}
                     onClick={() => {
                       focusInput.current = item.id
@@ -277,7 +350,7 @@ const TextEditor = () => {
                 return (
                   <TagName
                     key={item.id}
-                    className={`editor-text ${item.html.style}`}
+                    className={`editor-text border-l-transparent ${item.html.style}`}
                     onClick={() => {
                       focusInput.current = item.id
                       setIsEditing(true)
@@ -308,23 +381,6 @@ const TextEditor = () => {
             }
           })}
       </div>
-      {/* {matchingCommands.length !== 0 && (
-        <div className="results">
-          {matchingCommands.map((command, index) => (
-            <div
-              key={index}
-              onClick={() => selectCommand(command)}
-              onMouseOver={() => setSelectionIndex(index)}
-              className={
-                "results__command " +
-                (index == selectionIndex ? "results__command--selected" : "")
-              }
-            >
-              {command.name}
-            </div>
-          ))}
-        </div>
-      )} */}
     </div>
   )
 }

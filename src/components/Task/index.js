@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { getClockTime } from "../../helpers/functions"
+import { getHourTime } from "../../helpers/functions"
 import { tags } from "../../sliceReducers/actions/tags"
 import { task } from "../../sliceReducers/actions/task"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
-import AddSubtask from "./components/AddSubtask"
 import DatePicker from "./components/DatePicker"
 import dayjs from "dayjs"
-import { Clock, X, Trash, Save, Edit, Type } from "react-feather"
+import {
+  Clock,
+  X,
+  Trash,
+  Save,
+  Edit,
+  Play,
+  Calendar,
+  Folder,
+  Flag,
+  CheckSquare,
+  Tag,
+  Sunset,
+} from "react-feather"
+import TimeModal from "./components/TimeModal"
 
-const total = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const index = () => {
   const { totalTaskList, userProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
@@ -20,24 +32,24 @@ const index = () => {
   )
   const {
     id,
+    mode,
     title,
     projectID,
-    createdDate,
     startDate,
     dueDate,
-    clockNumber,
-    requiredNumber,
-    location,
     parent,
     tagList,
+    clockNumber,
+    requiredNumber,
     totalTime,
   } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const { taskID } = useParams()
   const navigate = useNavigate()
-  const [address, setAddress] = useState(location)
+  const [isOpenTimeModal, setIsOpenTimeModal] = useState(false)
   const [calendarStartDate, setCalendarStartDate] = useState(startDate)
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
+  // const [isOpenDateModal, setIsOpenDateModal] = useState(false)
 
   useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
@@ -76,9 +88,20 @@ const index = () => {
     dispatch(task.saveTaskDate(dateContent))
   }, [calendarDueDate])
 
+  // useEffect(() => {
+  //   if (isOpenDateModal && isOpenTimeModal) {
+  //     setIsOpenTimeModal(false)
+  //   }
+  // }, [setIsOpenDateModal, isOpenDateModal])
+  // useEffect(() => {
+  //   if (isOpenTimeModal && isOpenDateModal) {
+  //     setIsOpenDateModal(false)
+  //   }
+  // }, [setIsOpenTimeModal, isOpenTimeModal])
+
   return (
     <div className="modal-bg">
-      <div className="modal-container bg-light100 modal-lg">
+      <div className="modal-container bg-light000 modal-lg">
         <button
           className="modal-header self-end"
           onClick={() => {
@@ -90,139 +113,158 @@ const index = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body overflow-y-auto flex flex-col gap-5 md:flex-row task-scrollbar">
-          <div className="flex flex-col gap-3 h-full grow">
-            <div className="flex gap-3">
-              <Edit />
-              <h1 className="text-lg">Task</h1>
-            </div>
+        <div className="modal-body overflow-y-auto flex flex-col">
+          <div className="flex items-center gap-3 mb-5 px-3 ">
+            <Edit />
             <TitleEditor />
-            <div className="flex gap-3">
-              <Type></Type>
-              <h1 className="text-lg">Description</h1>
-            </div>
-            <TextEditor />
-            <AddSubtask />
           </div>
-          <div className="flex flex-col gap-3 w-full md:w-72">
-            <div className="select-group">
-              <p className="group-title">Project</p>
-              <select
-                className="select-light300 select-dropDown"
-                value={projectID}
-                onChange={(e) => {
-                  dispatch(task.saveTaskDetail("projectID", e.target.value))
-                }}
-              >
-                {userProjects &&
-                  userProjects.map((projectID) => {
-                    const projectDetail = totalProjectList[projectID]
-                    return (
-                      <option key={projectDetail.id} value={projectDetail.id}>
-                        {projectDetail.title}
-                      </option>
-                    )
-                  })}
-              </select>
+          <div className="grow flex flex-col-reverse md:flex-row gap-5 task-scrollbar">
+            <div className="flex flex-col gap-3 h-full grow">
+              <TextEditor />
+              {/* <AddSubtask /> */}
             </div>
-            {types &&
-              types.map((item) => (
-                <div className="select-group" key={item.id}>
-                  <p className="group-title">{item.type} </p>
-                  <select
-                    className="select-light300 select-dropDown"
-                    value={
-                      tagList.find((selected) => selected.parent === item.id)?.child ||
-                      selectedColumnOrder[0]
-                    }
-                    onChange={(e) => {
-                      dispatch(tags.switchType(item.type))
-                      const tag = {
-                        parent: item.id,
-                        child: e.target.value,
-                        type: item.type,
-                      }
-                      dispatch(task.saveTaskTag(tag))
-                    }}
-                  >
-                    {item.children.map((tag) => (
-                      <option value={tag.id} key={tag.id}>
-                        {tag.name}
-                      </option>
-                    ))}
-                  </select>
+            <div className="flex flex-col gap-3 w-full md:w-72">
+              <div className="select-group">
+                <div className="flex gap-2 items-center max-w-24">
+                  <Folder strokeWidth={1} />
+                  <p className="group-title">Project</p>
                 </div>
-              ))}
-            <div className="border-group-light200">
-              <h4 className="border-group-title">Date</h4>
-              <div className="button-group">
-                <p className="group-title w-28">Created Date:</p>
-                <p className="rounded px-2 py-1  w-36">
-                  {dayjs(createdDate).format("MMM DD, HH:mm")}
-                </p>
-              </div>
-              <div className="button-group">
-                <p className="group-title w-28">Start Date</p>
-                {/* <p>{dayjs(new Date(startDate).getTime()).format("MM/DD HH:mm ")}</p> */}
-                <DatePicker
-                  date={calendarStartDate}
-                  setDate={setCalendarStartDate}
-                  showType={false}
-                  hasCustomButton={true}
-                />
-              </div>
-              <div className="button-group">
-                <div className="group-title w-28">Due Date</div>
-                {/* <p>{dayjs(new Date(dueDate).getTime()).format("MM/DD HH:mm ")}</p> */}
-                <DatePicker
-                  date={calendarDueDate}
-                  setDate={setCalendarDueDate}
-                  showType={false}
-                  hasCustomButton={true}
-                />
-              </div>
-            </div>
-            <div className="border-group-light200">
-              <h4 className="border-group-title">Timer</h4>
-              <div className="flex justify-between">
-                <p className="group-title">Time:</p>
-                <p className="w-4/12 text-center">{getClockTime(totalTime)}</p>
-              </div>
-              <div className="flex justify-between">
-                <p className="group-title">Run Clocks:</p>
-                <p className="w-4/12 text-center">{clockNumber}</p>
-              </div>
-              <div className="flex justify-between">
-                <p className="group-title">Required Clocks:</p>
                 <select
-                  className="select-light300 w-4/12 align-middle"
-                  name="number"
-                  value={requiredNumber || -1}
+                  className="select-light300 w-1/2"
+                  value={projectID}
                   onChange={(e) => {
-                    dispatch(
-                      task.saveTaskDetail("requiredNumber", parseFloat(e.target.value))
-                    )
+                    dispatch(task.saveTaskDetail("projectID", e.target.value))
                   }}
                 >
-                  <option value={-1} disabled>
-                    0
-                  </option>
-                  {total.map((item) => (
-                    <option value={item} key={item}>
-                      {item}
-                    </option>
-                  ))}
+                  {userProjects &&
+                    userProjects.map((projectID) => {
+                      const projectDetail = totalProjectList[projectID]
+                      return (
+                        <option key={projectDetail.id} value={projectDetail.id}>
+                          {projectDetail.title}
+                        </option>
+                      )
+                    })}
                 </select>
               </div>
+              {types &&
+                types.map((item) => (
+                  <div className="select-group" key={item.id}>
+                    <div className="flex gap-2 items-center max-w-24">
+                      {item.type === "priority" ? (
+                        <Flag strokeWidth={1} />
+                      ) : item.type === "progress" ? (
+                        <CheckSquare strokeWidth={1} />
+                      ) : (
+                        <Tag strokeWidth={1} />
+                      )}
+                      <p className="group-title">{item.type} </p>
+                    </div>
+                    <select
+                      className="select-light300 w-1/2"
+                      value={
+                        tagList.find((selected) => selected.parent === item.id)?.child ||
+                        selectedColumnOrder[0]
+                      }
+                      onChange={(e) => {
+                        dispatch(tags.switchType(item.type))
+                        const tag = {
+                          parent: item.id,
+                          child: e.target.value,
+                          type: item.type,
+                        }
+                        dispatch(task.saveTaskTag(tag))
+                      }}
+                    >
+                      {item.children.map((tag) => (
+                        <option value={tag.id} key={tag.id}>
+                          {tag.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+              <div className="select-group relative">
+                <div className="flex gap-2 items-center max-w-24">
+                  <Calendar strokeWidth={1} />
+                  <div className="group-title">Start Date</div>
+                </div>
+                <div className="flex flex-col w-1/2">
+                  {/* <div className="bg-light100 rounded select-light300">
+                    {dayjs(startDate).format("MMM DD HH:mm")}
+                  </div> */}
+                  <DatePicker
+                    date={startDate}
+                    setDate={setCalendarStartDate}
+                    showType={false}
+                    hasCustomButton={true}
+                  />
+                </div>
+              </div>
+
+              <div className="select-group relative">
+                <div className="flex gap-2 items-center max-w-24">
+                  <Sunset strokeWidth={1} />
+                  <div className="group-title">Due Date</div>
+                </div>
+                <div className="flex flex-col w-1/2">
+                  {/* <div className="bg-light100 rounded select-light300">
+                    {dayjs(dueDate).format("MMM DD HH:mm")}
+                  </div> */}
+                  <DatePicker
+                    date={dueDate}
+                    setDate={setCalendarDueDate}
+                    showType={false}
+                    hasCustomButton={true}
+                  />
+                </div>
+              </div>
+              <div className="select-group relative">
+                <div className="flex gap-2 items-center max-w-24">
+                  <Clock strokeWidth={1} />
+                  <div className="group-title">Tracker</div>
+                </div>
+                <div
+                  className="select-light300 w-1/2  cursor-pointer flex justify-center gap-4"
+                  onClick={() => {
+                    setIsOpenTimeModal(!isOpenTimeModal)
+                  }}
+                  onBlur={() => setIsOpenTimeModal(false)}
+                >
+                  <div
+                    className={`flex gap-1 text-red200 transition-opacity ${
+                      clockNumber ? "" : "opacity-50"
+                    }`}
+                  >
+                    <Clock color="#DCE1E5" fill="#E56544" />
+                    {clockNumber}
+                  </div>
+                  /
+                  <div
+                    className={`flex gap-1 text-red200 transition-opacity ${
+                      requiredNumber ? "" : "opacity-50"
+                    }`}
+                  >
+                    <Clock color="#DCE1E5" fill="#E56544" />
+                    {requiredNumber}
+                  </div>
+                </div>
+                {isOpenTimeModal && <TimeModal setIsOpenTimeModal={setIsOpenTimeModal} />}
+              </div>
+
               <div
-                className="button text-primary flex justify-center gap-3 mb-1"
+                className={`button flex justify-center items-center gap-3 h-12 ${
+                  mode === 0 ? "button-outline-danger" : "button-primary"
+                }`}
                 onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
               >
-                <Clock />
-                <p>Start Focus</p>
+                <Play />
+                <p>
+                  {getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}
+                </p>
               </div>
-            </div>
-            {/* <div className="border-group-light200">
+
+              {/* <div className="border-group-light200">
               <div className="border-group-title">location</div>
               <p className="text-light300">{location || "no selected location"}</p>
               <input
@@ -240,6 +282,7 @@ const index = () => {
                 }}
               />
             </div> */}
+            </div>
           </div>
         </div>
         <div className="modal-footer flex gap-2 w-full md:w-72 md:ml-auto">

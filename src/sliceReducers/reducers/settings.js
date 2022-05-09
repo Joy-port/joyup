@@ -1,7 +1,6 @@
 const initialSettingsState = {
-  base: 15,
-  workTime: 4,
-  breakTime: 1,
+  workTime: 25,
+  breakTime: 5,
 }
 
 function settingsReducer(state = initialSettingsState, action) {
@@ -9,7 +8,6 @@ function settingsReducer(state = initialSettingsState, action) {
     case "settings/editTotalTimer":
       const settings = action.payload
       return {
-        base: settings.base,
         workTime: settings.workTime,
         breakTime: settings.breakTime,
       }

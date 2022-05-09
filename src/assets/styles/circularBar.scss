@@ -61,13 +61,13 @@
 }
 .circular {
   &-container {
-    @include on-circle($item-count: 16, $circle-size: 8em, $item-size: 20px);
+    @include on-circle($item-count: 16, $circle-size: 18em, $item-size: 20px);
     margin: 5em auto 0;
 
-    @include screen-xs {
-      @include on-circle($item-count: 16, $circle-size: 18em, $item-size: 20px);
-      margin: 5em auto 0;
-    }
+    // @include screen-xs {
+    //   @include on-circle($item-count: 16, $circle-size: 18em, $item-size: 20px);
+    //   margin: 5em auto 0;
+    // }
     @include screen-sm {
       @include on-circle($item-count: 16, $circle-size: 24em, $item-size: 20px);
       margin: 5em auto 0;
@@ -76,10 +76,10 @@
       @include on-circle($item-count: 16, $circle-size: 28em, $item-size: 20px);
       margin: 5em auto 0;
     }
-    @include screen-lg {
-      @include on-circle($item-count: 16, $circle-size: 30em, $item-size: 20px);
-      margin: 5em auto 0;
-    }
+    // @include screen-lg {
+    //   @include on-circle($item-count: 16, $circle-size: 28em, $item-size: 20px);
+    //   margin: 5em auto 0;
+    // }
   }
 
   &-outer-item {

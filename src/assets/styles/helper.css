@@ -5,7 +5,18 @@
 .hide:hover .show {
   display: block;
 }
+/* hide number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 /* loader */
 .lds-ripple {
   display: flex;
@@ -15,6 +26,7 @@
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
+  z-index: 5002;
 }
 /* //bbcedd //85a2b6 */
 .lds-ripple div {

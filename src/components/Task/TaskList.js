@@ -1,69 +1,99 @@
-import React, { useState, useCallback, useEffect } from "react"
+import React, { useState, useCallback, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
-import { Plus, FileText } from "react-feather"
+import { Plus, Clock } from "react-feather"
 
 const TaskList = () => {
   const dispatch = useDispatch()
   const task = useSelector((state) => state.task)
   const { totalTaskList } = useSelector((state) => state.projects)
-  const { userTasks } = useSelector((state) => state.user)
+  const { userTasks, userProjects } = useSelector((state) => state.user)
   let navigate = useNavigate()
-  const [taskID, setTaskID] = useState("")
+  let { pathname } = useLocation()
   const [openSelector, setOpenSelector] = useState(false)
-  const createNewTask = useCallback(() => {
+  const createNewTask = () => {
+    console.log(userProjects)
+    if (userProjects.length < 1) {
+      alert("please create a new project before add a new task")
+      if (!pathname.includes("dashboard")) {
+        navigate("/dashboard")
+      }
+      return
+    }
     const newTaskID = uuidv4()
-    setTaskID(newTaskID)
     dispatch({ type: "task/createNewTask", payload: newTaskID })
-  })
-  useEffect(() => {
-    navigate(`/task/${taskID}`)
-  }, [taskID])
+    navigate(`/task/${newTaskID}`)
+  }
 
-  const onClick = (taskID) => {
+  const openTask = (taskID) => {
     const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
-    navigate(`/task/${taskID}`)
+    navigate(`/clock/${taskID}`)
   }
   //py-2 px-3 w-32
   return (
-    <div className="fixed bottom-5 right-5 z-100 bg-transparent flex gap-2">
-      <div className="text-center rounded button-outline-light min-w-32 max-w-72">
-        <div className="group-title relative w-44 py-2 px-3 rounded">
-          <p
-            className="flex gap-2 rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer"
-            onClick={() => {
-              setOpenSelector(!openSelector)
-            }}
-          >
-            <FileText />
-            {task.title || "Task List"}
-          </p>
-          {openSelector && (
-            <div className="dropdown-container -top-32 h-28 overflow-auto">
-              <ul className="dropdown-list rounded">
-                {userTasks.map((id) => {
-                  const task = totalTaskList[id]
-                  return (
-                    <li
-                      className="dropdown-item"
-                      value={task.id}
-                      key={task.id}
-                      onClick={() => {
-                        onClick(task.id)
-                        setOpenSelector(false)
-                      }}
-                    >
-                      {task.title}
-                    </li>
+    <>
+      {userTasks.length !== 0 && (
+        <div className="fixed bottom-5 right-5 z-100 bg-transparent flex gap-2">
+          <div className="text-center rounded button-outline-light min-w-32 max-w-72">
+            <div
+              className="group-title relative w-44 py-2 px-3 rounded"
+              onClick={() => {
+                if (userTasks.length < 1) {
+                  alert(
+                    "there is no task, choose or create a project to start a new file for tasks"
                   )
-                })}
-              </ul>
+                  navigate("/dashboard")
+                  return
+                }
+                setOpenSelector(!openSelector)
+              }}
+            >
+              <p className="flex gap-2 rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer truncate">
+                <Clock />
+                {task.title || "Start Timer"}
+              </p>
+              {openSelector && (
+                <div
+                  className={`dropdown-container max-h-28 overflow-y-auto shadow-md shadow-light200 border-t-2 border-t-light100 ${
+                    userTasks.length === 1
+                      ? "-top-50px"
+                      : userTasks.length <= 2
+                      ? "-top-20"
+                      : userTasks.length <= 3
+                      ? "-top-28"
+                      : "-top-32"
+                  }`}
+                >
+                  <ul className="dropdown-list rounded">
+                    {userTasks.map((id) => {
+                      const task = totalTaskList[id]
+                      return (
+                        <li
+                          className="dropdown-item"
+                          value={task.id}
+                          key={task.id}
+                          onClick={() => {
+                            openTask(task.id)
+                            setOpenSelector(false)
+                          }}
+                          onBlur={(e) => {
+                            console.log("blur", e)
+                            e.stopPropagation()
+                            e.preventDefault()
+                            setOpenSelector(false)
+                          }}
+                        >
+                          {task.title}
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        {/* <select
+            {/* <select
             value={selectedType.id || -1}
             onChange={(e) => dispatch(tags.switchType(e.target.value))}
           >
@@ -74,33 +104,17 @@ const TaskList = () => {
               </option>
             ))}
           </select> */}
-      </div>
-      {/* <select
-        className="bg-slateLight rounded text-white border-r-2 py-2 px-3 w-32"
-        onChange={(e) => onChange(e)}
-      >
-        <option className="flex gap-2" value="default">
-          Task List
-        </option>
-        {userTasks &&
-          userTasks.map((taskID) => {
-            const task = totalTaskList[taskID]
-            if (!task) return
-            return (
-              <option value={task.id} key={task.id} className="w-full truncate">
-                {task.title}
-              </option>
-            )
-          })}
-      </select> */}
-      <button
-        className="bg-slateLight text-white py-2 px-3 rounded flex items-center gap-2"
-        onClick={createNewTask}
-      >
-        <Plus size={16} />
-        Task
-      </button>
-    </div>
+          </div>
+          <button
+            className="bg-slateLight text-white py-2 px-3 rounded flex items-center gap-2"
+            onClick={createNewTask}
+          >
+            <Plus size={16} />
+            Task
+          </button>
+        </div>
+      )}
+    </>
   )
 }
 

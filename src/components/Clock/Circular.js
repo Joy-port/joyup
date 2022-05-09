@@ -7,15 +7,15 @@ import { PlayCircle, PauseCircle, XCircle } from "react-feather"
 
 const dropArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
-const Circular = ({ minutes, seconds, percentage, resetTimer }) => {
-  const { mode, isPaused, workNumbers } = useSelector((state) => state.clock)
-  const dispatch = useDispatch()
-  const clockStatus = (type, status) => {
-    dispatch({
-      type: "clockAction",
-      payload: { type: type, status: status },
-    })
-  }
+const Circular = ({ minutes, seconds, percentage }) => {
+  // const { mode, isPaused, workNumbers } = useSelector((state) => state.clock)
+  // const dispatch = useDispatch()
+  // // const clockStatus = (type, status) => {
+  //   dispatch({
+  //     type: "clockAction",
+  //     payload: { type: type, status: status },
+  //   })
+  // }
   return (
     <div className="circular-container text-white">
       {dropArray.map((item) => {
@@ -33,15 +33,8 @@ const Circular = ({ minutes, seconds, percentage, resetTimer }) => {
         )
       })}
       <div className="circular-inner-item">
-        <div className="invisible">
-          {mode ? (
-            <Coffee size={60} strokeWidth={0.35} />
-          ) : (
-            <Sun size={60} strokeWidth={0.35} />
-          )}
-        </div>
         <div className="middle">{minutes + ":" + seconds}</div>
-        <div className="bottom">
+        {/* <div className="bottom">
           <div className="flex justify-center items-center gap-6">
             {!isPaused && (
               <button
@@ -75,7 +68,7 @@ const Circular = ({ minutes, seconds, percentage, resetTimer }) => {
               </>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
@@ -84,6 +77,5 @@ Circular.propTypes = {
   minutes: string.isRequired,
   seconds: string.isRequired,
   percentage: number.isRequired,
-  resetTimer: func.isRequired,
 }
 export default Circular

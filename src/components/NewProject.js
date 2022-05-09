@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux"
 import { project } from "../sliceReducers/actions/project"
 import { bool, func } from "prop-types"
 import { useNavigate } from "react-router-dom"
-import { FolderPlus } from "react-feather"
+import { ArrowRight } from "react-feather"
+import { tags } from "../sliceReducers/actions/tags"
 
 const NewProject = ({ setIsOpen }) => {
   const [projectTitle, setProjectTitle] = useState("")
@@ -22,18 +23,20 @@ const NewProject = ({ setIsOpen }) => {
       isPublic,
     }
     dispatch(
-      project.createNewProject(projectContent, () => {
+      project.createNewProject(projectContent, (projectID) => {
         setIsOpen(false)
+        dispatch(tags.switchProject(projectID))
+        navigate(`${projectID}`)
       })
     )
     navigate("/dashboard")
   }
 
   return (
-    <div className="modal-bg">
+    <div className="modal-bg transition-colors">
       <div className="modal-container modal-sm bg-light100">
         <div className="modal-header flex justify-between items-start">
-          <h1 className="text-light300 heading-three mt-2">Project</h1>
+          <h1 className="text-light300 heading-three mt-2">New Project</h1>
           <button
             onClick={() => {
               setProjectTitle("")
@@ -48,20 +51,22 @@ const NewProject = ({ setIsOpen }) => {
           className="modal-body overflow-y-auto flex flex-col gap-3"
           onSubmit={(e) => createNewProject(e)}
         >
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title" className="font-semibold">
+            Title
+          </label>
           <input
+            className="rounded px-2 py-1"
             type="text"
             id="title"
             required
             value={projectTitle}
             onChange={(e) => {
-              if (e.target.value.trim() !== "") {
-                setProjectTitle(e.target.value)
-              }
+              setProjectTitle(e.target.value)
             }}
+            placeholder="give your project a title"
           />
           <div className="flex items-center gap-4">
-            <label htmlFor="public" className="mr-5">
+            <label htmlFor="public" className="font-semibold mr-5">
               Public
             </label>
             <input
@@ -78,8 +83,7 @@ const NewProject = ({ setIsOpen }) => {
             className="w-full button button-dark flex items-center justify-center gap-3"
             onClick={(e) => createNewProject(e)}
           >
-            <FolderPlus />
-            Create New Project
+            <ArrowRight />
           </button>
         </div>
       </div>

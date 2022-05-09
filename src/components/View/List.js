@@ -17,22 +17,18 @@ const List = ({ type }) => {
   return (
     <>
       <div className="tool-bar">
-        {/* <div className="flex">
-          <input type="text" placeholder="Search" />
-          <Search />
-        </div> */}
         <Breadcrumb />
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
             <div
-              className="group-title border-1 border-light000 rounded relative w-44 px-2 py-1"
+              className="group-title border-2 border-light000 rounded relative w-44 px-2 py-1"
               onClick={() => {
                 setOpenSelector(!openSelector)
               }}
             >
               Group By {selectedType.type}
               {openSelector && (
-                <div className="dropdown-container">
+                <div className="dropdown-container z-20 shadow shadow-blue100 border-t-2 border-t-light000">
                   <ul className="dropdown-list">
                     {types.map((type) => (
                       <li
@@ -51,21 +47,14 @@ const List = ({ type }) => {
                 </div>
               )}
             </div>
-            {/* <select
-            value={selectedType.id || -1}
-            onChange={(e) => dispatch(tags.switchType(e.target.value))}
-          >
-            <option value={-1}>please select</option>
-            {types.map((type) => (
-              <option value={type.id} key={type.id}>
-                {type.type}
-              </option>
-            ))}
-          </select> */}
           </div>
         )}
       </div>
-      <div className="h-custom-l -ml-4 -mr-4 overflow-auto px-4 pb-2 scrollbar">
+      <div
+        className={`${
+          type === "list" ? "h-custom-lg overflow-y-auto" : "h-custom-xl overflow-auto"
+        } -ml-4 -mr-4  px-4 pb-2 scrollbar`}
+      >
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) === "{}" ? (
           <>
             <div

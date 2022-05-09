@@ -1,6 +1,8 @@
 .react-datepicker {
   border: 1px solid var(--blue000);
   color: var(--light300);
+  width: max-content;
+  margin-right: auto;
 }
 .react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::after {

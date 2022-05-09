@@ -5,16 +5,25 @@ import { array, object, string } from "prop-types"
 
 const Column = ({ column, taskList, type }) => {
   return (
-    <div className={`column column-${type}`}>
+    <div
+      className={`column column-${type} ${
+        taskList.length <= 0 && type === "list" ? "hidden" : ""
+      }`}
+    >
       <h1 className={`tag`}>{column.title}</h1>
-      <Droppable droppableId={column.id}>
+      <Droppable
+        droppableId={column.id}
+        style={{ overflowY: "auto" }}
+        className={`${type === "list" ? "min-h-20" : "overflow-y-auto"}`}
+      >
         {(provided, snapshot) => {
+          const styleType = type === "list" ? "px-2 pb-2 rounded-sm" : ""
           const isDraggingOver = snapshot.isDraggingOver
             ? `column-${type}-dragging`
             : `column-${type}-normal`
           return (
             <div
-              className={`${isDraggingOver} h-custom-xl overflow-y-auto`}
+              className={`${isDraggingOver} ${styleType} `}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

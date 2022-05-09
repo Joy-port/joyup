@@ -5,7 +5,7 @@ import { settings } from "../sliceReducers/actions/settings"
 import { user } from "../sliceReducers/actions/user"
 
 const TimeSetting = () => {
-  const { base, workTime, breakTime } = useSelector((state) => state.settings)
+  const { workTime, breakTime } = useSelector((state) => state.settings)
   const { userName } = useSelector((state) => state.user)
   const [isEditName, setIsEditName] = useState(false)
   const [settingType, setSettingType] = useState(0)
@@ -84,28 +84,7 @@ const TimeSetting = () => {
         <h1 className="w-44 tag-light200 text-center p-2">Clock Setting</h1>
         <div className="flex flex-col gap-3 border-rounded-light000">
           <div className="flex gap-2 items-center w-full justify-between">
-            <Clock strokeWidth={2} />
-            <div className="flex gap-2 items-center">
-              <input
-                className="border-1 border-light200 w-16"
-                type="number"
-                value={base}
-                onChange={(e) => {
-                  if (e.target.value <= 0) {
-                    return
-                  }
-                  setTimer("base", parseFloat(e.target.value.trim()))
-                }}
-                onKeyDown={(e) => {
-                  if (e.target.value.trim() === "") return
-                  onKeyDown(e, "base", parseFloat(e.target.value.trim()))
-                }}
-              />
-              <p className="py-1 px-2">minutes</p>
-            </div>
-          </div>
-          <div className="flex gap-2 items-center w-full justify-between">
-            <p>Work Time = {base * workTime} minutes</p>
+            <p>Work Time = {workTime} minutes</p>
             <div className="flex gap-2 items-center">
               <input
                 className="border-1 border-light200 w-12"
@@ -127,7 +106,7 @@ const TimeSetting = () => {
             </div>
           </div>
           <div className="flex gap-2 items-center w-full justify-between">
-            <p>Break Time = {base * breakTime} minutes</p>
+            <p>Break Time = {breakTime} minutes</p>
             <div className="flex gap-2 items-center">
               <input
                 className="border-1 border-light200 w-12"

@@ -2,11 +2,12 @@ import React, { useState, useCallback, forwardRef } from "react"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
 import dayjs from "dayjs"
+import { useDispatch } from "react-redux"
 
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
     <input
-      className="bg-light100 w-36"
+      className="bg-light100 w-full rounded select-light300"
       onChange={onChange}
       placeholder={placeholder}
       value={value}
@@ -17,8 +18,9 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   )
 }
 
-const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
+const DatePick = ({ date, setDate, showType }) => {
   const current = new Date()
+  const dispatch = useDispatch()
   const addTime = (addTime) => {
     const nowTime = current.getTime()
     const addMlSeconds = addTime * 60 * 60 * 1000
@@ -41,7 +43,8 @@ const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
     } else {
       setMaxTime(addTime(requiredTime()))
     }
-    return setDate(date)
+
+    return setDate(new Date(date).getTime())
   }
   const handleChangeRaw = (value) => {
     if (value === undefined) return
@@ -64,9 +67,6 @@ const DatePick = ({ date, setDate, showType, hasCustomButton }) => {
     <DatePicker
       showTimeSelect
       showDisabledMonthNavigation
-      // minDate={current}
-      // minTime={current}
-      // maxTime={maxTime}
       selected={date}
       timeIntervals={30}
       onChange={(date) => {
@@ -92,7 +92,7 @@ DatePick.propTypes = {
   date: any.isRequired,
   setDate: func.isRequired,
   showType: bool.isRequired,
-  hasCustomButton: bool.isRequired,
+  // hasCustomButton: bool.isRequired,
 }
 
 export default DatePick

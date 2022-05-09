@@ -132,33 +132,33 @@ export const firebase = {
   //   const collaborateProjects = userProjects.data().collaborateProjects || []
   //   return { ownerProjects, collaborateProjects }
   // },
-  createNewProject: async function (projectID, projectTitle, userID) {
-    //when created project with defaultTags
-    try {
-      //create data in project collections
-      const collectionName = "projects"
-      const projectRef = doc(this.db, collectionName, projectID)
-      const projectContent = {
-        title: projectTitle,
-        tags: [...defaultTypes],
-        ...defaultTags,
-      }
-      await setDoc(projectRef, projectContent)
-      //create data in user
-      const userCollection = "userProjects"
-      //project Type needed to be added
-      // ownerProjects or  collaborateProjects
-      const projectType = "ownerProjects"
-      const userRef = doc(this.db, userCollection, userID)
-      await updateDoc(userRef, {
-        [projectType]: arrayUnion(projectID),
-      })
+  // createNewProject: async function (projectID, projectTitle, userID) {
+  //   //when created project with defaultTags
+  //   try {
+  //     //create data in project collections
+  //     const collectionName = "projects"
+  //     const projectRef = doc(this.db, collectionName, projectID)
+  //     const projectContent = {
+  //       title: projectTitle,
+  //       tags: [...defaultTypes],
+  //       ...defaultTags,
+  //     }
+  //     await setDoc(projectRef, projectContent)
+  //     //create data in user
+  //     const userCollection = "userProjects"
+  //     //project Type needed to be added
+  //     // ownerProjects or  collaborateProjects
+  //     const projectType = "ownerProjects"
+  //     const userRef = doc(this.db, userCollection, userID)
+  //     await updateDoc(userRef, {
+  //       [projectType]: arrayUnion(projectID),
+  //     })
 
-      return projectContent
-    } catch (err) {
-      console.error(error)
-    }
-  },
+  //     return projectContent
+  //   } catch (err) {
+  //     console.error(error)
+  //   }
+  // },
   saveTagsToProjectID: async function (content) {
     const { parentTag, childTag, taskID, projectID } = content
     const collectionName = "projects"
@@ -235,6 +235,18 @@ export const firebase = {
     })
     return columnTaskIds
   },
+  saveCurrentProjectOrderType: async function (typeID, projectID) {
+    try {
+      const collectionName = "projects"
+      const typeName = "currentType"
+      const projectRef = doc(this.db, collectionName, projectID)
+      await updateDoc(projectRef, {
+        [typeName]: typeID,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
   getDefaultTags: async function (projectID) {
     try {
       const collectionName = "tags"
@@ -263,6 +275,7 @@ export const firebase = {
   },
   saveTask: async function (taskContent) {
     try {
+      console.log("save task", taskContent)
       const collectionName = "tasks"
       const taskRef = doc(this.db, collectionName, taskContent.id)
       const taskDoc = await getDoc(taskRef)
@@ -277,6 +290,7 @@ export const firebase = {
   },
   saveTaskPartialContent: async function (stateId, content) {
     try {
+      console.log(stateId, content)
       const collectionName = "tasks"
       const taskContentRef = [this.db, collectionName, stateId]
       const taskHasSavedInDataBase = await getDoc(doc(...taskContentRef))
@@ -405,6 +419,7 @@ export const firebase = {
         collection(this.db, taskCollection),
         where("projectID", "==", projectID)
       )
+      console.log("delete project")
       const taskSnapShot = await getDocs(taskQuery)
       taskSnapShot.forEach(async (task) => {
         console.log(task.id)

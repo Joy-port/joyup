@@ -54,10 +54,10 @@ export const project = {
           publicStatus
         )
         await firebase.saveProjectToUserProjects(id, projectID, type).then(() => {
-          callback && callback()
+          callback && callback(projectID)
         })
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/ERROR", payload: error })
       }
     }
   },
