@@ -27,7 +27,7 @@ const TaskList = () => {
     setTaskID(newTaskID)
     dispatch({ type: "task/createNewTask", payload: newTaskID })
     navigate(`/task/${taskID}`)
-  }, [])
+  }, [userProjects])
   // useEffect(() => {
   //   navigate(`/task/${taskID}`)
   // }, [taskID])

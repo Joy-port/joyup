@@ -37,11 +37,16 @@ const TextEditor = () => {
     newDoc.splice(index, 0, content)
     setDocument(newDoc)
   })
+  const deleteBlock = useCallback((index) => {
+    const newDoc = [...document]
+    newDoc.slice(index, 1)
+    setDocument(newDoc)
+  })
   const currentBlockIndex = useCallback(() => {
     return document.findIndex((item) => item.id === inputRef.current.id)
   })
   const toSpecificBlock = useCallback((index) => {
-    return document.find((item, i) => i === index)
+    return document.find((_, i) => i === index)
   })
   const deleteSlashCommand = useCallback(() => {
     setText((text) => {
@@ -49,13 +54,17 @@ const TextEditor = () => {
         text.substring(0, slashCharacterPosition) +
         text.substring(inputRef.current?.selectionStart)
       document.find((item) => item.id === inputRef.current.id).content = string
+      console.log(string)
       return string
     })
   })
 
   // useEffect(() => {
-  //   if (!text) return
-  //   console.log(text)
+  //   console.log("after delete slash command", text)
+  //   if (text.trim() === "") {
+  // setSlashCharacterPosition(null)
+  // setQuery(null)
+  //   }
   // }, [deleteSlashCommand])
 
   useEffect(() => {
@@ -90,16 +99,23 @@ const TextEditor = () => {
   const selectCommand = (command) => {
     deleteSlashCommand()
     document.find((item) => item.id === inputRef.current.id).html = command
-    const index = document.findIndex((item) => item.id === inputRef.current.id)
     setHTMLStyle(command)
+    setSlashCharacterPosition(null)
+    setQuery(null)
+  }
+
+  const switchToNextLine = useCallback(() => {
     setIsEditing(false)
+    const index = document.findIndex((item) => item.id === inputRef.current.id)
     if (document[index + 1]) {
+      console.log("run this", document[index + 1])
       setText(document[index + 1].content)
       focusInput.current = document[index + 1].id
       setIsEditing(true)
       setSlashCharacterPosition(null)
       setQuery(null)
     } else {
+      setHTMLStyle({})
       const blank = {
         content: "",
         id: uuidv4(),
@@ -112,13 +128,13 @@ const TextEditor = () => {
       addNewBlock(index + 1, blank)
       setTextContent(blank)
       setText(blank.content)
-      setHTMLStyle(blank.html)
+      setHTMLStyle({ ...blank.html })
       focusInput.current = blank.id
       setIsEditing(true)
       setSlashCharacterPosition(null)
       setQuery(null)
     }
-  }
+  })
   // const addNewBlock = (index, content) => {
   //   const newDoc = [...document]
   //   newDoc.splice(index, 0, content)
@@ -169,7 +185,6 @@ const TextEditor = () => {
       }
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
-        // console.log(matchingCommands[selectionIndex])
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
         changeTextStyle()
@@ -198,18 +213,34 @@ const TextEditor = () => {
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
-      // delete docs document block
-      // console.log(text)
       if (text === "") {
-        setIsEditing(false)
         const prevBlock = currentBlockIndex()
-        const currentBlock =
-          prevBlock + 1 > document.length
-            ? toSpecificBlock(prevBlock + 1)
-            : toSpecificBlock(document.length - 1)
-        setText(currentBlock.content)
-        focusInput.current = currentBlock.id
-        setIsEditing(true)
+        console.log(toSpecificBlock(prevBlock).html.name)
+        if (toSpecificBlock(prevBlock).html.name !== "Text") {
+          selectCommand({
+            parent: "",
+            tag: "p",
+            name: "Text",
+            style: "",
+          })
+          return
+        }
+        const currentBlock = prevBlock - 1 < 0 ? prevBlock : prevBlock - 1
+        if (prevBlock !== currentBlock) {
+          setIsEditing(false)
+          deleteBlock(prevBlock)
+          const currentContent = toSpecificBlock(currentBlock)
+          console.log("delete")
+          console.log("after delete", currentBlock, toSpecificBlock(currentBlock))
+          setIsEditing(true)
+          setTextContent(currentContent)
+          setText(currentContent.content)
+          setHTMLStyle(currentContent.html)
+          focusInput.current = currentContent.id
+          // document.filter((item) => item.id !== inputRef.current.id)
+          // focusInput.current = toSpecificBlock(currentBlock).id
+          // setText(toSpecificBlock(currentBlock).content)
+        }
       }
     }
   }
@@ -230,14 +261,12 @@ const TextEditor = () => {
             const TagName = item.html.tag
             const firstInput = index === 0
             if (focusInput.current === item.id && isEditing) {
-              console.log(isEditing, focusInput.current)
               return (
-                <div className="relative grow flex flex-col">
+                <div className="relative grow flex flex-col" key={item.id}>
                   <input
                     className={`editor-input border-l-transparent ${
                       HTMLStyle.style || item.html.style
                     }`}
-                    key={item.id}
                     id={item.id}
                     cols="30"
                     rows="10"
@@ -275,6 +304,7 @@ const TextEditor = () => {
               if (!item.content) {
                 return (
                   <p
+                    className={`editor-text border-l-transparent ${item.html.style}`}
                     key={item.id}
                     onClick={(e) => {
                       console.log(e, item.id)
