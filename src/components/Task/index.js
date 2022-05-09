@@ -7,6 +7,7 @@ import { task } from "../../sliceReducers/actions/task"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import DatePicker from "./components/DatePicker"
+import dayjs from "dayjs"
 import {
   Clock,
   X,
@@ -188,7 +189,10 @@ const index = () => {
                   <Calendar strokeWidth={1} />
                   <div className="group-title">Start Date</div>
                 </div>
-                <div className="w-1/2">
+                <div className="flex flex-col w-1/2">
+                  {/* <div className="bg-light100 rounded select-light300">
+                    {dayjs(startDate).format("MMM DD HH:mm")}
+                  </div> */}
                   <DatePicker
                     date={startDate}
                     setDate={setCalendarStartDate}
@@ -197,12 +201,16 @@ const index = () => {
                   />
                 </div>
               </div>
+
               <div className="select-group relative">
                 <div className="flex gap-2 items-center max-w-24">
                   <Sunset strokeWidth={1} />
                   <div className="group-title">Due Date</div>
                 </div>
-                <div className="w-1/2">
+                <div className="flex flex-col w-1/2">
+                  {/* <div className="bg-light100 rounded select-light300">
+                    {dayjs(dueDate).format("MMM DD HH:mm")}
+                  </div> */}
                   <DatePicker
                     date={dueDate}
                     setDate={setCalendarDueDate}

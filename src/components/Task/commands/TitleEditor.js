@@ -7,6 +7,7 @@ import * as Icon from "react-feather"
 const TitleEditor = () => {
   const { title, startDate, dueDate } = useSelector((state) => state.task)
   const dispatch = useDispatch()
+  const { types } = useSelector((state) => state.tags)
   const [isEditing, setIsEditing] = useState(true)
   const [text, setText] = useState(title)
   const [query, setQuery] = useState(null)
@@ -155,7 +156,7 @@ const TitleEditor = () => {
           return newText
         })
         setStyle("heading-four font-semibold text-light200")
-        // setSelectedTagType(types.find((item) => item.type === this.name))
+        setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
         setSelectionIndex(0)
@@ -173,7 +174,7 @@ const TitleEditor = () => {
           return newText
         })
         setStyle("heading-four font-semibold text-light200")
-        // setSelectedTagType(types.find((item) => item.type === this.name))
+        setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
         setSelectionIndex(0)
@@ -294,6 +295,7 @@ const TitleEditor = () => {
         )
       : []
 
+  console.log(selectedTagType)
   const matchingTags =
     tagsQuery !== null
       ? selectedTagType.children.filter((child) =>
@@ -351,13 +353,11 @@ const TitleEditor = () => {
   }
 
   const selectCommand = (command) => {
+    console.log(command)
     command.action()
     setSelectionIndex(0)
   }
-  const selectTime = (time) => {
-    time.action()
-    setSelectionIndex(0)
-  }
+
   const selectTags = (child) => {
     const tagType = {
       parent: selectedTagType.id,
@@ -387,7 +387,10 @@ const TitleEditor = () => {
         e.stopPropagation()
         e.preventDefault()
       } else if (tagCharacterPosition !== null) {
-        console.log(selectionIndex)
+        setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
+        e.stopPropagation()
+        e.preventDefault()
+      } else if (timeCharacterPosition !== null) {
         setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
         e.stopPropagation()
         e.preventDefault()
@@ -404,6 +407,12 @@ const TitleEditor = () => {
         setSelectionIndex((prevIndex) => Math.min(matchingTags.length - 1, prevIndex + 1))
         e.stopPropagation()
         e.preventDefault()
+      } else if (timeCharacterPosition !== null) {
+        setSelectionIndex((prevIndex) =>
+          Math.min(matchingTimeSettings.length - 1, prevIndex + 1)
+        )
+        e.stopPropagation()
+        e.preventDefault()
       }
       return
     } else if (e.key === "Enter") {
@@ -412,6 +421,8 @@ const TitleEditor = () => {
         // setIsEditing(true)
       } else if (matchingTags[selectionIndex]) {
         selectTags(matchingTags[selectionIndex])
+      } else if (matchingTimeSettings[selectionIndex]) {
+        selectCommand(matchingTimeSettings[selectionIndex])
       } else if (selectedTagType !== null) {
         selectTags()
       } else if (slashCharacterPosition === null && selectedTagType === null) {
@@ -487,7 +498,7 @@ const TitleEditor = () => {
             return (
               <div
                 key={index}
-                onClick={() => selectTime(command)}
+                onClick={() => selectCommand(command)}
                 onMouseOver={() => setSelectionIndex(index)}
                 className={`
                   results__command 
