@@ -1643,7 +1643,8 @@ select:focus {
   width: 100%;
 }
 .column-list h1 {
-  width: 8rem;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
   border-top-left-radius: 0.125rem;
   border-top-right-radius: 0.125rem;
   --tw-bg-opacity: 1;
@@ -1686,7 +1687,8 @@ select:focus {
   --tw-shadow: var(--tw-shadow-colored);
 }
 .column-board h1 {
-  width: 8rem;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
   border-radius: 0.125rem;
   --tw-bg-opacity: 1;
   background-color: rgb(243 245 246 / var(--tw-bg-opacity));

@@ -193,8 +193,8 @@ export const defaultTags = {
     "yEFXbvDC5slJxmMVOp3D",
   ],
   Y3ScZ3EP9hhO7PB0EkJU: [
-    "7qzOkGy3a0F6kgDqu5ma",
     "l0Du2A7l5CUCJLnmRZuP",
+    "7qzOkGy3a0F6kgDqu5ma",
     "mkPSjbSrFD7ert0HosMg",
     "b0htJEJVP9noZU8Tx200",
   ],
@@ -306,6 +306,7 @@ export const create = {
     tasks: [],
     tags: [...defaultTypes],
     ...defaultTags,
+    currentType: defaultTypes[0],
   },
   settings: {
     clockSettings: {

@@ -82,8 +82,10 @@ export const tags = {
           return type
         })
         //get first type tags
-        const selectedTypeData = projectTotalTypes[0]
-        const initialTypeID = projectTotalTagsParent[0]
+        const selectedTypeData = currentProject.currentType
+          ? projectTotalTypes.find((type) => type.id === currentProject.currentType)
+          : projectTotalTypes[0]
+        const initialTypeID = currentProject.currentType || projectTotalTagsParent[0]
         const selectedColumnOrder = currentProject[initialTypeID]
         const [selectedColumns, selectedTasks] = filterSelectedTypeTags(
           projectID,
@@ -115,6 +117,7 @@ export const tags = {
       try {
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const { selectedProjectID, types } = getState().tags
+        console.log("switch type project ID", selectedProjectID, selectedTypeID)
         const currentProject = totalProjectList[selectedProjectID]
         const selectedTypeData = types.find((type) => type.id === selectedTypeID)
         const selectedColumnOrder = currentProject[selectedTypeID]
@@ -131,7 +134,7 @@ export const tags = {
           selectedTasks,
           selectedColumnOrder,
         }
-
+        await firebase.saveCurrentProjectOrderType(selectedTypeID, selectedProjectID)
         dispatch({ type: "tags/switchType", payload: selectedTag })
         console.log("%c switch type ", "background: #ffeecc; color:#225566")
       } catch (err) {
