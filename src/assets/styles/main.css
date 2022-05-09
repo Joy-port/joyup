@@ -679,8 +679,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 .relative {
   position: relative;
 }
-.top-10 {
-  top: 2.5rem;
+.top-5 {
+  top: 1.25rem;
 }
 .bottom-5 {
   bottom: 1.25rem;
@@ -702,6 +702,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .top-8 {
   top: 2rem;
+}
+.top-10 {
+  top: 2.5rem;
 }
 .top-12 {
   top: 3rem;
@@ -917,6 +920,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .items-start {
   align-items: flex-start;
 }
+.items-end {
+  align-items: flex-end;
+}
 .items-center {
   align-items: center;
 }
@@ -959,8 +965,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .overflow-y-auto {
   overflow-y: auto;
 }
-.overflow-y-hidden {
-  overflow-y: hidden;
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .rounded {
   border-radius: 0.25rem;
@@ -1098,6 +1106,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .pb-20 {
   padding-bottom: 5rem;
+}
+.pb-3 {
+  padding-bottom: 0.75rem;
 }
 .pb-2 {
   padding-bottom: 0.5rem;
@@ -1853,10 +1864,6 @@ select:focus {
 }
 @media (min-width: 768px) {
 
-  .md\:left-10 {
-    left: 2.5rem;
-  }
-
   .md\:ml-auto {
     margin-left: auto;
   }
@@ -1875,10 +1882,6 @@ select:focus {
 
   .md\:w-32 {
     width: 8rem;
-  }
-
-  .md\:w-3\/12 {
-    width: 25%;
   }
 
   .md\:w-72 {

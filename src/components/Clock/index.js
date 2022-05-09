@@ -177,10 +177,10 @@ const PromodoroClock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col items-center justify-center overflow-y-hidden">
+        <div className="modal-body flex flex-col items-center justify-center overflow-y-auto">
           {taskDetail.id === taskID && (
             <div
-              className={`absolute top-10 left-50 md:left-10 bg-white rounded-md  p-3 w-5/6 md:w-3/12 shadow cursor-pointer transition-colors ${
+              className={`absolute top-5 left-50 bg-white rounded-md p-3 w-5/6 shadow cursor-pointer transition-colors ${
                 mode ? "text-blue200" : "text-red200"
               } ${isPaused ? "" : "opacity-50"}`}
               onClick={() => {
@@ -209,6 +209,55 @@ const PromodoroClock = () => {
                 percentage={percentage}
                 resetTimer={resetTimer}
               />
+            </div>
+            {/* <div className="flex justify-center items-center gap-6">
+              {!isPaused && (
+                <button
+                  className={`play-button text-white  hover:text-transparentWhite`}
+                  onClick={() => clockStatus("isPaused", true)}
+                >
+                  <PauseCircle size={50} strokeWidth={0.8} />
+                </button>
+              )}
+              {isPaused && (
+                <>
+                  <button
+                    className={`play-button text-white  hover:text-transparentWhite`}
+                    onClick={() => {
+                      clockStatus("isPaused", false)
+                    }}
+                  >
+                    <PlayCircle size={50} strokeWidth={0.8} />
+                  </button>
+                  <button
+                    className={`play-button text-white  hover:text-transparentWhite`}
+                    onClick={() => {
+                      clockStatus("isPaused", true)
+                      resetTimer()
+                    }}
+                  >
+                    <XCircle size={50} strokeWidth={0.8} />
+                  </button>
+                </>
+              )}
+            </div> */}
+          </div>
+        </div>
+        <div className={`modal-footer transition-all pb-3`}>
+          <div className={`flex justify-between items-end`}>
+            <div
+              className={`button text-white hover:text-transparentWhite ${
+                isPaused ? "visible" : "invisible"
+              }`}
+              onClick={() => {
+                const taskDetail = totalTaskList[taskID]
+                if (taskDetail) {
+                  dispatch({ type: "task/openSavedTask", payload: taskDetail })
+                }
+                navigate(`/task/${taskID}`, { replace: true })
+              }}
+            >
+              <CornerDownLeft />
             </div>
             <div className="flex justify-center items-center gap-6">
               {!isPaused && (
@@ -241,25 +290,7 @@ const PromodoroClock = () => {
                 </>
               )}
             </div>
-          </div>
-        </div>
-        <div
-          className={`modal-footer transition-all ${isPaused ? "visible" : "invisible"}`}
-        >
-          <div className="flex justify-between">
-            <div
-              className="button text-white hover:text-transparentWhite"
-              onClick={() => {
-                const taskDetail = totalTaskList[taskID]
-                if (taskDetail) {
-                  dispatch({ type: "task/openSavedTask", payload: taskDetail })
-                }
-                navigate(`/task/${taskID}`, { replace: true })
-              }}
-            >
-              <CornerDownLeft />
-            </div>
-            <div className="flex gap-5">
+            <div className={`flex gap-5 ${isPaused ? "visible" : "invisible"}`}>
               {/* <Link
                 to="/settings"
                 className="button text-white hover:text-transparentWhite"

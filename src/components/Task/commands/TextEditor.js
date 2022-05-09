@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
 import { task } from "../../../sliceReducers/actions/task"
 import * as Icon from "react-feather"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCoffee } from "@fortawesome/free-regular-svg-icons"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)
