@@ -40,7 +40,7 @@ const Task = ({ task, index, type }) => {
               className="rounded p-1 bg-light100 show z-over-draggable"
               onClick={() => onClick(task.id)}
             >
-              <Edit3 strokeWidth={1} size={18} />
+              <Edit3 strokeWidth={1} size={16} />
             </div>
           </div>
         )

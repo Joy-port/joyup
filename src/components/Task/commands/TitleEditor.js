@@ -469,20 +469,23 @@ const TitleEditor = () => {
         </div>
       )} */}
       {selectedTagType?.children && (
-        <div className="border border-slateLight w-full absolute top-8 mt-1 bg-light000 z-10">
-          {selectedTagType.children.map((child, index) => (
-            <div
-              key={child.id}
-              onClick={() => selectTags(child)}
-              onMouseOver={() => setSelectionIndex(index)}
-              className={
-                "results__command " +
-                (index == selectionIndex ? "results__command--selected" : "")
-              }
-            >
-              {child.name}
-            </div>
-          ))}
+        <div className="results top-10 mt-1 z-10 ">
+          {selectedTagType.children.map((child, index) => {
+            return (
+              <div
+                key={child.id}
+                onClick={() => selectTags(child)}
+                onMouseOver={() => setSelectionIndex(index)}
+                className={
+                  "results__command " +
+                  (index == selectionIndex ? "results__command--selected" : "")
+                }
+              >
+                <Icon.Tag strokeWidth={1} />
+                <p className="text-lg">{child.name}</p>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

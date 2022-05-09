@@ -275,6 +275,7 @@ export const firebase = {
   },
   saveTask: async function (taskContent) {
     try {
+      console.log("save task", taskContent)
       const collectionName = "tasks"
       const taskRef = doc(this.db, collectionName, taskContent.id)
       const taskDoc = await getDoc(taskRef)
