@@ -56,7 +56,6 @@ const TextEditor = () => {
         text.substring(0, slashCharacterPosition) +
         text.substring(inputRef.current?.selectionStart)
       document.find((item) => item.id === inputRef.current.id).content = string
-      console.log(string)
       return string
     })
   })
@@ -101,6 +100,20 @@ const TextEditor = () => {
   const selectCommand = (command) => {
     deleteSlashCommand()
     document.find((item) => item.id === inputRef.current.id).html = command
+    console.log(HTMLStyle, command)
+    console.log(toSpecificBlock(currentBlockIndex())) //current block
+    if (command.combine) {
+      const currentHTMLStyle = HTMLStyle.style
+      const addStyle = `${currentHTMLStyle} ${command.style}`
+      console.log(addStyle)
+      selectCommand((prevStyle) => {
+        return {
+          ...prevStyle,
+          style: addStyle,
+        }
+      })
+      return
+    }
     setHTMLStyle(command)
     setSlashCharacterPosition(null)
     setQuery(null)
@@ -110,7 +123,6 @@ const TextEditor = () => {
     setIsEditing(false)
     const index = document.findIndex((item) => item.id === inputRef.current.id)
     if (document[index + 1]) {
-      console.log("run this", document[index + 1])
       setText(document[index + 1].content)
       focusInput.current = document[index + 1].id
       setIsEditing(true)
@@ -217,7 +229,6 @@ const TextEditor = () => {
     } else if (e.key === "Backspace") {
       if (text === "") {
         const prevBlock = currentBlockIndex()
-        console.log(toSpecificBlock(prevBlock).html.name)
         if (toSpecificBlock(prevBlock).html.name !== "Text") {
           selectCommand({
             parent: "",
@@ -232,8 +243,6 @@ const TextEditor = () => {
           setIsEditing(false)
           deleteBlock(prevBlock)
           const currentContent = toSpecificBlock(currentBlock)
-          console.log("delete")
-          console.log("after delete", currentBlock, toSpecificBlock(currentBlock))
           setIsEditing(true)
           setTextContent(currentContent)
           setText(currentContent.content)
@@ -301,10 +310,13 @@ const TextEditor = () => {
                                   : ""
                               }`}
                           >
-                            <IconName strokeWidth={1} />
+                            <IconName
+                              strokeWidth={command.iconWidth}
+                              size={command.iconSize}
+                            />
                             <p
                               className={`text-lg ${command.style} ${
-                                command.name.includes("List") ? "pl-3 -ml-3" : ""
+                                command.name.includes("List") ? "-ml-4" : ""
                               }`}
                             >
                               {command.name}
@@ -322,8 +334,7 @@ const TextEditor = () => {
                   <p
                     className={`editor-text border-l-transparent ${item.html.style}`}
                     key={item.id}
-                    onClick={(e) => {
-                      console.log(e, item.id)
+                    onClick={() => {
                       focusInput.current = item.id
                       setIsEditing(true)
                       setText(item.content)

@@ -785,9 +785,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mt-1 {
   margin-top: 0.25rem;
 }
-.-ml-3 {
-  margin-left: -0.75rem;
-}
 .block {
   display: block;
 }
@@ -1115,9 +1112,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .pb-2 {
   padding-bottom: 0.5rem;
 }
-.pl-3 {
-  padding-left: 0.75rem;
-}
 .pb-6 {
   padding-bottom: 1.5rem;
 }
@@ -1196,6 +1190,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(102 159 186 / var(--tw-text-opacity));
+}
+.underline {
+  text-decoration-line: underline;
+}
+.underline-offset-2 {
+  text-underline-offset: 2px;
 }
 .opacity-50 {
   opacity: 0.5;
@@ -1551,14 +1551,9 @@ select:focus {
   font-weight: 600;
 }
 .heading-four {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: 500;
-}
-.heading-five {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  font-weight: 400;
 }
 /*ml-5 pl-3*/
 .unordered-list {
