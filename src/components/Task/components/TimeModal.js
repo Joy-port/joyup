@@ -30,14 +30,18 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
           <div className="flex gap-2">
             <input
               className="w-7 bg-light100 text-light300 rounded  p-1"
-              type="text"
-              value={workTime || 0}
+              type="number"
+              value={workTime}
               onChange={(e) => {
-                console.log(e.target.value)
-                if (e.target.value < 0) return
+                if (e.target.value <= 0) {
+                  dispatch({
+                    type: "task/workTime",
+                    payload: 1,
+                  })
+                }
                 dispatch({
                   type: "task/workTime",
-                  payload: parseFloat(e.target.value),
+                  payload: e.target.value,
                 })
               }}
             />
@@ -52,14 +56,18 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
           <div className="flex gap-2">
             <input
               className="w-7 bg-light100 text-light300 rounded  p-1"
-              type="text"
-              value={breakTime || 0}
+              type="number"
+              value={breakTime}
               onChange={(e) => {
-                console.log(e.target.value)
-                if (e.target.value < 0) return
+                if (e.target.value <= 0) {
+                  dispatch({
+                    type: "task/breakTime",
+                    payload: 1,
+                  })
+                }
                 dispatch({
                   type: "task/breakTime",
-                  payload: parseFloat(e.target.value),
+                  payload: e.target.value,
                 })
               }}
             />
@@ -75,14 +83,18 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
             =
             <input
               className=" text-light300 rounded p-1 border-light100 border-1 "
-              type="text"
-              value={requiredTime || 0}
+              type="number"
+              value={requiredTime}
               onChange={(e) => {
-                console.log(e.target.value)
-                if (e.target.value < 0) return
+                if (e.target.value <= 0) {
+                  dispatch({
+                    type: "task/requiredTime",
+                    payload: 0,
+                  })
+                }
                 dispatch({
                   type: "task/requiredTime",
-                  payload: parseFloat(e.target.value),
+                  payload: e.target.value,
                 })
               }}
             />

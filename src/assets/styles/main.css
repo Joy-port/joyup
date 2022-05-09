@@ -712,12 +712,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .right-0 {
   right: 0px;
 }
-.top-0 {
-  top: 0px;
-}
-.top-14 {
-  top: 3.5rem;
-}
 .z-20 {
   z-index: 20;
 }
@@ -863,11 +857,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-56 {
   width: 14rem;
 }
-.w-44 {
-  width: 11rem;
-}
 .w-96 {
   width: 24rem;
+}
+.w-44 {
+  width: 11rem;
 }
 .w-12 {
   width: 3rem;
@@ -899,8 +893,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-4\/12 {
   width: 33.333333%;
 }
+.min-w-44 {
+  min-width: 11rem;
+}
 .min-w-32 {
   min-width: 8rem;
+}
+.max-w-min {
+  max-width: min-content;
 }
 .grow {
   flex-grow: 1;
@@ -1227,6 +1227,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .blur {
   --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.grayscale {
+  --tw-grayscale: grayscale(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter {

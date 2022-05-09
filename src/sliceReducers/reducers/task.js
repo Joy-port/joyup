@@ -70,22 +70,27 @@ function taskReducer(state = initialTaskState, action) {
     case "task/mode":
       return { ...state, mode: action.payload }
     case "task/requiredNumber":
+      if (action.payload < 0) return state
       const newRequiredTime = parseFloat(action.payload * state.workTime)
       return { ...state, requiredNumber: action.payload, requiredTime: newRequiredTime }
     case "task/breakTime":
+      if (action.payload < 0) return state
       return { ...state, breakTime: action.payload }
     case "task/requiredTime":
+      if (action.payload < 0) return state
       const newClockNumber = Math.round(
-        parseFloat(action.payload) / (state.workTime + state.breakTime)
+        action.payload / (state.workTime + state.breakTime)
       )
       return { ...state, requiredTime: action.payload, requiredNumber: newClockNumber }
     case "task/workTime":
+      if (action.payload < 0) return state
       let newRequiredNumber = 0
       if (state.requiredTime !== 0) {
-        newRequiredNumber = Math.round(parseFloat(state.requiredTime / action.payload))
+        newRequiredNumber = Math.round(state.requiredTime / action.payload)
       }
       return { ...state, workTime: action.payload, requiredNumber: newRequiredNumber }
     case "task/clockNumber":
+      if (action.payload < 0) return state
       return { ...state, clockNumber: action.payload }
     case "deleteTag":
       const leftTags = state.tagList.filter((tag) => tag.parent !== action.payload)
@@ -95,12 +100,14 @@ function taskReducer(state = initialTaskState, action) {
         ...initialTaskState,
         id: action.payload,
         tagList: [],
+        description: [],
       }
       return newState
     case "task/clearTaskWithoutSaving":
       const backToInitialState = {
         ...initialTaskState,
         tagList: [],
+        description: [],
       }
       return backToInitialState
     case "task/openSavedTask":
