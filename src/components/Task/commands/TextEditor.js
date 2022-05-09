@@ -304,7 +304,7 @@ const TextEditor = () => {
                             <IconName strokeWidth={1} />
                             <p
                               className={`text-lg ${command.style} ${
-                                command.name === "Quote" ? "pl-2" : ""
+                                command.name.includes("List") ? "pl-3 -ml-3" : ""
                               }`}
                             >
                               {command.name}

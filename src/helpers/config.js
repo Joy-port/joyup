@@ -113,7 +113,7 @@ export const TextType = [
     parent: "ul",
     tag: "li",
     name: "Bulleted List",
-    style: "unordered-list",
+    style: "unordered-list pl-5",
     icon: "List",
   },
   {
