@@ -11,7 +11,6 @@ const TaskList = () => {
   const { userTasks, userProjects } = useSelector((state) => state.user)
   let navigate = useNavigate()
   let { pathname } = useLocation()
-  const [taskID, setTaskID] = useState("")
   const [openSelector, setOpenSelector] = useState(false)
   const createNewTask = () => {
     console.log(userProjects)
@@ -23,9 +22,8 @@ const TaskList = () => {
       return
     }
     const newTaskID = uuidv4()
-    setTaskID(newTaskID)
     dispatch({ type: "task/createNewTask", payload: newTaskID })
-    navigate(`/task/${taskID}`)
+    navigate(`/task/${newTaskID}`)
   }
 
   const openTask = (taskID) => {

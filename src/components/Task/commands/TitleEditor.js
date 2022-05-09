@@ -3,6 +3,7 @@ import DatePick from "../components/DatePicker"
 import dayjs from "dayjs"
 import { useDispatch, useSelector } from "react-redux"
 import { task } from "../../../sliceReducers/actions/task"
+import * as Icon from "react-feather"
 
 const TitleEditor = () => {
   const { title } = useSelector((state) => state.task)
@@ -24,6 +25,7 @@ const TitleEditor = () => {
   const [selectedTag, setSelectedTag] = useState(null)
   const inputRef = useRef()
   const timeRef = useRef()
+  const titleRef = useRef()
   const setTagsAction = useCallback((tagsName) => {
     setIsEditing(true)
     setStyle("selected-tag")
@@ -33,7 +35,13 @@ const TitleEditor = () => {
     })
     setIsEditingTags(true)
   })
-
+  useEffect(() => {
+    if (title) {
+      inputRef.current = null
+      titleRef.current = title
+    }
+    titleRef.current = ""
+  }, [title])
   useEffect(() => {
     if (!date || !text || !text.includes("/")) return
     if (date) {
@@ -64,7 +72,7 @@ const TitleEditor = () => {
       timeRef.current = dayjs(date).format("HH:mm")
       setStyle("heading-three")
       setIsSettingTime(false)
-      setText("")
+      titleRef.current ? setText(titleRef.current) : setText("")
       deleteSlashCommand()
     }
   }, [date])
@@ -92,6 +100,7 @@ const TitleEditor = () => {
   }, [text])
   const commands = [
     {
+      icon: "Calendar",
       name: "Start Date",
       style: "",
       action: () => {
@@ -107,6 +116,7 @@ const TitleEditor = () => {
       },
     },
     {
+      icon: "Sunset",
       name: "Due Date",
       style: "",
       action: function () {
@@ -122,17 +132,19 @@ const TitleEditor = () => {
       },
     },
     {
-      name: "required clock numbers",
+      icon: "Clock",
+      name: "Required time",
       action: () => {
         setEditRequiredNumber(true)
         setText(() => {
           const newText = "/Required Clocks:"
           return newText
         })
-        dispatch(task.saveTaskDetail("requiredNumber", 0))
+        dispatch(task.saveTaskDetail("requiredTime", 0))
       },
     },
     {
+      icon: "Flag",
       name: "priority",
       action: function () {
         setIsEditing(true)
@@ -147,6 +159,7 @@ const TitleEditor = () => {
       },
     },
     {
+      icon: "CheckCircle",
       name: "progress",
       action: function () {
         setIsEditing(true)
@@ -158,12 +171,6 @@ const TitleEditor = () => {
         setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
-      },
-    },
-    {
-      name: "create new tags",
-      action: () => {
-        setText("")
       },
     },
   ]
@@ -282,6 +289,7 @@ const TitleEditor = () => {
         <div
           className="heading-three text-light300 px-2 py-1 rounded"
           onClick={() => {
+            inputRef.current = null
             setIsEditing(true)
             setText(text)
           }}
@@ -302,20 +310,24 @@ const TitleEditor = () => {
         />
       )}
       {matchingCommands.length !== 0 && (
-        <div className="border-1 border-t-0 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 ">
-          {matchingCommands.map((command, index) => (
-            <div
-              key={index}
-              onClick={() => selectCommand(command)}
-              onMouseOver={() => setSelectionIndex(index)}
-              className={
-                "results__command " +
-                (index == selectionIndex ? "results__command--selected" : "")
-              }
-            >
-              {command.name}
-            </div>
-          ))}
+        <div className="results top-10 mt-1 z-10 ">
+          {matchingCommands.map((command, index) => {
+            const IconName = Icon[command.icon]
+            return (
+              <div
+                key={index}
+                onClick={() => selectCommand(command)}
+                onMouseOver={() => setSelectionIndex(index)}
+                className={`
+                  results__command 
+                  ${index == selectionIndex ? "results__command--selected" : ""}
+                `}
+              >
+                <IconName />
+                <p className="text-lg">{command.name}</p>
+              </div>
+            )
+          })}
         </div>
       )}
       {isSettingTime && (

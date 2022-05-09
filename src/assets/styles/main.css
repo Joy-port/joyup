@@ -974,10 +974,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .rounded-sm {
   border-radius: 0.125rem;
 }
-.rounded-b-sm {
-  border-bottom-right-radius: 0.125rem;
-  border-bottom-left-radius: 0.125rem;
-}
 .border-1 {
   border-width: 1.5px;
 }
@@ -992,9 +988,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .border-t-2 {
   border-top-width: 2px;
-}
-.border-t-0 {
-  border-top-width: 0px;
 }
 .border-b-1 {
   border-bottom-width: 1.5px;
@@ -1218,10 +1211,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-shadow-color: #9CC2D3;
   --tw-shadow: var(--tw-shadow-colored);
 }
-.shadow-light300 {
-  --tw-shadow-color: #4D5F6A;
-  --tw-shadow: var(--tw-shadow-colored);
-}
 .blur {
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1397,8 +1386,7 @@ select:focus {
 }
 .select-light300:focus {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  outline-color: #4D5F6A;
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
 }
 .select-group {
   display: flex;
@@ -1505,14 +1493,29 @@ select:focus {
   line-height: 1.75rem;
 }
 .results {
-  border-width: 1px;
+  position: absolute;
+  width: 100%;
+  overflow-y: auto;
+  border-radius: 0.125rem;
+  border-width: 1.5px;
   --tw-border-opacity: 1;
-  border-color: rgb(44 47 51 / var(--tw-border-opacity));
+  border-color: rgb(220 225 229 / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-color: #4D5F6A;
+  --tw-shadow: var(--tw-shadow-colored);
 }
 .results__command {
   z-index: 20;
+  display: flex;
   cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.75rem;
+  text-transform: capitalize;
 }
 .results__command--selected {
   z-index: 20;

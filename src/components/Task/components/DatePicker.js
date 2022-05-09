@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
     <input
-      className="bg-light100 w-full"
+      className="bg-light100 w-full rounded select-light300"
       onChange={onChange}
       placeholder={placeholder}
       value={value}

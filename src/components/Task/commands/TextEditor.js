@@ -60,14 +60,6 @@ const TextEditor = () => {
     })
   })
 
-  // useEffect(() => {
-  //   console.log("after delete slash command", text)
-  //   if (text.trim() === "") {
-  // setSlashCharacterPosition(null)
-  // setQuery(null)
-  //   }
-  // }, [deleteSlashCommand])
-
   useEffect(() => {
     dispatch(task.saveTaskDetail("editDescription", [...document]))
   }, [document])
@@ -100,12 +92,9 @@ const TextEditor = () => {
   const selectCommand = (command) => {
     deleteSlashCommand()
     document.find((item) => item.id === inputRef.current.id).html = command
-    console.log(HTMLStyle, command)
-    console.log(toSpecificBlock(currentBlockIndex())) //current block
     if (command.combine) {
       const currentHTMLStyle = HTMLStyle.style
       const addStyle = `${currentHTMLStyle} ${command.style}`
-      console.log(addStyle)
       selectCommand((prevStyle) => {
         return {
           ...prevStyle,
@@ -149,17 +138,6 @@ const TextEditor = () => {
       setQuery(null)
     }
   })
-  // const addNewBlock = (index, content) => {
-  //   const newDoc = [...document]
-  //   newDoc.splice(index, 0, content)
-  //   setDocument(newDoc)
-  // }
-  // const currentBlockIndex = () => {
-  //   return document.findIndex((item) => item.id === inputRef.current.id)
-  // }
-  // const toSpecificBlock = (index) => {
-  //   return document.find((item, i) => i === index)
-  // }
 
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
@@ -293,7 +271,7 @@ const TextEditor = () => {
                     }
                   />
                   {matchingCommands.length !== 0 && (
-                    <div className=" rounded-b-sm w-full border-1 shadow shadow-light300 absolute top-8 mt-1 bg-white z-10 max-h-56 overflow-y-auto">
+                    <div className="results top-8 mt-1 z-10  max-h-56 ">
                       {matchingCommands.map((command, index) => {
                         const IconName = Icon[command.icon]
                         return (
@@ -302,7 +280,6 @@ const TextEditor = () => {
                             onClick={() => selectCommand(command)}
                             onMouseOver={() => setSelectionIndex(index)}
                             className={`
-                              flex gap-2 items-center
                               results__command
                               ${
                                 index == selectionIndex

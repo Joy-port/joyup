@@ -113,7 +113,7 @@ select {
 
 /* selector */
 .select-light300 {
-  @apply bg-light100 text-light300 rounded px-2 py-1 focus:outline-light300 focus:bg-white placeholder:text-light200;
+  @apply bg-light100 text-light300 rounded px-2 py-1 placeholder:text-light200 focus:bg-light000;
 }
 
 .select-group {
@@ -159,11 +159,11 @@ select {
   @apply leading-7 border-l-2;
 }
 .results {
-  @apply border border-slateLight;
+  @apply border-1 border-light100 shadow shadow-light300 rounded-sm w-full absolute bg-white overflow-y-auto;
 }
 
 .results__command {
-  @apply p-3 cursor-pointer z-20;
+  @apply capitalize flex gap-2 items-center p-3 cursor-pointer z-20;
 }
 
 .results__command--selected {

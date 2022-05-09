@@ -6,9 +6,7 @@ import { tags } from "../../sliceReducers/actions/tags"
 import { task } from "../../sliceReducers/actions/task"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
-import AddSubtask from "./components/AddSubtask"
-import DateModal from "./components/DateModal"
-import dayjs from "dayjs"
+import DatePicker from "./components/DatePicker"
 import {
   Clock,
   X,
@@ -21,6 +19,7 @@ import {
   Flag,
   CheckSquare,
   Tag,
+  Sunset,
 } from "react-feather"
 import TimeModal from "./components/TimeModal"
 
@@ -36,6 +35,7 @@ const index = () => {
     title,
     projectID,
     startDate,
+    dueDate,
     parent,
     tagList,
     clockNumber,
@@ -45,8 +45,11 @@ const index = () => {
   const dispatch = useDispatch()
   const { taskID } = useParams()
   const navigate = useNavigate()
-  const [isOpenDateModal, setIsOpenDateModal] = useState(false)
   const [isOpenTimeModal, setIsOpenTimeModal] = useState(false)
+  const [calendarStartDate, setCalendarStartDate] = useState(startDate)
+  const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
+  // const [isOpenDateModal, setIsOpenDateModal] = useState(false)
+
   useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
   }, [selectedProjectID])
@@ -66,15 +69,34 @@ const index = () => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
   useEffect(() => {
-    if (isOpenDateModal && isOpenTimeModal) {
-      setIsOpenTimeModal(false)
+    if (calendarDueDate < calendarStartDate) {
+      setCalendarDueDate(() => {
+        const afterStartDate = startDate
+        return afterStartDate
+      })
     }
-  }, [setIsOpenDateModal, isOpenDateModal])
+  }, [calendarStartDate])
   useEffect(() => {
-    if (isOpenTimeModal && isOpenDateModal) {
-      setIsOpenDateModal(false)
-    }
-  }, [setIsOpenTimeModal, isOpenTimeModal])
+    const date = new Date(calendarStartDate).getTime()
+    const dateContent = { name: "startDate", date }
+    dispatch(task.saveTaskDate(dateContent))
+  }, [calendarStartDate])
+  useEffect(() => {
+    const date = new Date(calendarDueDate).getTime()
+    const dateContent = { name: "dueDate", date }
+    dispatch(task.saveTaskDate(dateContent))
+  }, [calendarDueDate])
+
+  // useEffect(() => {
+  //   if (isOpenDateModal && isOpenTimeModal) {
+  //     setIsOpenTimeModal(false)
+  //   }
+  // }, [setIsOpenDateModal, isOpenDateModal])
+  // useEffect(() => {
+  //   if (isOpenTimeModal && isOpenDateModal) {
+  //     setIsOpenDateModal(false)
+  //   }
+  // }, [setIsOpenTimeModal, isOpenTimeModal])
 
   return (
     <div className="modal-bg">
@@ -98,7 +120,7 @@ const index = () => {
           <div className="grow flex flex-col-reverse md:flex-row gap-5 task-scrollbar">
             <div className="flex flex-col gap-3 h-full grow">
               <TextEditor />
-              <AddSubtask />
+              {/* <AddSubtask /> */}
             </div>
             <div className="flex flex-col gap-3 w-full md:w-72">
               <div className="select-group">
@@ -164,18 +186,30 @@ const index = () => {
               <div className="select-group relative">
                 <div className="flex gap-2 items-center max-w-24">
                   <Calendar strokeWidth={1} />
-                  <div className="group-title">Date</div>
+                  <div className="group-title">Start Date</div>
                 </div>
-                <div
-                  className="select-light300 w-1/2 cursor-pointer"
-                  onClick={() => {
-                    setIsOpenDateModal(!isOpenDateModal)
-                  }}
-                  onBlur={() => setIsOpenDateModal(false)}
-                >
-                  {dayjs(startDate).format("MMM DD, HH:mm") || "Date"}
+                <div className="w-1/2">
+                  <DatePicker
+                    date={calendarStartDate}
+                    setDate={setCalendarStartDate}
+                    showType={false}
+                    hasCustomButton={true}
+                  />
                 </div>
-                {isOpenDateModal && <DateModal setIsOpenDateModal={setIsOpenDateModal} />}
+              </div>
+              <div className="select-group relative">
+                <div className="flex gap-2 items-center max-w-24">
+                  <Sunset strokeWidth={1} />
+                  <div className="group-title">Due Date</div>
+                </div>
+                <div className="w-1/2">
+                  <DatePicker
+                    date={calendarDueDate}
+                    setDate={setCalendarDueDate}
+                    showType={false}
+                    hasCustomButton={true}
+                  />
+                </div>
               </div>
               <div className="select-group relative">
                 <div className="flex gap-2 items-center max-w-24">
