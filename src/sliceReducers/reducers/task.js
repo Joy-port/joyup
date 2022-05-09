@@ -50,6 +50,7 @@ function taskReducer(state = initialTaskState, action) {
       }
     case "task/editDate":
       const { name, date } = action.payload
+      console.log("date", action.payload)
       return { ...state, [name]: date }
     case "task/description":
       // if (action.payload.content !== "") {

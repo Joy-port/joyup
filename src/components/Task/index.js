@@ -190,7 +190,7 @@ const index = () => {
                 </div>
                 <div className="w-1/2">
                   <DatePicker
-                    date={calendarStartDate}
+                    date={startDate}
                     setDate={setCalendarStartDate}
                     showType={false}
                     hasCustomButton={true}
@@ -204,7 +204,7 @@ const index = () => {
                 </div>
                 <div className="w-1/2">
                   <DatePicker
-                    date={calendarDueDate}
+                    date={dueDate}
                     setDate={setCalendarDueDate}
                     showType={false}
                     hasCustomButton={true}

@@ -45,7 +45,11 @@ export const task = {
   saveTaskDate: (dateContent) => {
     return async (dispatch, getState) => {
       try {
+        const { id } = getState().task
         dispatch({ type: "task/editDate", payload: dateContent })
+        await firebase.saveTaskPartialContent(id, {
+          [dateContent.name]: dateContent.date,
+        })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
       }
