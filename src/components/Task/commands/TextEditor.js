@@ -92,17 +92,23 @@ const TextEditor = () => {
   const selectCommand = (command) => {
     deleteSlashCommand()
     document.find((item) => item.id === inputRef.current.id).html = command
-    if (command.combine) {
-      const currentHTMLStyle = HTMLStyle.style
-      const addStyle = `${currentHTMLStyle} ${command.style}`
-      selectCommand((prevStyle) => {
-        return {
-          ...prevStyle,
-          style: addStyle,
-        }
-      })
-      return
-    }
+    // if (command.combine) {
+    //   const currentHTMLStyle = HTMLStyle.style
+    //   const addStyle = `${currentHTMLStyle} ${command.style}`
+    //   const newStyle = { ...HTMLStyle.style, style: addStyle }
+    //   selectCommand((prevStyle) => {
+    //     return {
+    //       ...prevStyle,
+    //       style: addStyle,
+    //     }
+    //   })
+    //   setHTMLStyle(newStyle)
+    //   console.log(command)
+    //   console.log(HTMLStyle)
+    //   setSlashCharacterPosition(null)
+    //   setQuery(null)
+    //   return
+    // }
     setHTMLStyle(command)
     setSlashCharacterPosition(null)
     setQuery(null)
@@ -322,6 +328,7 @@ const TextEditor = () => {
                   </p>
                 )
               } else if (item.content && !item.html.parent) {
+                console.log(TagName)
                 return (
                   <TagName
                     key={item.id}

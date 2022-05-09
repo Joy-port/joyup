@@ -40,7 +40,6 @@ function userReducer(state = initialUserState, action) {
         id,
       }
     case "user/getUserTasks":
-      console.log("check user tasks", action.payload)
       return {
         ...state,
         userTasks: [...action.payload],

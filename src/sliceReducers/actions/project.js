@@ -5,7 +5,6 @@ export const project = {
     return async function (dispatch) {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
-          console.log(projects)
           dispatch({ type: "projects/updateProjects", payload: projects })
           const projectTasks = Object.keys(projects).flatMap((projectID) => {
             return projects[projectID].tasks
