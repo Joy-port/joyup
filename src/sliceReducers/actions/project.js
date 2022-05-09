@@ -5,6 +5,7 @@ export const project = {
     return async function (dispatch) {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
+          console.log(projects)
           dispatch({ type: "projects/updateProjects", payload: projects })
           const projectTasks = Object.keys(projects).flatMap((projectID) => {
             return projects[projectID].tasks
@@ -54,10 +55,10 @@ export const project = {
           publicStatus
         )
         await firebase.saveProjectToUserProjects(id, projectID, type).then(() => {
-          callback && callback()
+          callback && callback(projectID)
         })
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/ERROR", payload: error })
       }
     }
   },

@@ -49,13 +49,15 @@ const ProjectList = () => {
           <Users />
           Collaborates
         </div> */}
-        <div
-          className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
-          onClick={() => setIsOpen(true)}
-        >
-          <FolderPlus />
-          <p>Create Project</p>
-        </div>
+        {userProjects.length > 0 && (
+          <div
+            className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
+            onClick={() => setIsOpen(true)}
+          >
+            <FolderPlus />
+            <p>Create Project</p>
+          </div>
+        )}
       </div>
       <div className="hidden md:block -mt-5 min-h-18"></div>
       {type === 0 ? (

@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux"
 import { project } from "../sliceReducers/actions/project"
 import { func } from "prop-types"
 import { useNavigate } from "react-router-dom"
-import { FolderPlus } from "react-feather"
+import { ArrowRight } from "react-feather"
+import { tags } from "../sliceReducers/actions/tags"
 
 const NewProject = ({ setIsOpen }) => {
   const [projectTitle, setProjectTitle] = useState("")
@@ -21,16 +22,17 @@ const NewProject = ({ setIsOpen }) => {
       projectTitle,
       isPublic,
     }
-    console.log(projectContent)
     dispatch(
-      project.createNewProject(projectContent, () => {
+      project.createNewProject(projectContent, (projectID) => {
         setIsOpen(false)
+        dispatch(tags.switchProject(projectID))
+        navigate(`${projectID}`)
       })
     )
   }
 
   return (
-    <div className="modal-bg">
+    <div className="modal-bg transition-colors">
       <div className="modal-container modal-sm bg-light100">
         <div className="modal-header flex justify-between items-start">
           <h1 className="text-light300 heading-three mt-2">New Project</h1>
@@ -58,11 +60,9 @@ const NewProject = ({ setIsOpen }) => {
             required
             value={projectTitle}
             onChange={(e) => {
-              if (e.target.value.trim() !== "") {
-                setProjectTitle(e.target.value)
-              }
+              setProjectTitle(e.target.value)
             }}
-            placeholder="give your project a title name"
+            placeholder="give your project a title"
           />
           <div className="flex items-center gap-4">
             <label htmlFor="public" className="font-semibold mr-5">
@@ -82,7 +82,7 @@ const NewProject = ({ setIsOpen }) => {
             className="w-full button button-dark flex items-center justify-center gap-3"
             onClick={(e) => createNewProject(e)}
           >
-            <FolderPlus />
+            <ArrowRight />
           </button>
         </div>
       </div>

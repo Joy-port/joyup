@@ -406,6 +406,7 @@ export const firebase = {
         collection(this.db, taskCollection),
         where("projectID", "==", projectID)
       )
+      console.log("delete project")
       const taskSnapShot = await getDocs(taskQuery)
       taskSnapShot.forEach(async (task) => {
         console.log(task.id)
