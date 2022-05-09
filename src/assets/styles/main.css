@@ -859,6 +859,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .pb-6 {
   padding-bottom: 1.5rem;
 }
+.pl-2 {
+  padding-left: 0.5rem;
+}
 .text-center {
   text-align: center;
 }
@@ -954,6 +957,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .shadow-blue100 {
   --tw-shadow-color: #9CC2D3;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+.shadow-light300 {
+  --tw-shadow-color: #4D5F6A;
   --tw-shadow: var(--tw-shadow-colored);
 }
 .blur {
@@ -1535,44 +1542,36 @@ select:focus {
 .heading-three {
   font-size: 1.5rem;
   line-height: 2rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 .heading-four {
   font-size: 1.125rem;
   line-height: 1.75rem;
-  font-weight: 400;
+  font-weight: 500;
 }
 .heading-five {
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 400;
 }
+/*ml-5 pl-3*/
 .unordered-list {
-  margin-left: 1.25rem;
   list-style-type: disc;
-  padding-left: 0.75rem;
 }
+/*ml-5 pl-3*/
 .ordered-list {
-  margin-left: 1.25rem;
   list-style-type: decimal;
-  padding-left: 0.75rem;
 }
-/*ml-5*/
+/*ml-5 pl-3*/
 .quote-block {
-  margin-left: 1.25rem;
   border-left-width: 4px;
   --tw-border-opacity: 1;
-  border-color: rgb(35 39 42 / var(--tw-border-opacity));
-  padding-left: 0.75rem;
+  border-color: rgb(77 95 106 / var(--tw-border-opacity));
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 600;
 }
-.results {
-  border-width: 1px;
-  --tw-border-opacity: 1;
-  border-color: rgb(44 47 51 / var(--tw-border-opacity));
-}
+/*ml-5 pl-3*/
 .results__command {
   z-index: 20;
   cursor: pointer;

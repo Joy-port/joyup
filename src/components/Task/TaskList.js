@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid"
 import { Plus, Clock } from "react-feather"
 
 const TaskList = () => {
-  const selectorRef = useRef()
   const dispatch = useDispatch()
   const task = useSelector((state) => state.task)
   const { totalTaskList } = useSelector((state) => state.projects)
@@ -14,7 +13,7 @@ const TaskList = () => {
   let { pathname } = useLocation()
   const [taskID, setTaskID] = useState("")
   const [openSelector, setOpenSelector] = useState(false)
-  const createNewTask = useCallback(() => {
+  const createNewTask = () => {
     console.log(userProjects)
     if (userProjects.length < 1) {
       alert("please create a new project before add a new task")
@@ -27,10 +26,7 @@ const TaskList = () => {
     setTaskID(newTaskID)
     dispatch({ type: "task/createNewTask", payload: newTaskID })
     navigate(`/task/${taskID}`)
-  }, [userProjects])
-  // useEffect(() => {
-  //   navigate(`/task/${taskID}`)
-  // }, [taskID])
+  }
 
   const openTask = (taskID) => {
     const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))

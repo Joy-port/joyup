@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { TextType } from "../../../helpers/config"
 import { task } from "../../../sliceReducers/actions/task"
-import { Type } from "react-feather"
+import * as Icon from "react-feather"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCoffee } from "@fortawesome/free-regular-svg-icons"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)
@@ -253,7 +255,7 @@ const TextEditor = () => {
         }`}
       >
         <p className="flex gap-5 items-center text-light300 py-2">
-          <Type />
+          <Icon.Type />
           Description
         </p>
         {document &&
@@ -282,20 +284,34 @@ const TextEditor = () => {
                     }
                   />
                   {matchingCommands.length !== 0 && (
-                    <div className="border-1 border-slateLight rounded-b-sm w-full absolute top-8 mt-1 bg-light000 z-10 max-h-56 overflow-y-auto">
-                      {matchingCommands.map((command, index) => (
-                        <div
-                          key={index}
-                          onClick={() => selectCommand(command)}
-                          onMouseOver={() => setSelectionIndex(index)}
-                          className={
-                            "results__command " +
-                            (index == selectionIndex ? "results__command--selected" : "")
-                          }
-                        >
-                          {command.name}
-                        </div>
-                      ))}
+                    <div className=" rounded-b-sm w-full border-1 shadow shadow-light300 absolute top-8 mt-1 bg-white z-10 max-h-56 overflow-y-auto">
+                      {matchingCommands.map((command, index) => {
+                        const IconName = Icon[command.icon]
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => selectCommand(command)}
+                            onMouseOver={() => setSelectionIndex(index)}
+                            className={`
+                              flex gap-2 items-center
+                              results__command
+                              ${
+                                index == selectionIndex
+                                  ? "results__command--selected"
+                                  : ""
+                              }`}
+                          >
+                            <IconName strokeWidth={1} />
+                            <p
+                              className={`text-lg ${command.style} ${
+                                command.name === "Quote" ? "pl-2" : ""
+                              }`}
+                            >
+                              {command.name}
+                            </p>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>
@@ -352,23 +368,6 @@ const TextEditor = () => {
             }
           })}
       </div>
-      {/* {matchingCommands.length !== 0 && (
-        <div className="results">
-          {matchingCommands.map((command, index) => (
-            <div
-              key={index}
-              onClick={() => selectCommand(command)}
-              onMouseOver={() => setSelectionIndex(index)}
-              className={
-                "results__command " +
-                (index == selectionIndex ? "results__command--selected" : "")
-              }
-            >
-              {command.name}
-            </div>
-          ))}
-        </div>
-      )} */}
     </div>
   )
 }
