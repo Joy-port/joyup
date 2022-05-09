@@ -143,8 +143,8 @@ export const tags = {
     return async (dispatch, getState) => {
       try {
         const { selectedProjectID } = getState().tags
+        // dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
         await firebase.saveTaskOrder(selectedProjectID, taskTagContent)
-        dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
       }

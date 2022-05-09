@@ -1,4 +1,3 @@
-import moment from "moment"
 export const getClockTime = (time) => {
   let hours = "00"
   let minutes = "00"

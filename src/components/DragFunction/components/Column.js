@@ -11,14 +11,19 @@ const Column = ({ column, taskList, type }) => {
       }`}
     >
       <h1 className={`tag`}>{column.title}</h1>
-      <Droppable droppableId={column.id}>
+      <Droppable
+        droppableId={column.id}
+        style={{ overflowY: "auto" }}
+        className={`${type === "list" ? "min-h-20" : "overflow-y-auto"}`}
+      >
         {(provided, snapshot) => {
+          const styleType = type === "list" ? "px-2 pb-2 rounded-sm" : ""
           const isDraggingOver = snapshot.isDraggingOver
             ? `column-${type}-dragging`
             : `column-${type}-normal`
           return (
             <div
-              className={`${isDraggingOver} overflow-y-auto`}
+              className={`${isDraggingOver} ${styleType} `}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

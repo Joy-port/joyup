@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { FolderPlus, ChevronDown, Inbox, X, Folder, Users } from "react-feather"
+import { FolderPlus, ChevronDown, Inbox, X, Folder, Users, Edit2 } from "react-feather"
 import NewProject from "../NewProject"
 import { tags } from "../../sliceReducers/actions/tags"
 import { project } from "../../sliceReducers/actions/project"
-import Breadcrumb from "../Breadcrumb"
 
 const ProjectList = () => {
   const { ownerProjects, collaborateProjects, userProjects } = useSelector(
@@ -16,7 +15,7 @@ const ProjectList = () => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [type, setType] = useState(0)
-  const onClick = (projectID) => {
+  const openProject = (projectID) => {
     dispatch(tags.switchProject(projectID))
     navigate(`${projectID}`)
   }
@@ -25,6 +24,10 @@ const ProjectList = () => {
       projectID !== "" && dispatch(project.deleteProject(projectID))
     }
   }
+
+  // const editProjectName = (projectID) => {
+
+  // }
   return (
     <>
       <div className="menu-container">
@@ -79,21 +82,34 @@ const ProjectList = () => {
                   return (
                     <div
                       key={ownerProject.id}
-                      className="border-1 shadow border-light100 bg-white   hover:bg-light000 hover:border-light000 rounded cursor-pointer relative h-24 hide p-4"
+                      className="border-1 shadow border-light100 bg-white   hover:bg-light000 hover:border-light000 rounded cursor-pointer h-24 p-4"
                       onClick={() => {
-                        onClick(ownerProject.id)
+                        openProject(ownerProject.id)
                       }}
                     >
-                      <div className="capitalize font-semibold">{ownerProject.title}</div>
-                      <button
-                        className="absolute top-0 right-0 block p-2 text-light200 show"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          deleteProject(ownerProject.id)
-                        }}
-                      >
-                        <X strokeWidth={1} />
-                      </button>
+                      <div className="flex justify-between items-start">
+                        <div className="capitalize font-semibold grow hide flex gap-4 items-center">
+                          <p className="">{ownerProject.title}</p>
+                          {/* <div
+                            className=" hover:text-light300 text-light200 show z-20"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              editProjectName(ownerProject.id)
+                            }}
+                          >
+                            <Edit2 strokeWidth={1} size={16} />
+                          </div> */}
+                        </div>
+                        <button
+                          className="block text-light200 hover:text-light300"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            deleteProject(ownerProject.id)
+                          }}
+                        >
+                          <X strokeWidth={1} />
+                        </button>
+                      </div>
                     </div>
                   )
                 })}
@@ -125,7 +141,7 @@ const ProjectList = () => {
                   <div
                     className="uppercase cursor-pointer px-4 py-3 grow"
                     onClick={() => {
-                      onClick(collaborateProject.id)
+                      openProject(collaborateProject.id)
                     }}
                   >
                     {collaborateProject.title}
@@ -134,7 +150,7 @@ const ProjectList = () => {
                     className="block px-4 py-3"
                     onClick={() => deleteProject(collaborateProject.id)}
                   >
-                    <X strokeWidth={1}></X>
+                    <X strokeWidth={1} />
                   </button>
                 </div>
               )

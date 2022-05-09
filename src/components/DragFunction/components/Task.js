@@ -18,21 +18,29 @@ const Task = ({ task, index, type }) => {
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => {
         const isDragging = snapshot.isDragging ? `task-${type}-dragging` : ""
+        const draggingTop = type === "list" ? 200 : 176
+        const draggingLeft = type === "list" ? 0 : 200
+        const dragging = snapshot.isDragging
+          ? {
+              ...provided.draggableProps.style,
+              top: `calc(provided.draggableProps.style.top - ${draggingTop}px)`,
+              left: `calc(provided.draggableProps.style.top - ${draggingLeft}px)`,
+            }
+          : { ...provided.draggableProps.style }
         return (
           <div
-            className={`task task-${type} ${isDragging}`}
+            className={`task task-${type} ${isDragging} hide`}
             {...provided.draggableProps}
+            {...provided.dragHandleProps}
             ref={provided.innerRef}
+            style={dragging}
           >
+            <div className="cursor-pointer flex gap-3 items-center">{task.title}</div>
             <div
-              className="grow cursor-pointer flex gap-3 items-center"
+              className="rounded p-1 bg-light100 show z-over-draggable"
               onClick={() => onClick(task.id)}
             >
               <Edit3 strokeWidth={1} size={18} />
-              {task.title}
-            </div>
-            <div {...provided.dragHandleProps}>
-              <Menu strokeWidth={1} />
             </div>
           </div>
         )

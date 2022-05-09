@@ -61,9 +61,9 @@ module.exports = {
         // full: "9999px",
       },
       height: {
-        "custom-m": "calc(100vh - 64px)",
-        "custom-l": "calc(100vh - 135px)",
-        "custom-xl": "calc(100vh - 200px)",
+        "custom-lg": "calc(100vh - 200px)",
+        "custom-xl": "calc(100vh - 135px)",
+        "custom-xxl": "calc(100vh - 64px)",
       },
       width: {
         "custom-m": "calc(100vw - 80px)",
@@ -277,6 +277,7 @@ module.exports = {
         90: "90",
         100: "100",
         110: "110",
+        "z-over-draggable": 5001,
       },
     },
   },

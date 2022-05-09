@@ -17,10 +17,6 @@ const List = ({ type }) => {
   return (
     <>
       <div className="tool-bar">
-        {/* <div className="flex">
-          <input type="text" placeholder="Search" />
-          <Search />
-        </div> */}
         <Breadcrumb />
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
@@ -51,21 +47,14 @@ const List = ({ type }) => {
                 </div>
               )}
             </div>
-            {/* <select
-            value={selectedType.id || -1}
-            onChange={(e) => dispatch(tags.switchType(e.target.value))}
-          >
-            <option value={-1}>please select</option>
-            {types.map((type) => (
-              <option value={type.id} key={type.id}>
-                {type.type}
-              </option>
-            ))}
-          </select> */}
           </div>
         )}
       </div>
-      <div className="h-custom-l -ml-4 -mr-4 overflow-auto px-4 pb-2 scrollbar">
+      <div
+        className={`${
+          type === "list" ? "h-custom-lg overflow-y-auto" : "h-custom-xl overflow-auto"
+        } -ml-4 -mr-4  px-4 pb-2 scrollbar`}
+      >
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) === "{}" ? (
           <>
             <div

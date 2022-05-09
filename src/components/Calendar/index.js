@@ -137,7 +137,7 @@ const index = ({ type }) => {
   }
 
   return (
-    <div className="h-custom-m overflow-y-auto pb-20 scrollbar relative">
+    <div className="h-custom-xxl overflow-y-auto pb-20 scrollbar relative">
       <Calendar
         dayLayoutAlgorithm={bigCalendar.dayLayoutAlgorithm}
         localizer={bigCalendar.localizer}

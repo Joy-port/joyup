@@ -56,7 +56,10 @@ const index = ({ type }) => {
 
   return (
     <div className={`view-${type}`}>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext
+        onDragEnd={onDragEnd}
+        className={`${type === "board" ? "overflow-x-auto" : ""}`}
+      >
         {selectedColumnOrder &&
           selectedColumnOrder.map((columnId) => {
             const column = selectedTagColumns[columnId]

@@ -33,7 +33,7 @@ const NewProject = ({ setIsOpen }) => {
     <div className="modal-bg">
       <div className="modal-container modal-sm bg-light100">
         <div className="modal-header flex justify-between items-start">
-          <h1 className="text-light300 heading-three mt-2">Project</h1>
+          <h1 className="text-light300 heading-three mt-2">New Project</h1>
           <button
             onClick={() => {
               setProjectTitle("")
@@ -48,8 +48,11 @@ const NewProject = ({ setIsOpen }) => {
           className="modal-body overflow-y-auto flex flex-col gap-3"
           onSubmit={(e) => createNewProject(e)}
         >
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title" className="font-semibold">
+            Title
+          </label>
           <input
+            className="rounded px-2 py-1"
             type="text"
             id="title"
             required
@@ -59,9 +62,10 @@ const NewProject = ({ setIsOpen }) => {
                 setProjectTitle(e.target.value)
               }
             }}
+            placeholder="give your project a title name"
           />
           <div className="flex items-center gap-4">
-            <label htmlFor="public" className="mr-5">
+            <label htmlFor="public" className="font-semibold mr-5">
               Public
             </label>
             <input
@@ -79,7 +83,6 @@ const NewProject = ({ setIsOpen }) => {
             onClick={(e) => createNewProject(e)}
           >
             <FolderPlus />
-            Create New Project
           </button>
         </div>
       </div>

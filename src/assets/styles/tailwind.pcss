@@ -242,16 +242,17 @@ select {
 .column-list h1 {
   @apply text-light000 bg-light200 w-32 rounded-t-sm;
 }
-
+/*  min-h-32 */
 .column-list-dragging {
-  @apply bg-light100 shadow-inner px-2 pb-2 rounded-sm min-h-32;
+  @apply bg-light100 shadow-inner;
 }
+/* min-h-20 */
 .column-list-normal {
-  @apply bg-white min-h-20 shadow-light200 shadow-md px-2 pb-3  rounded-sm;
+  @apply bg-white  shadow-light200 shadow-md  rounded-sm;
 }
 
 .column-board {
-  @apply bg-light100 min-w-96 h-full overflow-y-hidden rounded shadow-transparentDark shadow-md;
+  @apply bg-light100 min-w-96 h-full rounded shadow-transparentDark shadow-md;
 }
 
 .column-board h1 {
@@ -278,7 +279,7 @@ select {
 }
 
 .column-board-normal {
-  @apply min-h-96 p-2 h-custom-xl;
+  @apply min-h-96 p-2 h-custom-lg;
 }
 .task-list {
   @apply bg-white hover:bg-light000 active:bg-light000 focus:bg-light000;
