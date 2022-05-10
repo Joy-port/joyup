@@ -100,14 +100,36 @@ function taskReducer(state = initialTaskState, action) {
         ...initialTaskState,
         id: action.payload,
         tagList: [],
-        description: [],
+        description: [
+          {
+            id: uuidv4(),
+            content: "",
+            html: {
+              parent: "",
+              tag: "p",
+              name: "",
+              style: "",
+            },
+          },
+        ],
       }
       return newState
     case "task/clearTaskWithoutSaving":
       const backToInitialState = {
         ...initialTaskState,
         tagList: [],
-        description: [],
+        description: [
+          {
+            id: uuidv4(),
+            content: "",
+            html: {
+              parent: "",
+              tag: "p",
+              name: "",
+              style: "",
+            },
+          },
+        ],
       }
       return backToInitialState
     case "task/openSavedTask":
