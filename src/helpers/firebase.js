@@ -29,14 +29,14 @@ import {
 
 //joyup
 // const firebaseConfig = {
-//   apiKey: "AIzaSyAiunsJAkpLkmy1Fg5FOLjYIct1Q-SXzCM",
-//   authDomain: "joyup-managment.firebaseapp.com",
-//   projectId: "joyup-managment",
-//   storageBucket: "joyup-managment.appspot.com",
-//   messagingSenderId: "213014992466",
-//   appId: "1:213014992466:web:71dd4fcc93b1bb98db718b",
-//   measurementId: "G-X689NX3J9C",
-// }
+//   apiKey: "AIzaSyD_0PAwmG4T-MAMAuJ0RKVxeLfONWS_9jg",
+//   authDomain: "joyup-management.firebaseapp.com",
+//   projectId: "joyup-management",
+//   storageBucket: "joyup-management.appspot.com",
+//   messagingSenderId: "974089768584",
+//   appId: "1:974089768584:web:5e9b8a9c0fcf5b7c28593d",
+//   measurementId: "G-BC10DC990F"
+// };
 
 //test account for storage
 const firebaseConfig = {

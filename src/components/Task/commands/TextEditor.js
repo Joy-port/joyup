@@ -19,6 +19,7 @@ const TextEditor = () => {
   const [isOnComposition, setIsOnComposition] = useState(true)
   const inputRef = useRef()
   const focusInput = useRef()
+  const commandFocus = useRef()
   const updateDescription = (newDescription) => {
     dispatch({ type: "task/description", payload: newDescription })
   }
@@ -61,7 +62,11 @@ const TextEditor = () => {
       return string
     })
   })
-
+  useEffect(() => {
+    if (selectionIndex !== null && commandFocus.current) {
+      commandFocus.current.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    }
+  }, [commandFocus.current])
   useEffect(() => {
     dispatch(task.saveTaskDetail("editDescription", [...description]))
   }, [description])
@@ -114,6 +119,7 @@ const TextEditor = () => {
     setHTMLStyle(command)
     setSlashCharacterPosition(null)
     setQuery(null)
+    setIsEditing(true)
   }
 
   const switchToNextLine = useCallback(() => {
@@ -161,7 +167,12 @@ const TextEditor = () => {
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {
-        setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
+        setSelectionIndex((prevIndex) => {
+          if (prevIndex === 0) {
+            return matchingCommands.length - 1
+          }
+          return Math.max(0, prevIndex - 1)
+        })
         e.stopPropagation()
         e.preventDefault()
       }
@@ -181,17 +192,22 @@ const TextEditor = () => {
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {
-        setSelectionIndex((prevIndex) =>
-          Math.min(matchingCommands.length - 1, prevIndex + 1)
-        )
+        setSelectionIndex((prevIndex) => {
+          if (prevIndex + 1 === matchingCommands.length) {
+            return 0
+          } else {
+            return Math.min(matchingCommands.length - 1, prevIndex + 1)
+          }
+        })
         e.stopPropagation()
         e.preventDefault()
       }
     } else if (e.key === "Enter") {
-      if (isOnComposition) return
       if (matchingCommands[selectionIndex]) {
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
+        // if (isOnComposition) return
+        console.log(isOnComposition)
         changeTextStyle()
         setHTMLStyle({})
         const prevIndex = currentBlockIndex()
@@ -232,6 +248,7 @@ const TextEditor = () => {
         }
         const currentBlock = prevBlock - 1 < 0 ? prevBlock : prevBlock - 1
         if (prevBlock !== currentBlock) {
+          e.preventDefault()
           setIsEditing(false)
           deleteBlock(prevBlock)
           const currentContent = toSpecificBlock(currentBlock)
@@ -240,6 +257,7 @@ const TextEditor = () => {
           setHTMLStyle(currentContent.html)
           focusInput.current = currentContent.id
           setIsEditing(true)
+
           // description.filter((item) => item.id !== inputRef.current.id)
           // focusInput.current = toSpecificBlock(currentBlock).id
           // setText(toSpecificBlock(currentBlock).content)
@@ -248,6 +266,7 @@ const TextEditor = () => {
     }
   }
   const compositionStatus = (e) => {
+    console.log(e.type)
     if (e.type === "compositionend") {
       setIsOnComposition(false)
       setText(e.target.value)
@@ -257,7 +276,7 @@ const TextEditor = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-1/4 grow md:grow-0">
+    <div className="flex flex-col min-h-1/4">
       <div
         className={`editor border-1 ${
           isEditing ? "border-light300" : "border-transparent"
@@ -299,11 +318,13 @@ const TextEditor = () => {
                     <div className="results top-8 mt-1 z-10  max-h-56 ">
                       {matchingCommands.map((command, index) => {
                         const IconName = Icon[command.icon]
+                        const isSelectedCommand = index === selectionIndex
                         return (
                           <div
                             key={index}
                             onClick={() => selectCommand(command)}
                             onMouseOver={() => setSelectionIndex(index)}
+                            ref={isSelectedCommand ? commandFocus : null}
                             className={`
                               results__command
                               ${

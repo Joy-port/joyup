@@ -39,7 +39,7 @@
     left: 50%;
     width: $item-size;
     height: $item-size;
-    margin: -($item-size / 2);
+    margin: -calc($item-size / 2);
 
     $angle: calc(360 / $item-count);
     $rot: -90;

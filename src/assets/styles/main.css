@@ -579,7 +579,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 @media (min-width: 768px) {
 
   .tool-bar {
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 }
 /* modal */

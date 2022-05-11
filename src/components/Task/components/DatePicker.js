@@ -2,7 +2,7 @@ import React, { useState, useCallback, forwardRef } from "react"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
 import dayjs from "dayjs"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
@@ -20,6 +20,7 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
 
 const DatePick = ({ date, setDate, showType }) => {
   const current = new Date()
+  const { startDate, dueDate } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const addTime = (addTime) => {
     const nowTime = current.getTime()
@@ -68,6 +69,8 @@ const DatePick = ({ date, setDate, showType }) => {
       showTimeSelect
       showDisabledMonthNavigation
       selected={date}
+      minTime={startDate}
+      maxTime={maxTime}
       timeIntervals={30}
       onChange={(date) => {
         onChange(date)

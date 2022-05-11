@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { tags } from "../../sliceReducers/actions/tags"
 import DragFunction from "../DragFunction"
-import Breadcrumb from "../Breadcrumb"
+// import Breadcrumb from "../Breadcrumb"
 import { FilePlus } from "react-feather"
 import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
@@ -17,7 +17,6 @@ const List = ({ type }) => {
   return (
     <>
       <div className="tool-bar">
-        <Breadcrumb />
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
             <div
