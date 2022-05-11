@@ -52,7 +52,9 @@ const List = ({ type }) => {
       </div>
       <div
         className={`${
-          type === "list" ? "h-custom-lg overflow-y-auto" : "h-custom-xl overflow-auto"
+          type === "list"
+            ? "h-custom-lg overflow-y-auto overflow-x-hidden"
+            : "h-custom-xl overflow-x-auto"
         } -ml-4 -mr-4  px-4 pb-2 scrollbar`}
       >
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) === "{}" ? (

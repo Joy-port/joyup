@@ -23,7 +23,7 @@ const Column = ({ column, taskList, type }) => {
             : `column-${type}-normal`
           return (
             <div
-              className={`${isDraggingOver} ${styleType} `}
+              className={`${isDraggingOver} ${styleType} transition-transform`}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

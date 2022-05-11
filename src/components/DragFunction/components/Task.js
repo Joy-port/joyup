@@ -14,12 +14,12 @@ const Task = ({ task, index, type }) => {
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/task/${task.id}`)
   }
+  const draggingTop = type === "list" ? 200 : 176
+  const draggingLeft = type === "list" ? 0 : 200
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => {
         const isDragging = snapshot.isDragging ? `task-${type}-dragging` : ""
-        const draggingTop = type === "list" ? 200 : 176
-        const draggingLeft = type === "list" ? 0 : 200
         const dragging = snapshot.isDragging
           ? {
               ...provided.draggableProps.style,
@@ -29,7 +29,7 @@ const Task = ({ task, index, type }) => {
           : { ...provided.draggableProps.style }
         return (
           <div
-            className={`task task-${type} ${isDragging} hide`}
+            className={`task task-${type} ${isDragging} hide transition-shadow`}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}

@@ -87,18 +87,6 @@ const index = () => {
     const dateContent = { name: "dueDate", date }
     dispatch(task.saveTaskDate(dateContent))
   }, [calendarDueDate])
-
-  // useEffect(() => {
-  //   if (isOpenDateModal && isOpenTimeModal) {
-  //     setIsOpenTimeModal(false)
-  //   }
-  // }, [setIsOpenDateModal, isOpenDateModal])
-  // useEffect(() => {
-  //   if (isOpenTimeModal && isOpenDateModal) {
-  //     setIsOpenDateModal(false)
-  //   }
-  // }, [setIsOpenTimeModal, isOpenTimeModal])
-
   return (
     <div className="modal-bg">
       <div className="modal-container bg-light000 modal-lg">
@@ -190,9 +178,6 @@ const index = () => {
                   <div className="group-title">Start Date</div>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  {/* <div className="bg-light100 rounded select-light300">
-                    {dayjs(startDate).format("MMM DD HH:mm")}
-                  </div> */}
                   <DatePicker
                     date={startDate}
                     setDate={setCalendarStartDate}
@@ -207,9 +192,6 @@ const index = () => {
                   <div className="group-title">Due Date</div>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  {/* <div className="bg-light100 rounded select-light300">
-                    {dayjs(dueDate).format("MMM DD HH:mm")}
-                  </div> */}
                   <DatePicker
                     date={dueDate}
                     setDate={setCalendarDueDate}
