@@ -211,3 +211,16 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
 .rbc-agenda-date-cell {
   display: none;
 }
+
+.rbc-continues-after,
+.rbc-continues-before,
+.rbc-continues-prior {
+  color: var(--blue200);
+}
+.rbc-agenda-empty {
+  text-align: center;
+  padding: 10px 15px;
+  color: var(--light100);
+  display: block;
+  font-size: 1.25rem;
+}

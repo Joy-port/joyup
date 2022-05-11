@@ -5,15 +5,14 @@ import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import moment from "moment"
 import DayToolbar from "./Toolbar/Day"
 import MonthToolbar from "./Toolbar/Month"
-import AgendaToolbar from "./Toolbar/Agenda"
 import { v4 as uuidv4 } from "uuid"
 import { task } from "../../sliceReducers/actions/task"
 import EventModal from "./EventModal"
 import { string } from "prop-types"
-// import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 
 const localizer = momentLocalizer(moment)
-// const DragDropCalendar = withDragAndDrop(Calendar)
+const DragDropCalendar = withDragAndDrop(Calendar)
 
 const index = ({ type }) => {
   const [onClickPlace, setOnClickPlace] = useState({})
@@ -117,7 +116,8 @@ const index = ({ type }) => {
     // })
   }
   //wait to fix
-  const onEventDrop = (draggedEventData) => {
+  const moveEvent = (draggedEventData) => {
+    console.log(draggedEventData)
     const { start, end, isAllDay, resourceId, event } = draggedEventData
     // 直接改 task 的 start end 存到  firebase
     //存 task state
@@ -125,11 +125,11 @@ const index = ({ type }) => {
     dispatch(task.checkTaskIDToOpen(taskID))
     const startTime = {
       name: "startDate",
-      date: new Date(start),
+      date: new Date(start).getTime(),
     }
     const endTime = {
       name: "dueDate",
-      date: new Date(end),
+      date: new Date(end).getTime(),
     }
     dispatch(task.saveTaskDate(startTime))
     dispatch(task.saveTaskDate(endTime))
@@ -138,7 +138,7 @@ const index = ({ type }) => {
 
   return (
     <div className="h-custom-xxl overflow-y-auto pb-20 scrollbar relative">
-      <Calendar
+      <DragDropCalendar
         dayLayoutAlgorithm={bigCalendar.dayLayoutAlgorithm}
         localizer={bigCalendar.localizer}
         defaultDate={bigCalendar.defaultDate}
@@ -155,8 +155,8 @@ const index = ({ type }) => {
         onSelectEvent={openTaskModal} //onclick once
         // onDoubleClickEvent={openTaskModal} //onclick twice
         // onSelecting={createTaskWhenSelected} //add event
+        onEventDrop={moveEvent}
         // onEventResize={onEventResize}
-        // onEventDrop={onEventDrop}
         eventPropGetter={eventPropGetter}
         timeslots={2}
         step={30}

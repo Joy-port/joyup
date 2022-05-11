@@ -21,6 +21,7 @@ import {
   CheckSquare,
   Tag,
   Sunset,
+  Circle,
 } from "react-feather"
 import TimeModal from "./components/TimeModal"
 
@@ -42,6 +43,7 @@ const index = () => {
     clockNumber,
     requiredNumber,
     totalTime,
+    allDay,
   } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const { taskID } = useParams()
@@ -72,7 +74,7 @@ const index = () => {
   useEffect(() => {
     if (calendarDueDate < calendarStartDate) {
       setCalendarDueDate(() => {
-        const afterStartDate = startDate
+        const afterStartDate = new Date(startDate).getTime()
         return afterStartDate
       })
     }
@@ -112,91 +114,124 @@ const index = () => {
               {/* <AddSubtask /> */}
             </div>
             <div className="flex flex-col gap-3 w-full md:w-72">
-              <div className="select-group">
-                <div className="flex gap-2 items-center max-w-24">
-                  <Folder strokeWidth={1} />
-                  <p className="group-title">Project</p>
+              <div className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full">
+                <div className="select-group">
+                  <div className="flex gap-2 items-center max-w-24">
+                    <Folder strokeWidth={1} />
+                    <p className="group-title">Project</p>
+                  </div>
+                  <select
+                    className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
+                    value={projectID}
+                    onChange={(e) => {
+                      dispatch(task.saveTaskDetail("projectID", e.target.value))
+                    }}
+                  >
+                    {userProjects &&
+                      userProjects.map((projectID) => {
+                        const projectDetail = totalProjectList[projectID]
+                        return (
+                          <option key={projectDetail.id} value={projectDetail.id}>
+                            {projectDetail.title}
+                          </option>
+                        )
+                      })}
+                  </select>
                 </div>
-                <select
-                  className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
-                  value={projectID}
-                  onChange={(e) => {
-                    dispatch(task.saveTaskDetail("projectID", e.target.value))
-                  }}
-                >
-                  {userProjects &&
-                    userProjects.map((projectID) => {
-                      const projectDetail = totalProjectList[projectID]
-                      return (
-                        <option key={projectDetail.id} value={projectDetail.id}>
-                          {projectDetail.title}
-                        </option>
-                      )
-                    })}
-                </select>
-              </div>
-              {types &&
-                types.map((item) => (
-                  <div className="select-group" key={item.id}>
-                    <div className="flex gap-2 items-center max-w-24">
-                      {item.type === "priority" ? (
-                        <Flag strokeWidth={1} />
-                      ) : item.type === "progress" ? (
-                        <CheckSquare strokeWidth={1} />
-                      ) : (
-                        <Tag strokeWidth={1} />
-                      )}
-                      <p className="group-title">{item.type} </p>
-                    </div>
-                    <select
-                      className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
-                      value={
-                        tagList.find((selected) => selected.parent === item.id)?.child ||
-                        selectedColumnOrder[0]
-                      }
-                      onChange={(e) => {
-                        dispatch(tags.switchType(item.type))
-                        const tag = {
-                          parent: item.id,
-                          child: e.target.value,
-                          type: item.type,
+                {types &&
+                  types.map((item) => (
+                    <div className="select-group" key={item.id}>
+                      <div className="flex gap-2 items-center max-w-24">
+                        {item.type === "priority" ? (
+                          <Flag strokeWidth={1} />
+                        ) : item.type === "progress" ? (
+                          <CheckSquare strokeWidth={1} />
+                        ) : (
+                          <Tag strokeWidth={1} />
+                        )}
+                        <p className="group-title">{item.type} </p>
+                      </div>
+                      <select
+                        className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
+                        value={
+                          tagList.find((selected) => selected.parent === item.id)
+                            ?.child || selectedColumnOrder[0]
                         }
-                        dispatch(task.saveTaskTag(tag))
+                        onChange={(e) => {
+                          dispatch(tags.switchType(item.type))
+                          const tag = {
+                            parent: item.id,
+                            child: e.target.value,
+                            type: item.type,
+                          }
+                          dispatch(task.saveTaskTag(tag))
+                        }}
+                      >
+                        {item.children.map((tag) => (
+                          <option value={tag.id} key={tag.id}>
+                            {tag.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+              </div>
+              <div className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full">
+                <div className="select-group relative">
+                  <div className="flex gap-2 items-center max-w-24">
+                    <Calendar strokeWidth={1} />
+                    <div className="group-title">All Day</div>
+                  </div>
+                  <div className="flex flex-col w-1/2">
+                    <div
+                      className={`rounded-full w-14 px-1 py-1 transition-colors cursor-pointer ${
+                        allDay ? "bg-blue200" : "bg-light100"
+                      }`}
+                      onClick={() => {
+                        const allDayStatus = !allDay
+                        dispatch({
+                          type: "task/editDate",
+                          payload: { name: "allDay", date: allDayStatus },
+                        })
                       }}
                     >
-                      {item.children.map((tag) => (
-                        <option value={tag.id} key={tag.id}>
-                          {tag.name}
-                        </option>
-                      ))}
-                    </select>
+                      <div
+                        className={`transition-all max-w-fit ${
+                          allDay ? "ml-auto" : "mr-auto"
+                        }`}
+                      >
+                        <Circle color="white" fill="white" />
+                      </div>
+                    </div>
                   </div>
-                ))}
-              <div className="select-group relative">
-                <div className="flex gap-2 items-center max-w-24">
-                  <Calendar strokeWidth={1} />
-                  <div className="group-title">Start Date</div>
                 </div>
-                <div className="flex flex-col w-1/2">
-                  <DatePicker
-                    date={startDate}
-                    setDate={setCalendarStartDate}
-                    hasMinDate={false}
-                  />
+                <div className="select-group relative">
+                  <div className="flex gap-2 items-center max-w-24">
+                    <Calendar strokeWidth={1} />
+                    <div className="group-title">Start Date</div>
+                  </div>
+                  <div className="flex flex-col w-1/2">
+                    <DatePicker
+                      date={startDate}
+                      setDate={setCalendarStartDate}
+                      hasMinDate={false}
+                      showTime={!allDay}
+                    />
+                  </div>
                 </div>
-              </div>
-
-              <div className="select-group relative">
-                <div className="flex gap-2 items-center max-w-24">
-                  <Sunset strokeWidth={1} />
-                  <div className="group-title">Due Date</div>
-                </div>
-                <div className="flex flex-col w-1/2">
-                  <DatePicker
-                    date={dueDate}
-                    setDate={setCalendarDueDate}
-                    hasMinDate={true}
-                  />
+                <div className="select-group relative">
+                  <div className="flex gap-2 items-center max-w-24">
+                    <Sunset strokeWidth={1} />
+                    <div className="group-title">Due Date</div>
+                  </div>
+                  <div className="flex flex-col w-1/2">
+                    <DatePicker
+                      date={dueDate}
+                      setDate={setCalendarDueDate}
+                      hasMinDate={true}
+                      showTime={!allDay}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="select-group relative">

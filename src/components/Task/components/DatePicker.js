@@ -1,4 +1,4 @@
-import React, { useState, useCallback, forwardRef } from "react"
+import React, { useState, useCallback, useEffect, useRef } from "react"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
 import dayjs from "dayjs"
@@ -18,10 +18,34 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   )
 }
 
-const DatePick = ({ date, setDate, hasMinDate }) => {
+const DatePick = ({ date, setDate, hasMinDate, showTime }) => {
   const current = new Date()
-  const { startDate, dueDate } = useSelector((state) => state.task)
+  const { startDate, dueDate, allDay } = useSelector((state) => state.task)
+  const [dateFormat, setDateFormat] = useState(() =>
+    allDay ? "MMM dd" : "MMM dd, HH:mm"
+  )
   const dispatch = useDispatch()
+  const dateFormatting = useCallback(() => {
+    if (allDay) {
+      setDateFormat("MMM dd")
+    } else {
+      setDateFormat("MMM dd, HH:mm")
+    }
+  })
+  useEffect(() => {
+    dateFormatting()
+  }, [dateFormatting, allDay])
+
+  useEffect(() => {
+    // if (new Date(startDate).getDate() !== new Date(dueDate).getDate()) {
+    //   if (allDay) return
+    //   dispatch({ type: "task/editDate", payload: { name: "allDay", date: true } })
+    // } else {
+    //   if (!allDay) return
+    //   dispatch({ type: "task/editDate", payload: { name: "allDay", date: false } })
+    // }
+  }, [showTime])
+
   const addTime = (addTime) => {
     const nowTime = current.getTime()
     const addMlSeconds = addTime * 60 * 60 * 1000
@@ -40,7 +64,6 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
   })
   const onChange = (date) => {
     if (hasMinDate) {
-      console.log(startDate.toString(), date.toString())
       if (date.toString() !== startDate.toString()) {
         setMaxTime(addTime(23))
       } else {
@@ -71,7 +94,7 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
     <>
       {hasMinDate ? (
         <DatePicker
-          showTimeSelect
+          showTimeSelect={!allDay}
           showDisabledMonthNavigation
           selected={date}
           timeIntervals={30}
@@ -82,12 +105,12 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
             onChange(date)
           }}
           onChangeRaw={(event) => handleChangeRaw(event.target.value)}
-          dateFormat="MMM dd, HH:mm"
+          dateFormat={dateFormat}
           customInput={<CustomInput />}
         />
       ) : (
         <DatePicker
-          showTimeSelect
+          showTimeSelect={!allDay}
           showDisabledMonthNavigation
           selected={date}
           timeIntervals={30}
@@ -95,7 +118,7 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
             onChange(date)
           }}
           onChangeRaw={(event) => handleChangeRaw(event.target.value)}
-          dateFormat="MMM dd, HH:mm"
+          dateFormat={dateFormat}
           customInput={<CustomInput />}
         />
       )}
@@ -115,6 +138,7 @@ DatePick.propTypes = {
   date: any.isRequired,
   setDate: func.isRequired,
   hasMinDate: bool.isRequired,
+  showTime: bool.isRequired,
   // hasCustomButton: bool.isRequired,
 }
 

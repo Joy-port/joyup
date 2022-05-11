@@ -11,7 +11,7 @@ import {
   PlayCircle,
   PauseCircle,
   XCircle,
-  RotateCw,
+  RotateCcw,
 } from "react-feather"
 
 const PromodoroClock = () => {
@@ -288,14 +288,14 @@ const PromodoroClock = () => {
 
                   {secondsRunRef.current !== 0 && (
                     <button
-                      className={`play-button text-white  hover:text-transparentWhite -rotate-180   hover:rotate-45
+                      className={`play-button text-white  hover:text-transparentWhite rotate-0   hover:-rotate-180
                       transition-transform`}
                       onClick={() => {
                         clockStatus("isPaused", true)
                         resetTimer()
                       }}
                     >
-                      <RotateCw size={50} strokeWidth={0.8} />
+                      <RotateCcw size={50} strokeWidth={0.8} />
                     </button>
                   )}
                 </>
