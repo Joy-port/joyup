@@ -37,55 +37,20 @@ const TitleEditor = () => {
     setIsEditingTags(true)
   })
 
-  // useEffect(() => {
-  //   if (!date || !text || !text.includes("/")) return
-  //   if (date) {
-  //     if (!timeRef) return
-  //     const hourMinutes = dayjs(date).format("HH:mm")
-  //     if (hourMinutes === timeRef.current) return
-  //     let name = ""
-  //     if (!text) return
-  //     if (text.includes("Start")) {
-  //       name = "/Start Date"
-  //       const dateContent = {
-  //         name: "startDate",
-  //         date,
-  //       }
-  //       dispatch(task.saveTaskDate(dateContent))
-  //     } else if (text.includes("Due")) {
-  //       name = "/Due Date"
-  //       const dateContent = {
-  //         name: "dueDate",
-  //         date,
-  //       }
-  //       dispatch(task.saveTaskDate(dateContent))
-  //     }
-  //     setText(() => {
-  //       const selectedDate = dayjs(date).format("MM/DD HH:mm")
-  //       return name + ":" + selectedDate
-  //     })
-  //     timeRef.current = dayjs(date).format("HH:mm")
-  //     setStyle("heading-three")
-  //     setIsSettingTime(false)
-  //     titleRef.current ? setText(titleRef.current) : setText("")
-  //     deleteSlashCommand()
-  //   }
-  // }, [date])
+  const editTimeSettingCommand = useCallback(() => {
+    setText((text) => {
+      const string =
+        text.substring(0, timeCharacterPosition) +
+        text.substring(inputRef.current?.selectionStart)
+      return string
+    })
+    setDateType(null)
+    setTimeCharacterPosition(null)
+    setTimeQuery(null)
+    setSelectionIndex(0)
+    setStyle("heading-four font-semibold")
+  })
 
-  // useEffect(() => {
-  //   if (!text) return
-  //   if (editRequiredNumber) {
-  //     if (!text.includes("Required")) return
-  //     const number = parseFloat(text.split(":")[1].trim())
-  //     if (!number) return
-  //     dispatch(task.saveTaskDetail("requiredNumber", parseFloat(number)))
-  //     setText("")
-  //     setQuery(null)
-  //     deleteSlashCommand()
-  //     setSlashCharacterPosition(null)
-  //   }
-  // }, [setEditRequiredNumber, editRequiredNumber, text])
-  //save text
   useEffect(() => {
     // if (!inputRef.current) return
     if (
@@ -95,14 +60,12 @@ const TitleEditor = () => {
       tagCharacterPosition === null
     ) {
       if (text.trim() === "") return
-      console.log(text)
       titleRef.current = text
-      console.log("save", text)
-      console.log(titleRef.current)
       dispatch(task.saveTaskDetail("title", text))
       // setIsEditing(false)
     }
   }, [text])
+
   const commands = [
     {
       icon: "Calendar",
@@ -117,7 +80,6 @@ const TitleEditor = () => {
           return newText
         })
         setStyle("heading-four font-semibold text-light200")
-        //clear first level command element
         setSlashCharacterPosition(null)
         setQuery(null)
         setSelectionIndex(0)
@@ -202,16 +164,7 @@ const TitleEditor = () => {
         const date = new Date().getTime()
         const dateContent = { name: dateType, date }
         dispatch(task.saveTaskDate(dateContent))
-        setText((text) => {
-          const string =
-            text.substring(0, timeCharacterPosition) +
-            text.substring(inputRef.current?.selectionStart)
-          return string
-        })
-        setDateType(null)
-        setTimeCharacterPosition(null)
-        setTimeQuery(null)
-        setSelectionIndex(0)
+        editTimeSettingCommand()
       },
     },
     {
@@ -221,16 +174,7 @@ const TitleEditor = () => {
         const date = new Date(new Date().setDate(new Date().getDate() + 1)).getTime()
         const dateContent = { name: dateType, date }
         dispatch(task.saveTaskDate(dateContent))
-        setText((text) => {
-          const string =
-            text.substring(0, timeCharacterPosition) +
-            text.substring(inputRef.current?.selectionStart)
-          return string
-        })
-        setDateType(null)
-        setTimeCharacterPosition(null)
-        setTimeQuery(null)
-        setSelectionIndex(0)
+        editTimeSettingCommand()
       },
     },
     {
@@ -246,16 +190,7 @@ const TitleEditor = () => {
         ).getTime()
         const dateContent = { name: dateType, date }
         dispatch(task.saveTaskDate(dateContent))
-        setText((text) => {
-          const string =
-            text.substring(0, timeCharacterPosition) +
-            text.substring(inputRef.current?.selectionStart)
-          return string
-        })
-        setDateType(null)
-        setTimeCharacterPosition(null)
-        setTimeQuery(null)
-        setSelectionIndex(0)
+        editTimeSettingCommand()
       },
     },
     {
@@ -265,16 +200,7 @@ const TitleEditor = () => {
         const date = new Date(new Date().setDate(new Date().getDate() + 7)).getTime()
         const dateContent = { name: dateType, date }
         dispatch(task.saveTaskDate(dateContent))
-        setText((text) => {
-          const string =
-            text.substring(0, timeCharacterPosition) +
-            text.substring(inputRef.current?.selectionStart)
-          return string
-        })
-        setDateType(null)
-        setTimeCharacterPosition(null)
-        setTimeQuery(null)
-        setSelectionIndex(0)
+        editTimeSettingCommand()
       },
     },
   ]
@@ -295,7 +221,6 @@ const TitleEditor = () => {
         )
       : []
 
-  console.log(selectedTagType)
   const matchingTags =
     tagsQuery !== null
       ? selectedTagType.children.filter((child) =>
@@ -308,12 +233,18 @@ const TitleEditor = () => {
           command.name.toLowerCase().match(timeQuery.toLowerCase())
         )
       : []
+  useEffect(() => {
+    if (
+      matchingCommands.length !== 0 &&
+      matchingTags.length !== 0 &&
+      matchingTimeSettings.length !== 0
+    ) {
+      setStyle("heading-four font-semibold")
+    }
+  }, [matchingCommands, matchingTags, , matchingTimeSettings])
   const getFirstLayerQueryCommandContents = (inputTextContent) => {
     const newText = inputTextContent
     setText(newText)
-    console.log("first layer commands", slashCharacterPosition)
-    console.log("second layer commands", "tag", tagCharacterPosition)
-    console.log("second layer commands", "time", timeCharacterPosition)
     if (slashCharacterPosition !== null) {
       const isSlashStillActive = newText[slashCharacterPosition] === "/"
       if (isSlashStillActive) {
@@ -337,9 +268,7 @@ const TitleEditor = () => {
         setTagsQuery(null)
       }
     } else if (timeCharacterPosition !== null) {
-      console.log("run TIME layer command")
       const isSlashStillActive = newText[timeCharacterPosition] === "/"
-      console.log(isSlashStillActive, timeCharacterPosition)
       if (isSlashStillActive) {
         setTimeQuery(
           newText.substring(timeCharacterPosition + 1, inputRef.current?.selectionStart)
@@ -353,7 +282,6 @@ const TitleEditor = () => {
   }
 
   const selectCommand = (command) => {
-    console.log(command)
     command.action()
     setSelectionIndex(0)
   }
@@ -437,9 +365,35 @@ const TitleEditor = () => {
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
+      console.log(timeQuery, timeCharacterPosition)
       if (!text.includes("/")) {
         setQuery(null)
         setTagsQuery(null)
+        setTimeQuery(null)
+      } else if (timeCharacterPosition && text.endsWith(":")) {
+        e.preventDefault()
+        setSlashCharacterPosition(timeCharacterPosition)
+        setText((text) => {
+          const string = text.substring(0, timeCharacterPosition) + "/"
+          return string
+        })
+        setQuery("")
+        setDateType(null)
+        setTimeCharacterPosition(null)
+        setTimeQuery(null)
+        setSelectionIndex(0)
+      } else if (tagCharacterPosition && text.endsWith(":")) {
+        e.preventDefault()
+        setSlashCharacterPosition(tagCharacterPosition)
+        setText((text) => {
+          const string = text.substring(0, tagCharacterPosition) + "/"
+          return string
+        })
+        setQuery("")
+        setDateType(null)
+        setTagCharacterPosition(null)
+        setTagsQuery(null)
+        setSelectionIndex(0)
       }
     }
   }
@@ -459,7 +413,7 @@ const TitleEditor = () => {
         </div>
       ) : (
         <input
-          className={`rounded input-light300 px-2 py-1 ${style}`}
+          className={`rounded heading-four input-light300 px-2 py-1 ${style}`}
           cols="30"
           rows="10"
           value={text}
