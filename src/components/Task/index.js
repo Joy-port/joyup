@@ -196,8 +196,7 @@ const index = () => {
                   <DatePicker
                     date={startDate}
                     setDate={setCalendarStartDate}
-                    showType={false}
-                    hasCustomButton={true}
+                    hasMinDate={false}
                   />
                 </div>
               </div>
@@ -214,8 +213,7 @@ const index = () => {
                   <DatePicker
                     date={dueDate}
                     setDate={setCalendarDueDate}
-                    showType={false}
-                    hasCustomButton={true}
+                    hasMinDate={true}
                   />
                 </div>
               </div>

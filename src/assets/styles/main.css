@@ -573,13 +573,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
   border-radius: 0.125rem;
 }
 @media (min-width: 768px) {
 
   .tool-bar {
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 }
 /* modal */
@@ -1908,10 +1909,6 @@ select:focus {
 
   .md\:grow {
     flex-grow: 1;
-  }
-
-  .md\:grow-0 {
-    flex-grow: 0;
   }
 
   .md\:grid-cols-3 {

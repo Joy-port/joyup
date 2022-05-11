@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
     <input
-      className="bg-light100 w-full rounded select-light300"
+      className="bg-light100 w-full rounded select-light300 cursor-pointer"
       onChange={onChange}
       placeholder={placeholder}
       value={value}
@@ -18,7 +18,7 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   )
 }
 
-const DatePick = ({ date, setDate, showType }) => {
+const DatePick = ({ date, setDate, hasMinDate }) => {
   const current = new Date()
   const { startDate, dueDate } = useSelector((state) => state.task)
   const dispatch = useDispatch()
@@ -28,21 +28,24 @@ const DatePick = ({ date, setDate, showType }) => {
     const newDateObj = new Date(nowTime + addMlSeconds)
     return newDateObj
   }
-  const requiredTime = useCallback(() => {
-    const minute = dayjs(current).minute()
-    const hour = dayjs(current).hour()
+  const requiredTime = useCallback((time) => {
+    const minute = dayjs(time).minute()
+    const hour = dayjs(time).hour()
     const requireHour = minute > 30 ? 24 - hour : 23 - hour
     const requireMinute = minute > 30 ? "" : ".5"
     return parseFloat(requireHour + requireMinute)
   })
   const [maxTime, setMaxTime] = useState(() => {
-    return addTime(requiredTime())
+    return addTime(requiredTime(startDate))
   })
   const onChange = (date) => {
-    if (date.toString() !== current.toString()) {
-      setMaxTime(addTime(23))
-    } else {
-      setMaxTime(addTime(requiredTime()))
+    if (hasMinDate) {
+      console.log(startDate.toString(), date.toString())
+      if (date.toString() !== startDate.toString()) {
+        setMaxTime(addTime(23))
+      } else {
+        setMaxTime(addTime(requiredTime()))
+      }
     }
 
     return setDate(new Date(date).getTime())
@@ -65,21 +68,38 @@ const DatePick = ({ date, setDate, showType }) => {
   }
 
   return (
-    <DatePicker
-      showTimeSelect
-      showDisabledMonthNavigation
-      selected={date}
-      minTime={startDate}
-      maxTime={maxTime}
-      timeIntervals={30}
-      onChange={(date) => {
-        onChange(date)
-      }}
-      onChangeRaw={(event) => handleChangeRaw(event.target.value)}
-      dateFormat="MMM dd, HH:mm"
-      inline={showType}
-      customInput={<CustomInput />}
-    />
+    <>
+      {hasMinDate ? (
+        <DatePicker
+          showTimeSelect
+          showDisabledMonthNavigation
+          selected={date}
+          timeIntervals={30}
+          minDate={startDate}
+          minTime={startDate}
+          maxTime={maxTime}
+          onChange={(date) => {
+            onChange(date)
+          }}
+          onChangeRaw={(event) => handleChangeRaw(event.target.value)}
+          dateFormat="MMM dd, HH:mm"
+          customInput={<CustomInput />}
+        />
+      ) : (
+        <DatePicker
+          showTimeSelect
+          showDisabledMonthNavigation
+          selected={date}
+          timeIntervals={30}
+          onChange={(date) => {
+            onChange(date)
+          }}
+          onChangeRaw={(event) => handleChangeRaw(event.target.value)}
+          dateFormat="MMM dd, HH:mm"
+          customInput={<CustomInput />}
+        />
+      )}
+    </>
   )
 }
 
@@ -94,7 +114,7 @@ CustomInput.propTypes = {
 DatePick.propTypes = {
   date: any.isRequired,
   setDate: func.isRequired,
-  showType: bool.isRequired,
+  hasMinDate: bool.isRequired,
   // hasCustomButton: bool.isRequired,
 }
 
