@@ -84,14 +84,16 @@ const ProjectList = () => {
                   return (
                     <div
                       key={ownerProject.id}
-                      className="border-1 shadow border-light100 bg-white   hover:bg-light000 hover:border-light000 rounded cursor-pointer h-24 p-4"
+                      className="border-1 shadow border-light100 bg-white   hover:bg-light000 hover:border-light000 rounded cursor-pointer h-28 p-4"
                       onClick={() => {
                         openProject(ownerProject.id)
                       }}
                     >
-                      <div className="flex justify-between items-start">
+                      <div className="flex justify-between items-start h-full">
                         <div className="capitalize font-semibold grow hide flex gap-4 items-center">
-                          <p className="">{ownerProject.title}</p>
+                          <p className="text-overflow-ellipsis h-full overflow-hidden">
+                            {ownerProject.title}
+                          </p>
                           {/* <div
                             className=" hover:text-light300 text-light200 show z-20"
                             onClick={(e) => {

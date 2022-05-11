@@ -62,23 +62,24 @@
 .circular {
   &-container {
     @include on-circle($item-count: 16, $circle-size: 18em, $item-size: 20px);
-    margin: 5em auto 0;
+    margin: 5em -6px 0;
+    width: max-content;
 
     // @include screen-xs {
     //   @include on-circle($item-count: 16, $circle-size: 18em, $item-size: 20px);
-    //   margin: 5em auto 0;
+    //   margin: 5em -6px 0;
     // }
     @include screen-sm {
       @include on-circle($item-count: 16, $circle-size: 24em, $item-size: 20px);
-      margin: 5em auto 0;
+      margin: 5em -6px 0;
     }
     @include screen-md {
       @include on-circle($item-count: 16, $circle-size: 28em, $item-size: 20px);
-      margin: 5em auto 0;
+      margin: 5em -6px 0;
     }
     // @include screen-lg {
     //   @include on-circle($item-count: 16, $circle-size: 28em, $item-size: 20px);
-    //   margin: 5em auto 0;
+    //   margin: 5em -6px 0;
     // }
   }
 
@@ -99,8 +100,8 @@
   &-inner-item {
     width: 100%;
     height: 100%;
-    transform: translate(-50%, -50%);
-    margin: 0px;
+    transform: translate(calc(-50% + 8px), calc(-50% + 8px));
+    // margin: 0px;
     display: flex;
     flex-direction: column;
     justify-content: center;

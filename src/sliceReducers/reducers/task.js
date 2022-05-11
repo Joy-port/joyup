@@ -20,6 +20,8 @@ const initialTaskState = {
   dueDate: new Date(new Date().setHours(new Date().getHours() + 1)).getTime(),
   allDay: false,
   mode: 0,
+  secondsLeft: 1500,
+  secondsRun: 0,
   totalTime: 0,
   breakTime: 5,
   workTime: 25,
@@ -50,7 +52,6 @@ function taskReducer(state = initialTaskState, action) {
       }
     case "task/editDate":
       const { name, date } = action.payload
-      console.log("date", action.payload)
       return { ...state, [name]: date }
     case "task/description":
       // if (action.payload.content !== "") {
@@ -69,6 +70,10 @@ function taskReducer(state = initialTaskState, action) {
       return { ...state, totalTime: action.payload }
     case "task/mode":
       return { ...state, mode: action.payload }
+    case "task/secondsLeft":
+      return { ...state, secondsLeft: action.payload }
+    case "task/secondsRun":
+      return { ...state, secondsRun: action.payload }
     case "task/requiredNumber":
       if (action.payload < 0) return state
       const newRequiredTime = parseFloat(action.payload * state.workTime)

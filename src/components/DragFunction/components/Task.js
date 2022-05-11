@@ -2,7 +2,7 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { Draggable } from "react-beautiful-dnd"
 import { number, object, string } from "prop-types"
-import { Menu, Edit3 } from "react-feather"
+import { Menu } from "react-feather"
 import { useDispatch, useSelector } from "react-redux"
 
 const Task = ({ task, index, type }) => {
@@ -29,18 +29,15 @@ const Task = ({ task, index, type }) => {
           : { ...provided.draggableProps.style }
         return (
           <div
-            className={`task task-${type} ${isDragging} hide transition-shadow`}
+            className={`task task-${type} ${isDragging} transition-shadow cursor-pointer`}
             {...provided.draggableProps}
-            {...provided.dragHandleProps}
             ref={provided.innerRef}
             style={dragging}
+            onClick={() => onClick(task.id)}
           >
-            <div className="cursor-pointer flex gap-3 items-center">{task.title}</div>
-            <div
-              className="rounded p-1 bg-light100 show z-over-draggable"
-              onClick={() => onClick(task.id)}
-            >
-              <Edit3 strokeWidth={1} size={16} />
+            <div className="flex gap-3 items-center">{task.title}</div>
+            <div className="z-over-draggable px-3" {...provided.dragHandleProps}>
+              <Menu strokeWidth={1} size={20} />
             </div>
           </div>
         )

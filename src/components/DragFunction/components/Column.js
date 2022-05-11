@@ -1,7 +1,26 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { Droppable } from "react-beautiful-dnd"
 import Task from "./Task"
 import { array, object, string } from "prop-types"
+
+const InnerTaskList = ({ taskList, type }) => {
+  return (
+    <>
+      {taskList &&
+        taskList.map((item, index) => (
+          <Task key={item.id} task={item} index={index} type={type} />
+        ))}
+    </>
+  )
+}
+function taskIsSameInColumn(prevProp, nextProp) {
+  if (prevProp.taskList === nextProp.taskList) {
+    return true
+  } else {
+    return false
+  }
+}
+const MemoTaskList = React.memo(InnerTaskList, taskIsSameInColumn)
 
 const Column = ({ column, taskList, type }) => {
   return (
@@ -27,10 +46,11 @@ const Column = ({ column, taskList, type }) => {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {taskList &&
+              <MemoTaskList taskList={taskList} type={type} />
+              {/* {taskList &&
                 taskList.map((item, index) => (
                   <Task key={item.id} task={item} index={index} type={type} />
-                ))}
+                ))} */}
               {provided.placeholder}
             </div>
           )
@@ -38,6 +58,11 @@ const Column = ({ column, taskList, type }) => {
       </Droppable>
     </div>
   )
+}
+
+InnerTaskList.propTypes = {
+  taskList: array.isRequired,
+  type: string.isRequired,
 }
 Column.propTypes = {
   column: object.isRequired,

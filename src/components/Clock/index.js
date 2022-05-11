@@ -11,20 +11,16 @@ import {
   PlayCircle,
   PauseCircle,
   XCircle,
+  RotateCw,
 } from "react-feather"
 
 const PromodoroClock = () => {
-  // const { workTime, breakTime } = useSelector((state) => state.settings)
-  const { workTime, breakTime, mode } = useSelector((state) => state.task)
-  const {
-    isPaused,
-    // mode,
-    secondsLeft,
-    secondsRun,
-    workNumbers,
-    breakNumbers,
-    totalSpendingSeconds,
-  } = useSelector((state) => state.clock)
+  const { workTime, breakTime, mode, secondsLeft, secondsRun } = useSelector(
+    (state) => state.task
+  )
+  const { isPaused, workNumbers, totalSpendingSeconds } = useSelector(
+    (state) => state.clock
+  )
   const { totalTaskList } = useSelector((state) => state.projects)
   const taskDetail = useSelector((state) => state.task)
   const dispatch = useDispatch()
@@ -80,9 +76,17 @@ const PromodoroClock = () => {
       payload: { type: type, status: status },
     })
   }
+  const taskStatus = (type, status) => {
+    dispatch({
+      type: "task/editDate",
+      payload: { name: type, date: status },
+    })
+  }
   useEffect(() => {
     if (isPaused) {
       dispatch(task.saveTaskDetail("totalTime", parseFloat(totalSpendingSeconds)))
+      dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
+      dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
     }
   }, [totalSpendingSeconds, isPaused])
   useEffect(() => {
@@ -101,12 +105,12 @@ const PromodoroClock = () => {
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft, secondsRun])
 
-  useEffect(() => {
-    secondsLeftRef.current = workTime * 60
-    clockStatus("secondsLeft", secondsLeftRef.current)
-    secondsRunRef.current = 0
-    clockStatus("secondsRun", secondsRunRef.current)
-  }, [])
+  // useEffect(() => {
+  //   secondsLeftRef.current = workTime * 60
+  //   taskStatus("secondsLeft", secondsLeftRef.current)
+  //   secondsRunRef.current = 0
+  //   taskStatus("secondsRun", secondsRunRef.current)
+  // }, [])
 
   useEffect(() => {
     // if (secondsLeft === 3600 || isPaused === true) return
@@ -121,24 +125,27 @@ const PromodoroClock = () => {
     const nextSeconds = (nextMode === 0 ? workTime : breakTime) * 60
     secondsLeftRef.current = nextSeconds
     secondsRunRef.current = 0
-    clockStatus("secondsLeft", nextSeconds)
-    clockStatus("secondsRun", secondsRunRef.current)
-    clockStatus("mode", parseFloat(nextMode))
-    dispatch({ type: "task/workMode", payload: mode })
+    taskStatus("secondsLeft", nextSeconds)
+    taskStatus("secondsRun", secondsRunRef.current)
+    taskStatus("mode", nextMode)
+    // dispatch({ type: "task/workMode", payload: mode })
   }
 
   const tickTime = () => {
     secondsLeftRef.current--
-    clockStatus("secondsLeft", secondsLeftRef.current)
+    taskStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current++
-    clockStatus("secondsRun", secondsRunRef.current)
+    taskStatus("secondsRun", secondsRunRef.current)
   }
   const resetTimer = () => {
-    confirm("do you really want to reset and clear current progress?")
-    secondsLeftRef.current = mode === 0 ? workTime * 60 : breakTime * 60
-    clockStatus("secondsLeft", secondsLeftRef.current)
-    secondsRunRef.current = 0
-    clockStatus("secondsRun", secondsRunRef.current)
+    const currentLeftTime = mode === 0 ? workTime * 60 : breakTime * 60
+    if (secondsLeftRef.current === currentLeftTime && secondsRunRef.current === 0) return
+    if (confirm("do you really want to reset and clear current progress?")) {
+      secondsLeftRef.current = currentLeftTime
+      taskStatus("secondsLeft", secondsLeftRef.current)
+      secondsRunRef.current = 0
+      taskStatus("secondsRun", secondsRunRef.current)
+    }
   }
   const totalSeconds = mode === 0 ? workTime * 60 : breakTime * 60
   // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
@@ -182,7 +189,7 @@ const PromodoroClock = () => {
             <div
               className={`absolute top-5 left-50 bg-white rounded-md p-3 w-5/6 shadow cursor-pointer transition-colors ${
                 mode ? "text-blue200" : "text-red200"
-              } ${isPaused ? "" : "opacity-50"}`}
+              }`}
               onClick={() => {
                 const taskDetail = totalTaskList[taskID]
                 if (taskDetail) {
@@ -201,7 +208,7 @@ const PromodoroClock = () => {
               </div>
             </div>
           )}
-          <div className="flex flex-col w-1/2">
+          <div className="flex flex-col items-center">
             <div className="grow mb-10">
               <Circular
                 minutes={minutes.toString()}
@@ -278,18 +285,23 @@ const PromodoroClock = () => {
                   >
                     <PlayCircle size={50} strokeWidth={0.8} />
                   </button>
-                  <button
-                    className={`play-button text-white  hover:text-transparentWhite`}
-                    onClick={() => {
-                      clockStatus("isPaused", true)
-                      resetTimer()
-                    }}
-                  >
-                    <XCircle size={50} strokeWidth={0.8} />
-                  </button>
+
+                  {secondsRunRef.current !== 0 && (
+                    <button
+                      className={`play-button text-white  hover:text-transparentWhite -rotate-180   hover:rotate-45
+                      transition-transform`}
+                      onClick={() => {
+                        clockStatus("isPaused", true)
+                        resetTimer()
+                      }}
+                    >
+                      <RotateCw size={50} strokeWidth={0.8} />
+                    </button>
+                  )}
                 </>
               )}
             </div>
+
             <div className={`flex gap-5 ${isPaused ? "visible" : "invisible"}`}>
               {/* <Link
                 to="/settings"
@@ -298,7 +310,7 @@ const PromodoroClock = () => {
                 <Settings />
               </Link> */}
               <div
-                className="button text-white hover:text-transparentWhite"
+                className="button text-white hover:text-transparentWhite invisible"
                 onClick={() => {
                   dispatch(task.saveTotalTask())
                   navigate(-1)

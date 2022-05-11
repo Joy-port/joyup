@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter as Router } from "react-router-dom"
+import "flowbite"
 import "react-datepicker/dist/react-datepicker.css"
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import "./assets/styles/main.css"

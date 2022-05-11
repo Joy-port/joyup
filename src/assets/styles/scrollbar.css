@@ -27,6 +27,7 @@
 }
 .scrollbar::-webkit-scrollbar {
   width: 14px;
+  /* width: auto; */
 }
 .scrollbar::-webkit-scrollbar-thumb {
   background: var(--light100);
@@ -44,7 +45,7 @@
 .rbc-time-content::-webkit-scrollbar-track {
 }
 .rbc-time-content::-webkit-scrollbar {
-  width: 14px;
+  width: auto;
 }
 .rbc-time-content::-webkit-scrollbar-thumb {
   background: #dce1e580;

@@ -1,8 +1,8 @@
 const initialClockState = {
   isPaused: true,
-  mode: 0,
-  secondsLeft: 0,
-  secondsRun: 0,
+  // mode: 0,
+  // secondsLeft: 1500,
+  // secondsRun: 0,
   workNumbers: 0, //workTime
   breakNumbers: 0, //breakTime
   startTime: null,

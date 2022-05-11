@@ -27,11 +27,14 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
             <Clock strokeWidth={1} fill="#E56544" color="#ffffff" />
             <p className="group-title">Work Duration</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <input
-              className="w-7 bg-light100 text-light300 rounded  p-1"
+              className={`w-7 bg-light100 text-light300 rounded p-1 ${
+                totalTime ? "opacity-50 text-light200" : ""
+              }`}
               type="number"
               value={workTime}
+              disabled={totalTime && true}
               onChange={(e) => {
                 if (e.target.value <= 0) {
                   dispatch({
@@ -53,11 +56,14 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
             <Clock strokeWidth={1} fill="#ACBAC3" color="#ffffff" />
             <p className="group-title">Break Duration</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <input
-              className="w-7 bg-light100 text-light300 rounded  p-1"
+              className={`w-7 bg-light100 text-light300 rounded p-1 ${
+                totalTime ? "opacity-50 text-light200" : ""
+              }`}
               type="number"
               value={breakTime}
+              disabled={totalTime && true}
               onChange={(e) => {
                 if (e.target.value <= 0) {
                   dispatch({

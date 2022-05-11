@@ -1,7 +1,7 @@
-const plugin = require("tailwindcss/plugin")
 module.exports = {
   mode: "jit",
   content: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  plugins: [require("flowbite/plugin")],
   theme: {
     screens: {
       xs: "360px",
@@ -284,15 +284,22 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    plugin(function ({ addComponents }) {
-      addComponents({
-        ".btn": {
-          padding: ".5rem 1rem",
-          borderRadius: ".25rem",
-          fontWeight: "600",
-        },
-      })
-    }),
-  ],
+  variants: {
+    fill: [],
+    extend: {
+      borderColor: ["focus-visible"],
+      opacity: ["disabled"],
+    },
+  },
+  // plugins: [
+  //   plugin(function ({ addComponents }) {
+  //     addComponents({
+  //       ".btn": {
+  //         padding: ".5rem 1rem",
+  //         borderRadius: ".25rem",
+  //         fontWeight: "600",
+  //       },
+  //     })
+  //   }),
+  // ],
 }

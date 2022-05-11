@@ -36,7 +36,7 @@ const TaskList = () => {
     <>
       {userTasks.length !== 0 && (
         <div className="fixed bottom-5 right-5 z-100 bg-transparent flex gap-2">
-          <div className="text-center rounded button-outline-light min-w-32 max-w-72">
+          <div className=" rounded button-outline-light min-w-32 max-w-72">
             <div
               className="group-title relative w-44 py-2 px-3 rounded"
               onClick={() => {
@@ -50,13 +50,13 @@ const TaskList = () => {
                 setOpenSelector(!openSelector)
               }}
             >
-              <p className="flex gap-2 rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer truncate">
+              <p className="flex gap-2 rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer">
                 <Clock />
                 {task.title || "Start Timer"}
               </p>
               {openSelector && (
                 <div
-                  className={`dropdown-container max-h-28 overflow-y-auto shadow-md shadow-light200 border-t-2 border-t-light100 ${
+                  className={`dropdown-container max-h-28 overflow-y-auto overflow-x-hidden scrollbar shadow-md shadow-light200 border-t-2 border-t-light100 ${
                     userTasks.length === 1
                       ? "-top-50px"
                       : userTasks.length <= 2
@@ -71,7 +71,7 @@ const TaskList = () => {
                       const task = totalTaskList[id]
                       return (
                         <li
-                          className="dropdown-item"
+                          className="dropdown-item max-w-full truncate"
                           value={task.id}
                           key={task.id}
                           onClick={() => {

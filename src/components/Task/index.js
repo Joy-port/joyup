@@ -102,7 +102,7 @@ const index = () => {
           <X size={20} />
         </button>
         <div className="modal-body overflow-y-auto flex flex-col">
-          <div className="flex items-center gap-3 mb-5 px-3 ">
+          <div className="flex items-center gap-3 mb-5 pl-3">
             <Edit />
             <TitleEditor />
           </div>
@@ -118,7 +118,7 @@ const index = () => {
                   <p className="group-title">Project</p>
                 </div>
                 <select
-                  className="select-light300 w-1/2"
+                  className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
                   value={projectID}
                   onChange={(e) => {
                     dispatch(task.saveTaskDetail("projectID", e.target.value))
@@ -149,7 +149,7 @@ const index = () => {
                       <p className="group-title">{item.type} </p>
                     </div>
                     <select
-                      className="select-light300 w-1/2"
+                      className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
                       value={
                         tagList.find((selected) => selected.parent === item.id)?.child ||
                         selectedColumnOrder[0]
