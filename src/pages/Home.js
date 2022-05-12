@@ -114,27 +114,3 @@ const Home = () => {
 }
 
 export default Home
-
-{
-  /* <Calendar
-components={DayView.components}
-dayLayoutAlgorithm="overlap"
-localizer={localizer}
-defaultDate={new Date()}
-defaultView="week"
-style={{ height: "calc(100vh - 145px)" }}
-startAccessor="start"
-endAccessor="end"
-events={events}
-views={{ day: true, week: true }}
-resizable
-selectable
-scrollToTime={new Date()}
-onSelectEvent={handleSelectEvent} //onclick once
-onDoubleClickEvent={onDoubleClickEvent} //onclick twice
-onSelectSlot={handleSelectSlot} //add event
-onEventResize={onEventResize}
-onEventDrop={onEventDrop}
-popup //problem will break the view
-/> */
-}

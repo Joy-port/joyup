@@ -27,7 +27,6 @@
 }
 .scrollbar::-webkit-scrollbar {
   width: 14px;
-  /* width: auto; */
 }
 .scrollbar::-webkit-scrollbar-thumb {
   background: var(--light100);

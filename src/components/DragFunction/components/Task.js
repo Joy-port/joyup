@@ -35,7 +35,7 @@ const Task = ({ task, index, type }) => {
             style={dragging}
             onClick={() => onClick(task.id)}
           >
-            <div className="flex gap-3 items-center">{task.title}</div>
+            <div className="flex gap-3 items-center truncate">{task.title}</div>
             <div className="z-over-draggable px-3" {...provided.dragHandleProps}>
               <Menu strokeWidth={1} size={20} />
             </div>

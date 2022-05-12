@@ -179,6 +179,7 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   flex: 1 0;
   line-height: 16px;
   padding: 3px;
+  padding-left: 8px;
   font-weight: 600;
   font-size: 16px;
   border-bottom: 2px solid var(--light000);
@@ -224,3 +225,24 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   display: block;
   font-size: 1.25rem;
 }
+.rbc-label .rbc-time-header-gutter {
+  width: 72px;
+}
+.rbc-time-header-content {
+  padding-right: 14px;
+}
+.rbc-allday-cell {
+  overflow-x: scroll;
+}
+.rbc-header:last-of-type {
+  margin-right: -14px;
+  padding-right: 14px;
+}
+/* .rbc-day-bg {
+  flex-basis: calc((100% - 93px) / 7);
+  max-width: calc((100% - 93px) / 7);
+}
+.rbc-row .rbc-row-segment {
+  flex-basis: 42.33% !important;
+  max-width: 42.33% !important;
+} */
