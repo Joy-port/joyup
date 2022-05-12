@@ -59,6 +59,42 @@ export const viewInfo = [
   // },
 ]
 
+export const InputValue = [
+  {
+    icon: "User",
+    name: "Full Name",
+    type: "text",
+    label: "name",
+    helpText: {
+      success: "",
+      warning: "",
+      error: "",
+    },
+  },
+  {
+    icon: "Mail",
+    name: "Email",
+    type: "email",
+    label: "email",
+    helpText: {
+      success: "",
+      warning: "",
+      error: "",
+    },
+  },
+  {
+    icon: "Lock",
+    name: "Password",
+    type: "password",
+    label: "password",
+    helpText: {
+      success: "",
+      warning: "",
+      error: "",
+    },
+  },
+]
+
 export const TextType = [
   {
     combine: false,

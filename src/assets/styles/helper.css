@@ -26,13 +26,13 @@ input[type="number"] {
 /* loader */
 .lds-ripple {
   display: flex;
-  position: fix;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
-  z-index: 5002;
+  z-index: 10000;
 }
 /* //bbcedd //85a2b6 */
 .lds-ripple div {
@@ -73,5 +73,33 @@ input[type="number"] {
     width: 72px;
     height: 72px;
     opacity: 0;
+  }
+}
+
+.background {
+  z-index: -1;
+  position: absolute;
+  height: calc(100vh - 85vh);
+  width: auto;
+  top: 85vh;
+  right: 20px;
+  overflow: hidden;
+  pointer-events: none;
+  background-position: bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 576px) {
+  .background {
+    height: calc(100vh - 75vh);
+    top: 75vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .background {
+    height: calc(100vh - 65vh);
+    top: 65vh;
   }
 }
