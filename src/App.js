@@ -12,7 +12,7 @@ import Calendar from "./components/Calendar"
 import DragFunction from "./components/DragFunction"
 import Home from "./pages/Home"
 import Report from "./pages/Report"
-import Dashboard from "./pages/Dashboard"
+import Projects from "./pages/Projects"
 import Login from "./pages/Login"
 import Settings from "./pages/Settings"
 import { useDispatch, useSelector } from "react-redux"
@@ -24,7 +24,7 @@ import { tags } from "./sliceReducers/actions/tags"
 const components = {
   Home,
   Report,
-  Dashboard,
+  Projects,
   Login,
   Settings,
 }
@@ -96,18 +96,15 @@ function App() {
               <Route path="sign-in" element={<Login pathname="sign-in" />} />
               <Route path="sign-up" element={<Login pathname="sign-up" />} />
             </Route> */}
-          <Route index element={<Home />} />
-          {pathInfo.map((path, index) => {
-            const Component = components[path.component]
-            if (path.name !== "Dashboard" || path.name !== "Home") {
-              return <Route key={index} path={path.path} element={<Component />} />
-            } else {
-              return
-            }
-          })}
-          <Route path="dashboard">
+          <Route element={<Home />}>
+            <Route index element={<Navigate to="/calendar" replace />} />
+            <Route path="calendar" element={<Home />} />
+            <Route path="agenda" element={<Home />} />
+          </Route>
+          <Route path="reports" element={<Report />} />
+          <Route path="projects">
             <Route index element={<ProjectList />} />
-            <Route path=":projectID" element={<Dashboard />}>
+            <Route path=":projectID" element={<Projects />}>
               <Route index element={<Navigate to="list" replace />} />
               {viewInfo.map((view, index) => {
                 const Component = viewComponents[view.component]
@@ -131,13 +128,13 @@ function App() {
             <Route index element={<Navigate to="/" replace />} />
             <Route path=":taskID" element={<Clock />} />
           </Route>
-          {viewInfo.map((view) => (
+          {/* {viewInfo.map((view) => (
             <Route
               path={`${view.path}/`}
               key={view.path}
               element={<Navigate to="/" replace />}
             />
-          ))}
+          ))} */}
         </Route>
       </Routes>
       {/* )} */}

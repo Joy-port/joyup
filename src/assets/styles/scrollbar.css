@@ -9,6 +9,7 @@
 }
 .task-scrollbar::-webkit-scrollbar {
   width: 14px;
+  scrollbar-width: thin;
 }
 .task-scrollbar::-webkit-scrollbar-thumb {
   background: #4d5f6a80;
@@ -27,6 +28,7 @@
 }
 .scrollbar::-webkit-scrollbar {
   width: 14px;
+  scrollbar-width: 14px;
 }
 .scrollbar::-webkit-scrollbar-thumb {
   background: var(--light100);
@@ -44,7 +46,9 @@
 .rbc-time-content::-webkit-scrollbar-track {
 }
 .rbc-time-content::-webkit-scrollbar {
-  width: auto;
+  /* width: auto; */
+  width: 14px;
+  scrollbar-width: 14px;
 }
 .rbc-time-content::-webkit-scrollbar-thumb {
   background: #dce1e580;

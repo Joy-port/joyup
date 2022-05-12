@@ -257,10 +257,10 @@ const index = ({ type }) => {
     </div>
   )
 }
-ToolTipTasks.propTypes = {
-  onClose: any,
-  event: any,
-}
+// ToolTipTasks.propTypes = {
+//   onClose: any,
+//   event: any,
+// }
 index.propTypes = {
   type: string,
 }

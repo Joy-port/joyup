@@ -8,7 +8,7 @@ const Breadcrumb = () => {
   const location = useLocation()
   return (
     <div className="flex text-light200">
-      <Link to="/dashboard">
+      <Link to="/projects">
         {totalProjectList &&
         projectID &&
         totalProjectList[projectID] &&

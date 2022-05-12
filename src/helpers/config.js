@@ -7,15 +7,15 @@ export const pathInfo = [
   },
   {
     name: "Report",
-    path: "report",
+    path: "reports",
     icon: "Activity",
     component: "Report",
   },
   {
-    name: "Dashboard",
-    path: "dashboard",
+    name: "Projects",
+    path: "projects",
     icon: "Folder",
-    component: "Dashboard",
+    component: "Projects",
   },
   // {
   //   name: "Settings",

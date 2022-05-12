@@ -17,7 +17,7 @@ const Dashboard = () => {
           return (
             <Link
               key={view.path}
-              to={`/dashboard/${state.selectedProjectID}/${view.path}${calendarDefaultView}`}
+              to={`/projects/${state.selectedProjectID}/${view.path}${calendarDefaultView}`}
               className={`menu-item ${
                 isActive ? "menu-item__dark--active" : "menu-item__dark"
               }`}

@@ -230,19 +230,39 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
 }
 .rbc-time-header-content {
   padding-right: 14px;
+  -moz-padding-end: 9px;
 }
 .rbc-allday-cell {
   overflow-x: scroll;
 }
 .rbc-header:last-of-type {
-  margin-right: -14px;
-  padding-right: 14px;
+  /* flex-basis: calc((100% - 102px) / 7);
+  max-width: calc((100% - 102px) / 7); */
+  flex-basis: calc((100% - 115px) / 7);
+  max-width: calc((100% - 97px) / 7);
+  -webkit-flex-basis: calc((100% - 97px) / 7);
+  -moz-padding-end: 9px;
+  -moz-margin-end: -9px;
 }
-/* .rbc-day-bg {
-  flex-basis: calc((100% - 93px) / 7);
-  max-width: calc((100% - 93px) / 7);
+.rbc-day-bg:last-of-type {
+  flex-basis: calc((100% - 115px) / 7);
+  max-width: calc((100% - 97px) / 7);
+  -webkit-flex-basis: calc((100% - 97px) / 7);
+  -moz-padding-end: 9px;
+  -moz-margin-end: -9px;
 }
-.rbc-row .rbc-row-segment {
-  flex-basis: 42.33% !important;
-  max-width: 42.33% !important;
-} */
+.rbc-row .rbc-row-segment:first-of-type {
+  -moz-padding-start: 5px;
+  -moz-padding-end: 0;
+  -moz-margin-end: 0;
+}
+.rbc-row .rbc-row-segment:not(:first-of-type) {
+  padding-left: 5px;
+  -moz-padding-start: 10px;
+  -moz-padding-end: 0;
+  -moz-margin-end: 0;
+}
+
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0;
+}
