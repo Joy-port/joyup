@@ -1,13 +1,12 @@
-import { string } from "prop-types"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import * as Icon from "react-feather"
 import { user } from "../sliceReducers/actions/user"
+import { checkLoginMessage } from "../helpers/config"
 import logo from "../assets/images/logo/primary/logo_transparent.png"
 import backgroundImage from "../assets/illustrations/Life Management.png"
-import * as Icon from "react-feather"
 
-//{ pathname }
 const Login = () => {
   // const { id } = useSelector((state) => state.user)
   const [email, setEmail] = useState("")
@@ -15,10 +14,14 @@ const Login = () => {
   const [name, setName] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [status, setStatus] = useState(2)
-  const [errorType, setErrorType] = useState(2)
-  // const isLoginPath = pathname === "sign-in"
-
+  const { pathname } = useLocation()
+  const [nameStatus, setNameStatus] = useState(2)
+  const [nameMessage, setNameMessage] = useState("")
+  const [emailStatus, setEmailStatus] = useState(2)
+  const [emailMessage, setEmailMessage] = useState("")
+  const [passwordStatus, setPasswordStatus] = useState(2)
+  const [passwordMessage, setPasswordMessage] = useState("")
+  const isLoginPath = pathname === "/signin"
   // useEffect(() => {
   //   if (id !== "") {
   //     navigate("/")
@@ -33,209 +36,196 @@ const Login = () => {
       dispatch(user.nativeSignUp(email, password, name))
     }
   }
+  const checkEmail = useCallback((userEmail) => {
+    // const reg =
+    //   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    const reg = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/
+    if (!userEmail.trim()) {
+      setEmailStatus(0)
+      setEmailMessage(checkLoginMessage.email.required)
+      return false
+    } else if (userEmail.toLowerCase().match(reg)) {
+      setEmailStatus(1)
+      setEmailMessage(checkLoginMessage.email.success)
+      return false
+    } else {
+      setEmailStatus(2)
+      setEmailMessage("")
+      return true
+    }
+  })
+  const checkName = useCallback((userName) => {
+    if (!userName.trim()) {
+      setNameStatus(0)
+      setNameMessage(checkLoginMessage.name.required)
+      return false
+    } else {
+      setNameStatus(2)
+      setNameMessage("")
+      return true
+    }
+  })
+  const checkPassword = useCallback((userPassword) => {
+    if (!userPassword.trim()) {
+      setPasswordStatus(0)
+      setPasswordMessage(checkLoginMessage.password.required)
+      return false
+    } else if (userPassword.length < 6) {
+      setPasswordStatus(0)
+      setPasswordMessage(checkLoginMessage.password.lengthError)
+      return false
+    } else {
+      setPasswordStatus(2)
+      setPasswordMessage("")
+      return true
+    }
+  })
   return (
-    <div
-      className="h-screen"
-      // style={{
-      //   background: "linear-gradient(#e66465BF, #9198e5BF)",
-      // }}
-    >
-      <div className="p-5">
-        <div className="flex items-center">
-          <img src={logo} alt="JoyUp logo" className="max-w-full block h-14" />
-          <p className="font-sans font-bold text-2xl">JoyUp</p>
+    <>
+      <div className="text-slateLight h-screen ">
+        <div className="py-6 px-5">
+          <div className="flex items-center">
+            <img src={logo} alt="JoyUp logo" className="max-w-full block h-14" />
+            <p className="font-sans font-bold text-2xl">JoyUp</p>
+          </div>
+          <code className="ml-4 text-sm text-transparentDark">
+            brighten your life with a better life management
+          </code>
         </div>
-        <code className="ml-4 text-sm">
-          brighten your life with a better life management
-        </code>
-      </div>
-      <div className="flex flex-col justify-center items-center my-0 -mt-32 h-full px-5">
-        <div className="px-14 md:px-24 py-12 w-full md:w-128 bg-white rounded-lg shadow-lg shadow-blue100 flex flex-col gap-6">
-          <h1 className="heading-two text-center"> Welcome back! </h1>
-          <form onSubmit={onSubmit} className="flex flex-col gap-2">
-            <div className="flex flex-col gap-1 w-full">
-              <label htmlFor="name" className="text-sm">
-                Full Name
-              </label>
-              <div className="flex gap-3 items-center py-1 text-light200 ">
-                <Icon.User />
-                <input
-                  type="text"
-                  className={`rounded-lg grow ${
-                    errorType === 0
-                      ? "caret-danger"
-                      : errorType === 1
-                      ? "caret-success"
-                      : "caret-light300"
-                  } `}
-                />
+        <div className="flex flex-col justify-center items-center my-0 h-full px-5 -mt-32">
+          <div className="px-14 md:px-24 py-12 w-full md:w-128 bg-white rounded-lg shadow-lg shadow-blue100 border-1 border-light200 flex flex-col gap-6">
+            <h1 className="heading-two text-center">
+              {" "}
+              {isLoginPath ? "Welcome back!" : "Let's go!"}{" "}
+            </h1>
+            <form onSubmit={onSubmit} className="flex flex-col gap-2">
+              <div className="w-full">
+                <label htmlFor="name" className="text-sm mb-1 block">
+                  Full Name
+                </label>
+                <div className="flex gap-3 items-center text-light200 mb-1 ">
+                  <Icon.User />
+                  <input
+                    type="text"
+                    className={`rounded-lg grow text-transparentDark caret-light200 ${
+                      nameStatus === 2
+                        ? "caret-light200"
+                        : nameStatus === 1
+                        ? "caret-success"
+                        : "caret-danger"
+                    } `}
+                    value={name}
+                    onChange={(e) => {
+                      checkName(e.target.value)
+                      setName(e.target.value)
+                    }}
+                  />
+                </div>
+                <div
+                  className={`text-sm flex gap-2 items-center ${
+                    nameStatus !== 2 ? "visible" : "invisible"
+                  } ${nameStatus ? "text-success" : "text-danger "}`}
+                >
+                  {nameStatus === 0 ? (
+                    <Icon.AlertTriangle size={16} />
+                  ) : (
+                    <Icon.CheckCircle size={16} />
+                  )}
+                  <small>{nameMessage}</small>
+                </div>
               </div>
-              <div
-                className={`text-sm flex gap-2 items-center ${
-                  status ? "invisible" : "visible"
-                } ${errorType ? "text-danger" : "text-success"}`}
-              >
-                {errorType ? (
-                  <Icon.AlertTriangle size={16} />
-                ) : (
-                  <Icon.CheckCircle size={16} />
-                )}
-                <small>error message</small>
+              <div className="w-full">
+                <label htmlFor="email" className="text-sm mb-1 block">
+                  Email
+                </label>
+                <div className=" flex gap-3 items-center text-light200 mb-1 ">
+                  <Icon.Mail />
+                  <input
+                    type="email"
+                    className={`rounded-lg grow text-transparentDark ${
+                      emailStatus === 2
+                        ? "caret-light200"
+                        : emailStatus === 1
+                        ? "caret-success"
+                        : "caret-danger"
+                    } `}
+                    value={email}
+                    onChange={(e) => {
+                      checkEmail(e.target.value)
+                      setEmail(e.target.value)
+                    }}
+                  />
+                </div>
+                <div
+                  className={`text-sm flex gap-2 items-center ${
+                    emailStatus !== 2 ? "visible" : "invisible"
+                  } ${emailStatus ? "text-success" : "text-danger "}`}
+                >
+                  {emailStatus === 0 ? (
+                    <Icon.AlertTriangle size={16} />
+                  ) : (
+                    <Icon.CheckCircle size={16} />
+                  )}
+                  <small>{emailMessage}</small>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-1 w-full">
-              <label htmlFor="email" className="text-sm">
-                Email
-              </label>
-              <div className=" flex gap-3 items-center py-1 text-light200 ">
-                <Icon.Mail />
-                <input
-                  type="email"
-                  className={`rounded-lg grow ${
-                    errorType === 0
-                      ? "caret-danger"
-                      : errorType === 1
-                      ? "caret-success"
-                      : "caret-light300"
-                  } `}
-                />
-              </div>
-              <div
-                className={`text-sm flex gap-2 items-center ${
-                  status ? "invisible" : "visible"
-                } ${errorType ? "text-danger" : "text-success"}`}
-              >
-                {errorType ? (
-                  <Icon.AlertTriangle size={16} />
-                ) : (
-                  <Icon.CheckCircle size={16} />
-                )}
-                <small>error message</small>
-              </div>
-            </div>
-            <div className="flex flex-col gap-1 w-full">
-              <label htmlFor="password" className="text-sm">
-                Password
-              </label>
-              <div className=" flex gap-3 items-center py-1 text-light200 ">
-                <Icon.Lock />
-                <input
-                  type="password"
-                  className={`rounded-lg grow ${
-                    errorType === 0
-                      ? "caret-danger"
-                      : errorType === 1
-                      ? "caret-success"
-                      : "caret-light300"
-                  } `}
-                />
-              </div>
-              <div
-                className={`text-sm flex gap-2 items-center ${
-                  status ? "invisible" : "visible"
-                } ${errorType ? "text-danger" : "text-success"}`}
-              >
-                {errorType ? (
-                  <Icon.AlertTriangle size={16} />
-                ) : (
-                  <Icon.CheckCircle size={16} />
-                )}
-                <small>error message</small>
+              <div className="w-full mb-5">
+                <label htmlFor="password" className="text-sm mb-1 block">
+                  Password
+                </label>
+                <div className=" flex gap-3 items-center text-light200 mb-1 ">
+                  <Icon.Lock />
+                  <input
+                    type="password"
+                    className={`rounded-lg grow text-transparentDark ${
+                      passwordStatus === 0
+                        ? "caret-danger"
+                        : passwordStatus === 1
+                        ? "caret-success"
+                        : "caret-light200"
+                    } `}
+                    value={password}
+                    onChange={(e) => {
+                      checkPassword(e.target.value)
+                      setPassword(e.target.value)
+                    }}
+                  />
+                </div>
+                <div
+                  className={`text-sm flex gap-2 items-center ${
+                    passwordStatus !== 2 ? "visible" : "invisible"
+                  } ${passwordStatus ? "text-success" : "text-danger "}`}
+                >
+                  {passwordStatus === 0 ? (
+                    <Icon.AlertTriangle size={16} />
+                  ) : (
+                    <Icon.CheckCircle size={16} />
+                  )}
+                  <small>{passwordMessage}</small>
+                </div>
               </div>
               <button className="button button-primary shadow-md shadow-primary mb-5">
-                Log In
+                {isLoginPath ? "Log In" : "Sign up"}
               </button>
-
               <div className="text-center text-sm">
                 {`Don't have an account?  `}
-                <button className="button-outline-primary">Sign up</button>
+                <button
+                  className="button-outline-primary"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    isLoginPath ? navigate("/signup") : navigate("/signin")
+                  }}
+                >
+                  {isLoginPath ? "Sign up" : "Log In"}
+                </button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-        {/* <form className="w-full md:w-5/12 bg-white p-3 rounded-xl" onSubmit={onSubmit}>
-          <div className="flex mb-10">
-            <Link
-              className={`
-          px-4
-          py-2
-          border-b-2 
-        hover:border-slateLight active:border-slateLight ${
-          isLoginPath ? "border-slateLight" : "border-light200"
-        }`}
-              to="/signin"
-            >
-              Sign in
-            </Link>
-            <Link
-              className={`px-4
-          py-2
-          border-b-2 
-        hover:border-slateLight active:border-slateLight ${
-          !isLoginPath ? "border-slateLight" : "border-light200"
-        }`}
-              to="/signup"
-            >
-              Sign up
-            </Link>
-          </div>
-          <div className="flex md:flex-row gap-3 md:gap-0 flex-col mb-3 w-full">
-            <label htmlFor="name" className="md:w-32">
-              Name
-            </label>
-            <input
-              type="name"
-              className="md:grow"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex md:flex-row gap-3 md:gap-0 flex-col mb-3 w-full">
-            <label htmlFor="email" className="md:w-32">
-              Email
-            </label>
-            <input
-              type="email"
-              className="md:grow"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex md:flex-row flex-col gap-3 md:gap-0 w-full mb-7">
-            <label htmlFor="password" className="md:w-32">
-              Password
-            </label>
-            <input
-              type="password"
-              className="md:grow"
-              id="password"
-              autoComplete="false"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button className="button w-full" onClick={onSubmit}>
-            {isLoginPath ? "Login" : "Sign Up"}
-          </button>
-        </form> */}
+        <img className="background" src={backgroundImage} alt="image" />
       </div>
-      <img
-        className="background"
-        src={backgroundImage}
-        alt="image"
-        // style={{ backgroundImage: `url(${backgroundImage})` }}
-      />
-    </div>
+    </>
   )
 }
-
-// Login.propTypes = {
-//   pathname: string.isRequired,
-// }
 
 export default Login

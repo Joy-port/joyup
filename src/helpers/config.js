@@ -59,41 +59,38 @@ export const viewInfo = [
   // },
 ]
 
-export const InputValue = [
-  {
+export const checkLoginMessage = {
+  name: {
     icon: "User",
     name: "Full Name",
     type: "text",
     label: "name",
-    helpText: {
-      success: "",
-      warning: "",
-      error: "",
-    },
+    required: "Full name required! ",
+    warning: "",
+    error: "",
   },
-  {
+  email: {
     icon: "Mail",
     name: "Email",
     type: "email",
     label: "email",
-    helpText: {
-      success: "",
-      warning: "",
-      error: "",
-    },
+    required: "Email required!",
+    error: "This email is invalid!",
+    hasSignedUp: "This email has Signed up",
+    success: "Email is valid!",
   },
-  {
+  password: {
     icon: "Lock",
     name: "Password",
     type: "password",
     label: "password",
-    helpText: {
-      success: "",
-      warning: "",
-      error: "",
-    },
+    required: "Password required!",
+    lengthError: "Must be at least 8 characters",
+    success: "",
+    warning: "",
+    error: "",
   },
-]
+}
 
 export const TextType = [
   {
