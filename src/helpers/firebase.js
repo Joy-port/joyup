@@ -28,26 +28,26 @@ import {
 // const analytics = getAnalytics(app)
 
 //joyup
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD_0PAwmG4T-MAMAuJ0RKVxeLfONWS_9jg",
-//   authDomain: "joyup-management.firebaseapp.com",
-//   projectId: "joyup-management",
-//   storageBucket: "joyup-management.appspot.com",
-//   messagingSenderId: "974089768584",
-//   appId: "1:974089768584:web:5e9b8a9c0fcf5b7c28593d",
-//   measurementId: "G-BC10DC990F"
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyD_0PAwmG4T-MAMAuJ0RKVxeLfONWS_9jg",
+  authDomain: "joyup-management.firebaseapp.com",
+  projectId: "joyup-management",
+  storageBucket: "joyup-management.appspot.com",
+  messagingSenderId: "974089768584",
+  appId: "1:974089768584:web:5e9b8a9c0fcf5b7c28593d",
+  measurementId: "G-BC10DC990F",
+}
 
 //test account for storage
-const firebaseConfig = {
-  apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
-  authDomain: "designworks-project.firebaseapp.com",
-  projectId: "designworks-project",
-  storageBucket: "designworks-project.appspot.com",
-  messagingSenderId: "773350951759",
-  appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
-  measurementId: "G-4KNVP5V95N",
-}
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
+//   authDomain: "designworks-project.firebaseapp.com",
+//   projectId: "designworks-project",
+//   storageBucket: "designworks-project.appspot.com",
+//   messagingSenderId: "773350951759",
+//   appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
+//   measurementId: "G-4KNVP5V95N",
+// }
 
 const app = initializeApp(firebaseConfig)
 
@@ -365,7 +365,8 @@ export const firebase = {
         title,
         users,
         id: projectID,
-        isPublic,
+        isPublic: isPublic,
+        isTemplate: 0,
       })
       const userProjectCollection = "userProjects"
       const userProjectsRef = doc(this.db, userProjectCollection, userID)
@@ -405,6 +406,17 @@ export const firebase = {
       await setDoc(projectsRef, {
         ...create.userProjectList,
         id: userID,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  editProjectTitle: async function (projectID, title) {
+    try {
+      const projectCollection = "projects"
+      const projectRef = doc(this.db, projectCollection, projectID)
+      await updateDoc(projectRef, {
+        title,
       })
     } catch (error) {
       console.error(error)

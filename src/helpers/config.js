@@ -337,7 +337,7 @@ export const create = {
       name: "low",
       parent: "BjCJ9brvUXkru0jJYZ6c",
       type: "priority",
-    },
+    }, //this is the all default
   ],
   project: {
     title: "",

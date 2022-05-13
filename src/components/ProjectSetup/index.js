@@ -233,7 +233,7 @@ const index = ({ setIsOpen }) => {
         <div className="modal-footer flex justify-between pb-14">
           <div
             className={`w-1/3 button-dark flex items-center justify-center gap-3 ${
-              currentPage !== 0 ? "opacity-100 cursor-pointer" : "opacity-50"
+              currentPage !== 0 ? "opacity-100 cursor-pointer" : "invisible"
             }`}
             onClick={(e) => {
               setCurrentPage(0)

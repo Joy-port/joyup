@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus, ChevronDown, Inbox, X, Folder, Users, Edit2 } from "react-feather"
 import ProjectSetup from "../components/ProjectSetup"
-import NewProject from "../components/ProjectSetup/NewProject"
 import { tags } from "../sliceReducers/actions/tags"
 import { project } from "../sliceReducers/actions/project"
 import Loader from "../components/Loader"
 import { AuthContext } from "../components/AuthProvider"
+import { firebase } from "../helpers/firebase"
 
 const ProjectList = () => {
   const [userDetail, loading, error] = useContext(AuthContext)
@@ -18,6 +18,8 @@ const ProjectList = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const [isEditTitle, setIsEditTitle] = useState("")
+  const [projectTitle, setProjectTile] = useState("")
   const [type, setType] = useState(0)
   const openProject = (projectID) => {
     if (loading || error) return
@@ -28,6 +30,15 @@ const ProjectList = () => {
     if (loading || error) return
     if (confirm("confirm to remove the project")) {
       projectID !== "" && dispatch(project.deleteProject(projectID))
+    }
+  }
+  const editProjectName = async (projectID) => {
+    try {
+      console.log(projectID, projectTitle)
+
+      await firebase.editProjectTitle(projectID, projectTitle)
+    } catch (error) {
+      dispatch({ type: "status/ERROR", payload: error })
     }
   }
 
@@ -93,22 +104,49 @@ const ProjectList = () => {
                       }}
                     >
                       <div className="flex justify-between items-start h-full">
-                        <div className="capitalize font-semibold grow hide flex gap-4 items-center">
-                          <p className="text-overflow-ellipsis h-full overflow-hidden">
-                            {ownerProject.title}
-                          </p>
-                          {/* <div
-                            className=" hover:text-light300 text-light200 show z-20"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              editProjectName(ownerProject.id)
-                            }}
-                          >
-                            <Edit2 strokeWidth={1} size={16} />
-                          </div> */}
+                        <div className="capitalize font-semibold grow hide flex gap-4 items-center z-20 cursor-text">
+                          {isEditTitle === ownerProject.id ? (
+                            <input
+                              className="font-semibold bg-transparent border-1 bg-white z-30 block -ml-3 -mr-3 -mt-2"
+                              type="text"
+                              value={projectTitle}
+                              onChange={(e) => {
+                                setProjectTile(e.target.value)
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                              }}
+                              onBlur={(e) => {
+                                console.log(e, "onBlur")
+                                editProjectName(ownerProject.id)
+                                setIsEditTitle("")
+                                setProjectTile("")
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  editProjectName(ownerProject.id)
+                                  setIsEditTitle("")
+                                  setProjectTile("")
+                                }
+                              }}
+                            />
+                          ) : (
+                            <p
+                              className="text-overflow-ellipsis h-full overflow-hidden "
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setIsEditTitle(ownerProject.id)
+                                setProjectTile(ownerProject.title)
+                              }}
+                            >
+                              {ownerProject.title}
+                            </p>
+                          )}
                         </div>
                         <button
-                          className="block text-light200 hover:text-light300"
+                          className={`text-light200 hover:text-light300 ${
+                            isEditTitle ? "hidden" : "block"
+                          }`}
                           onClick={(e) => {
                             e.stopPropagation()
                             deleteProject(ownerProject.id)

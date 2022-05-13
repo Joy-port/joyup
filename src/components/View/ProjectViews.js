@@ -31,7 +31,7 @@ const ProjectViews = () => {
         })}
       </div>
       <div className="hidden md:block -mt-5 min-h-18 mb-5"></div>
-      {userTasks.length === 0 ? <Loader isContent={true} /> : <Outlet />}
+      <Outlet />
     </>
   )
 }
