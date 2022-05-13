@@ -52,7 +52,7 @@ const TaskList = () => {
             >
               <p className="flex gap-2 rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer">
                 <Clock />
-                {task.title || "Start Timer"}
+                Start Timer
               </p>
               {openSelector && (
                 <div

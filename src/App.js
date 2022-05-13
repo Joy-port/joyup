@@ -19,15 +19,7 @@ import { settings } from "./sliceReducers/actions/settings"
 import { user } from "./sliceReducers/actions/user"
 import { project } from "./sliceReducers/actions/project"
 import { tags } from "./sliceReducers/actions/tags"
-import AuthProvider, { AuthContext } from "./components/AuthProvider"
-
-const components = {
-  Home,
-  Report,
-  ProjectViews,
-  Login,
-  Settings,
-}
+import AuthProvider from "./components/AuthProvider"
 
 const viewComponents = {
   List,
@@ -45,7 +37,6 @@ function App() {
   const { totalProjectList } = useSelector((state) => state.projects)
   const { selectedProjectID } = useSelector((state) => state.tags)
   const { ownerProjects } = useSelector((state) => state.user)
-  console.log("%c user ID ", "background: #ffcc88; color:white", id)
 
   useEffect(() => {
     dispatch(project.updateProjects())
@@ -60,9 +51,14 @@ function App() {
     }
   }, [id])
   useEffect(() => {
+    if (JSON.stringify(projectList) !== "{}") {
+      dispatch(project.getTemplates())
+    }
+  }, [totalProjectList])
+  useEffect(() => {
     if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
       dispatch(user.getUserProjectList(id))
-      dispatch(settings.getUserSettings(id))
+      // dispatch(settings.getUserSettings(id))
     }
   }, [id, projectList, totalProjectList])
 

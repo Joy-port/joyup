@@ -1,4 +1,5 @@
 import { firebase } from "../../helpers/firebase"
+import { tags } from "../actions/tags"
 
 export const project = {
   updateProjects: function () {
@@ -41,6 +42,21 @@ export const project = {
       }
     }
   },
+  getTemplates: function () {
+    return async function (dispatch, getState) {
+      try {
+        const { totalProjectList } = getState().projects
+        console.log("totalProjects")
+        const templateProjects = Object.values(totalProjectList).filter(
+          (project) => project.isTemplate === 1
+        )
+        console.log(templateProjects)
+        dispatch({ type: "projects/updateTemplate", payload: templateProjects })
+      } catch (err) {
+        dispatch({ type: "status/ERROR", payload: err })
+      }
+    }
+  },
   createNewProject: function (projectContent, callback) {
     return async (dispatch, getState) => {
       try {
@@ -66,6 +82,33 @@ export const project = {
       try {
         const { id } = getState().user
         await firebase.deleteProject(projectID, id)
+      } catch (error) {
+        dispatch({ type: "status/ERROR", payload: error })
+      }
+    }
+  },
+  createNewProjectFromTemplate: function (projectID, callback) {
+    return async (dispatch, getState) => {
+      try {
+        const { id } = getState().user
+        const { totalProjectList } = getState().projects
+        const selectedTemplate = {
+          ...totalProjectList[projectID],
+          isTemplate: 0,
+          users: [id],
+          isPublic: 0,
+        }
+        const newProjectID = await firebase.createProjectWithTemplate(
+          selectedTemplate,
+          id
+        )
+        await firebase
+          .saveProjectToUserProjects(id, newProjectID, "ownerProjects")
+          .then(() => {
+            // console.log(callback)
+            callback && callback(newProjectID)
+          })
+          .catch((err) => console.error(err))
       } catch (error) {
         dispatch({ type: "status/ERROR", payload: error })
       }

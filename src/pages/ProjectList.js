@@ -104,10 +104,10 @@ const ProjectList = () => {
                       }}
                     >
                       <div className="flex justify-between items-start h-full">
-                        <div className="capitalize font-semibold grow hide flex gap-4 items-center z-20 cursor-text">
+                        <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10 cursor-text">
                           {isEditTitle === ownerProject.id ? (
                             <input
-                              className="font-semibold bg-transparent border-1 bg-white z-30 block -ml-3 -mr-3 -mt-2"
+                              className="font-semibold bg-transparent border-1 rounded border-light100 z-20 block -ml-3 -mr-3 -mt-2"
                               type="text"
                               value={projectTitle}
                               onChange={(e) => {

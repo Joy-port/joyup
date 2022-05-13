@@ -290,7 +290,6 @@ export const firebase = {
   },
   saveTaskPartialContent: async function (stateId, content) {
     try {
-      console.log(stateId, content)
       const collectionName = "tasks"
       const taskContentRef = [this.db, collectionName, stateId]
       const taskHasSavedInDataBase = await getDoc(doc(...taskContentRef))
@@ -354,6 +353,25 @@ export const firebase = {
       await setDoc(doc(...q, tag.id), { ...tag })
     })
   },
+  createProjectWithTemplate: async function (projectContent, userID) {
+    try {
+      const collectionName = "projects"
+      const projectRef = doc(collection(this.db, collectionName))
+      const projectID = projectRef.id
+      await setDoc(doc(this.db, collectionName, projectID), {
+        ...projectContent,
+        id: projectID,
+      })
+      const userProjectCollection = "userProjects"
+      const userProjectsRef = doc(this.db, userProjectCollection, userID)
+      await updateDoc(userProjectsRef, {
+        ownerProjects: arrayUnion(projectID),
+      })
+      return projectID
+    } catch (error) {
+      console.error(error)
+    }
+  },
   createProjectWithDefaultTags: async function (title, userID, isPublic) {
     try {
       const users = [userID]
@@ -383,7 +401,7 @@ export const firebase = {
       const collectionName = "userProjects"
       const projectRef = doc(this.db, collectionName, userID)
       const userProjectList = await getDoc(projectRef)
-      if (userProjectList.data()[type].some((item) => item === projectID)) {
+      if (!userProjectList.data()[type].some((item) => item === projectID)) {
         await updateDoc(projectRef, {
           [type]: arrayUnion(projectID),
         })

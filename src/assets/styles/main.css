@@ -1086,6 +1086,9 @@ input[type="range"]::-ms-fill-lower {
 .right-0 {
   right: 0px;
 }
+.z-10 {
+  z-index: 10;
+}
 .z-20 {
   z-index: 20;
 }
@@ -1094,9 +1097,6 @@ input[type="range"]::-ms-fill-lower {
 }
 .z-100 {
   z-index: 100;
-}
-.z-10 {
-  z-index: 10;
 }
 .z-30 {
   z-index: 30;
@@ -1116,14 +1116,6 @@ input[type="range"]::-ms-fill-lower {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
-}
-.-mx-1 {
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-}
-.-mx-2 {
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
 }
 .-mt-5 {
   margin-top: -1.25rem;
@@ -1145,6 +1137,15 @@ input[type="range"]::-ms-fill-lower {
 }
 .mt-5 {
   margin-top: 1.25rem;
+}
+.-ml-3 {
+  margin-left: -0.75rem;
+}
+.-mr-3 {
+  margin-right: -0.75rem;
+}
+.-mt-2 {
+  margin-top: -0.5rem;
 }
 .mb-3 {
   margin-bottom: 0.75rem;
@@ -1172,21 +1173,6 @@ input[type="range"]::-ms-fill-lower {
 }
 .mt-1 {
   margin-top: 0.25rem;
-}
-.-ml-2 {
-  margin-left: -0.5rem;
-}
-.-mt-2 {
-  margin-top: -0.5rem;
-}
-.-ml-3 {
-  margin-left: -0.75rem;
-}
-.mr-3 {
-  margin-right: 0.75rem;
-}
-.-mr-3 {
-  margin-right: -0.75rem;
 }
 .block {
   display: block;
@@ -1313,9 +1299,6 @@ input[type="range"]::-ms-fill-lower {
 }
 .w-4\/12 {
   width: 33.333333%;
-}
-.w-auto {
-  width: auto;
 }
 .min-w-44 {
   min-width: 11rem;
@@ -1512,6 +1495,9 @@ input[type="range"]::-ms-fill-lower {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
+.bg-transparent {
+  background-color: transparent;
+}
 .bg-blue200 {
   --tw-bg-opacity: 1;
   background-color: rgb(102 159 186 / var(--tw-bg-opacity));
@@ -1527,9 +1513,6 @@ input[type="range"]::-ms-fill-lower {
 .bg-blue100 {
   --tw-bg-opacity: 1;
   background-color: rgb(156 194 211 / var(--tw-bg-opacity));
-}
-.bg-transparent {
-  background-color: transparent;
 }
 .bg-slateLight {
   --tw-bg-opacity: 1;
@@ -1550,9 +1533,6 @@ input[type="range"]::-ms-fill-lower {
 }
 .p-1 {
   padding: 0.25rem;
-}
-.p-0 {
-  padding: 0px;
 }
 .px-3 {
   padding-left: 0.75rem;
@@ -1598,10 +1578,6 @@ input[type="range"]::-ms-fill-lower {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
 }
-.px-0 {
-  padding-left: 0px;
-  padding-right: 0px;
-}
 .pl-5 {
   padding-left: 1.25rem;
 }
@@ -1614,8 +1590,8 @@ input[type="range"]::-ms-fill-lower {
 .pb-3 {
   padding-bottom: 0.75rem;
 }
-.pb-14 {
-  padding-bottom: 3.5rem;
+.pb-12 {
+  padding-bottom: 3rem;
 }
 .pl-3 {
   padding-left: 0.75rem;

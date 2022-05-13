@@ -3,6 +3,7 @@ const initialProjectState = {
   totalTaskList: {},
   totalTagList: {},
   totalProjectList: {},
+  templateList: [],
 }
 
 function projectReducer(state = initialProjectState, action) {
@@ -31,6 +32,11 @@ function projectReducer(state = initialProjectState, action) {
       return {
         ...state,
         totalTaskList: { ...action.payload },
+      }
+    case "projects/updateTemplate":
+      return {
+        ...state,
+        templateList: [...action.payload],
       }
     default:
       return state

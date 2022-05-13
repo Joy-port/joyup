@@ -308,7 +308,6 @@ const TitleEditor = () => {
   }
 
   const onKeyDown = (e) => {
-    console.log("keypress listening", tagCharacterPosition, e.key)
     if (e.key === "ArrowUp") {
       if (slashCharacterPosition !== null) {
         setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
@@ -365,7 +364,6 @@ const TitleEditor = () => {
     } else if (e.key === "/") {
       setSlashCharacterPosition(inputRef.current?.selectionStart)
     } else if (e.key === "Backspace") {
-      console.log(timeQuery, timeCharacterPosition)
       if (!text.includes("/")) {
         setQuery(null)
         setTagsQuery(null)

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { project } from "../../sliceReducers/actions/project"
 import { bool, func } from "prop-types"
 import { useNavigate } from "react-router-dom"
-import { ArrowRight, ArrowLeft } from "react-feather"
 import { tags } from "../../sliceReducers/actions/tags"
-import { Sidebar, FolderPlus, Circle, AlertTriangle, CheckCircle } from "react-feather"
+import * as Icon from "react-feather"
 import { checkProjectMessage } from "../../helpers/config"
 
 const index = ({ setIsOpen }) => {
+  const { templateList, totalProjectList } = useSelector((state) => state.projects)
   const [isSelectTemplate, setIsSelectTemplate] = useState(null)
   const [selectedTemplateType, setSelectedTemplateType] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
@@ -34,12 +34,20 @@ const index = ({ setIsOpen }) => {
       }
       dispatch(
         project.createNewProject(projectContent, (projectID) => {
+          dispatch(tags.switchProject(projectID))
+          setIsOpen(false)
+          navigate(`${projectID}`)
+        })
+      )
+      // navigate("/projects")
+    } else if (currentPage === 1) {
+      dispatch(
+        project.createNewProjectFromTemplate(selectedTemplateType, (projectID) => {
           setIsOpen(false)
           dispatch(tags.switchProject(projectID))
           navigate(`${projectID}`)
         })
       )
-      navigate("/projects")
     }
   }
   //   useEffect(() => {
@@ -99,7 +107,7 @@ const index = ({ setIsOpen }) => {
                   }}
                 >
                   <h3 className="heading-four">Select A Template</h3>
-                  <Sidebar size={50} strokeWidth={1.5} />
+                  <Icon.Sidebar size={50} strokeWidth={1.5} />
                 </div>
                 <div
                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 border-light100 cursor-pointer hover:shadow-lg hover:border-blue200 text-light300 hover:text-blue200  ${
@@ -113,53 +121,32 @@ const index = ({ setIsOpen }) => {
                   }}
                 >
                   <h3 className="heading-four">Create A Project</h3>
-                  <FolderPlus size={50} strokeWidth={1.5} />
+                  <Icon.FolderPlus size={50} strokeWidth={1.5} />
                 </div>
               </>
             ) : currentPage === 1 ? (
               <>
-                <div
-                  className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
-                    selectedTemplateType === 0
-                      ? "border-blue200 text-blue200"
-                      : "border-light100 text-light300"
-                  }`}
-                  onClick={() => {
-                    setSelectedTemplateType(0)
-                    setStartCreateProject(true)
-                  }}
-                >
-                  <h3 className="heading-four">Select A Template</h3>
-                  <Sidebar size={50} strokeWidth={1.5} />
-                </div>
-                <div
-                  className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
-                    selectedTemplateType === 1
-                      ? "border-blue200 text-blue200"
-                      : "border-light100 text-light300"
-                  }`}
-                  onClick={() => {
-                    setSelectedTemplateType(1)
-                    setStartCreateProject(true)
-                  }}
-                >
-                  <h3 className="heading-four">Select A Template</h3>
-                  <Sidebar size={50} strokeWidth={1.5} />
-                </div>
-                <div
-                  className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
-                    selectedTemplateType === 2
-                      ? "border-blue200 text-blue200"
-                      : "border-light100 text-light300"
-                  }`}
-                  onClick={() => {
-                    setSelectedTemplateType(2)
-                    setStartCreateProject(true)
-                  }}
-                >
-                  <h3 className="heading-four">Select A Template</h3>
-                  <Sidebar size={50} strokeWidth={1.5} />
-                </div>
+                {templateList.map((templateDetail) => {
+                  const IconName = Icon[templateDetail.icon]
+                  return (
+                    <div
+                      className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 
+                      ${
+                        selectedTemplateType === templateDetail.id
+                          ? "border-blue200 text-blue200"
+                          : "border-light100 text-light300"
+                      }`}
+                      onClick={() => {
+                        setSelectedTemplateType(templateDetail.id)
+                        setStartCreateProject(true)
+                      }}
+                      key={templateDetail.id}
+                    >
+                      <h3 className="heading-four">{templateDetail.title}</h3>
+                      <IconName size={50} strokeWidth={1.5} />
+                    </div>
+                  )
+                })}
               </>
             ) : (
               <form
@@ -194,9 +181,9 @@ const index = ({ setIsOpen }) => {
                     style={{ paddingTop: 2, paddingBottom: 2 }}
                   >
                     {projectTitle ? (
-                      <AlertTriangle size={16} />
+                      <Icon.AlertTriangle size={16} />
                     ) : (
-                      <CheckCircle size={16} />
+                      <Icon.CheckCircle size={16} />
                     )}
                     <div className="text-sm">
                       {titleAlertMessage}
@@ -221,7 +208,7 @@ const index = ({ setIsOpen }) => {
                         isPublic ? "ml-auto" : "mr-auto"
                       }`}
                     >
-                      <Circle color="white" fill="white" />
+                      <Icon.Circle color="white" fill="white" />
                     </div>
                   </div>
                 </div>
@@ -230,7 +217,7 @@ const index = ({ setIsOpen }) => {
           </div>
         </div>
 
-        <div className="modal-footer flex justify-between pb-14">
+        <div className="modal-footer flex justify-between pb-12">
           <div
             className={`w-1/3 button-dark flex items-center justify-center gap-3 ${
               currentPage !== 0 ? "opacity-100 cursor-pointer" : "invisible"
@@ -240,7 +227,7 @@ const index = ({ setIsOpen }) => {
               setStartCreateProject(false)
             }}
           >
-            <ArrowLeft />
+            <Icon.ArrowLeft />
           </div>
           <div
             className={`w-1/3 button-dark items-center flex justify-center gap-3 ${
@@ -261,11 +248,13 @@ const index = ({ setIsOpen }) => {
                 }`}
                 onClick={(e) => createNewProject(e)}
               >
-                <FolderPlus />
+                <Icon.FolderPlus />
                 <p>create project</p>
               </div>
             ) : (
-              <ArrowRight />
+              <div className="invisible">
+                <Icon.ArrowRight />
+              </div>
             )}
           </div>
         </div>
@@ -279,3 +268,32 @@ index.propTypes = {
 }
 
 export default index
+
+// <div
+//                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
+//                     selectedTemplateType === 1
+//                       ? "border-blue200 text-blue200"
+//                       : "border-light100 text-light300"
+//                   }`}
+//                   onClick={() => {
+//                     setSelectedTemplateType(1)
+//                     setStartCreateProject(true)
+//                   }}
+//                 >
+//                   <h3 className="heading-four">Select A Template</h3>
+//                   <Sidebar size={50} strokeWidth={1.5} />
+//                 </div>
+//                 <div
+//                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
+//                     selectedTemplateType === 2
+//                       ? "border-blue200 text-blue200"
+//                       : "border-light100 text-light300"
+//                   }`}
+//                   onClick={() => {
+//                     setSelectedTemplateType(2)
+//                     setStartCreateProject(true)
+//                   }}
+//                 >
+//                   <h3 className="heading-four">Select A Template</h3>
+//                   <Sidebar size={50} strokeWidth={1.5} />
+//                 </div>
