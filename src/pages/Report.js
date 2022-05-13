@@ -15,6 +15,7 @@ import {
 // import { scaleTime } from "d3-scale"
 // import CalendarHeatmap from "reactjs-calendar-heatmap"
 import { getClockTime } from "../helpers/functions"
+import Loader from "../components/Loader"
 
 const Report = () => {
   const [openSelector, setOpenSelector] = useState(false)
@@ -86,107 +87,117 @@ const Report = () => {
   console.log(taskPie)
   return (
     <>
-      <div className="menu-container">
-        <div className="menu-item">
-          <BarChart2 />
-          Time Spending
-        </div>
-      </div>
-      <div className="-mt-5 min-h-18 mb-3"></div>
-
-      <div className="grow flex flex-col flex-wrap overflow-y-auto scrollbar">
-        <div className="w-1/2 text-sm mb-10">
-          <h1 className="tag-light200 w-56 px-2 py-1 text-center">Total Time Spending</h1>
-          {taskPie && (
-            <div className="border-rounded-light000">
-              <VictoryPie
-                data={Object.values(taskPie)}
-                colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
-                containerComponent={<VictoryContainer preserveAspectRatio="none" />}
-                animate={{
-                  duration: 2000,
-                }}
-                events={[
-                  {
-                    target: "data",
-                    eventHandlers: {
-                      onClick: () => {
-                        return [
-                          {
-                            target: "data",
-                            mutation: ({ slice, style }) => {
-                              setSelectedProject(slice.data.id)
-                              return style.fill === "#c43a31"
-                                ? null
-                                : { style: { fill: "#c43a31" } }
-                            },
-                          },
-                          // {
-                          //   target: "labels",
-                          //   mutation: ({ text }) => {
-                          //     return text === "clicked" ? null : { text: "clicked" }
-                          //   },
-                          // },
-                        ]
-                      },
-                    },
-                  },
-                ]}
-              />
-            </div>
-          )}
-        </div>
-        <div className="text-sm">
-          <h1 className="tag-light200 w-56 px-2 py-1 text-center">
-            Project Time Spending
-          </h1>
-          <div className="border-rounded-light000 w-full">
-            <div className="text-center rounded">
-              <div
-                className="group-title border-1 border-light000 rounded relative  px-2 py-1 z-20 max-w-min min-w-44"
-                onClick={() => {
-                  setOpenSelector(!openSelector)
-                }}
-              >
-                {totalProjectList[selectedProject].title}
-                {openSelector && (
-                  <div className="dropdown-container z-20">
-                    <ul className="dropdown-list">
-                      {projectList.map((id) => {
-                        const projectDetail = totalProjectList[id]
-                        return (
-                          <li
-                            className="dropdown-item"
-                            value={projectDetail.id}
-                            key={projectDetail.id}
-                            onClick={() => {
-                              setSelectedProject(projectDetail.id)
-                              setOpenSelector(false)
-                            }}
-                          >
-                            {projectDetail.title}
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="w-1/2">
-              <VictoryChart
-                theme={VictoryTheme.grayscale}
-                animate={{
-                  duration: 2000,
-                  onLoad: { duration: 1000 },
-                }}
-              >
-                <VictoryArea style={{ data: { fill: "#c43a31" } }} data={taskDateRange} />
-              </VictoryChart>
+      {totalProjectList[selectedProject] ? (
+        <>
+          <div className="menu-container">
+            <div className="menu-item">
+              <BarChart2 />
+              Time Spending
             </div>
           </div>
-        </div>
-      </div>
+          <div className="-mt-5 min-h-18 mb-3"></div>
+          <div className="grow flex flex-col flex-wrap overflow-y-auto scrollbar">
+            <div className="w-1/2 text-sm mb-10">
+              <h1 className="tag-light200 w-56 px-2 py-1 text-center">
+                Total Time Spending
+              </h1>
+              {taskPie && (
+                <div className="border-rounded-light000">
+                  <VictoryPie
+                    data={Object.values(taskPie)}
+                    colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+                    containerComponent={<VictoryContainer preserveAspectRatio="none" />}
+                    animate={{
+                      duration: 2000,
+                    }}
+                    events={[
+                      {
+                        target: "data",
+                        eventHandlers: {
+                          onClick: () => {
+                            return [
+                              {
+                                target: "data",
+                                mutation: ({ slice, style }) => {
+                                  setSelectedProject(slice.data.id)
+                                  return style.fill === "#c43a31"
+                                    ? null
+                                    : { style: { fill: "#c43a31" } }
+                                },
+                              },
+                              // {
+                              //   target: "labels",
+                              //   mutation: ({ text }) => {
+                              //     return text === "clicked" ? null : { text: "clicked" }
+                              //   },
+                              // },
+                            ]
+                          },
+                        },
+                      },
+                    ]}
+                  />
+                </div>
+              )}
+            </div>
+            <div className="text-sm">
+              <h1 className="tag-light200 w-56 px-2 py-1 text-center">
+                Project Time Spending
+              </h1>
+              <div className="border-rounded-light000 w-full">
+                <div className="text-center rounded">
+                  <div
+                    className="group-title border-1 border-light000 rounded relative  px-2 py-1 z-20 max-w-min min-w-44"
+                    onClick={() => {
+                      setOpenSelector(!openSelector)
+                    }}
+                  >
+                    {totalProjectList[selectedProject].title}
+                    {openSelector && (
+                      <div className="dropdown-container z-20">
+                        <ul className="dropdown-list">
+                          {projectList.map((id) => {
+                            const projectDetail = totalProjectList[id]
+                            return (
+                              <li
+                                className="dropdown-item"
+                                value={projectDetail.id}
+                                key={projectDetail.id}
+                                onClick={() => {
+                                  setSelectedProject(projectDetail.id)
+                                  setOpenSelector(false)
+                                }}
+                              >
+                                {projectDetail.title}
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="w-1/2">
+                  <VictoryChart
+                    theme={VictoryTheme.grayscale}
+                    animate={{
+                      duration: 2000,
+                      onLoad: { duration: 1000 },
+                    }}
+                  >
+                    <VictoryArea
+                      style={{ data: { fill: "#c43a31" } }}
+                      data={taskDateRange}
+                    />
+                  </VictoryChart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   )
 }

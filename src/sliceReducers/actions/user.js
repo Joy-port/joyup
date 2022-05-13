@@ -4,8 +4,7 @@ export const user = {
   nativeSignUp: (email, password, userName) => {
     return async (dispatch, getState) => {
       try {
-        const signUpEmail = email.trim()
-        const userData = await login.userSignUp(signUpEmail, password)
+        const userData = await login.userSignUp(email, password)
         if (userData.uid) {
           firebase
             .createUserSettingsAndProjectList(userData.uid, userName)

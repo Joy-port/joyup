@@ -3,8 +3,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
 
-const Day = ({ onView, onNavigate, date, length }) => {
-  console.log(length)
+const Day = ({ onView, onNavigate, date }) => {
   const [viewState, setViewState] = useState("day")
   const [isToday, setIsToday] = useState(true)
 
@@ -120,7 +119,6 @@ Day.propTypes = {
   onView: func.isRequired,
   onNavigate: func.isRequired,
   date: object.isRequired,
-  length: any.isRequired,
 }
 
 export default Day

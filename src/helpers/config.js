@@ -1,7 +1,7 @@
 export const pathInfo = [
   {
     name: "Home",
-    path: "/",
+    path: "/calendar",
     icon: "Home",
     component: "Home",
   },
@@ -85,7 +85,7 @@ export const checkLoginMessage = {
     type: "password",
     label: "password",
     required: "Password required!",
-    lengthError: "Must be at least 8 characters",
+    lengthError: "Must be at least 6 characters",
     success: "",
     warning: "",
     error: "",

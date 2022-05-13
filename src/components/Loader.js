@@ -1,16 +1,15 @@
+import { bool } from "prop-types"
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
 
-const Loader = () => {
-  // const dispatch = useDispatch()
-  // const status = useSelector((state) => state.status)
-  // console.log(status)
+const Loader = ({ isContent }) => {
   return (
-    <div className="lds-ripple">
+    <div className={`circle-loader ${isContent ? "circle-loader-content" : ""}`}>
       <div></div>
       <div></div>
     </div>
   )
 }
-
+Loader.propTypes = {
+  isContent: bool.isRequired,
+}
 export default Loader

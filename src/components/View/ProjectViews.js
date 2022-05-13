@@ -1,12 +1,14 @@
 import React from "react"
 import { Link, Outlet, useLocation, useParams } from "react-router-dom"
-import { viewInfo } from "../helpers/config"
+import { viewInfo } from "../../helpers/config"
 import { useSelector } from "react-redux"
 import * as Icon from "react-feather"
+import Loader from "../../components/Loader"
 
-const Dashboard = () => {
+const ProjectViews = () => {
   const state = useSelector((state) => state.tags)
   const { pathname } = useLocation()
+  const { userProjects, userTasks } = useSelector((state) => state.user)
   return (
     <>
       <div className="menu-container">
@@ -29,9 +31,9 @@ const Dashboard = () => {
         })}
       </div>
       <div className="hidden md:block -mt-5 min-h-18 mb-5"></div>
-      <Outlet />
+      {userTasks.length === 0 ? <Loader isContent={true} /> : <Outlet />}
     </>
   )
 }
 
-export default Dashboard
+export default ProjectViews

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus, ChevronDown, Inbox, X, Folder, Users, Edit2 } from "react-feather"
-import NewProject from "../NewProject"
-import { tags } from "../../sliceReducers/actions/tags"
-import { project } from "../../sliceReducers/actions/project"
+import NewProject from "../components/NewProject"
+import { tags } from "../sliceReducers/actions/tags"
+import { project } from "../sliceReducers/actions/project"
+import Loader from "../components/Loader"
 
 const ProjectList = () => {
   const { ownerProjects, collaborateProjects, userProjects } = useSelector(
@@ -24,7 +25,6 @@ const ProjectList = () => {
       projectID !== "" && dispatch(project.deleteProject(projectID))
     }
   }
-
   // const editProjectName = (projectID) => {
 
   // }
