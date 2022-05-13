@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { BarChart2 } from "react-feather"
 import {
@@ -17,8 +17,10 @@ import {
 import { getClockTime } from "../helpers/functions"
 import Loader from "../components/Loader"
 import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../components/AuthProvider"
 
 const Report = () => {
+  const [userDetail, loading, error] = useContext(AuthContext)
   const [openSelector, setOpenSelector] = useState(false)
   const { userTasks } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList, projectList } = useSelector(
@@ -80,6 +82,7 @@ const Report = () => {
     return data
   })
   useEffect(() => {
+    if (!userDetail) return
     if (userTasks.length === 0) {
       alert("there are no projects please create a new one")
       navigate("/projects")

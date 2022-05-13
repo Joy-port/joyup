@@ -92,7 +92,11 @@ const index = ({ setIsOpen }) => {
               Create New Project
             </h2>
           )}
-          <div className="flex justify-center items-center gap-10 grow">
+          <div
+            className={`flex justify-center items-center gap-10 grow px-5 md:px-5 py-10 ${
+              currentPage !== 2 ? "flex-col md:flex-row" : ""
+            }`}
+          >
             {currentPage === 0 ? (
               <>
                 <div
@@ -217,9 +221,9 @@ const index = ({ setIsOpen }) => {
           </div>
         </div>
 
-        <div className="modal-footer flex justify-between pb-12">
+        <div className="modal-footer flex justify-between pt-5 pb-5 md:pb-12">
           <div
-            className={`w-1/3 button-dark flex items-center justify-center gap-3 ${
+            className={`w-1/2 md:w-1/3 button-dark flex items-center justify-center gap-3 ${
               currentPage !== 0 ? "opacity-100 cursor-pointer" : "invisible"
             }`}
             onClick={(e) => {
@@ -229,33 +233,20 @@ const index = ({ setIsOpen }) => {
           >
             <Icon.ArrowLeft />
           </div>
-          <div
-            className={`w-1/3 button-dark items-center flex justify-center gap-3 ${
-              startCreateProject ? "opacity-100 cursor-pointer" : "opacity-50"
-            }`}
-            onClick={() => {
-              if (currentPage === 0) {
-                isSelectTemplate ? setCurrentPage(1) : setCurrentPage(2)
-              }
-            }}
-          >
-            {currentPage !== 0 ? (
-              <div
-                className={` hover:bg-blue100 text-white px-3 py-2 rounded flex gap-3 ${
-                  startCreateProject
-                    ? "cursor-pointer bg-blue200"
-                    : "cursor-default bg-blue100"
-                }`}
-                onClick={(e) => createNewProject(e)}
-              >
-                <Icon.FolderPlus />
-                <p>create project</p>
-              </div>
-            ) : (
-              <div className="invisible">
-                <Icon.ArrowRight />
-              </div>
-            )}
+          <div className="w-1/2 md:w-1/3">
+            <div
+              className={`mx-auto max-w-56 hover:bg-blue100 text-white px-3 py-2 rounded flex gap-3  button-dark items-center justify-center ${
+                startCreateProject
+                  ? "cursor-pointer bg-blue200"
+                  : "cursor-default bg-blue100"
+              } ${startCreateProject ? "opacity-100 cursor-pointer" : "opacity-50"} ${
+                currentPage === 0 ? "invisible" : ""
+              }`}
+              onClick={(e) => createNewProject(e)}
+            >
+              <Icon.FolderPlus />
+              <p className="whitespace-nowrap mr-2">create project</p>
+            </div>
           </div>
         </div>
       </div>

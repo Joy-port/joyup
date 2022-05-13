@@ -39,16 +39,6 @@ const Home = () => {
       navigate(`/task/${event.id}`)
     }
   })
-  useEffect(() => {
-    if (loading) return
-    if (userProjects.length === 0) {
-      alert("there is no projects please create new Project")
-      navigate("/projects")
-    } else if (userProjects.length !== 0 && userTasks.length === 0) {
-      alert("there is no tasks please create new Task")
-      navigate("/projects")
-    }
-  }, [])
 
   useEffect(() => {
     setEvents(() => {

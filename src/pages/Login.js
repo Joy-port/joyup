@@ -10,7 +10,7 @@ import { AuthContext } from "../components/AuthProvider"
 import Loader from "../components/Loader"
 
 const Login = () => {
-  // const { id } = useSelector((state) => state.user)
+  const { id } = useSelector((state) => state.user)
   const [userDetail, loading, error] = useContext(AuthContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -27,11 +27,13 @@ const Login = () => {
   const isLoginPath = pathname === "/signin"
   useEffect(() => {
     console.log("check login status", userDetail, loading, pathname)
-    if (userDetail) {
-      navigate("/calendar")
+    if (loading) return
+    if (userDetail && id !== "") {
+      console.log("after login", userDetail, id)
+      isLoginPath ? navigate("/calendar") : navigate("/projects")
     }
     return
-  }, [userDetail])
+  }, [userDetail, id])
   useEffect(() => {
     setNameStatus(2)
     setEmailStatus(2)
@@ -43,7 +45,7 @@ const Login = () => {
     checkEmail(email)
     checkName(name)
     checkPassword(password)
-    if (!checkEmail(email) && !checkName(name) && !checkPassword(password)) return
+    if (!checkEmail(email) || !checkName(name) || !checkPassword(password)) return
     if (isLoginPath) {
       dispatch(user.nativeLogin(email, password))
     } else {

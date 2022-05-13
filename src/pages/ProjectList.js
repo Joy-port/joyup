@@ -44,17 +44,17 @@ const ProjectList = () => {
 
   return (
     <>
-      <div className="menu-container">
-        <div
+      {/* <div className="menu-container"> */}
+      {/* <div
           className={`menu-item  ${
             type === 0 ? "menu-item__dark--active" : "menu-item__dark"
           }`}
           onClick={() => setType(0)}
         >
           <Folder />
-          Personal
-        </div>
-        {/* <div
+          Project List
+        </div> */}
+      {/* <div
           className={`menu-item  ${
             type !== 0 ? "menu-item__dark--active" : "menu-item__dark"
           }`}
@@ -63,17 +63,17 @@ const ProjectList = () => {
           <Users />
           Collaborates
         </div> */}
-        {userProjects.length > 0 && (
-          <div
-            className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
-            onClick={() => setIsOpen(true)}
-          >
-            <FolderPlus />
-            <p>Create Project</p>
-          </div>
-        )}
-      </div>
-      <div className="hidden md:block -mt-5 min-h-18"></div>
+      {userProjects.length > 0 && (
+        <div
+          className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
+          onClick={() => setIsOpen(true)}
+        >
+          <FolderPlus />
+          <p>Create Project</p>
+        </div>
+      )}
+      {/* </div> */}
+      {/* <div className="hidden md:block -mt-5 min-h-18"></div> */}
       {type === 0 ? (
         <>
           {ownerProjects.length === 0 ? (
