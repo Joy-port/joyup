@@ -83,7 +83,7 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>JoyUp | Task Management</title>
+        <title>JoyUp | Personal Tasks Management</title>
       </Helmet>
       <AuthProvider>
         <Routes>

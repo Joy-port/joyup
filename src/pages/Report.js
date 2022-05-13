@@ -16,6 +16,7 @@ import {
 // import CalendarHeatmap from "reactjs-calendar-heatmap"
 import { getClockTime } from "../helpers/functions"
 import Loader from "../components/Loader"
+import { useNavigate } from "react-router-dom"
 
 const Report = () => {
   const [openSelector, setOpenSelector] = useState(false)
@@ -23,6 +24,7 @@ const Report = () => {
   const { totalTaskList, totalProjectList, projectList } = useSelector(
     (state) => state.projects
   )
+  const navigate = useNavigate()
   const tags = useSelector((state) => state.tag)
   const [type, setType] = useState(0)
   const [selectedProject, setSelectedProject] = useState(projectList[0])
@@ -77,7 +79,12 @@ const Report = () => {
     console.log(data)
     return data
   })
-
+  useEffect(() => {
+    if (userTasks.length === 0) {
+      alert("there are no projects please create a new one")
+      navigate("/projects")
+    }
+  }, [])
   useEffect(() => {
     setTaskDateRange(() => {
       const data = switchProjectTasks()

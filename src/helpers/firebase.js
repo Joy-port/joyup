@@ -451,6 +451,7 @@ export const login = {
         return user
       })
       .catch((error) => {
+        console.log(error)
         const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
         if (errMsg === "weak password") {
           alert("請輸入6位數字密碼")

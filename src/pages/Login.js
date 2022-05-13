@@ -63,8 +63,8 @@ const Login = () => {
       setEmailMessage(checkLoginMessage.email.error)
       return false
     } else if (userEmail.toLowerCase().match(reg)) {
-      setEmailStatus(1)
-      setEmailMessage(checkLoginMessage.email.success)
+      setEmailStatus(2)
+      setEmailMessage("")
       return true
     } else {
       setEmailStatus(2)
@@ -144,16 +144,20 @@ const Login = () => {
                       />
                     </div>
                     <div
-                      className={`text-sm flex gap-2 items-center ${
+                      className={`text-sm flex gap-2 items-center h-5 ${
                         nameStatus !== 2 ? "visible" : "invisible"
                       } ${nameStatus ? "text-success" : "text-danger "}`}
+                      style={{ paddingTop: 2, paddingBottom: 2 }}
                     >
                       {nameStatus === 0 ? (
                         <Icon.AlertTriangle size={16} />
                       ) : (
                         <Icon.CheckCircle size={16} />
                       )}
-                      <p>{nameMessage || "123"}</p>
+                      <div className="text-sm">
+                        {nameMessage}
+                        <span className="invisible">123</span>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -180,7 +184,7 @@ const Login = () => {
                     />
                   </div>
                   <div
-                    className={`text-sm flex gap-2 items-center transition-all ${
+                    className={`text-sm flex gap-2 items-center h-5 leading-5 transition-all ${
                       emailStatus !== 2 ? "visible" : "invisible"
                     } ${emailStatus ? "text-success" : "text-danger "}`}
                   >
@@ -189,7 +193,10 @@ const Login = () => {
                     ) : (
                       <Icon.CheckCircle size={16} />
                     )}
-                    <p>{emailMessage || "123"}</p>
+                    <p className="text-sm">
+                      {emailMessage}
+                      <span className="invisible">123</span>
+                    </p>
                   </div>
                 </div>
                 <div className="w-full mb-5">
@@ -215,7 +222,7 @@ const Login = () => {
                     />
                   </div>
                   <div
-                    className={`text-sm flex gap-2 items-center transition-all ${
+                    className={`text-sm flex gap-2 items-center h-5 leading-5 transition-all ${
                       passwordStatus !== 2 ? "visible" : "invisible"
                     } ${passwordStatus ? "text-success" : "text-danger "}`}
                   >
@@ -224,10 +231,16 @@ const Login = () => {
                     ) : (
                       <Icon.CheckCircle size={16} />
                     )}
-                    <p>{passwordMessage || "123"}</p>
+                    <p className="text-sm">
+                      {passwordMessage}
+                      <span className="invisible">123</span>
+                    </p>
                   </div>
                 </div>
-                <button className="button button-primary shadow-md shadow-primary mb-5">
+                <button
+                  className="button button-primary shadow-md shadow-primary mb-5"
+                  onClick={onSubmit}
+                >
                   {isLoginPath ? "Log In" : "Sign up"}
                 </button>
                 <div className="text-center text-sm">
