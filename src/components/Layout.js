@@ -13,6 +13,7 @@ const Layout = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     if (!userDetail) {
+      dispatch(user.logout())
       navigate("/signin")
     }
     return

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Routes, Route, Navigate, useNavigate, Outlet } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { pathInfo, viewInfo } from "./helpers/config"
@@ -19,7 +19,7 @@ import { settings } from "./sliceReducers/actions/settings"
 import { user } from "./sliceReducers/actions/user"
 import { project } from "./sliceReducers/actions/project"
 import { tags } from "./sliceReducers/actions/tags"
-import AuthProvider from "./components/AuthProvider"
+import AuthProvider, { AuthContext } from "./components/AuthProvider"
 
 const components = {
   Home,
@@ -37,49 +37,44 @@ const viewComponents = {
 }
 
 function App() {
+  // const [userDetail, loading, error] = useContext(AuthContext)
   const { id } = useSelector((state) => state.user)
   // const id = "VI3mUOQiM2RrYYvNagMuQU4fLgm1"
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const projectList = useSelector((state) => state.projects)
   const { totalProjectList } = useSelector((state) => state.projects)
   const { selectedProjectID } = useSelector((state) => state.tags)
   const { ownerProjects } = useSelector((state) => state.user)
-  // console.log("%c user ID ", "background: #ffcc88; color:white", id)
+  console.log("%c user ID ", "background: #ffcc88; color:white", id)
 
-  // useEffect(() => {
-  //   dispatch(project.updateProjects())
-  //   dispatch(project.updateTags())
-  //   dispatch(project.updateTasks())
-  //   // dispatch(user.listenUserStatus())
-  // }, [])
+  useEffect(() => {
+    dispatch(project.updateProjects())
+    dispatch(project.updateTags())
+    dispatch(project.updateTasks())
+    dispatch(user.listenUserStatus())
+  }, [])
 
-  // useEffect(() => {
-  //   if (id === "") {
-  //     navigate("/login/sign-in")
-  //   }
-  // }, [id])
-  // useEffect(() => {
-  //   if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-  //     dispatch(user.getUserProjectList(id))
-  //   }
-  // }, [id])
-  // useEffect(() => {
-  //   if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-  //     // dispatch(user.getUserProjectList(id))
-  //     dispatch(settings.getUserSettings(id))
-  //   }
-  // }, [id, projectList, totalProjectList])
+  useEffect(() => {
+    if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
+      dispatch(user.getUserProjectList(id))
+    }
+  }, [id])
+  useEffect(() => {
+    if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
+      dispatch(user.getUserProjectList(id))
+      dispatch(settings.getUserSettings(id))
+    }
+  }, [id, projectList, totalProjectList])
 
-  // useEffect(() => {
-  //   if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
-  //     if (selectedProjectID === "") {
-  //       dispatch(tags.initialProjectData())
-  //     } else {
-  //       dispatch(tags.switchProject(selectedProjectID))
-  //     }
-  //   }
-  // }, [projectList, ownerProjects])
+  useEffect(() => {
+    if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
+      if (selectedProjectID === "") {
+        dispatch(tags.initialProjectData())
+      } else {
+        dispatch(tags.switchProject(selectedProjectID))
+      }
+    }
+  }, [projectList, ownerProjects])
   return (
     <>
       <Helmet>

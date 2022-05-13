@@ -2,12 +2,15 @@ import React, { useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus, ChevronDown, Inbox, X, Folder, Users, Edit2 } from "react-feather"
-import NewProject from "../components/NewProject"
+import ProjectSetup from "../components/ProjectSetup"
+import NewProject from "../components/ProjectSetup/NewProject"
 import { tags } from "../sliceReducers/actions/tags"
 import { project } from "../sliceReducers/actions/project"
 import Loader from "../components/Loader"
+import { AuthContext } from "../components/AuthProvider"
 
 const ProjectList = () => {
+  const [userDetail, loading, error] = useContext(AuthContext)
   const { ownerProjects, collaborateProjects, userProjects } = useSelector(
     (state) => state.user
   )
@@ -17,17 +20,17 @@ const ProjectList = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [type, setType] = useState(0)
   const openProject = (projectID) => {
+    if (loading || error) return
     dispatch(tags.switchProject(projectID))
     navigate(`${projectID}`)
   }
   const deleteProject = (projectID) => {
+    if (loading || error) return
     if (confirm("confirm to remove the project")) {
       projectID !== "" && dispatch(project.deleteProject(projectID))
     }
   }
-  // const editProjectName = (projectID) => {
 
-  // }
   return (
     <>
       <div className="menu-container">
@@ -71,7 +74,7 @@ const ProjectList = () => {
                 <FolderPlus size={40} strokeWidth={1} />
                 <p>Create New Project</p>
               </div>
-              {isOpen && <NewProject setIsOpen={setIsOpen} />}
+              {isOpen && <ProjectSetup setIsOpen={setIsOpen} />}
             </>
           ) : (
             <>
@@ -162,7 +165,7 @@ const ProjectList = () => {
         </div>
       )}
 
-      {isOpen && <NewProject setIsOpen={setIsOpen} />}
+      {isOpen && <ProjectSetup setIsOpen={setIsOpen} />}
     </>
   )
 }

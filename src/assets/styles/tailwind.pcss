@@ -2,7 +2,17 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 
+@layer base {
+  input {
+    @apply outline-none focus:outline-none active:outline-none;
+  }
+  select {
+    @apply outline-none focus:outline-none;
+  }
+}
 @layer components {
+  /* input px-2 py-1 */
+
   /* container */
   .body {
     @apply h-screen flex flex-col md:flex-row relative text-slateDark;
@@ -10,7 +20,6 @@
   .content {
     @apply relative gap-3 w-full h-screen md:overflow-hidden py-3 px-4;
   }
-
   /* menu */
   .menu-container {
     @apply md:fixed flex border-b-2 border-b-light000 shadow-sm md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3 mb-3 md:mb-0;
@@ -34,11 +43,6 @@
   .menu-item__dark--active {
     @apply text-slateLight;
   }
-
-  .tool-bar {
-    @apply flex justify-between md:justify-between items-center gap-3 mb-3 rounded-sm;
-  }
-
   /* modal */
   .modal-bg {
     @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
@@ -51,6 +55,9 @@
   }
   .modal-lg {
     @apply w-full h-5/6 md:w-11/12 md:h-5/6;
+  }
+  .modal-md {
+    @apply w-full h-4/6 md:w-8/12;
   }
   .modal-sm {
     @apply w-full h-2/6 md:w-5/12;
@@ -65,48 +72,66 @@
   .modal-footer {
     @apply py-2;
   }
+  .button {
+    @apply rounded font-medium text-lg text-center cursor-pointer px-2 py-1 border-1 border-transparent;
+  }
+  .button-primary {
+    @apply bg-primary text-white hover:bg-secondary rounded;
+  }
+  .button-danger {
+    @apply bg-danger text-white hover:bg-red100 rounded;
+  }
+  .button-outline-primary {
+    @apply text-primary hover:text-secondary;
+  }
+  .button-outline-danger {
+    @apply text-danger  hover:text-red100 hover:border-red100 border-red200;
+  }
+  .button-dark {
+    @apply text-light300  hover:text-transparentDark;
+  }
+  .button-outline-dark {
+    @apply text-light300 hover:text-white hover:bg-light300;
+  }
+
+  .button-light {
+    @apply text-light200 hover:text-slateLight;
+  }
+  .button-outline-light {
+    @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
+  }
+  /* dropdown group */
+  .dropdown-container {
+    @apply absolute w-full left-0 mt-2;
+  }
+  .dropdown-list {
+    @apply border-1 border-light000 rounded-sm bg-white;
+  }
+  .dropdown-item {
+    @apply px-2 py-1 hover:bg-light100 cursor-pointer;
+  }
+
+  .button-group {
+    @apply flex flex-row justify-between items-center py-1;
+  }
+
+  .border-group-light200 {
+    @apply bg-white rounded px-2 py-1 flex flex-col gap-3;
+  }
+  .border-group-title {
+    @apply font-bold text-lg text-light300 text-center;
+  }
 }
+
+.tool-bar {
+  @apply flex justify-between md:justify-between items-center gap-3 mb-3 rounded-sm;
+}
+
 /* button */
 .play-button {
   @apply rounded-full flex items-center justify-center;
 }
 
-.button {
-  @apply rounded font-medium text-lg text-center cursor-pointer px-2 py-1 border-1 border-transparent;
-}
-.button-primary {
-  @apply bg-primary text-white hover:bg-secondary rounded;
-}
-.button-danger {
-  @apply bg-danger text-white hover:bg-red100 rounded;
-}
-.button-outline-primary {
-  @apply text-primary hover:text-secondary;
-}
-.button-outline-danger {
-  @apply text-danger  hover:text-red100 hover:border-red100 border-red200;
-}
-.button-dark {
-  @apply text-light300  hover:text-transparentDark;
-}
-.button-outline-dark {
-  @apply text-light300 hover:text-white hover:bg-light300;
-}
-
-.button-light {
-  @apply text-light200 hover:text-slateLight;
-}
-.button-outline-light {
-  @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
-}
-
-/* input px-2 py-1 */
-input {
-  @apply outline-none focus:outline-none active:outline-none;
-}
-select {
-  @apply outline-none focus:outline-none;
-}
 .input-light300 {
   @apply bg-light000 focus:bg-white placeholder:text-light200;
 }
@@ -125,28 +150,6 @@ select {
 
 .select-dropDown {
   @apply w-2/4;
-}
-
-/* dropdown group */
-.dropdown-container {
-  @apply absolute w-full left-0 mt-2;
-}
-.dropdown-list {
-  @apply border-1 border-light000 rounded-sm bg-white;
-}
-.dropdown-item {
-  @apply px-2 py-1 hover:bg-light100 cursor-pointer;
-}
-
-.button-group {
-  @apply flex flex-row justify-between items-center py-1;
-}
-
-.border-group-light200 {
-  @apply bg-white rounded px-2 py-1 flex flex-col gap-3;
-}
-.border-group-title {
-  @apply font-bold text-lg text-light300 text-center;
 }
 
 .editor {

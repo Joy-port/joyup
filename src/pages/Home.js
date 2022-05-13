@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useMemo } from "react"
+import React, { useCallback, useEffect, useState, useMemo, useContext } from "react"
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import moment from "moment"
 import CustomCalendar from "../components/Calendar"
@@ -6,10 +6,12 @@ import AgendaToolbar from "../components/Calendar/Toolbar/Agenda"
 import * as Icon from "react-feather"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../components/AuthProvider"
 
 const localizer = momentLocalizer(moment)
 
 const Home = () => {
+  const [userDetail, loading, error] = useContext(AuthContext)
   const { userTasks, userProjects } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList } = useSelector((state) => state.projects)
   const navigate = useNavigate()
@@ -38,6 +40,7 @@ const Home = () => {
     }
   })
   useEffect(() => {
+    if (loading) return
     if (userProjects.length === 0) {
       alert("there is no projects please create new Project")
       navigate("/projects")

@@ -91,6 +91,12 @@ export const checkLoginMessage = {
     error: "",
   },
 }
+export const checkProjectMessage = {
+  createEmptyProject: {
+    required: "Project title is required!",
+    lengthError: "Must be at least 6 characters",
+  },
+}
 
 export const TextType = [
   {
