@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
+import { Helmet } from "react-helmet"
 import { useSelector } from "react-redux"
 import { BarChart2 } from "react-feather"
 import {
@@ -78,7 +79,6 @@ const Report = () => {
   })
   const [taskDateRange, setTaskDateRange] = useState(() => {
     const data = switchProjectTasks()
-    console.log(data)
     return data
   })
   useEffect(() => {
@@ -94,9 +94,11 @@ const Report = () => {
       return data
     })
   }, [selectedProject])
-  console.log(taskPie)
   return (
     <>
+      <Helmet>
+        <title>JoyUp | Reports</title>
+      </Helmet>
       {totalProjectList[selectedProject] ? (
         <>
           <div className="menu-container">

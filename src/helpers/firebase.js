@@ -415,7 +415,6 @@ export const firebase = {
       const settingsCollection = "userSettings"
       const settingsRef = doc(this.db, settingsCollection, userID)
       await setDoc(settingsRef, {
-        ...create.settings,
         id: userID,
         name,
       })
@@ -434,6 +433,17 @@ export const firebase = {
       const projectCollection = "projects"
       const projectRef = doc(this.db, projectCollection, projectID)
       await updateDoc(projectRef, {
+        title,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  editUserName: async function (userID, title) {
+    try {
+      const userCollection = "userSettings"
+      const userRef = doc(this.db, userCollection, userID)
+      await updateDoc(userRef, {
         title,
       })
     } catch (error) {

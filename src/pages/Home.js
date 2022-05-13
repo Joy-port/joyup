@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo, useContext } from "react"
+import { Helmet } from "react-helmet"
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import moment from "moment"
 import CustomCalendar from "../components/Calendar"
@@ -70,6 +71,9 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>JoyUp | Home </title>
+      </Helmet>
       <div className="menu-container">
         <div
           className={`menu-item  ${

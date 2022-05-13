@@ -6,6 +6,7 @@ import tags from "./reducers/tags"
 import settings from "./reducers/settings"
 import clock from "./reducers/clock"
 import status from "./reducers/status"
+import modals from "./reducers/modals"
 
 const rootReducer = combineReducers({
   user,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   clock,
   settings,
   status,
+  modals,
 })
 
 export default rootReducer

@@ -1,5 +1,4 @@
 import { firebase } from "../../helpers/firebase"
-import { tags } from "../actions/tags"
 
 export const project = {
   updateProjects: function () {
@@ -46,11 +45,9 @@ export const project = {
     return async function (dispatch, getState) {
       try {
         const { totalProjectList } = getState().projects
-        console.log("totalProjects")
         const templateProjects = Object.values(totalProjectList).filter(
           (project) => project.isTemplate === 1
         )
-        console.log(templateProjects)
         dispatch({ type: "projects/updateTemplate", payload: templateProjects })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })

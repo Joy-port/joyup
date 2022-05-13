@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
+import ViewNavigator from "../../View/ViewNavigator"
 
 const Month = ({ onView, onNavigate, date }) => {
   const { calendarView } = useParams()
@@ -89,7 +90,15 @@ const Month = ({ onView, onNavigate, date }) => {
 
   return (
     <div>
-      <div className="rbc-toolbar-label text-center">{moment(date).format("MMM DD")}</div>
+      <div className="flex justify-between">
+        <ViewNavigator />
+        <div className="rbc-toolbar-label text-center">
+          {moment(date).format("MMM DD")}
+        </div>
+        <div className="invisible">
+          <ViewNavigator />
+        </div>
+      </div>
       <div className="rbc-toolbar justify-between">
         <div className="rbc-btn-group">
           <button type="button" onClick={() => goToBack()}>

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus, ChevronDown, Inbox, X, Folder, Users, Edit2 } from "react-feather"
 import ProjectSetup from "../components/ProjectSetup"
@@ -14,10 +15,11 @@ const ProjectList = () => {
   const { ownerProjects, collaborateProjects, userProjects } = useSelector(
     (state) => state.user
   )
+  const { createProjectModalIsOpen } = useSelector((state) => state.modals)
   const { totalProjectList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
+  // const [isOpen, setIsOpen] = useState(false)
   const [isEditTitle, setIsEditTitle] = useState("")
   const [projectTitle, setProjectTile] = useState("")
   const [type, setType] = useState(0)
@@ -34,8 +36,6 @@ const ProjectList = () => {
   }
   const editProjectName = async (projectID) => {
     try {
-      console.log(projectID, projectTitle)
-
       await firebase.editProjectTitle(projectID, projectTitle)
     } catch (error) {
       dispatch({ type: "status/ERROR", payload: error })
@@ -44,17 +44,17 @@ const ProjectList = () => {
 
   return (
     <>
-      {/* <div className="menu-container"> */}
-      {/* <div
-          className={`menu-item  ${
-            type === 0 ? "menu-item__dark--active" : "menu-item__dark"
-          }`}
-          onClick={() => setType(0)}
+      <Helmet>
+        <title>JoyUp | Projects </title>
+      </Helmet>
+      <div className="menu-container">
+        <div
+          className={`px-4 py-2 flex gap-3 justify-center transition-colors rounded-sm cursor-default`}
         >
           <Folder />
           Project List
-        </div> */}
-      {/* <div
+        </div>
+        {/* <div
           className={`menu-item  ${
             type !== 0 ? "menu-item__dark--active" : "menu-item__dark"
           }`}
@@ -63,17 +63,17 @@ const ProjectList = () => {
           <Users />
           Collaborates
         </div> */}
-      {userProjects.length > 0 && (
-        <div
-          className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
-          onClick={() => setIsOpen(true)}
-        >
-          <FolderPlus />
-          <p>Create Project</p>
-        </div>
-      )}
-      {/* </div> */}
-      {/* <div className="hidden md:block -mt-5 min-h-18"></div> */}
+        {userProjects.length > 0 && (
+          <div
+            className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
+            onClick={() => setIsOpen(true)}
+          >
+            <FolderPlus />
+            <p>Create Project</p>
+          </div>
+        )}
+      </div>
+      <div className="hidden md:block -mt-5 min-h-18"></div>
       {type === 0 ? (
         <>
           {ownerProjects.length === 0 ? (
@@ -85,7 +85,7 @@ const ProjectList = () => {
                 <FolderPlus size={40} strokeWidth={1} />
                 <p>Create New Project</p>
               </div>
-              {isOpen && <ProjectSetup setIsOpen={setIsOpen} />}
+              {createProjectModalIsOpen && <ProjectSetup />}
             </>
           ) : (
             <>
@@ -168,7 +168,9 @@ const ProjectList = () => {
             <div className="flex gap-3 items-center">
               <div
                 className="flex gap-3 items-center justify-center button button-light cursor-pointer w-40"
-                onClick={() => setIsOpen(true)}
+                onClick={() =>
+                  dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+                }
               >
                 <Inbox size={28} />
                 <p>Invitation</p>
@@ -203,7 +205,7 @@ const ProjectList = () => {
         </div>
       )}
 
-      {isOpen && <ProjectSetup setIsOpen={setIsOpen} />}
+      {createProjectModalIsOpen && <ProjectSetup />}
     </>
   )
 }

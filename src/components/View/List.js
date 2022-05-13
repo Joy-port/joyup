@@ -1,12 +1,12 @@
 import { string } from "prop-types"
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import * as Icon from "react-feather"
 import { tags } from "../../sliceReducers/actions/tags"
 import DragFunction from "../DragFunction"
-import Breadcrumb from "../Breadcrumb"
-import { FilePlus } from "react-feather"
-import { useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
+import ViewNavigator from "./ViewNavigator"
 
 const List = ({ type }) => {
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
@@ -17,7 +17,26 @@ const List = ({ type }) => {
   return (
     <>
       <div className="tool-bar">
-        <Breadcrumb />
+        <ViewNavigator />
+        {/* <div className="flex gap-3">
+          {viewInfo.map((view) => {
+            const IconName = Icon[view.icon]
+            const isActive = pathname.split("/").includes(view.path)
+            const calendarDefaultView = view.name === "Calendar" ? "/month" : ""
+            return (
+              <Link
+                key={view.path}
+                to={`/projects/${state.selectedProjectID}/${view.path}${calendarDefaultView}`}
+                className={`menu-item ${
+                  isActive ? "menu-item__dark--active" : "menu-item__dark"
+                }`}
+              >
+                <IconName />
+                <p className="lg:block hidden">{view.name}</p>
+              </Link>
+            )
+          })}
+        </div> */}
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
             <div
@@ -67,7 +86,7 @@ const List = ({ type }) => {
                 navigate(`/task/${newTaskID}`)
               }}
             >
-              <FilePlus size={40} strokeWidth={1} />
+              <Icon.FilePlus size={40} strokeWidth={1} />
               <p>Create New Task</p>
             </div>
           </>

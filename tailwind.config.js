@@ -70,7 +70,7 @@ module.exports = {
       },
       width: {
         "custom-m": "calc(100vw - 80px)",
-        "custom-l": "calc(100vw - 177px)",
+        "custom-l": "calc(100vw - 156px)",
         330: "330px",
       },
       minHeight: {

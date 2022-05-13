@@ -6,7 +6,7 @@ export const pathInfo = [
     component: "Home",
   },
   {
-    name: "Report",
+    name: "Reports",
     path: "reports",
     icon: "Activity",
     component: "Report",

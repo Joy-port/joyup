@@ -7,7 +7,7 @@ import { tags } from "../../sliceReducers/actions/tags"
 import * as Icon from "react-feather"
 import { checkProjectMessage } from "../../helpers/config"
 
-const index = ({ setIsOpen }) => {
+const index = () => {
   const { templateList, totalProjectList } = useSelector((state) => state.projects)
   const [isSelectTemplate, setIsSelectTemplate] = useState(null)
   const [selectedTemplateType, setSelectedTemplateType] = useState(null)
@@ -35,7 +35,8 @@ const index = ({ setIsOpen }) => {
       dispatch(
         project.createNewProject(projectContent, (projectID) => {
           dispatch(tags.switchProject(projectID))
-          setIsOpen(false)
+          dispatch({ type: "modals/switchCreateProjectModal", payload: false })
+          dispatch
           navigate(`${projectID}`)
         })
       )
@@ -43,7 +44,7 @@ const index = ({ setIsOpen }) => {
     } else if (currentPage === 1) {
       dispatch(
         project.createNewProjectFromTemplate(selectedTemplateType, (projectID) => {
-          setIsOpen(false)
+          dispatch({ type: "modals/switchCreateProjectModal", payload: false })
           dispatch(tags.switchProject(projectID))
           navigate(`${projectID}`)
         })
@@ -72,7 +73,8 @@ const index = ({ setIsOpen }) => {
             onClick={() => {
               setProjectTitle("")
               setIsPublic(false)
-              setIsOpen(false)
+              // setIsOpen(false)
+              dispatch({ type: "modals/switchCreateProjectModal", payload: false })
             }}
           >
             X
@@ -252,10 +254,6 @@ const index = ({ setIsOpen }) => {
       </div>
     </div>
   )
-}
-
-index.propTypes = {
-  setIsOpen: func.isRequired,
 }
 
 export default index

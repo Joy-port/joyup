@@ -30,7 +30,12 @@ const Login = () => {
     if (loading) return
     if (userDetail && id !== "") {
       console.log("after login", userDetail, id)
-      isLoginPath ? navigate("/calendar") : navigate("/projects")
+      if (isLoginPath) {
+        navigate("/calendar")
+      } else {
+        dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+        navigate("/projects")
+      }
     }
     return
   }, [userDetail, id])
@@ -45,7 +50,11 @@ const Login = () => {
     checkEmail(email)
     checkName(name)
     checkPassword(password)
-    if (!checkEmail(email) || !checkName(name) || !checkPassword(password)) return
+    if (isLoginPath) {
+      if (!checkEmail(email) || !checkPassword(password)) return
+    } else {
+      if (!checkEmail(email) || !checkName(name) || !checkPassword(password)) return
+    }
     if (isLoginPath) {
       dispatch(user.nativeLogin(email, password))
     } else {
@@ -241,7 +250,7 @@ const Login = () => {
                 </div>
                 <button
                   className="button button-primary shadow-md shadow-primary mb-5"
-                  onClick={onSubmit}
+                  onClick={(e) => onSubmit(e)}
                 >
                   {isLoginPath ? "Log In" : "Sign up"}
                 </button>
