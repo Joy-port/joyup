@@ -109,7 +109,7 @@ const index = () => {
             <TitleEditor />
           </div>
           <div className="grow flex flex-col-reverse md:flex-row gap-5 task-scrollbar">
-            <div className="flex flex-col gap-3 h-full grow" id="taskEditorDescription">
+            <div className="flex flex-col gap-3 h-full grow">
               <TextEditor />
               {/* <AddSubtask /> */}
             </div>

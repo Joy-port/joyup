@@ -275,7 +275,7 @@ const TextEditor = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-1/4">
+    <div className="flex flex-col min-h-1/4" id="taskEditorDescription">
       <div
         className={`editor border-1 ${
           isEditing ? "border-light300" : "border-transparent"

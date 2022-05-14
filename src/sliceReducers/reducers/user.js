@@ -7,7 +7,6 @@ const initialUserState = {
   userName: "",
   id: "",
   isFirstTimeUser: false,
-  loginStatus: false,
 }
 
 function userReducer(state = initialUserState, action) {
