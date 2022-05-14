@@ -2,9 +2,13 @@ import React from "react"
 export const steps = {
   startTask: [
     {
-      title: "Home Page",
+      title: <h1 className="text-slateLight">Home Page</h1>,
       target: "#Home",
-      content: <p>Click on the side bar menu to home page and browse the tasks </p>,
+      content: (
+        <p className="text-slateLight">
+          Click on the side bar menu to home page and browse the tasks{" "}
+        </p>
+      ),
       disableBeacon: true,
     },
     {

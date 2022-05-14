@@ -1,4 +1,4 @@
-import { create, defaultTypes, defaultTags } from "./config"
+import { create } from "./config"
 import { getTagList } from "./functions"
 import { initializeApp } from "firebase/app"
 import {

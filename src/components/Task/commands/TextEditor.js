@@ -207,7 +207,7 @@ const TextEditor = () => {
       if (matchingCommands[selectionIndex]) {
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
-        // if (isOnComposition) return
+        if (isOnComposition) return
         changeTextStyle()
         setHTMLStyle({})
         const prevIndex = currentBlockIndex()

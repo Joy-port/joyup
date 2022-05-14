@@ -30,8 +30,11 @@ module.exports = {
       green100: "#92C8A5",
       green000: "#FDF0ED",
       warning: "#FFD860",
+      // warningLight: "#FDF0ED",
       danger: "#E56544", //f54e4e
+      dangerLight: "#FDF0ED", //f54e4e
       success: "#60AF7B",
+      successLight: "#FDF0ED",
       info: "#669FBA",
       gray: "#8492a6",
       white: "#fff",
