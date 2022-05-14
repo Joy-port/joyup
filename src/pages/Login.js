@@ -34,6 +34,7 @@ const Login = () => {
         navigate("/calendar")
       } else {
         dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+        dispatch({ type: "user/setIsFirstTimeUser", payload: true })
         navigate("/projects")
       }
     }

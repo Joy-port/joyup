@@ -14,8 +14,8 @@ const Task = ({ task, index, type }) => {
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/task/${task.id}`)
   }
-  const draggingTop = type === "list" ? 200 : 176
-  const draggingLeft = type === "list" ? 0 : 200
+  const draggingTop = type === "list" ? 0 : 0 //200 176 //200
+  const draggingLeft = type === "list" ? 0 : 100
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => {

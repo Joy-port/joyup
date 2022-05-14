@@ -35,7 +35,7 @@ const TaskList = () => {
   return (
     <>
       {userTasks.length !== 0 && (
-        <div className="fixed bottom-5 right-5 z-100 bg-transparent flex gap-2">
+        <div className="absolute bottom-5 right-5 z-100 bg-transparent flex gap-2">
           <div className=" rounded button-outline-light min-w-32 max-w-72">
             <div
               className="group-title relative w-44 py-2 px-3 rounded"

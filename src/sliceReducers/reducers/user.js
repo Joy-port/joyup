@@ -6,6 +6,7 @@ const initialUserState = {
   userTasks: [],
   userName: "",
   id: "",
+  isFirstTimeUser: false,
   loginStatus: false,
 }
 
@@ -43,6 +44,11 @@ function userReducer(state = initialUserState, action) {
       return {
         ...state,
         userTasks: [...action.payload],
+      }
+    case "user/setIsFirstTimeUser":
+      return {
+        ...state,
+        isFirstTimeUser: action.payload,
       }
     default:
       return state

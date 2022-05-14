@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react"
-import { Routes, Route, Navigate, useNavigate, Outlet } from "react-router-dom"
+import React, { useEffect } from "react"
+import { Routes, Route, Navigate, Outlet } from "react-router-dom"
 import { Helmet } from "react-helmet"
-import { pathInfo, viewInfo } from "./helpers/config"
+import { viewInfo } from "./helpers/config"
 import Layout from "./components/Layout"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
@@ -13,13 +13,12 @@ import Home from "./pages/Home"
 import Report from "./pages/Report"
 import ProjectViews from "./components/View/ProjectViews"
 import Login from "./pages/Login"
-import Settings from "./pages/Settings"
 import { useDispatch, useSelector } from "react-redux"
-import { settings } from "./sliceReducers/actions/settings"
 import { user } from "./sliceReducers/actions/user"
 import { project } from "./sliceReducers/actions/project"
 import { tags } from "./sliceReducers/actions/tags"
 import AuthProvider from "./components/AuthProvider"
+import IntroductionTour from "./components/IntroTour"
 
 const viewComponents = {
   List,
@@ -77,6 +76,7 @@ function App() {
         <title>JoyUp | Personal Time Management</title>
       </Helmet>
       <AuthProvider>
+        <IntroductionTour />
         <Routes>
           <Route path="/">
             <Route path="signin" element={<Login />} />
