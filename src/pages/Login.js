@@ -140,12 +140,13 @@ const Login = () => {
                       <Icon.User />
                       <input
                         type="text"
-                        className={`rounded-lg grow text-transparentDark caret-light200 ${
+                        className={`rounded-lg grow 
+                        border-1 border-light200 text-transparentDark ${
                           nameStatus === 2
-                            ? "caret-light200"
+                            ? " focus:border-light200"
                             : nameStatus === 1
-                            ? "caret-success"
-                            : "caret-danger"
+                            ? " focus:border-success"
+                            : "focus:border-danger"
                         } `}
                         value={name}
                         onChange={(e) => {
@@ -180,12 +181,12 @@ const Login = () => {
                     <Icon.Mail />
                     <input
                       type="email"
-                      className={`rounded-lg grow text-transparentDark ${
+                      className={`rounded-lg grow border-1 border-light200 text-transparentDark ${
                         emailStatus === 2
-                          ? "caret-light200"
+                          ? "focus:border-light200"
                           : emailStatus === 1
-                          ? "caret-success"
-                          : "caret-danger"
+                          ? "focus:border-success"
+                          : "focus:border-danger"
                       } `}
                       value={email}
                       onChange={(e) => {
@@ -218,12 +219,12 @@ const Login = () => {
                     <Icon.Lock />
                     <input
                       type="password"
-                      className={`rounded-lg grow text-transparentDark ${
-                        passwordStatus === 0
-                          ? "caret-danger"
+                      className={`rounded-lg grow border-1 border-light200 text-transparentDark ${
+                        passwordStatus === 2
+                          ? "focus:border-light200"
                           : passwordStatus === 1
-                          ? "caret-success"
-                          : "caret-light200"
+                          ? "focus:border-success"
+                          : "focus:border-danger"
                       } `}
                       value={password}
                       onChange={(e) => {
@@ -233,7 +234,7 @@ const Login = () => {
                     />
                   </div>
                   <div
-                    className={`text-sm flex gap-2 items-center h-5 leading-5 transition-all ${
+                    className={`text-sm flex gap-2 items-center h-5 leading-5 ${
                       passwordStatus !== 2 ? "visible" : "invisible"
                     } ${passwordStatus ? "text-success" : "text-danger "}`}
                   >
