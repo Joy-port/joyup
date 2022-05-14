@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import JoyRide, { ACTIONS, EVENTS, STATUS } from "react-joyride"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid"
 
 const index = () => {
   const [userDetail, loading, error] = useContext(AuthContext)
+  const [runTour, setRunTour] = useState(false)
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)
   const { isFirstTimeUser, tourStage } = useSelector((state) => state.user)
   const tourStatus = useSelector((state) => state.tour)
@@ -37,19 +38,20 @@ const index = () => {
       userDetail &&
       isFirstTimeUser &&
       pathname.includes("/projects") &&
-      !createProjectModalIsOpen
+      createProjectModalIsOpen === false
     ) {
       dispatch({ type: "tour/SWITCH_STEPS", payload: steps.startTask })
-      startTour()
+      setRunTour(true)
     }
     return
   }, [createProjectModalIsOpen])
 
   useEffect(() => {
-    if (!isFirstTimeUser) return
+    if (!isFirstTimeUser && runTour) return
     if (pathname.includes("/projects") && tourStage === 0) {
       //   if (introSteps === 1) {
       console.log("check if start after create project")
+      startTour()
       // startTour()
       //   }
     } else if (pathname.includes("/tasks") && tourStage === 1) {
@@ -61,7 +63,7 @@ const index = () => {
 
       startTour()
     }
-  }, [pathname])
+  }, [pathname, runTour])
 
   const tourActions = (data) => {
     if (pathname.includes("/projects")) {
@@ -85,6 +87,7 @@ const index = () => {
         dispatch({ type: "tour/SWITCH_STEPS", payload: steps.homePage })
         dispatch({ type: "user/setIsFirstTimeUser", payload: false })
         dispatch({ type: "user/setTourStage", payload: 3 })
+        setRunTour(false)
         navigate(`/projects`)
       })
     }
@@ -99,7 +102,7 @@ const index = () => {
     <>
       {isFirstTimeUser && (
         <>
-          {pathname.includes("projects") && (
+          {/* {pathname.includes("projects") && (
             <button
               className="button button-primary"
               onClick={startTour}
@@ -107,13 +110,14 @@ const index = () => {
             >
               Start Tour
             </button>
-          )}
+          )} */}
           <JoyRide
             {...tourStatus}
             callback={tourActions}
             continuous={true}
             // showSkipButton={true}
             // showProgress={true}
+            run={runTour}
             styles={{
               tooltipContainer: {
                 textAlign: "left",
@@ -124,6 +128,7 @@ const index = () => {
               buttonBack: {
                 color: "#E3EDF2",
                 marginRight: 10,
+                cursor: "default",
               },
               buttonSkip: {
                 color: "#E3EDF2",
@@ -133,6 +138,7 @@ const index = () => {
               last: "Next",
               skip: "Skip",
               next: "Next",
+              back: "←",
             }}
           />
         </>

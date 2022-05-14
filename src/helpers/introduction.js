@@ -5,6 +5,12 @@ export const steps = {
       title: "Home Page",
       target: "#Home",
       content: <p>Click on the side bar menu to home page and browse the tasks </p>,
+      disableBeacon: true,
+    },
+    {
+      title: "Home Page",
+      target: "#Reports",
+      content: <p>Click on the side bar menu to home page and browse the tasks </p>,
     },
     {
       title: "Projects Page",
@@ -35,6 +41,7 @@ export const steps = {
       title: "Edit Title or Other Settings",
       target: "#taskEditorTitle",
       content: <p>Enter task title or click {"/"} slash for more settings</p>,
+      disableBeacon: true,
     },
     {
       title: "Edit Styling with Slash Command",
@@ -68,6 +75,16 @@ export const steps = {
     },
     {
       title: "Start to Concentrate",
+      target: "#taskEditorDelete",
+      content: <p>You can delete the task right away</p>,
+    },
+    {
+      title: "Start to Concentrate",
+      target: "#taskEditorSave",
+      content: <p>Remember to Save before leaving</p>,
+    },
+    {
+      title: "Start to Concentrate",
       target: "#taskEditorPressClock",
       content: <p>Press here to Open Timer and start to concentrate</p>,
     },
@@ -77,6 +94,7 @@ export const steps = {
       title: "Start to Concentrate",
       target: "#clockControlButton",
       content: <p>Press here and start to concentrate</p>,
+      disableBeacon: true,
     },
     {
       title: "Start to Concentrate",
@@ -89,6 +107,11 @@ export const steps = {
     {
       title: "Home Page",
       target: "#Home",
+      content: <p>Click on the side bar menu to home page and browse the tasks </p>,
+    },
+    {
+      title: "Home Page",
+      target: "#Reports",
       content: <p>Click on the side bar menu to home page and browse the tasks </p>,
     },
     {

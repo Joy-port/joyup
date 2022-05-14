@@ -115,7 +115,7 @@ const index = () => {
             </div>
             <div className="flex flex-col gap-3 w-full md:w-72">
               <div className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full">
-                <div className="select-group">
+                <div className="select-group" id="taskEditorProject">
                   <div className="flex gap-2 items-center max-w-24">
                     <Folder strokeWidth={1} />
                     <p className="group-title">Project</p>
@@ -126,7 +126,6 @@ const index = () => {
                     onChange={(e) => {
                       dispatch(task.saveTaskDetail("projectID", e.target.value))
                     }}
-                    id="taskEditorProject"
                   >
                     {userProjects &&
                       userProjects.map((projectID) => {
@@ -321,6 +320,7 @@ const index = () => {
         <div className="modal-footer flex gap-2 w-full md:w-72 md:ml-auto">
           <button
             className="button button-light flex justify-center items-center gap-3 w-1/2"
+            id="taskEditorDelete"
             onClick={() => {
               if (confirm("confirm to delete the task ")) {
                 dispatch(task.deleteCurrentTask())
@@ -331,6 +331,7 @@ const index = () => {
             <Trash />
           </button>
           <button
+            id="taskEditorSave"
             className="button button-primary flex justify-center gap-3 w-1/2"
             onClick={() => {
               if (title === "") {
