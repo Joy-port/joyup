@@ -1,5 +1,6 @@
 const initialModalsState = {
   createProjectModalIsOpen: false,
+  taskClockSettingModalIsOpen: false,
 }
 
 function modalsReducer(state = initialModalsState, action) {
@@ -7,6 +8,10 @@ function modalsReducer(state = initialModalsState, action) {
     case "modals/switchCreateProjectModal":
       return {
         createProjectModalIsOpen: action.payload,
+      }
+    case "modals/switchTaskClockSettingModal":
+      return {
+        taskClockSettingModalIsOpen: action.payload,
       }
     default:
       return state

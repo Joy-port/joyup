@@ -96,6 +96,11 @@ export const checkProjectMessage = {
     required: "Project title is required!",
     lengthError: "Must be at least 6 characters",
   },
+  editClockWorkTime: {
+    required: "minutes is required!",
+    lengthError: "Must be less than 480 minutes",
+    notNumber: "please fill in numbers",
+  },
 }
 
 export const TextType = [

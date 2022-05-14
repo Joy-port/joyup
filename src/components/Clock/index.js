@@ -144,6 +144,14 @@ const PromodoroClock = () => {
       taskStatus("secondsLeft", secondsLeftRef.current)
       secondsRunRef.current = 0
       taskStatus("secondsRun", secondsRunRef.current)
+      dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
+      dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
+      dispatch(
+        task.saveTaskDetail(
+          "totalTime",
+          parseFloat(totalSpendingSeconds - secondsRun.current)
+        )
+      )
     }
   }
   const totalSeconds = mode === 0 ? workTime * 60 : breakTime * 60

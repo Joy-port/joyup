@@ -26,6 +26,7 @@ import {
 import TimeModal from "./components/TimeModal"
 
 const index = () => {
+  const { taskClockSettingModalIsOpen } = useSelector((state) => state.modals)
   const { totalTaskList, userProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
   const { types, selectedColumnOrder, selectedProjectID } = useSelector(
@@ -51,7 +52,6 @@ const index = () => {
   const [isOpenTimeModal, setIsOpenTimeModal] = useState(false)
   const [calendarStartDate, setCalendarStartDate] = useState(startDate)
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
-  // const [isOpenDateModal, setIsOpenDateModal] = useState(false)
 
   useEffect(() => {
     dispatch(task.saveTaskDetail("projectID", selectedProjectID))
@@ -121,7 +121,7 @@ const index = () => {
                     <p className="group-title">Project</p>
                   </div>
                   <select
-                    className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
+                    className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0 truncate"
                     value={projectID}
                     onChange={(e) => {
                       dispatch(task.saveTaskDetail("projectID", e.target.value))
@@ -250,9 +250,18 @@ const index = () => {
                 <div
                   className="select-light300 w-1/2  cursor-pointer flex justify-center gap-4"
                   onClick={() => {
-                    setIsOpenTimeModal(!isOpenTimeModal)
+                    dispatch({
+                      type: "modals/switchTaskClockSettingModal",
+                      payload: !taskClockSettingModalIsOpen,
+                    })
+                    // setIsOpenTimeModal(!isOpenTimeModal)
                   }}
-                  onBlur={() => setIsOpenTimeModal(false)}
+                  onBlur={() =>
+                    dispatch({
+                      type: "modals/switchTaskClockSettingModal",
+                      payload: false,
+                    })
+                  }
                 >
                   <div
                     className={`flex gap-1 text-red200 transition-opacity ${
@@ -272,7 +281,7 @@ const index = () => {
                     {requiredNumber}
                   </div>
                 </div>
-                {isOpenTimeModal && <TimeModal setIsOpenTimeModal={setIsOpenTimeModal} />}
+                {taskClockSettingModalIsOpen && <TimeModal />}
               </div>
 
               <div

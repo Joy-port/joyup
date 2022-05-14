@@ -41,7 +41,7 @@ const Report = () => {
     const taskConvertToPie = userTaskDetail.reduce((total, task) => {
       if (!totalProjectList) return {}
       const taskProject = totalProjectList[task.projectID]
-      if (task.totalTime === 0) {
+      if (task.totalTime < 600) {
         return total
       } else {
         if (!total[taskProject.id]) {

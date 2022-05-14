@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid"
 const index = () => {
   const [userDetail, loading, error] = useContext(AuthContext)
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)
-  const { isFirstTimeUser } = useSelector((state) => state.user)
+  const { isFirstTimeUser, tourStage } = useSelector((state) => state.user)
   const tourStatus = useSelector((state) => state.tour)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -40,47 +40,51 @@ const index = () => {
       !createProjectModalIsOpen
     ) {
       dispatch({ type: "tour/SWITCH_STEPS", payload: steps.startTask })
-      dispatch({ type: "tour/setIntroSteps", payload: 2 })
       startTour()
     }
     return
   }, [createProjectModalIsOpen])
 
   useEffect(() => {
-    if (pathname.includes("/projects")) {
+    if (!isFirstTimeUser) return
+    if (pathname.includes("/projects") && tourStage === 0) {
       //   if (introSteps === 1) {
       console.log("check if start after create project")
       // startTour()
       //   }
-    } else if (pathname.includes("/tasks")) {
+    } else if (pathname.includes("/tasks") && tourStage === 1) {
       dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introTask })
+
       startTour()
-    } else if (pathname.includes("/clocks")) {
+    } else if (pathname.includes("/clocks") && tourStage === 2) {
       dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introClock })
+
       startTour()
     }
   }, [pathname])
 
   const tourActions = (data) => {
-    const { action, index, type, status } = data
     if (pathname.includes("/projects")) {
       runNextStepTour(data, () => {
         dispatch({ type: "tour/STOP" })
         dispatch({ type: "task/createNewTask", payload: newTaskID })
         dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introTask })
+        dispatch({ type: "user/setTourStage", payload: 1 })
         navigate(`/tasks/${newTaskID}`)
       })
     } else if (pathname.includes("tasks")) {
       runNextStepTour(data, () => {
         dispatch({ type: "tour/STOP" })
         dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introClock })
-        navigate(`/clocks/${newTaskID}`)
+        dispatch({ type: "user/setTourStage", payload: 2 })
+        navigate(`/clocks/${newTaskID}`, { replace: true })
       })
     } else if (pathname.includes("clocks")) {
       runNextStepTour(data, () => {
         dispatch({ type: "tour/STOP" })
         dispatch({ type: "tour/SWITCH_STEPS", payload: steps.homePage })
         dispatch({ type: "user/setIsFirstTimeUser", payload: false })
+        dispatch({ type: "user/setTourStage", payload: 3 })
         navigate(`/projects`)
       })
     }
@@ -93,41 +97,46 @@ const index = () => {
 
   return (
     <>
-      <button
-        className="button button-primary"
-        onClick={startTour}
-        style={{ zIndex: 1000000, position: "fixed" }}
-      >
-        Start Tour
-      </button>
-      <JoyRide
-        {...tourStatus}
-        callback={tourActions}
-        // steps={steps.introTask}
-        continuous={true}
-        // showSkipButton={true}
-        // showProgress={true}
-        styles={{
-          tooltipContainer: {
-            textAlign: "left",
-          },
-          buttonNext: {
-            backgroundColor: "#669FBA",
-          },
-          buttonBack: {
-            color: "#E3EDF2",
-            marginRight: 10,
-          },
-          buttonSkip: {
-            color: "#E3EDF2",
-          },
-        }}
-        locale={{
-          last: "Next",
-          skip: "Skip",
-          next: "Next",
-        }}
-      />
+      {isFirstTimeUser && (
+        <>
+          {pathname.includes("projects") && (
+            <button
+              className="button button-primary"
+              onClick={startTour}
+              style={{ zIndex: 1000000, position: "fixed" }}
+            >
+              Start Tour
+            </button>
+          )}
+          <JoyRide
+            {...tourStatus}
+            callback={tourActions}
+            continuous={true}
+            // showSkipButton={true}
+            // showProgress={true}
+            styles={{
+              tooltipContainer: {
+                textAlign: "left",
+              },
+              buttonNext: {
+                backgroundColor: "#669FBA",
+              },
+              buttonBack: {
+                color: "#E3EDF2",
+                marginRight: 10,
+              },
+              buttonSkip: {
+                color: "#E3EDF2",
+              },
+            }}
+            locale={{
+              last: "Next",
+              skip: "Skip",
+              next: "Next",
+            }}
+          />
+        </>
+      )}
     </>
   )
 }

@@ -7,6 +7,7 @@ const initialUserState = {
   userName: "",
   id: "",
   isFirstTimeUser: true,
+  tourStage: 0,
   loginStatus: false,
 }
 
@@ -49,6 +50,11 @@ function userReducer(state = initialUserState, action) {
       return {
         ...state,
         isFirstTimeUser: action.payload,
+      }
+    case "user/setTourStage":
+      return {
+        ...state,
+        tourStage: action.payload,
       }
     default:
       return state
