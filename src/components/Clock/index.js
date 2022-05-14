@@ -44,7 +44,6 @@ const PromodoroClock = () => {
   const clockShowNumberIcons = useCallback(() => {
     if (!taskDetail.requiredNumber > 0 || !taskDetail.clockNumber > 0) return
     if (taskDetail.clockNumber >= taskDetail.requiredNumber) {
-      console.log(taskDetail.clockNumber, taskDetail.requiredNumber)
       return Object.keys(Array.apply(0, Array(taskDetail.clockNumber))).map(
         (_, index) => {
           return (

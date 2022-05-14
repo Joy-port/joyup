@@ -15,9 +15,9 @@ const tourReducer = (state = initialTourState, action) => {
       return { ...state, stepIndex: 0 }
     case "tour/STOP":
       return { ...state, run: false }
-    case "NEXT_OR_PREV":
+    case "tour/NEXT_OR_PREV":
       return { ...state, ...action.payload }
-    case "RESTART":
+    case "tour/RESTART":
       return {
         ...state,
         stepIndex: 0,

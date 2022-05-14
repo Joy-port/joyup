@@ -13,7 +13,6 @@ const TaskList = () => {
   let { pathname } = useLocation()
   const [openSelector, setOpenSelector] = useState(false)
   const createNewTask = () => {
-    console.log(userProjects)
     if (userProjects.length < 1) {
       alert("please create a new project before add a new task")
       if (!pathname.includes("dashboard")) {
@@ -36,7 +35,10 @@ const TaskList = () => {
     <>
       {userTasks.length !== 0 && (
         <div className="absolute bottom-5 right-5 z-100 bg-transparent flex gap-2">
-          <div className=" rounded button-outline-light min-w-32 max-w-72">
+          <div
+            className="rounded button-outline-light min-w-32 max-w-72"
+            id="openClockButton"
+          >
             <div
               className="group-title relative w-44 py-2 px-3 rounded"
               onClick={() => {
@@ -79,7 +81,6 @@ const TaskList = () => {
                             setOpenSelector(false)
                           }}
                           onBlur={(e) => {
-                            console.log("blur", e)
                             e.stopPropagation()
                             e.preventDefault()
                             setOpenSelector(false)
@@ -108,6 +109,7 @@ const TaskList = () => {
           <button
             className="bg-slateLight text-white py-2 px-3 rounded flex items-center gap-2"
             onClick={createNewTask}
+            id="createTaskButton"
           >
             <Plus size={16} />
             Task

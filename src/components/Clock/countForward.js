@@ -53,7 +53,6 @@ const Clock = () => {
   }, [workNumbers])
   useEffect(() => {
     const timer = setInterval(() => {
-      console.log(secondsRunRef.current)
       if (isPaused) return
       // if (secondsLeftRef.current === 0) {
       //   return switchMode()

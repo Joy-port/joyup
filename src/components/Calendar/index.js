@@ -198,7 +198,6 @@ const index = ({ type }) => {
   }
   //wait to fix
   const moveEvent = (draggedEventData) => {
-    console.log(draggedEventData)
     const { start, end, isAllDay, resourceId, event } = draggedEventData
     // 直接改 task 的 start end 存到  firebase
     //存 task state

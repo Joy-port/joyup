@@ -60,11 +60,9 @@ export const tags = {
   switchProject: function (projectID) {
     return async (dispatch, getState) => {
       try {
-        console.log(projectID)
         //get initial all project Data
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const currentProject = totalProjectList[projectID]
-        console.log(currentProject)
         const projectTasks = currentProject.tasks
         const projectTaskDetail = {}
         projectTasks.forEach((taskID) => {

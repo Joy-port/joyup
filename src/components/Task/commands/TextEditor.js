@@ -266,7 +266,6 @@ const TextEditor = () => {
     }
   }
   const compositionStatus = (e) => {
-    console.log(e.type)
     if (e.type === "compositionend") {
       setIsOnComposition(false)
       setText(e.target.value)
@@ -308,7 +307,6 @@ const TextEditor = () => {
                     onCompositionEnd={(e) => compositionStatus(e)}
                     ref={inputRef}
                     onBlur={(e) => {
-                      console.log("this is blur")
                       setIsEditing(false)
                     }}
                     autoFocus

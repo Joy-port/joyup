@@ -106,7 +106,7 @@ const ProjectList = () => {
                       }}
                     >
                       <div className="flex justify-between items-start h-full">
-                        <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10 cursor-text">
+                        <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10">
                           {isEditTitle === ownerProject.id ? (
                             <input
                               className="font-semibold bg-transparent border-1 rounded border-light100 z-20 block -ml-3 -mr-3 -mt-2"
@@ -134,8 +134,9 @@ const ProjectList = () => {
                             />
                           ) : (
                             <p
-                              className="text-overflow-ellipsis h-full overflow-hidden "
+                              className="text-overflow-ellipsis h-full overflow-hidden cursor-text"
                               onClick={(e) => {
+                                e.preventDefault()
                                 e.stopPropagation()
                                 setIsEditTitle(ownerProject.id)
                                 setProjectTile(ownerProject.title)

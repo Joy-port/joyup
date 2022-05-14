@@ -389,7 +389,7 @@ export const getSuggestionItems = (query) => {
     {
       title: "image",
       command: ({ editor, range }) => {
-        console.log("call some function from parent")
+        // console.log("call some function from parent")
         editor.chain().focus().deleteRange(range).setNode("paragraph").run()
       },
     },
