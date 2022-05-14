@@ -119,6 +119,7 @@ const TextEditor = () => {
     setHTMLStyle(command)
     setSlashCharacterPosition(null)
     setQuery(null)
+    inputRef.current.focus()
     setIsEditing(true)
   }
 
@@ -207,7 +208,6 @@ const TextEditor = () => {
         selectCommand(matchingCommands[selectionIndex])
       } else if (slashCharacterPosition === null) {
         // if (isOnComposition) return
-        console.log(isOnComposition)
         changeTextStyle()
         setHTMLStyle({})
         const prevIndex = currentBlockIndex()
@@ -307,6 +307,10 @@ const TextEditor = () => {
                     onCompositionUpdate={(e) => compositionStatus(e)}
                     onCompositionEnd={(e) => compositionStatus(e)}
                     ref={inputRef}
+                    onBlur={(e) => {
+                      console.log("this is blur")
+                      setIsEditing(false)
+                    }}
                     autoFocus
                     placeholder={
                       firstInput
@@ -322,7 +326,9 @@ const TextEditor = () => {
                         return (
                           <div
                             key={index}
-                            onClick={() => selectCommand(command)}
+                            onClick={() => {
+                              selectCommand(command)
+                            }}
                             onMouseOver={() => setSelectionIndex(index)}
                             ref={isSelectedCommand ? commandFocus : null}
                             className={`

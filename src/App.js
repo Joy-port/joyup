@@ -74,7 +74,7 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>JoyUp | Personal Tasks Management</title>
+        <title>JoyUp | Personal Time Management</title>
       </Helmet>
       <AuthProvider>
         <Routes>

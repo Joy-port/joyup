@@ -246,8 +246,8 @@ const index = () => {
               }`}
               onClick={(e) => createNewProject(e)}
             >
-              <Icon.FolderPlus />
-              <p className="whitespace-nowrap mr-2">create project</p>
+              <Icon.FolderPlus color="white" />
+              <p className="whitespace-nowrap mr-2 text-white">Create Project</p>
             </div>
           </div>
         </div>

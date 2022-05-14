@@ -49,6 +49,8 @@ const TitleEditor = () => {
     setTimeQuery(null)
     setSelectionIndex(0)
     setStyle("heading-four font-semibold")
+    setIsEditing(true)
+    inputRef.current.focus()
   })
 
   useEffect(() => {
@@ -59,7 +61,6 @@ const TitleEditor = () => {
       timeCharacterPosition === null &&
       tagCharacterPosition === null
     ) {
-      if (text.trim() === "") return
       titleRef.current = text
       dispatch(task.saveTaskDetail("title", text))
       // setIsEditing(false)
@@ -242,6 +243,7 @@ const TitleEditor = () => {
       setStyle("heading-four font-semibold")
     }
   }, [matchingCommands, matchingTags, , matchingTimeSettings])
+
   const getFirstLayerQueryCommandContents = (inputTextContent) => {
     const newText = inputTextContent
     setText(newText)
@@ -302,9 +304,11 @@ const TitleEditor = () => {
       return string
     })
     setStyle("heading-three")
-    setIsEditing(false)
+    // setIsEditing(false)
     setSelectionIndex(0)
     setTagsQuery(null)
+    setIsEditing(true)
+    inputRef.current.focus()
   }
 
   const onKeyDown = (e) => {

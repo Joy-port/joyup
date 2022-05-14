@@ -41,23 +41,27 @@ const Report = () => {
     const taskConvertToPie = userTaskDetail.reduce((total, task) => {
       if (!totalProjectList) return {}
       const taskProject = totalProjectList[task.projectID]
-      if (!total[taskProject.id]) {
-        total[taskProject.id] = {
-          id: taskProject.id,
-          x: taskProject.title,
-          y: task.totalTime / 3600,
-          tasks: [...taskProject.tasks],
-        }
+      if (task.totalTime === 0) {
+        return total
       } else {
-        if (total[taskProject.id].id === taskProject.id) {
-          const previousTotalTime = total[taskProject.id].y
+        if (!total[taskProject.id]) {
           total[taskProject.id] = {
-            ...total[taskProject.id],
-            y: parseFloat(previousTotalTime + task.totalTime),
+            id: taskProject.id,
+            x: taskProject.title,
+            y: task.totalTime / 3600,
+            tasks: [...taskProject.tasks],
+          }
+        } else {
+          if (total[taskProject.id].id === taskProject.id) {
+            const previousTotalTime = total[taskProject.id].y
+            total[taskProject.id] = {
+              ...total[taskProject.id],
+              y: parseFloat(previousTotalTime + task.totalTime),
+            }
           }
         }
+        return total
       }
-      return total
     }, {})
     return taskConvertToPie
   })
@@ -107,14 +111,14 @@ const Report = () => {
               Time Spending
             </div>
           </div>
-          <div className="-mt-5 min-h-18 mb-3"></div>
-          <div className="grow flex flex-col flex-wrap overflow-y-auto scrollbar">
-            <div className="w-1/2 text-sm mb-10">
+          <div className="md:-mt-5 md:min-h-18 md:mb-3"></div>
+          <div className="grow flex flex-col md:flex-row md:gap-4 md:overflow-y-auto scrollbar">
+            <div className="w-1/2 text-sm mb-10 h-max">
               <h1 className="tag-light200 w-56 px-2 py-1 text-center">
                 Total Time Spending
               </h1>
               {taskPie && (
-                <div className="border-rounded-light000">
+                <div className="border-rounded-light000 pb-8">
                   <VictoryPie
                     data={Object.values(taskPie)}
                     colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
@@ -152,11 +156,11 @@ const Report = () => {
                 </div>
               )}
             </div>
-            <div className="text-sm">
+            <div className="text-sm w-full md:w-1/2 h-max">
               <h1 className="tag-light200 w-56 px-2 py-1 text-center">
                 Project Time Spending
               </h1>
-              <div className="border-rounded-light000 w-full">
+              <div className="border-rounded-light000 pb-8 w-full">
                 <div className="text-center rounded">
                   <div
                     className="group-title border-1 border-light000 rounded relative  px-2 py-1 z-20 max-w-min min-w-44"
@@ -189,7 +193,7 @@ const Report = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-1/2">
+                <div className="w-1/2 md:w-full">
                   <VictoryChart
                     theme={VictoryTheme.grayscale}
                     animate={{

@@ -66,7 +66,9 @@ const ProjectList = () => {
         {userProjects.length > 0 && (
           <div
             className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
-            onClick={() => setIsOpen(true)}
+            onClick={() =>
+              dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+            }
           >
             <FolderPlus />
             <p>Create Project</p>
