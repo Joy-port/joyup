@@ -194,7 +194,7 @@ const PromodoroClock = () => {
                 if (taskDetail) {
                   dispatch({ type: "task/openSavedTask", payload: taskDetail })
                 }
-                navigate(`/task/${taskID}`, { replace: true })
+                navigate(`/tasks/${taskID}`, { replace: true })
               }}
             >
               <div className="flex justify-between items-center">
@@ -252,6 +252,7 @@ const PromodoroClock = () => {
         <div className={`modal-footer transition-all pb-3`}>
           <div className={`flex justify-between items-end`}>
             <div
+              id="clockControlBackToTask"
               className={`button text-white hover:text-transparentWhite ${
                 isPaused ? "visible" : "invisible"
               }`}
@@ -260,12 +261,15 @@ const PromodoroClock = () => {
                 if (taskDetail) {
                   dispatch({ type: "task/openSavedTask", payload: taskDetail })
                 }
-                navigate(`/task/${taskID}`, { replace: true })
+                navigate(`/tasks/${taskID}`, { replace: true })
               }}
             >
               <CornerDownLeft />
             </div>
-            <div className="flex justify-center items-center gap-6">
+            <div
+              className="flex justify-center items-center gap-6"
+              id="clockControlButton"
+            >
               {!isPaused && (
                 <button
                   className={`play-button text-white  hover:text-transparentWhite`}

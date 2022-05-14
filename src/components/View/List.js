@@ -83,7 +83,7 @@ const List = ({ type }) => {
               onClick={() => {
                 const newTaskID = uuidv4()
                 dispatch({ type: "task/createNewTask", payload: newTaskID })
-                navigate(`/task/${newTaskID}`)
+                navigate(`/tasks/${newTaskID}`)
               }}
             >
               <Icon.FilePlus size={40} strokeWidth={1} />

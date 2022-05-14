@@ -214,7 +214,7 @@ const Clock = () => {
                 if (taskDetail) {
                   dispatch({ type: "task/openSavedTask", payload: taskDetail })
                 }
-                navigate(`/task/${taskID}`, { replace: true })
+                navigate(`/tasks/${taskID}`, { replace: true })
               }}
             >
               <ArrowLeft />

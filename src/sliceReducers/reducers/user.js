@@ -6,7 +6,7 @@ const initialUserState = {
   userTasks: [],
   userName: "",
   id: "",
-  isFirstTimeUser: false,
+  isFirstTimeUser: true,
   loginStatus: false,
 }
 

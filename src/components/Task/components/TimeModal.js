@@ -131,7 +131,7 @@ const TimeModal = ({ setIsOpenTimeModal }) => {
         </div>
         {/* <div
           className="button text-primary flex justify-center items-center gap-3 mb-1"
-          onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
+          onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}
         >
           <PlayCircle />
           <p>Start Timer</p>

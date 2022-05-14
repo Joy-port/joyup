@@ -141,7 +141,7 @@ const index = ({ type }) => {
     currentRef.current = window.setTimeout(() => {
       if (totalTaskList[event.id]) {
         dispatch({ type: "task/openSavedTask", payload: event })
-        navigate(`/task/${event.id}`)
+        navigate(`/tasks/${event.id}`)
       }
     }, 100)
   }, [])

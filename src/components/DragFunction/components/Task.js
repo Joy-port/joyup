@@ -12,7 +12,7 @@ const Task = ({ task, index, type }) => {
   const onClick = (taskID) => {
     const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
-    navigate(`/task/${task.id}`)
+    navigate(`/tasks/${task.id}`)
   }
   const draggingTop = type === "list" ? 0 : 0 //200 176 //200
   const draggingLeft = type === "list" ? 0 : 100

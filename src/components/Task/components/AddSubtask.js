@@ -47,7 +47,7 @@ const AddSubtask = () => {
   const openTask = (e, id) => {
     e.stopPropagation()
     // console.log(e.target.value, id)
-    navigate(`/task/${id}`)
+    navigate(`/tasks/${id}`)
   }
   return (
     <div className="bg-white p-3 rounded">

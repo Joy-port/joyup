@@ -84,7 +84,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
             className="button button-dark ml-auto cursor-pointer w-10"
             onClick={() => {
               setIsOpenModal(false)
-              navigate(`/task/${taskDetail.id}`)
+              navigate(`/tasks/${taskDetail.id}`)
             }}
           >
             <Maximize2 size={20} />

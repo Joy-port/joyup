@@ -37,7 +37,7 @@ const Home = () => {
   const handleSelectEvent = useCallback((event) => {
     if (totalTaskList[event.id]) {
       dispatch({ type: "task/openSavedTask", payload: event })
-      navigate(`/task/${event.id}`)
+      navigate(`/tasks/${event.id}`)
     }
   })
 

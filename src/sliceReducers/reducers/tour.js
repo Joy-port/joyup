@@ -1,11 +1,11 @@
-import { TOUR_STEPS } from "../../helpers/introduction"
+import { steps } from "../../helpers/introduction"
 const initialTourState = {
   key: new Date(),
   run: false,
   continuous: true,
   loading: false,
   stepIndex: 0,
-  steps: TOUR_STEPS,
+  steps: steps.startTask, //startTask //introTask//introClock
 }
 const tourReducer = (state = initialTourState, action) => {
   switch (action.type) {
@@ -24,6 +24,11 @@ const tourReducer = (state = initialTourState, action) => {
         run: true,
         loading: false,
         key: new Date(),
+      }
+    case "tour/SWITCH_STEPS":
+      return {
+        ...state,
+        steps: action.payload,
       }
     default:
       return state

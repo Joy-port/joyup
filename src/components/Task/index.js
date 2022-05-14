@@ -104,12 +104,12 @@ const index = () => {
           <X size={20} />
         </button>
         <div className="modal-body overflow-y-auto flex flex-col">
-          <div className="flex items-center gap-3 mb-5 pl-3">
+          <div className="flex items-center gap-3 mb-5 pl-3" id="taskEditorTitle">
             <Edit />
             <TitleEditor />
           </div>
           <div className="grow flex flex-col-reverse md:flex-row gap-5 task-scrollbar">
-            <div className="flex flex-col gap-3 h-full grow">
+            <div className="flex flex-col gap-3 h-full grow" id="taskEditorDescription">
               <TextEditor />
               {/* <AddSubtask /> */}
             </div>
@@ -126,6 +126,7 @@ const index = () => {
                     onChange={(e) => {
                       dispatch(task.saveTaskDetail("projectID", e.target.value))
                     }}
+                    id="taskEditorProject"
                   >
                     {userProjects &&
                       userProjects.map((projectID) => {
@@ -140,7 +141,11 @@ const index = () => {
                 </div>
                 {types &&
                   types.map((item) => (
-                    <div className="select-group" key={item.id}>
+                    <div
+                      className="select-group"
+                      key={item.id}
+                      id={`taskEditor${item.type}`}
+                    >
                       <div className="flex gap-2 items-center max-w-24">
                         {item.type === "priority" ? (
                           <Flag strokeWidth={1} />
@@ -176,7 +181,10 @@ const index = () => {
                     </div>
                   ))}
               </div>
-              <div className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full">
+              <div
+                className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full"
+                id="taskEditorDate"
+              >
                 <div className="select-group relative">
                   <div className="flex gap-2 items-center max-w-24">
                     <Calendar strokeWidth={1} />
@@ -234,7 +242,7 @@ const index = () => {
                   </div>
                 </div>
               </div>
-              <div className="select-group relative">
+              <div className="select-group relative" id="taskEditorClock">
                 <div className="flex gap-2 items-center max-w-24">
                   <Clock strokeWidth={1} />
                   <div className="group-title">Tracker</div>
@@ -268,10 +276,11 @@ const index = () => {
               </div>
 
               <div
+                id="taskEditorPressClock"
                 className={`button flex justify-center items-center gap-3 h-12 ${
                   mode === 0 ? "button-outline-danger" : "button-primary"
                 }`}
-                onClick={() => navigate(`/clock/${taskID}`, { replace: true })}
+                onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}
               >
                 <Play />
                 <p>

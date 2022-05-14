@@ -22,13 +22,13 @@ const TaskList = () => {
     }
     const newTaskID = uuidv4()
     dispatch({ type: "task/createNewTask", payload: newTaskID })
-    navigate(`/task/${newTaskID}`)
+    navigate(`/tasks/${newTaskID}`)
   }
 
   const openTask = (taskID) => {
     const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
-    navigate(`/clock/${taskID}`)
+    navigate(`/clocks/${taskID}`)
   }
   //py-2 px-3 w-32
   return (

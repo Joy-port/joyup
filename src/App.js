@@ -117,11 +117,11 @@ function App() {
                   })}
                 </Route>
               </Route>
-              <Route path="task">
+              <Route path="tasks">
                 <Route index element={<Navigate to="/" replace />} />
                 <Route path=":taskID" element={<Task />} />
               </Route>
-              <Route path="clock">
+              <Route path="clocks">
                 <Route index element={<Navigate to="/" replace />} />
                 <Route path=":taskID" element={<Clock />} />
               </Route>

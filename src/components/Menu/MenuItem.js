@@ -20,7 +20,7 @@ const MenuItem = ({ type, content }) => {
               isActive = pathname.replace("/", "").includes(item.path)
             }
             return (
-              <Link key={item.name} to={item.path}>
+              <Link key={item.name} to={item.path} id={item.name}>
                 <button
                   className={`menu-item__light ${
                     isActive ? "menu-item__light--active" : ""
