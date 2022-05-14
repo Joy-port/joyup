@@ -8,6 +8,7 @@ import * as Icon from "react-feather"
 import { checkProjectMessage } from "../../helpers/config"
 
 const index = () => {
+  const { isFirstTimeUser } = useSelector((state) => state.user)
   const { templateList, totalProjectList } = useSelector((state) => state.projects)
   const [isSelectTemplate, setIsSelectTemplate] = useState(null)
   const [selectedTemplateType, setSelectedTemplateType] = useState(null)
@@ -70,6 +71,7 @@ const index = () => {
       <div className="modal-container bg-white shadow-md modal-md">
         <div className="modal-header flex justify-end items-start">
           <button
+            className={`${isFirstTimeUser ? "invisible" : ""}`}
             onClick={() => {
               setProjectTitle("")
               setIsPublic(false)

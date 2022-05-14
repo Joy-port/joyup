@@ -7,7 +7,6 @@ import { task } from "../../sliceReducers/actions/task"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import DatePicker from "./components/DatePicker"
-import dayjs from "dayjs"
 import {
   Clock,
   X,
@@ -27,7 +26,9 @@ import TimeModal from "./components/TimeModal"
 
 const index = () => {
   const { taskClockSettingModalIsOpen } = useSelector((state) => state.modals)
-  const { totalTaskList, userProjects } = useSelector((state) => state.user)
+  const { totalTaskList, userProjects, isFirstTimeUser } = useSelector(
+    (state) => state.user
+  )
   const { totalProjectList } = useSelector((state) => state.projects)
   const { types, selectedColumnOrder, selectedProjectID } = useSelector(
     (state) => state.tags
@@ -49,7 +50,6 @@ const index = () => {
   const dispatch = useDispatch()
   const { taskID } = useParams()
   const navigate = useNavigate()
-  const [isOpenTimeModal, setIsOpenTimeModal] = useState(false)
   const [calendarStartDate, setCalendarStartDate] = useState(startDate)
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
 

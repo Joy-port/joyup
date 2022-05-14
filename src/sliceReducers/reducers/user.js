@@ -7,7 +7,6 @@ const initialUserState = {
   userName: "",
   id: "",
   isFirstTimeUser: false,
-  tourStage: 0,
   loginStatus: false,
 }
 

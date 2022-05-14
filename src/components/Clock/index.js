@@ -15,6 +15,7 @@ import {
 } from "react-feather"
 
 const PromodoroClock = () => {
+  const { isFirstTimeUser } = useSelector((state) => state.user)
   const { workTime, breakTime, mode, secondsLeft, secondsRun } = useSelector(
     (state) => state.task
   )
@@ -181,8 +182,11 @@ const PromodoroClock = () => {
         }}
       >
         <button
-          className="modal-header self-end text-white"
+          className={`modal-header self-end text-white ${
+            isFirstTimeUser ? "invisible" : ""
+          }`}
           onClick={() => {
+            if (isFirstTimeUser) return
             if (confirm("quit without saving current change?")) {
               dispatch({ type: "task/clearTaskWithoutSaving" })
               navigate(-1)
@@ -263,8 +267,9 @@ const PromodoroClock = () => {
               id="clockControlBackToTask"
               className={`button text-white hover:text-transparentWhite ${
                 isPaused ? "visible" : "invisible"
-              }`}
+              } ${isFirstTimeUser ? "cursor-default" : ""}`}
               onClick={() => {
+                if (isFirstTimeUser) return
                 const taskDetail = totalTaskList[taskID]
                 if (taskDetail) {
                   dispatch({ type: "task/openSavedTask", payload: taskDetail })
@@ -289,8 +294,11 @@ const PromodoroClock = () => {
               {isPaused && (
                 <>
                   <button
-                    className={`play-button text-white  hover:text-transparentWhite`}
+                    className={`play-button text-white  hover:text-transparentWhite ${
+                      isFirstTimeUser ? "cursor-default" : ""
+                    }`}
                     onClick={() => {
+                      if (isFirstTimeUser) return
                       clockStatus("isPaused", false)
                     }}
                   >
@@ -299,7 +307,7 @@ const PromodoroClock = () => {
 
                   {secondsRunRef.current !== 0 && (
                     <button
-                      className={`play-button text-white  hover:text-transparentWhite rotate-0   hover:-rotate-180
+                      className={`play-button text-white  hover:text-transparentWhite rotate-0 hover:-rotate-180
                       transition-transform`}
                       onClick={() => {
                         clockStatus("isPaused", true)

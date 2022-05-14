@@ -115,7 +115,7 @@ const index = () => {
             {...tourStatus}
             callback={tourActions}
             continuous={true}
-            // showSkipButton={true}
+            showSkipButton={true}
             // showProgress={true}
             run={runTour}
             styles={{
