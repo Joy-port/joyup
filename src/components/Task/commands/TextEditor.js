@@ -16,7 +16,7 @@ const TextEditor = () => {
   const [query, setQuery] = useState(null)
   const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
-  const [isOnComposition, setIsOnComposition] = useState(true)
+  const [isOnComposition, setIsOnComposition] = useState(false)
   const inputRef = useRef()
   const focusInput = useRef()
   const commandFocus = useRef()
@@ -276,15 +276,15 @@ const TextEditor = () => {
 
   return (
     <div className="flex flex-col min-h-1/4" id="taskEditorDescription">
+      <div className="flex gap-5 items-center text-light300 py-2">
+        <Icon.Type />
+        Description
+      </div>
       <div
-        className={`editor border-1 ${
+        className={`editor border-1 min-h-fix-400 ${
           isEditing ? "border-light300" : "border-transparent"
         }`}
       >
-        <p className="flex gap-5 items-center text-light300 py-2">
-          <Icon.Type />
-          Description
-        </p>
         {description &&
           description.map((item, index) => {
             const TagName = item.html.tag

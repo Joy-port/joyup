@@ -1,5 +1,5 @@
 import { string } from "prop-types"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
@@ -14,6 +14,14 @@ const List = ({ type }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [openSelector, setOpenSelector] = useState(false)
+  useEffect(() => {
+    if (selectedProjectTaskList.length === 0) {
+      dispatch({
+        type: "alert/status",
+        payload: { text: "Start create a new task!", type: "info" },
+      })
+    }
+  }, [selectedProjectTaskList])
   return (
     <>
       <div className="tool-bar">

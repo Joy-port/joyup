@@ -6,7 +6,7 @@ const initialTaskState = {
   description: [
     {
       id: uuidv4(),
-      content: "",
+      content: `description or type ${"/"} for styling`,
       html: {
         parent: "",
         tag: "p",

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { BarChart2 } from "react-feather"
 import {
   VictoryPie,
@@ -23,10 +23,11 @@ import { AuthContext } from "../components/AuthProvider"
 const Report = () => {
   const [userDetail, loading, error] = useContext(AuthContext)
   const [openSelector, setOpenSelector] = useState(false)
-  const { userTasks } = useSelector((state) => state.user)
+  const { userTasks, userProjects } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList, projectList } = useSelector(
     (state) => state.projects
   )
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const tags = useSelector((state) => state.tag)
   const [type, setType] = useState(0)
@@ -92,13 +93,13 @@ const Report = () => {
       dispatch({
         type: "alert/status",
         payload: {
-          text: "there are no projects please create a new one",
+          text: "there are no tasks please create a new one",
           type: "info",
         },
       })
       navigate("/projects")
     }
-  }, [])
+  }, [userProjects, userTasks])
   useEffect(() => {
     setTaskDateRange(() => {
       const data = switchProjectTasks()

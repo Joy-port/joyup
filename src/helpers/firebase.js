@@ -28,26 +28,26 @@ import {
 // const analytics = getAnalytics(app)
 
 //joyup
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD_0PAwmG4T-MAMAuJ0RKVxeLfONWS_9jg",
-//   authDomain: "joyup-management.firebaseapp.com",
-//   projectId: "joyup-management",
-//   storageBucket: "joyup-management.appspot.com",
-//   messagingSenderId: "974089768584",
-//   appId: "1:974089768584:web:5e9b8a9c0fcf5b7c28593d",
-//   measurementId: "G-BC10DC990F",
-// }
+const firebaseConfig = {
+  apiKey: "AIzaSyD_0PAwmG4T-MAMAuJ0RKVxeLfONWS_9jg",
+  authDomain: "joyup-management.firebaseapp.com",
+  projectId: "joyup-management",
+  storageBucket: "joyup-management.appspot.com",
+  messagingSenderId: "974089768584",
+  appId: "1:974089768584:web:5e9b8a9c0fcf5b7c28593d",
+  measurementId: "G-BC10DC990F",
+}
 
 //test account for storage
-const firebaseConfig = {
-  apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
-  authDomain: "designworks-project.firebaseapp.com",
-  projectId: "designworks-project",
-  storageBucket: "designworks-project.appspot.com",
-  messagingSenderId: "773350951759",
-  appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
-  measurementId: "G-4KNVP5V95N",
-}
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
+//   authDomain: "designworks-project.firebaseapp.com",
+//   projectId: "designworks-project",
+//   storageBucket: "designworks-project.appspot.com",
+//   messagingSenderId: "773350951759",
+//   appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
+//   measurementId: "G-4KNVP5V95N",
+// }
 
 const app = initializeApp(firebaseConfig)
 
@@ -201,26 +201,30 @@ export const firebase = {
     })
   },
   getProjectTasks: async function (projectID) {
-    const collectionName = "tasks"
-    const q = query(
-      collection(this.db, collectionName),
-      where("projectID", "==", projectID)
-    )
-    const totalTaskSnapshot = await getDocs(q)
-    const totalTasks = []
-    totalTaskSnapshot.forEach((doc) => {
-      const data = {
-        ...doc.data(),
-      }
-      const requiredData = {
-        title: data.title,
-        id: doc.id,
-        projectID: data.projectID,
-        tagList: data.tagList,
-      }
-      totalTasks.push(requiredData)
-    })
-    return totalTasks
+    try {
+      const collectionName = "tasks"
+      const q = query(
+        collection(this.db, collectionName),
+        where("projectID", "==", projectID)
+      )
+      const totalTaskSnapshot = await getDocs(q)
+      const totalTasks = []
+      totalTaskSnapshot.forEach((doc) => {
+        const data = {
+          ...doc.data(),
+        }
+        const requiredData = {
+          title: data.title,
+          id: doc.id,
+          projectID: data.projectID,
+          tagList: data.tagList,
+        }
+        totalTasks.push(requiredData)
+      })
+      return totalTasks
+    } catch (err) {
+      console.error(err)
+    }
   },
   getTagColumnRelatedTaskIds: async function (projectID, columnIDs) {
     const collectionName = "projects"

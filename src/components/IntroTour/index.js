@@ -24,9 +24,9 @@ const index = () => {
       status === STATUS.FINISHED
     ) {
       console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
-      // if (action === "next" && status === "finished") {
-      //   callback && callback()
-      // }
+      if (action === "next" && status === "finished") {
+        callback && callback()
+      }
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       dispatch({
         type: "tour/NEXT_OR_PREV",

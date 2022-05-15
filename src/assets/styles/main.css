@@ -104,7 +104,7 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-family: ui - monospace, SFMono - Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -680,6 +680,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .min-h-1\/4 {
   min-height: 25%;
+}
+.min-h-fix-400 {
+  min-height: 400px;
 }
 .min-h-28 {
   min-height: 7rem;
@@ -1820,6 +1823,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 .unordered-list {
   list-style-type: disc;
   padding-left: 1rem;
+}
+.code-block {
+  border-radius: 0.125rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 245 246 / var(--tw-bg-opacity));
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-family: ui - monospace, SFMono - Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  letter-spacing: 0.05em;
+  color: #23272A99;
 }
 /*ml-5 pl-3*/
 .ordered-list {

@@ -12,7 +12,7 @@ import Loader from "../components/Loader"
 const Login = () => {
   const { id } = useSelector((state) => state.user)
   const [userDetail, loading, error] = useContext(AuthContext)
-  const { ownerProjects, userTasks } = useSelector((state) => state.user)
+  const { ownerProjects, userTasks, userProjects } = useSelector((state) => state.user)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
@@ -32,12 +32,14 @@ const Login = () => {
     if (userDetail && id !== "") {
       console.log("after login", userDetail, id)
       if (isLoginPath) {
-        //&& userProjects.length !== 0
+        if (userProjects.length === 0 && userTasks.length === 0) {
+          dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+          dispatch({ type: "user/setIsFirstTimeUser", payload: true })
+          navigate("/projects")
+        }
         navigate("/calendar")
-      } else if (isLoginPath && userProjects.length === 0) {
-        dispatch({ type: "modals/switchCreateProjectModal", payload: true })
-        dispatch({ type: "user/setIsFirstTimeUser", payload: true })
-        navigate("/projects")
+        //&& userProjects.length !== 0
+        // } else if (isLoginPath && userProjects.length === 0 && userTasks.length === 0) {
       } else if (!isLoginPath) {
         dispatch({ type: "modals/switchCreateProjectModal", payload: true })
         dispatch({ type: "user/setIsFirstTimeUser", payload: true })

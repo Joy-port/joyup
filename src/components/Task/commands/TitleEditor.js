@@ -5,7 +5,7 @@ import { task } from "../../../sliceReducers/actions/task"
 import * as Icon from "react-feather"
 
 const TitleEditor = () => {
-  const { title, startDate, dueDate } = useSelector((state) => state.task)
+  const { title } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const { types } = useSelector((state) => state.tags)
   const [isEditing, setIsEditing] = useState(true)

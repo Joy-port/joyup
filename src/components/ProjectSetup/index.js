@@ -40,7 +40,10 @@ const index = () => {
         project.createNewProject(projectContent, (projectID) => {
           dispatch(tags.switchProject(projectID))
           dispatch({ type: "modals/switchCreateProjectModal", payload: false })
-          dispatch
+          dispatch({
+            type: "alert/status",
+            payload: { text: "Project is set up", type: "success" },
+          })
           navigate(`${projectID}`)
         })
       )
@@ -50,6 +53,10 @@ const index = () => {
         project.createNewProjectFromTemplate(selectedTemplateType, (projectID) => {
           dispatch({ type: "modals/switchCreateProjectModal", payload: false })
           dispatch(tags.switchProject(projectID))
+          dispatch({
+            type: "alert/status",
+            payload: { text: "project is set up", type: "success" },
+          })
           navigate(`${projectID}`)
         })
       )

@@ -11,7 +11,7 @@ import { firebase } from "../helpers/firebase"
 
 const ProjectList = () => {
   const [userDetail, loading, error] = useContext(AuthContext)
-  const { ownerProjects, collaborateProjects, userProjects } = useSelector(
+  const { ownerProjects, collaborateProjects, userProjects, userTasks } = useSelector(
     (state) => state.user
   )
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)

@@ -36,7 +36,7 @@ function App() {
   const projectList = useSelector((state) => state.projects)
   const { totalProjectList } = useSelector((state) => state.projects)
   const { selectedProjectID } = useSelector((state) => state.tags)
-  const { ownerProjects } = useSelector((state) => state.user)
+  const { ownerProjects, userProjects } = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(project.updateProjects())
@@ -45,11 +45,11 @@ function App() {
     dispatch(user.listenUserStatus())
   }, [])
 
-  useEffect(() => {
-    if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-      dispatch(user.getUserProjectList(id))
-    }
-  }, [id])
+  // useEffect(() => {
+  //   if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
+  //     dispatch(user.getUserProjectList(id))
+  //   }
+  // }, [id])
   useEffect(() => {
     if (JSON.stringify(projectList) !== "{}") {
       dispatch(project.getTemplates())
@@ -61,6 +61,11 @@ function App() {
       // dispatch(settings.getUserSettings(id))
     }
   }, [id, projectList, totalProjectList])
+  useEffect(() => {
+    if (userProjects && id) {
+      dispatch(user.getUserTotalTasks())
+    }
+  }, [userProjects, id, totalProjectList])
 
   useEffect(() => {
     if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {

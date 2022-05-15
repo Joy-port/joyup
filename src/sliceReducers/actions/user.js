@@ -122,7 +122,24 @@ export const user = {
           payload: ownerProjects.concat(collaborateProjects),
         })
         console.log("%c listen user project list ", "color:#ee5588;", userProjects)
+        // const { userProjects } = getState().user
       })
+    }
+  },
+  getUserTotalTasks: () => {
+    return async (dispatch, getState) => {
+      try {
+        const { totalProjectList } = getState().projects
+        const { userProjects } = getState().user
+        const newUserTasks = []
+        userProjects.forEach((projectID) => {
+          const taskList = totalProjectList[projectID].tasks
+          newUserTasks.push(...taskList)
+        })
+        dispatch({ type: "user/getUserTasks", payload: newUserTasks })
+      } catch (error) {
+        dispatch({ type: "status/ERROR", payload: error })
+      }
     }
   },
 }

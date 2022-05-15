@@ -47,6 +47,16 @@ module.exports = {
     fontFamily: {
       sans: ["Graphik", "sans-serif"],
       serif: ["Merriweather", "serif"],
+      mono: [
+        "ui - monospace",
+        "SFMono - Regular",
+        "Menlo",
+        "Monaco",
+        "Consolas",
+        "Liberation Mono",
+        "Courier New",
+        "monospace",
+      ],
     },
     extend: {
       inset: {
@@ -143,6 +153,7 @@ module.exports = {
         "1/2": "50%",
         "3/4": "75%",
         custom: "calc(100vh - 120px)",
+        "fix-400": "400px",
       },
       maxHeight: {
         0.5: "0.125rem",
