@@ -26,6 +26,7 @@ const TextEditor = () => {
   useEffect(() => {
     focusInput.current = description[0].id
   }, [])
+
   const clearSlashCommand = () => {
     if (slashCharacterPosition !== null) {
       setText((text) => {
@@ -55,6 +56,21 @@ const TextEditor = () => {
       updateDescription(newDoc)
     }
   })
+  // useEffect(() => {
+  //   if (description.length === 1 && text === "" && !isEditing) {
+  //     setText("Description")
+  //     const newDescription = description.find((item) => item.id === focusInput.current)
+  //     newDescription.content = "Description"
+  //     newDescription.html = {
+  //       parent: "",
+  //       tag: "p",
+  //       name: "",
+  //       style: "font-semibold",
+  //     }
+  //     dispatch({ type: "task/description", payload: [newDescription] })
+  //     console.log(description)
+  //   }
+  // }, [description, isEditing, text])
   const addNewBlock = useCallback((index, content) => {
     const newDoc = [...description]
     newDoc.splice(index, 0, content)
@@ -294,126 +310,109 @@ const TextEditor = () => {
 
   return (
     <div className="flex flex-col min-h-1/4" id="taskEditorDescription">
-      <div className="flex gap-5 items-center text-light300 py-2">
-        <Icon.Type />
-        Description
-      </div>
       <div
         className={`editor border-1 min-h-fix-400 ${
           isEditing ? "border-light300" : "border-transparent"
         }`}
         onClick={(e) => {
-          console.log("on click")
           setIsEditing(true)
-          console.log(inputRef.current)
         }}
       >
-        {description &&
-          description.map((item, index) => {
-            const TagName = item.html.tag
-            const firstInput = index === 0
-            if (focusInput.current === item.id && isEditing) {
-              return (
-                <div className="relative flex flex-col" key={item.id}>
-                  <input
-                    className={`editor-input border-l-transparent ${
-                      HTMLStyle.style || item.html.style
-                    }`}
-                    id={item.id}
-                    cols="30"
-                    rows="10"
-                    value={text}
-                    onChange={(e) => onChange(e)}
-                    onKeyDown={(e) => onKeyDown(e)}
-                    onCompositionStart={(e) => compositionStatus(e)}
-                    onCompositionUpdate={(e) => compositionStatus(e)}
-                    onCompositionEnd={(e) => compositionStatus(e)}
-                    ref={inputRef}
-                    onBlur={() => {
-                      clearSlashCommand()
-                    }}
-                    autoFocus
-                    placeholder={
-                      firstInput
-                        ? `Description or type '/' for commands`
-                        : "Type '/' for commands "
-                    }
-                  />
-                  {matchingCommands.length !== 0 && (
-                    <div className="results top-8 mt-1 z-10  max-h-56 ">
-                      {matchingCommands.map((command, index) => {
-                        const IconName = Icon[command.icon]
-                        const isSelectedCommand = index === selectionIndex
-                        return (
-                          <div
-                            key={index}
-                            onClick={() => {
-                              selectCommand(command)
-                            }}
-                            onMouseOver={() => setSelectionIndex(index)}
-                            ref={isSelectedCommand ? commandFocus : null}
-                            className={`
+        <div className="text-light300 group-title">
+          <Icon.Type strokeWidth={1.5} />
+        </div>
+        <div className="grow flex flex-col relative">
+          {description &&
+            description.map((item, index) => {
+              const TagName = item.html.tag
+              const firstInput = index === 0
+              if (focusInput.current === item.id && isEditing) {
+                return (
+                  <div className="relative flex flex-col" key={item.id}>
+                    <input
+                      className={`editor-input border-l-transparent ${
+                        HTMLStyle.style || item.html.style
+                      }`}
+                      id={item.id}
+                      cols="30"
+                      rows="10"
+                      value={text}
+                      onChange={(e) => onChange(e)}
+                      onKeyDown={(e) => onKeyDown(e)}
+                      onCompositionStart={(e) => compositionStatus(e)}
+                      onCompositionUpdate={(e) => compositionStatus(e)}
+                      onCompositionEnd={(e) => compositionStatus(e)}
+                      ref={inputRef}
+                      onBlur={() => {
+                        clearSlashCommand()
+                      }}
+                      autoFocus
+                      placeholder={
+                        firstInput
+                          ? `Description or type '/' for commands`
+                          : "Type '/' for commands "
+                      }
+                    />
+                    {matchingCommands.length !== 0 && (
+                      <div className="results top-8 mt-1 z-10  max-h-56 ">
+                        {matchingCommands.map((command, index) => {
+                          const IconName = Icon[command.icon]
+                          const isSelectedCommand = index === selectionIndex
+                          return (
+                            <div
+                              key={index}
+                              onClick={() => {
+                                selectCommand(command)
+                              }}
+                              onMouseOver={() => setSelectionIndex(index)}
+                              ref={isSelectedCommand ? commandFocus : null}
+                              className={`
                               results__command
                               ${
                                 index == selectionIndex
                                   ? "results__command--selected"
                                   : ""
                               }`}
-                          >
-                            <IconName
-                              strokeWidth={command.iconWidth}
-                              size={command.iconSize}
-                            />
-                            <p
-                              className={`text-lg ${command.style} ${
-                                command.name.includes("List") ? "-ml-4" : ""
-                              }`}
                             >
-                              {command.name}
-                            </p>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
-              )
-            } else {
-              if (!item.content) {
-                return (
-                  <p
-                    className={`editor-text border-l-transparent ${item.html.style}`}
-                    key={item.id}
-                    onClick={() => {
-                      focusInput.current = item.id
-                      setIsEditing(true)
-                      setText(item.content)
-                      setHTMLStyle(item.html)
-                    }}
-                  >
-                    &#160;
-                  </p>
-                )
-              } else if (item.content && !item.html.parent) {
-                return (
-                  <TagName
-                    key={item.id}
-                    className={`editor-text border-l-transparent ${item.html.style}`}
-                    onClick={() => {
-                      focusInput.current = item.id
-                      setIsEditing(true)
-                      setText(item.content)
-                      setHTMLStyle(item.html)
-                    }}
-                  >
-                    {item.content}
-                  </TagName>
+                              <IconName
+                                strokeWidth={command.iconWidth}
+                                size={command.iconSize}
+                              />
+                              <p
+                                className={`text-lg ${command.style} ${
+                                  command.name.includes("List") ? "-ml-4" : ""
+                                }`}
+                              >
+                                {command.name}
+                              </p>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
                 )
               } else {
-                const TagParent = item.html.parent
-                return (
-                  <TagParent key={index} id={index} className={item.html.style}>
+                if (!item.content) {
+                  return (
+                    <p
+                      className={`editor-text border-l-transparent ${item.html.style}`}
+                      key={item.id}
+                      onClick={() => {
+                        focusInput.current = item.id
+                        setIsEditing(true)
+                        setText(item.content)
+                        setHTMLStyle(item.html)
+                      }}
+                    >
+                      &#160;
+                    </p>
+                  )
+                } else if (item.content && !item.html.parent) {
+                  return (
                     <TagName
+                      key={item.id}
+                      className={`editor-text border-l-transparent ${item.html.style}`}
                       onClick={() => {
                         focusInput.current = item.id
                         setIsEditing(true)
@@ -423,11 +422,27 @@ const TextEditor = () => {
                     >
                       {item.content}
                     </TagName>
-                  </TagParent>
-                )
+                  )
+                } else {
+                  const TagParent = item.html.parent
+                  return (
+                    <TagParent key={index} id={index} className={item.html.style}>
+                      <TagName
+                        onClick={() => {
+                          focusInput.current = item.id
+                          setIsEditing(true)
+                          setText(item.content)
+                          setHTMLStyle(item.html)
+                        }}
+                      >
+                        {item.content}
+                      </TagName>
+                    </TagParent>
+                  )
+                }
               }
-            }
-          })}
+            })}
+        </div>
       </div>
     </div>
   )

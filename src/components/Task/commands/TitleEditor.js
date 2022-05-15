@@ -475,7 +475,7 @@ const TitleEditor = () => {
                   ${index == selectionIndex ? "results__command--selected" : ""}
                 `}
               >
-                <IconName strokeWidth={1} />
+                <IconName strokeWidth={1.5} />
                 <p className="text-lg">{command.name}</p>
               </div>
             )
@@ -496,7 +496,7 @@ const TitleEditor = () => {
                   ${index == selectionIndex ? "results__command--selected" : ""}
                 `}
               >
-                <IconName strokeWidth={1} />
+                <IconName strokeWidth={1.5} />
                 <p className="text-lg">{command.name}</p>
               </div>
             )
@@ -516,7 +516,7 @@ const TitleEditor = () => {
                   (index == selectionIndex ? "results__command--selected" : "")
                 }
               >
-                <Icon.Tag strokeWidth={1} />
+                <Icon.Tag strokeWidth={1.5} />
                 <p className="text-lg">{child.name}</p>
               </div>
             )
@@ -534,7 +534,7 @@ const TitleEditor = () => {
                   (index == selectionIndex ? "results__command--selected" : "")
                 }
               >
-                <Icon.Tag strokeWidth={1} />
+                <Icon.Tag strokeWidth={1.5} />
                 <p className="text-lg">{child.name}</p>
               </div>
             )

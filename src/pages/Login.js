@@ -32,11 +32,11 @@ const Login = () => {
     if (userDetail && id !== "") {
       console.log("after login", userDetail, id)
       if (isLoginPath) {
-        if (userProjects.length === 0 && userTasks.length === 0) {
-          dispatch({ type: "modals/switchCreateProjectModal", payload: true })
-          dispatch({ type: "user/setIsFirstTimeUser", payload: true })
-          navigate("/projects")
-        }
+        // if (userProjects.length === 0 && userTasks.length === 0) {
+        //   dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+        //   dispatch({ type: "user/setIsFirstTimeUser", payload: true })
+        //   navigate("/projects")
+        // }
         navigate("/projects")
         //&& userProjects.length !== 0
         // } else if (isLoginPath && userProjects.length === 0 && userTasks.length === 0) {

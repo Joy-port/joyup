@@ -117,8 +117,8 @@ const index = () => {
                 id="taskEditorTags"
               >
                 <div className="select-group">
-                  <div className="flex gap-2 items-center max-w-24">
-                    <Folder strokeWidth={1} />
+                  <div className="flex gap-4 items-center max-w-36">
+                    <Folder strokeWidth={1.5} />
                     <p className="group-title">Project</p>
                   </div>
                   <select
@@ -147,13 +147,13 @@ const index = () => {
                         key={item.id}
                         id={`taskEditor${item.type}`}
                       >
-                        <div className="flex gap-2 items-center max-w-24">
+                        <div className="flex gap-4 items-center max-w-36">
                           {item.type === "priority" ? (
-                            <Flag strokeWidth={1} />
+                            <Flag strokeWidth={1.5} />
                           ) : item.type === "progress" ? (
-                            <CheckSquare strokeWidth={1} />
+                            <CheckSquare strokeWidth={1.5} />
                           ) : (
-                            <Tag strokeWidth={1} />
+                            <Tag strokeWidth={1.5} />
                           )}
                           <p className="group-title">{item.type} </p>
                         </div>
@@ -188,8 +188,8 @@ const index = () => {
                 id="taskEditorDate"
               >
                 <div className="select-group relative">
-                  <div className="flex gap-2 items-center max-w-24">
-                    <Calendar strokeWidth={1} />
+                  <div className="flex gap-4 items-center max-w-36">
+                    <Calendar strokeWidth={1.5} />
                     <div className="group-title">All Day</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -216,8 +216,8 @@ const index = () => {
                   </div>
                 </div>
                 <div className="select-group relative">
-                  <div className="flex gap-2 items-center max-w-36">
-                    <Sun strokeWidth={1} size={24} />
+                  <div className="flex gap-4 items-center max-w-36">
+                    <Sun strokeWidth={1.5} size={24} />
                     <div className="group-title">Start Date</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -230,8 +230,8 @@ const index = () => {
                   </div>
                 </div>
                 <div className="select-group relative">
-                  <div className="flex gap-2 items-center max-w-36">
-                    <Sunset strokeWidth={1} size={24} />
+                  <div className="flex gap-4 items-center max-w-36">
+                    <Sunset strokeWidth={1.5} size={24} />
                     <div className="group-title">Due Date</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -245,8 +245,8 @@ const index = () => {
                 </div>
               </div>
               <div className="select-group relative" id="taskEditorClock">
-                <div className="flex gap-2 items-center max-w-24">
-                  <Clock strokeWidth={1} />
+                <div className="flex gap-4 items-center max-w-36">
+                  <Clock strokeWidth={1.5} />
                   <div className="group-title">Tracker</div>
                 </div>
                 <div
@@ -266,7 +266,7 @@ const index = () => {
                   }
                 >
                   <div
-                    className={`flex gap-1 text-red200 transition-opacity ${
+                    className={`flex gap-1 items-center text-red200 transition-opacity ${
                       clockNumber ? "" : "opacity-50"
                     }`}
                   >
@@ -275,7 +275,7 @@ const index = () => {
                   </div>
                   /
                   <div
-                    className={`flex gap-1 text-red200 transition-opacity ${
+                    className={`flex gap-1 items-center text-red200 transition-opacity ${
                       requiredNumber ? "" : "opacity-50"
                     }`}
                   >
@@ -331,7 +331,7 @@ const index = () => {
             </div>
           </div>
         </div>
-        <div className="modal-footer flex gap-2 w-full md:w-72 md:ml-auto">
+        <div className="modal-footer flex gap-2 items-center w-full md:w-72 md:ml-auto">
           <button
             className="button button-light flex justify-center items-center gap-3 w-1/2"
             id="taskEditorDelete"

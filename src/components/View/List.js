@@ -86,16 +86,18 @@ const List = ({ type }) => {
       >
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) === "{}" ? (
           <>
-            <div
-              className="h-full flex flex-col gap-5 justify-center items-center cursor-pointer"
-              onClick={() => {
-                const newTaskID = uuidv4()
-                dispatch({ type: "task/createNewTask", payload: newTaskID })
-                navigate(`/tasks/${newTaskID}`)
-              }}
-            >
-              <Icon.FilePlus size={40} strokeWidth={1} />
-              <p>Create New Task</p>
+            <div className="h-full flex flex-col gap-5 justify-center items-center ">
+              <div
+                className="cursor-pointer flex-col flex items-center gap-4 button-outline-primary"
+                onClick={() => {
+                  const newTaskID = uuidv4()
+                  dispatch({ type: "task/createNewTask", payload: newTaskID })
+                  navigate(`/tasks/${newTaskID}`)
+                }}
+              >
+                <Icon.FilePlus size={40} strokeWidth={1} />
+                <p>Create New Task</p>
+              </div>
             </div>
           </>
         ) : (

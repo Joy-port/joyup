@@ -6,12 +6,12 @@ const initialTaskState = {
   description: [
     {
       id: uuidv4(),
-      content: `description or type ${"/"} for styling`,
+      content: "Description",
       html: {
         parent: "",
         tag: "p",
         name: "",
-        style: "",
+        style: "font-semibold",
       },
     },
   ],
@@ -108,12 +108,12 @@ function taskReducer(state = initialTaskState, action) {
         description: [
           {
             id: uuidv4(),
-            content: "",
+            content: "Description",
             html: {
               parent: "",
               tag: "p",
               name: "",
-              style: "",
+              style: "font-semibold",
             },
           },
         ],
@@ -126,12 +126,12 @@ function taskReducer(state = initialTaskState, action) {
         description: [
           {
             id: uuidv4(),
-            content: "",
+            content: "Description",
             html: {
               parent: "",
               tag: "p",
               name: "",
-              style: "",
+              style: "font-semibold",
             },
           },
         ],

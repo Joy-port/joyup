@@ -7,7 +7,7 @@ import { Plus, Clock } from "react-feather"
 const TaskList = () => {
   const dispatch = useDispatch()
   const task = useSelector((state) => state.task)
-  const { totalTaskList } = useSelector((state) => state.projects)
+  const { totalTaskList, totalProjectList } = useSelector((state) => state.projects)
   const { userTasks, userProjects } = useSelector((state) => state.user)
   let navigate = useNavigate()
   let { pathname } = useLocation()
@@ -37,6 +37,15 @@ const TaskList = () => {
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/clocks/${taskID}`)
   }
+  const filterTaskList = () => {
+    const newTaskList = userTasks.filter((taskID) => {
+      const taskDetail = totalTaskList[taskID]
+      const taskDueDate = new Date(taskDetail.dueDate).getDate()
+      taskDueDate >= new Date().getDate()
+    })
+    console.log(newTaskList)
+    return newTaskList
+  }
   //py-2 px-3 w-32
   return (
     <>
@@ -47,17 +56,14 @@ const TaskList = () => {
             id="openClockButton"
           >
             <div
-              className="group-title relative w-44 py-2 px-3 rounded"
+              className="relative w-56 py-2 px-3 rounded capitalize whitespace-nowrap"
               onClick={() => {
                 if (userTasks.length < 1) {
-                  // alert(
-                  //   "there is no task, choose or create a project to start a new file for tasks"
-                  // )
                   dispatch({
                     type: "alert/status",
                     payload: {
                       text: "there is no task, choose or create a project to start a new file for tasks",
-                      type: "info",
+                      type: "danger",
                     },
                   })
                   navigate("/dashboard")
@@ -65,10 +71,13 @@ const TaskList = () => {
                 }
                 setOpenSelector(!openSelector)
               }}
+              onBlur={() => {
+                setOpenSelector(false)
+              }}
             >
-              <p className="flex gap-2 rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer">
+              <p className="flex gap-2 items-center rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer">
                 <Clock />
-                Start Timer
+                Select Task to Start
               </p>
               {openSelector && (
                 <div
@@ -85,6 +94,9 @@ const TaskList = () => {
                   <ul className="dropdown-list rounded">
                     {userTasks.map((id) => {
                       const task = totalTaskList[id]
+                      const taskDueDate = new Date(task.dueDate).getDate()
+                      const projectDetail = totalProjectList[task.projectID]
+                      if (taskDueDate <= new Date().getDate()) return
                       return (
                         <li
                           className="dropdown-item max-w-full truncate"
@@ -100,7 +112,8 @@ const TaskList = () => {
                             setOpenSelector(false)
                           }}
                         >
-                          {task.title}
+                          <small className="mb-2 block">{projectDetail.title}</small>
+                          <p>{task.title}</p>
                         </li>
                       )
                     })}
