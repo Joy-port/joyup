@@ -20,35 +20,44 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
       } else if (position.clientX + 240 > 700) {
         left = 460
       } else {
-        left = `calc(${position.clientX} - 176px)`
+        // left = `calc(${position.clientX} - 176px)`
+        left = position.clientX - 176
+        // left = (position.left + position.right - position.x) / 2
       }
-      if (position.clientY + 128 > 750) {
-        // top = "calc(100% - 5%)"
-        top = ((position.top + position.bottom - position.y) * 5) / 100
+      if (position.clientY + 128 > 700) {
+        top = position.clientY - 250
+        // top = ((position.top + position.bottom - position.y) * 5) / 100
       } else {
-        // top = `calc(${position.clientY} - 2%)`
-        top = ((position.top + position.bottom - position.y) * 10) / 100
+        top = position.clientY - 50
+
+        // top = ((position.top + position.bottom - position.y) * 10) / 100
+
+        // top = ((position.top + position.bottom - position.y) * 56) / 100
       }
     } else {
-      if (position.clientX - 200 < 0) {
+      console.log(position)
+      left = (position.left + position.right - position.x) / 2 + 50
+      top = ((position.top + position.bottom - position.y) * 56) / 100
+      if (position.x - 200 < 0) {
         left = 0
-      } else if (position.clientX + 240 > 700) {
-        left = 460
+      } else if (position.x + 240 > 700) {
+        left = left - 80
       } else {
-        // left = `calc(${position.clientX} - 176px)`
-        left = (position.left + position.right - position.x) / 2
+        left += 100
+        // left = (position.left + position.right - position.x) / 2
       }
-      if (position.clientY < 200) {
-        top = ((position.top + position.bottom - position.y) * 120) / 100
-      } else if (position.clientY + 128 > 750) {
-        // top = "calc(100% - 5%)"
-        top = ((position.top + position.bottom - position.y) * 56) / 100
+      if (position.y < 200) {
+        top = position.top
+      } else if (position.y + 128 > 700) {
+        console.log(position.y)
+        top = position.top - 100
+        // top = ((position.top + position.bottom - position.y) * 56) / 100
       } else {
-        // top = `calc(${position.clientY} - 2%)`
-        top = ((position.top + position.bottom - position.y) * 40) / 100
+        console.log(position.y)
+        top = top
+        // top = `calc(${position.y} - 2%)`
+        // top = ((position.top + position.bottom - position.y) * 40) / 100
       }
-      // left = (position.left + position.right - position.x) / 2
-      // top = ((position.top + position.bottom - position.y) * 56) / 100
     }
   }
   return (
