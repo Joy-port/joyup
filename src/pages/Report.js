@@ -40,8 +40,11 @@ const Report = () => {
   })
   const [taskPie, setTaskPie] = useState(() => {
     const taskConvertToPie = userTaskDetail.reduce((total, task) => {
-      if (!totalProjectList) return {}
+      if (!totalProjectList) return total
       const taskProject = totalProjectList[task.projectID]
+      console.log(totalProjectList[task.projectID])
+      if (!task.projectID) return total
+      if (!taskProject) return total
       if (task.totalTime < 600) {
         return total
       } else {
@@ -64,6 +67,7 @@ const Report = () => {
         return total
       }
     }, {})
+    console.log(taskConvertToPie)
     return taskConvertToPie
   })
   const switchProjectTasks = useCallback(() => {
@@ -111,7 +115,7 @@ const Report = () => {
       <Helmet>
         <title>JoyUp | Reports</title>
       </Helmet>
-      {totalProjectList[selectedProject] ? (
+      {totalProjectList && selectedProject && totalProjectList[selectedProject] ? (
         <>
           <div className="menu-container">
             <div className="menu-item">
@@ -125,7 +129,9 @@ const Report = () => {
               <h1 className="tag-light200 w-56 px-2 py-1 text-center">
                 Total Time Spending
               </h1>
-              {taskPie && (
+              {Object.keys(taskPie).length === 0 ? (
+                <div className="w-full">--</div>
+              ) : (
                 <div className="border-rounded-light000 pb-8">
                   <VictoryPie
                     data={Object.values(taskPie)}
