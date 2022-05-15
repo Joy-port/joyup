@@ -37,7 +37,7 @@ const Login = () => {
           dispatch({ type: "user/setIsFirstTimeUser", payload: true })
           navigate("/projects")
         }
-        navigate("/calendar")
+        navigate("/projects")
         //&& userProjects.length !== 0
         // } else if (isLoginPath && userProjects.length === 0 && userTasks.length === 0) {
       } else if (!isLoginPath) {

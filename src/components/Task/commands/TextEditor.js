@@ -23,6 +23,9 @@ const TextEditor = () => {
   const updateDescription = (newDescription) => {
     dispatch({ type: "task/description", payload: newDescription })
   }
+  useEffect(() => {
+    focusInput.current = description[0].id
+  }, [])
   const clearSlashCommand = () => {
     if (slashCharacterPosition !== null) {
       setText((text) => {
@@ -299,6 +302,11 @@ const TextEditor = () => {
         className={`editor border-1 min-h-fix-400 ${
           isEditing ? "border-light300" : "border-transparent"
         }`}
+        onClick={(e) => {
+          console.log("on click")
+          setIsEditing(true)
+          console.log(inputRef.current)
+        }}
       >
         {description &&
           description.map((item, index) => {
@@ -321,8 +329,7 @@ const TextEditor = () => {
                     onCompositionUpdate={(e) => compositionStatus(e)}
                     onCompositionEnd={(e) => compositionStatus(e)}
                     ref={inputRef}
-                    onBlur={(e) => {
-                      console.log(e)
+                    onBlur={() => {
                       clearSlashCommand()
                     }}
                     autoFocus

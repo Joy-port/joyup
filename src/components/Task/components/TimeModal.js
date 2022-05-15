@@ -127,11 +127,11 @@ const TimeModal = () => {
       className="modal-container-popUp hide text-light300 z-30 w-full md:min-w-72 min-h-28 max-h-max overflow-y-auto top-14 right-0 mb-5"
       ref={modalOpenScrollRef}
     >
-      <div className="border-group-light200">
+      <div className="border-group-light200 ">
         <div className="flex">
           <h4 className="border-group-title text-center grow">Timer</h4>
           <div
-            className="text-right w-6 text-light000 hover:text-transparentDark cursor-pointer "
+            className="text-right w-6 text-light200 hover:text-transparentDark cursor-pointer "
             onClick={() =>
               dispatch({
                 type: "modals/switchTaskClockSettingModal",
@@ -142,16 +142,62 @@ const TimeModal = () => {
             <X />
           </div>
         </div>
-        <div className="flex justify-between items-center pb-2 ">
+        <div className="flex items-start justify-between gap-4 pb-5 border-b-1 border-b-light100">
+          <div className="flex gap-2 items-center justify-center self-start">
+            <Circle strokeWidth={1} size={10} fill="#E56544" color="#ACBAC3" />
+            <p className="group-title ">Task Required Time</p>
+          </div>
+
+          <div className="flex gap-2 items-end border-0 flex-col ">
+            <div className="">
+              <input
+                className={`w-12 rounded p-1 border-1 mr-5 ${
+                  requiredNumberError === 0
+                    ? "text-danger border-danger focus:outline-danger caret-danger"
+                    : "border-light200 focus:outline-light200 text-light300 caret-light300"
+                }`}
+                type="number"
+                value={requiredTime}
+                onChange={(e) => {
+                  checkRequiredNumber(e)
+                  checkWhenEditNumber(e.target.value, "task/requiredTime")
+                }}
+              />
+              mins
+            </div>
+            <div
+              className={`flex gap-1 text-red200 transition-opacity ${
+                requiredNumber ? "" : "opacity-50"
+              } `}
+            >
+              <Clock color="#fff" fill="#E56544" strokeWidth={1} />
+              {requiredNumber}
+            </div>
+          </div>
+
+          {/* <small
+            className={`text-danger ml-5 h-4 -my-1 ${
+              requiredNumberErrorMessage ? "visible" : "invisible"
+            }`}
+          >
+            {requiredNumberErrorMessage}
+          </small> */}
+          {/* <div className="flex gap-2 items-center">=</div> */}
+        </div>
+        <div className="flex gap-12 justify-between items-center pb-2 ">
           <div className="flex gap-4 items-center">
             <Clock strokeWidth={1} fill="#E56544" color="#ffffff" />
             <p className="group-title">Work Duration</p>
           </div>
           <div className="flex gap-2 items-center border-0">
             <input
-              className={`w-7 bg-light100 text-light300 rounded p-1 border-0 ${
+              className={`w-12 focus:bg-white rounded p-1 border-0 ${
                 totalTime ? "opacity-50 text-light200" : ""
-              } ${workTimeError ? "text-light300" : "text-danger"}`}
+              } ${
+                workTimeError
+                  ? "text-light300 bg-light100 caret-light200 focus:outline-light300"
+                  : "text-danger bg-light100 caret-danger focus:outline-danger"
+              }`}
               type="number"
               value={workTime}
               disabled={totalTime && true}
@@ -172,16 +218,20 @@ const TimeModal = () => {
             {workTimeErrorMessage}
           </small>
         </div> */}
-        <div className="flex justify-between items-center pb-2 border-b-1 border-b-light100">
+        <div className="flex gap-12 justify-between items-center pb-5 border-b-1 border-b-light100">
           <div className="flex gap-4 items-center">
             <Clock strokeWidth={1} fill="#ACBAC3" color="#ffffff" />
             <p className="group-title">Break Duration</p>
           </div>
           <div className="flex gap-2 items-center">
             <input
-              className={`w-7 bg-light100 rounded p-1 border-0 ${
+              className={`w-12 focus:bg-white rounded p-1 border-0 ${
                 totalTime ? "opacity-50 text-light200" : ""
-              }${breakTimeError ? "text-light300" : "text-danger"}`}
+              }${
+                breakTimeError
+                  ? "text-light300 bg-light100 caret-light200 focus:outline-light300"
+                  : "text-danger bg-light100 caret-danger focus:outline-danger"
+              }`}
               type="number"
               value={breakTime}
               disabled={totalTime && true}
@@ -202,55 +252,13 @@ const TimeModal = () => {
             {breakTimeErrorMessage}
           </small>
         </div> */}
-        <div className="flex flex-col gap-2 justify-between pb-2 border-b-1 border-b-light100">
-          <div className="flex gap-2 items-center">
-            <Circle strokeWidth={1} size={10} fill="#E56544" color="#ACBAC3" />
-            <p className="group-title">Total Task Required Time</p>
-          </div>
-          <div className="flex gap-2 items-center">
-            =
-            <input
-              className={` text-light300 rounded p-1 border-light100 border-1 focus:border-transparent ${
-                requiredNumberError === 0
-                  ? "text-danger border-danger"
-                  : "border-light100"
-              }`}
-              type="number"
-              value={requiredTime}
-              onChange={(e) => {
-                checkRequiredNumber(e)
-                checkWhenEditNumber(e.target.value, "task/requiredTime")
-              }}
-            />
-            mins
-          </div>
-          {/* <small
-            className={`text-danger ml-5 h-4 -my-1 ${
-              requiredNumberErrorMessage ? "visible" : "invisible"
-            }`}
-          >
-            {requiredNumberErrorMessage}
-          </small> */}
-          <div className="flex gap-2 items-center">
-            =
-            <div
-              className={`flex gap-1 text-red200 transition-opacity ${
-                requiredNumber ? "" : "opacity-50"
-              } `}
-            >
-              <Clock color="#fff" fill="#E56544" strokeWidth={1} />
-              {requiredNumber}
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-between items-center mb-4">
+
+        <div className="flex gap-12 justify-between items-center mb-4">
           <div className="flex gap-4 items-center">
             <Circle strokeWidth={1} size={10} fill="#ACBAC3" color="#ACBAC3" />
             <p className="group-title">Task Recording</p>
           </div>
-          <div
-            className={`w-4/12 ${getHourTime(totalTime) === 0 ? "text-light100" : ""}`}
-          >
+          <div className={`w-20 ${getHourTime(totalTime) === 0 ? "text-light100" : ""}`}>
             {getHourTime(totalTime) === 0 ? "none" : getHourTime(totalTime)}
           </div>
         </div>

@@ -17,7 +17,7 @@ const TitleEditor = () => {
   const [timeCharacterPosition, setTimeCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
   // const [isSettingTime, setIsSettingTime] = useState(false)
-  const [style, setStyle] = useState("heading-four font-semibold")
+  const [style, setStyle] = useState("heading-three font-semibold")
   const [dateType, setDateType] = useState(null)
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
   const [selectedTagType, setSelectedTagType] = useState(null)
@@ -28,7 +28,7 @@ const TitleEditor = () => {
   const titleRef = useRef()
   const setTagsAction = useCallback((tagsName) => {
     setIsEditing(true)
-    setStyle("heading-four font-semibold")
+    setStyle("heading-three font-semibold")
     setText(() => {
       const newText = `/${tagsName}`
       return newText
@@ -79,7 +79,7 @@ const TitleEditor = () => {
     setTimeCharacterPosition(null)
     setTimeQuery(null)
     setSelectionIndex(0)
-    setStyle("heading-four font-semibold")
+    setStyle("heading-three font-semibold")
     setIsEditing(true)
     inputRef.current.focus()
   })
@@ -111,7 +111,7 @@ const TitleEditor = () => {
           const newText = titleRef.current + "/Start date:"
           return newText
         })
-        setStyle("heading-four font-semibold text-light200")
+        setStyle("heading-three font-semibold text-light200")
         setSlashCharacterPosition(null)
         setQuery(null)
         setSelectionIndex(0)
@@ -130,7 +130,7 @@ const TitleEditor = () => {
           const newText = titleRef.current + "/Due date:"
           return newText
         })
-        setStyle("heading-four font-semibold text-light200")
+        setStyle("heading-three font-semibold text-light200")
         //clear first level command element
         setSlashCharacterPosition(null)
         setQuery(null)
@@ -149,7 +149,7 @@ const TitleEditor = () => {
           const newText = titleRef.current + "/Priority:"
           return newText
         })
-        setStyle("heading-four font-semibold text-light200")
+        setStyle("heading-three font-semibold text-light200")
         setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
@@ -167,7 +167,7 @@ const TitleEditor = () => {
           const newText = titleRef.current + "/Progress:"
           return newText
         })
-        setStyle("heading-four font-semibold text-light200")
+        setStyle("heading-three font-semibold text-light200")
         setSelectedTagType(types.find((item) => item.type === this.name))
         setQuery(null)
         setSlashCharacterPosition(null)
@@ -183,7 +183,7 @@ const TitleEditor = () => {
     //       const newText = titleRef.current + "/Required Clocks:"
     //       return newText
     //     })
-    //     setStyle("heading-four font-semibold text-light200")
+    //     setStyle("heading-three font-semibold text-light200")
     //     dispatch(task.saveTaskDetail("requiredNumber", 0))
     //   },
     // },
@@ -271,7 +271,7 @@ const TitleEditor = () => {
       matchingTags.length !== 0 &&
       matchingTimeSettings.length !== 0
     ) {
-      setStyle("heading-four font-semibold")
+      setStyle("heading-three font-semibold")
     }
   }, [matchingCommands, matchingTags, , matchingTimeSettings])
 
@@ -435,7 +435,7 @@ const TitleEditor = () => {
     <div className="flex flex-col rounded relative w-full">
       {text !== "" && !isEditing ? (
         <div
-          className="heading-four font-semibold text-light300 px-2 py-1 rounded"
+          className="heading-three font-semibold text-light300 px-2 py-1 rounded bg-white"
           onClick={() => {
             // inputRef.current = null
             setIsEditing(true)
@@ -446,7 +446,7 @@ const TitleEditor = () => {
         </div>
       ) : (
         <input
-          className={`rounded heading-four input-light300 px-2 py-1 ${style}`}
+          className={`rounded heading-three input-light300 px-2 py-1 ${style}`}
           cols="30"
           rows="10"
           value={text}
