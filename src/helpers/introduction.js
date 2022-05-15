@@ -2,26 +2,6 @@ import React from "react"
 export const steps = {
   startTask: [
     {
-      title: <h1 className="text-slateLight">Home Page</h1>,
-      target: "#Home",
-      content: (
-        <p className="text-slateLight">
-          Click on the side bar menu to home page and browse the tasks{" "}
-        </p>
-      ),
-      disableBeacon: true,
-    },
-    {
-      title: "Home Page",
-      target: "#Reports",
-      content: <p>Click on the side bar menu to home page and browse the tasks </p>,
-    },
-    {
-      title: "Projects Page",
-      target: "#Projects",
-      content: <p>Click on the side bar menu to Browse all the projects</p>,
-    },
-    {
       title: "Start to Concentrate",
       target: "#openClockButton",
       content: <p>Click here to select existed tasks and start to concentrate</p>,
@@ -34,10 +14,6 @@ export const steps = {
           <p>Click this Button to Create a new Task</p>
         </>
       ),
-      // disableBeacon: true,
-      // disableOverlayClose: true,
-      // hideCloseButton: true,
-      // hideFooter: true,
     },
   ],
   introTask: [

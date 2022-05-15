@@ -14,8 +14,8 @@ const MenuItem = ({ type, content }) => {
           {pathInfo.map((item) => {
             const IconName = Icon[item.icon]
             let isActive = false
-            if (item.path === "/") {
-              isActive = pathname === item.path
+            if (item.path === "/calendar") {
+              isActive = pathname === "/calendar" || pathname === "/agenda"
             } else {
               isActive = pathname.replace("/", "").includes(item.path)
             }

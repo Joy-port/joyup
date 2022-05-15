@@ -259,7 +259,13 @@ const TimeModal = () => {
           className={`button flex justify-center items-center gap-3 h-12 ${
             mode === 0 ? "button-outline-danger" : "button-primary"
           }`}
-          onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}
+          onClick={() => {
+            dispatch({
+              type: "clockAction",
+              payload: { type: "isPaused", status: "false" },
+            })
+            navigate(`/clocks/${taskID}`, { replace: true })
+          }}
         >
           <Play />
           <p>{getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}</p>

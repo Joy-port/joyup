@@ -229,12 +229,12 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   width: 72px;
 }
 .rbc-time-header-content {
-  padding-right: 14px;
+  /* padding-right: 14px; */
   -moz-padding-end: 9px;
 }
-.rbc-allday-cell {
+/* .rbc-allday-cell {
   overflow-x: scroll;
-}
+} */
 .rbc-time-header .rbc-header:last-of-type {
   /* flex-basis: calc((100% - 102px) / 7);
   max-width: calc((100% - 102px) / 7); */
