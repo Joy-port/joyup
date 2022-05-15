@@ -18,6 +18,7 @@ const Home = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const updateEvents = useCallback(() => {
+    if (userTasks.length === 0) return []
     const newEvents = userTasks.map((taskID) => {
       const taskDetail = {
         ...totalTaskList[taskID],
