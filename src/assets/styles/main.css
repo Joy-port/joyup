@@ -588,6 +588,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mr-2 {
   margin-right: 0.5rem;
 }
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -596,9 +599,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .mt-1 {
   margin-top: 0.25rem;
-}
-.mb-3 {
-  margin-bottom: 0.75rem;
 }
 .ml-5 {
   margin-left: 1.25rem;
@@ -1072,20 +1072,17 @@ Ensure the default browser behavior of the `hidden` attribute.
 .pb-5 {
   padding-bottom: 1.25rem;
 }
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
 .pl-3 {
   padding-left: 0.75rem;
 }
 .pb-4 {
   padding-bottom: 1rem;
 }
-.pb-2 {
-  padding-bottom: 0.5rem;
-}
 .pb-6 {
   padding-bottom: 1.5rem;
-}
-.pt-1 {
-  padding-top: 0.25rem;
 }
 .text-center {
   text-align: center;
