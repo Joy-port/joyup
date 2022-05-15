@@ -34,10 +34,10 @@ const Login = () => {
       if (isLoginPath) {
         //&& userProjects.length !== 0
         navigate("/calendar")
-        // } else if (isLoginPath && userProjects.length === 0) {
-        //   dispatch({ type: "modals/switchCreateProjectModal", payload: true })
-        //   dispatch({ type: "user/setIsFirstTimeUser", payload: true })
-        //   navigate("/projects")
+      } else if (isLoginPath && userProjects.length === 0) {
+        dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+        dispatch({ type: "user/setIsFirstTimeUser", payload: true })
+        navigate("/projects")
       } else if (!isLoginPath) {
         dispatch({ type: "modals/switchCreateProjectModal", payload: true })
         dispatch({ type: "user/setIsFirstTimeUser", payload: true })

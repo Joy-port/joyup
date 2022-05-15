@@ -70,6 +70,7 @@ module.exports = {
         "custom-lg": "calc(100vh - 200px)",
         "custom-xl": "calc(100vh - 135px)",
         "custom-xxl": "calc(100vh - 64px)",
+        "fix-400": "400px",
       },
       width: {
         "custom-m": "calc(100vw - 80px)",

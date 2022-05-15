@@ -4,108 +4,93 @@ export const steps = {
     {
       title: "Start to Concentrate",
       target: "#openClockButton",
-      content: <p>Click here to select existed tasks and start to concentrate</p>,
+      content: <p>Click here to select a existing task and start to focus</p>,
     },
     {
       title: "New Task",
       target: "#createTaskButton",
-      content: (
-        <>
-          <p>Click this Button to Create a new Task</p>
-        </>
-      ),
+      content: <p>Before focusing, {`let's`} create a new task!</p>,
     },
   ],
   introTask: [
     {
       title: "Edit Title or Other Settings",
       target: "#taskEditorTitle",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
+      content: <p>Enter title or click {"/"} slash for more settings</p>,
       disableBeacon: false,
     },
     {
-      title: "Edit Styling with Slash Command",
-      target: "#taskEditorDescription",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
+      title: "Change Tags",
+      target: "#taskEditorTags",
+      content: <p>Click on the right button to switch between your projects / tags</p>,
     },
     {
-      title: "Switch from Projects",
-      target: "#taskEditorProject",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
-    },
-    {
-      title: "Start to Concentrate",
-      target: "#taskEditorpriority",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
-    },
-    {
-      title: "Start to Concentrate",
-      target: "#taskEditorprogress",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
-    },
-    {
-      title: "Start to Concentrate",
+      title: "Date Settings",
       target: "#taskEditorDate",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
+      content: (
+        <>
+          <p>1. Choose Date by switching all day button</p>
+          <p>2. Click on the date to change start/due date</p>
+        </>
+      ),
     },
     {
-      title: "Start to Concentrate",
+      title: "Focusing Settings",
       target: "#taskEditorClock",
-      content: <p>Enter task title or click {"/"} slash for more settings</p>,
-    },
-    {
-      title: "Start to Concentrate",
-      target: "#taskEditorDelete",
-      content: <p>You can delete the task right away</p>,
-    },
-    {
-      title: "Start to Concentrate",
-      target: "#taskEditorSave",
-      content: <p>Remember to Save before leaving</p>,
+      content: (
+        <>
+          <p>1. Click on the right button for setting up your Pomodoro Timer!</p>
+          <p>2. Click Play to Start!</p>
+        </>
+      ),
     },
     {
       title: "Start to Concentrate",
       target: "#taskEditorPressClock",
-      content: <p>Press here to Open Timer and start to concentrate</p>,
+      content: <p>Press on the play button to open timer and start to focus</p>,
     },
   ],
   introClock: [
     {
-      title: "Start to Concentrate",
+      title: "Start to Focus",
       target: "#clockControlButton",
-      content: <p>Press here and start to concentrate</p>,
+      content: <p>Press the button to play or pause the timer</p>,
       disableBeacon: true,
     },
     {
-      title: "Start to Concentrate",
+      title: "Back to Task",
       target: "#clockControlBackToTask",
-      content: <p>Press here to Open Timer and start to concentrate</p>,
+      content: <p>Click here to back to the task</p>,
+    },
+    {
+      title: "Ready? Let's Start!",
+      target: "#clockControlBackToTask",
+      content: <p>If you are ready than start and set up your task!</p>,
+      placement: "center",
+      locale: { next: "Start My Task" },
     },
   ],
-  startClock: [],
-  homePage: [
-    {
-      title: "Home Page",
-      target: "#Home",
-      content: <p>Click on the side bar menu to home page and browse the tasks </p>,
-    },
-    {
-      title: "Home Page",
-      target: "#Reports",
-      content: <p>Click on the side bar menu to home page and browse the tasks </p>,
-    },
-    {
-      title: "Projects Page",
-      target: "#Projects",
-      content: <p>Click on the side bar menu to Browse all the projects</p>,
-    },
-    {
-      title: "Start to Concentrate",
-      target: "#openClockButton",
-      content: <p>Click here to select existed tasks and start to concentrate</p>,
-    },
-  ],
+  // startClock: [],
+  // homePage: [
+  //   {
+  //     title: "Home Page",
+  //     target: "#Home",
+  //     content: <p>Click on the side bar menu to home page and browse the tasks </p>,
+  //   },
+  //   {
+  //     title: "Home Page",
+  //     target: "#Reports",
+  //     content: <p>Click on the side bar menu to home page and browse the tasks </p>,
+  //   },
+  //   {
+  //     title: "Projects Page",
+  //     target: "#Projects",
+  //     content: <p>Click on the side bar menu to Browse all the projects</p>,
+  //   },
+  //   {
+  //     title: "Start to Concentrate",
+  //     target: "#openClockButton",
+  //     content: <p>Click here to select existed tasks and start to concentrate</p>,
+  //   },
+  // ],
 }
-
-//openClockButton
-//createTaskButton

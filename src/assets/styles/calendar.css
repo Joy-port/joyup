@@ -230,6 +230,7 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
 }
 .rbc-time-header-content {
   /* padding-right: 14px; */
+  -webkit-padding-end: 16px;
   -moz-padding-end: 9px;
 }
 /* .rbc-allday-cell {

@@ -23,9 +23,10 @@ const index = () => {
       (status === STATUS.SKIPPED && tourStatus.run) ||
       status === STATUS.FINISHED
     ) {
-      if (action === "next" && status === "finished") {
-        callback && callback()
-      }
+      console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
+      // if (action === "next" && status === "finished") {
+      //   callback && callback()
+      // }
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       dispatch({
         type: "tour/NEXT_OR_PREV",
@@ -133,6 +134,7 @@ const index = () => {
               buttonSkip: {
                 color: "#E3EDF2",
               },
+              spotlightPadding: 5,
             }}
             locale={{
               last: "Next",

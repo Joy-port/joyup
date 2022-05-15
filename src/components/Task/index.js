@@ -109,13 +109,12 @@ const index = () => {
             <TitleEditor />
           </div>
           <div className="grow flex flex-col-reverse md:flex-row gap-5 task-scrollbar">
-            <div className="flex flex-col gap-3 h-full grow">
-              <TextEditor />
-              {/* <AddSubtask /> */}
-            </div>
             <div className="flex flex-col gap-3 w-full md:w-1/2">
-              <div className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full">
-                <div className="select-group" id="taskEditorProject">
+              <div
+                className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full"
+                id="taskEditorTags"
+              >
+                <div className="select-group">
                   <div className="flex gap-2 items-center max-w-24">
                     <Folder strokeWidth={1} />
                     <p className="group-title">Project</p>
@@ -138,47 +137,49 @@ const index = () => {
                       })}
                   </select>
                 </div>
-                {types &&
-                  types.map((item) => (
-                    <div
-                      className="select-group"
-                      key={item.id}
-                      id={`taskEditor${item.type}`}
-                    >
-                      <div className="flex gap-2 items-center max-w-24">
-                        {item.type === "priority" ? (
-                          <Flag strokeWidth={1} />
-                        ) : item.type === "progress" ? (
-                          <CheckSquare strokeWidth={1} />
-                        ) : (
-                          <Tag strokeWidth={1} />
-                        )}
-                        <p className="group-title">{item.type} </p>
-                      </div>
-                      <select
-                        className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
-                        value={
-                          tagList.find((selected) => selected.parent === item.id)
-                            ?.child || selectedColumnOrder[0]
-                        }
-                        onChange={(e) => {
-                          dispatch(tags.switchType(item.type))
-                          const tag = {
-                            parent: item.id,
-                            child: e.target.value,
-                            type: item.type,
-                          }
-                          dispatch(task.saveTaskTag(tag))
-                        }}
+                <div className="flex flex-col gap-3">
+                  {types &&
+                    types.map((item) => (
+                      <div
+                        className="select-group"
+                        key={item.id}
+                        id={`taskEditor${item.type}`}
                       >
-                        {item.children.map((tag) => (
-                          <option value={tag.id} key={tag.id}>
-                            {tag.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  ))}
+                        <div className="flex gap-2 items-center max-w-24">
+                          {item.type === "priority" ? (
+                            <Flag strokeWidth={1} />
+                          ) : item.type === "progress" ? (
+                            <CheckSquare strokeWidth={1} />
+                          ) : (
+                            <Tag strokeWidth={1} />
+                          )}
+                          <p className="group-title">{item.type} </p>
+                        </div>
+                        <select
+                          className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0"
+                          value={
+                            tagList.find((selected) => selected.parent === item.id)
+                              ?.child || selectedColumnOrder[0]
+                          }
+                          onChange={(e) => {
+                            dispatch(tags.switchType(item.type))
+                            const tag = {
+                              parent: item.id,
+                              child: e.target.value,
+                              type: item.type,
+                            }
+                            dispatch(task.saveTaskTag(tag))
+                          }}
+                        >
+                          {item.children.map((tag) => (
+                            <option value={tag.id} key={tag.id}>
+                              {tag.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
+                </div>
               </div>
               <div
                 className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full"
@@ -281,20 +282,27 @@ const index = () => {
                   </div>
                 </div>
                 {taskClockSettingModalIsOpen && <TimeModal />}
+                {/* <TimeModal /> */}
               </div>
 
-              {/* <div
+              <div
                 id="taskEditorPressClock"
                 className={`button flex justify-center items-center gap-3 h-12 ${
                   mode === 0 ? "button-outline-danger" : "button-primary"
                 }`}
-                onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}
+                onClick={() => {
+                  dispatch({
+                    type: "clockAction",
+                    payload: { type: "isPaused", status: false },
+                  })
+                  navigate(`/clocks/${taskID}`, { replace: true })
+                }}
               >
                 <Play />
                 <p>
                   {getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}
                 </p>
-              </div> */}
+              </div>
 
               {/* <div className="border-group-light200">
               <div className="border-group-title">location</div>
@@ -314,6 +322,10 @@ const index = () => {
                 }}
               />
             </div> */}
+            </div>
+            <div className="flex flex-col gap-3 h-full grow">
+              <TextEditor />
+              {/* <AddSubtask /> */}
             </div>
           </div>
         </div>

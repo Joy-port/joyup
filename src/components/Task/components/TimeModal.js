@@ -262,7 +262,7 @@ const TimeModal = () => {
           onClick={() => {
             dispatch({
               type: "clockAction",
-              payload: { type: "isPaused", status: "false" },
+              payload: { type: "isPaused", status: false },
             })
             navigate(`/clocks/${taskID}`, { replace: true })
           }}
