@@ -267,3 +267,7 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
 .rbc-time-header .rbc-day-slot .rbc-events-container {
   margin-right: 0;
 }
+
+.rbc-overlay {
+  max-width: 20px;
+}

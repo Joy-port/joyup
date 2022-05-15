@@ -92,16 +92,17 @@ const ProjectList = () => {
                   return (
                     <div
                       key={ownerProject.id}
-                      className="border-1 shadow border-light100 bg-white   hover:bg-light000 hover:border-light000 rounded cursor-pointer h-28 p-4"
+                      className="border-1 shadow border-light100 bg-white hover:bg-light000 hover:border-light000 rounded cursor-pointer h-28 p-4"
                       onClick={() => {
                         openProject(ownerProject.id)
                       }}
                     >
                       <div className="flex justify-between items-start h-full">
                         <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10">
+                          {/* -ml-3 -mr-3 -mt-2 */}
                           {isEditTitle === ownerProject.id ? (
                             <input
-                              className="font-semibold bg-transparent border-1 rounded border-light100 z-20 block -ml-3 -mr-3 -mt-2"
+                              className="font-semibold bg-transparent rounded z-20 block focus:outline-200 border-1 border-light200 w-32 -m-1 bg-white text-light200"
                               type="text"
                               value={projectTitle}
                               onChange={(e) => {
