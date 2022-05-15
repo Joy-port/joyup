@@ -3,6 +3,11 @@ const initialStatus = {
   alertText: "",
   alertType: "",
   alertIsShow: false,
+  confirmText: "",
+  openConfirm: false,
+  isConfirm: false,
+  confirmActionText: "",
+  action: () => {},
 }
 
 function statusReducer(state = initialStatus, action) {
@@ -23,6 +28,26 @@ function statusReducer(state = initialStatus, action) {
         alertText: text,
         alertType: type,
         alertIsShow: true,
+      }
+    case "alert/hide":
+      return {
+        ...state,
+        alertIsShow: false,
+      }
+    case "confirm/status":
+      const { context, confirm, callback } = action.payload
+      return {
+        ...state,
+        confirmText: context,
+        openConfirm: true,
+        confirmActionText: confirm,
+        action: callback,
+      }
+    case "confirm/return":
+      return {
+        ...state,
+        openConfirm: false,
+        isConfirm: action.payload,
       }
     case "alert/hide":
       return {

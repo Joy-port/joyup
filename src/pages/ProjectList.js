@@ -29,9 +29,9 @@ const ProjectList = () => {
   }
   const deleteProject = (projectID) => {
     if (loading || error) return
-    if (confirm("confirm to remove the project")) {
-      projectID !== "" && dispatch(project.deleteProject(projectID))
-    }
+    // if (confirm("confirm to remove the project")) {
+    projectID !== "" && dispatch(project.deleteProject(projectID))
+    // }
   }
   const editProjectName = async (projectID) => {
     try {

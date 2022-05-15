@@ -119,10 +119,10 @@ const Clock = () => {
         <button
           className="modal-header self-end text-white"
           onClick={() => {
-            if (confirm("quit without saving current change?")) {
-              dispatch({ type: "task/clearTaskWithoutSaving" })
-              navigate(-1)
-            }
+            // if (confirm("quit without saving current change?")) {
+            dispatch({ type: "task/clearTaskWithoutSaving" })
+            navigate(-1)
+            // }
           }}
         >
           <X size={20} />

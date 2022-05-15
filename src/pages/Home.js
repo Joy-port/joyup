@@ -20,6 +20,10 @@ const Home = () => {
   const updateEvents = useCallback(() => {
     if (userTasks.length === 0) return []
     const newEvents = userTasks.map((taskID) => {
+      // if (!totalTaskList[taskID]) {
+      //   console.log(taskID)
+      //   return {}
+      // }
       const taskDetail = {
         ...totalTaskList[taskID],
         start: new Date(totalTaskList[taskID].startDate),

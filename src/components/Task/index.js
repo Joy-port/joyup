@@ -96,10 +96,10 @@ const index = () => {
         <button
           className="modal-header self-end"
           onClick={() => {
-            if (confirm("quit without saving current change?")) {
-              dispatch({ type: "task/clearTaskWithoutSaving" })
-              navigate(-1)
-            }
+            // if (confirm("quit without saving current change?")) {
+            dispatch({ type: "task/clearTaskWithoutSaving" })
+            navigate(-1)
+            // }
           }}
         >
           <X size={20} />
@@ -336,10 +336,10 @@ const index = () => {
             className="button button-light flex justify-center items-center gap-3 w-1/2"
             id="taskEditorDelete"
             onClick={() => {
-              if (confirm("confirm to delete the task ")) {
-                dispatch(task.deleteCurrentTask())
-                navigate(-1)
-              }
+              // if (confirm("confirm to delete the task ")) {
+              dispatch(task.deleteCurrentTask())
+              navigate(-1)
+              // }
             }}
           >
             <Trash />

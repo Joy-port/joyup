@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from "react"
 import { object, func, bool, string } from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 import dayjs from "dayjs"
-import { Maximize2, X } from "react-feather"
+import { Edit3, X } from "react-feather"
 import { useNavigate } from "react-router-dom"
 import { task } from "../../sliceReducers/actions/task"
+import { status } from "../../sliceReducers/actions/status"
 
 const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
   const dispatch = useDispatch()
@@ -54,7 +55,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
     <>
       {JSON.stringify(taskDetail) !== "{}" && (
         <div
-          className={`modal-container-popUp h-32 w-54 hide text-light300 z-110 ${
+          className={`modal-container-popUp h-32 w-54 text-light300 z-110 ${
             isOpenModal ? "" : "hidden"
           }`}
           style={{ left, top }}
@@ -62,13 +63,27 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
           <div className="flex justify-between items-center mb-2">
             <div className="text-lg font-semibold ">{taskDetail.title}</div>
             <div
-              className="show cursor-pointer"
+              className="hover:text-transparentDark cursor-pointer"
               onClick={() => {
-                if (confirm("quite without saving?")) {
-                  dispatch(task.deleteCurrentTask())
-                  dispatch({ type: "task/clearTaskWithoutSaving" })
-                  setIsOpenModal(false)
-                }
+                // const confirmText = {
+                //   context: "Do you want to quit without saving?",
+                //   confirm: "yes",
+                //   action: () => {
+                //     dispatch(task.deleteCurrentTask())
+                //     dispatch({ type: "task/clearTaskWithoutSaving" })
+                //     setIsOpenModal(false)
+                //   },
+                // }
+                // dispatch(status.openConfirmModal(confirmText))
+                // () => {
+                //     dispatch(task.deleteCurrentTask())
+                //     dispatch({ type: "task/clearTaskWithoutSaving" })
+                //     setIsOpenModal(false)
+                // if (confirm("quite without saving?")) {
+                dispatch(task.deleteCurrentTask())
+                dispatch({ type: "task/clearTaskWithoutSaving" })
+                setIsOpenModal(false)
+                // }
               }}
             >
               <X />
@@ -87,7 +102,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
               navigate(`/tasks/${taskDetail.id}`)
             }}
           >
-            <Maximize2 size={20} />
+            <Edit3 size={20} />
           </div>
         </div>
       )}

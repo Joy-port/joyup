@@ -99,7 +99,7 @@ const Clock = () => {
     clockStatus("secondsRun", secondsRunRef.current)
   }
   const resetTimer = () => {
-    confirm("do you really want to reset and clear current progress?")
+    // confirm("do you really want to reset and clear current progress?")
     // secondsLeftRef.current = mode === 0 ? workTime * 60 * base : breakTime * 60 * base
     // clockStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
@@ -143,10 +143,10 @@ const Clock = () => {
         <button
           className="modal-header self-end text-white"
           onClick={() => {
-            if (confirm("quit without saving current change?")) {
-              dispatch({ type: "task/clearTaskWithoutSaving" })
-              navigate(-1)
-            }
+            // if (confirm("quit without saving current change?")) {
+            dispatch({ type: "task/clearTaskWithoutSaving" })
+            navigate(-1)
+            // }
           }}
         >
           <X size={20} />

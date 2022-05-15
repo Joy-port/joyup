@@ -1,59 +1,50 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import * as Icon from "react-feather"
-const Alert = () => {
-  const { confirmText } = useSelector((state) => state.status)
-  const dispatch = useDispatch()
-  const [isShow, setIsShow] = useState(alertIsShow)
-  const hideAlert = () => {
-    setIsShow(false)
-    dispatch({ type: "alert/hide" })
-  }
-  useEffect(() => {
-    let runAlert = null
-    if (alertIsShow) {
-      setIsShow(true)
-      runAlert = setTimeout(() => {
-        setIsShow(false)
-        dispatch({ type: "alert/hide" })
-      }, [2500])
-    }
-    return () => clearTimeout(runAlert)
-  }, [alertIsShow])
 
-  useEffect(() => {
-    console.log("alert", alertText, alertType)
-  }, [alertText, alertType])
+const Confirm = () => {
+  const { openConfirm, confirmText, confirmActionText, action } = useSelector(
+    (state) => state.status
+  )
+  const dispatch = useDispatch()
+
+  //   useEffect(() => {
+  //     console.log("alert", alertText, alertType)
+  //   }, [alertText, alertType])
 
   return (
-    <div
-      style={{ zIndex: 10000 }}
-      className={`alert ${
-        alertType === "danger"
-          ? "bg-red000 text-red200"
-          : alertType === "info"
-          ? "bg-blue000 text-blue200"
-          : "bg-green000 text-green200"
-      } ${!isShow ? "invisible opacity-0" : "visible opacity-80 mr-5"}`}
-    >
-      {IconName(alertType)}
-      <p className="whitespace-wrap grow">{alertText + "!"}</p>
-      <div className="relative">
-        <div className="absolute -top-3 -right-3 cursor-pointer" onClick={hideAlert}>
-          <Icon.X
-            color={
-              alertType === "danger"
-                ? "#E56544"
-                : alertType === "info"
-                ? "#669FBA"
-                : "#60AF7B"
-            }
-            size={20}
-          />
+    <>
+      {openConfirm && (
+        <div className="modal-bg">
+          <div
+            style={{ zIndex: 10000 }}
+            className={`modal-container bg-light000 modal-sm flex flex-col justify-center gap-8 items-center p-5 `}
+          >
+            <p className="text-lg capitalize px-5 text-center">{confirmText}</p>
+            <div className="flex justify-between items-center gap-5 w-full px-12">
+              <div
+                className="button button-light300"
+                onClick={() => {
+                  dispatch({ type: "confirm/return", payload: false })
+                }}
+              >
+                cancel
+              </div>
+              <div
+                className="button button-primary"
+                onClick={() => {
+                  dispatch({ type: "confirm/return", payload: true })
+                  action()
+                }}
+              >
+                {confirmActionText}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 
-export default Alert
+export default Confirm

@@ -140,20 +140,20 @@ const PromodoroClock = () => {
   const resetTimer = () => {
     const currentLeftTime = mode === 0 ? workTime * 60 : breakTime * 60
     if (secondsLeftRef.current === currentLeftTime && secondsRunRef.current === 0) return
-    if (confirm("do you really want to reset and clear current progress?")) {
-      secondsLeftRef.current = currentLeftTime
-      taskStatus("secondsLeft", secondsLeftRef.current)
-      secondsRunRef.current = 0
-      taskStatus("secondsRun", secondsRunRef.current)
-      dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
-      dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
-      dispatch(
-        task.saveTaskDetail(
-          "totalTime",
-          parseFloat(totalSpendingSeconds - secondsRun.current)
-        )
+    // if (confirm("do you really want to reset and clear current progress?")) {
+    secondsLeftRef.current = currentLeftTime
+    taskStatus("secondsLeft", secondsLeftRef.current)
+    secondsRunRef.current = 0
+    taskStatus("secondsRun", secondsRunRef.current)
+    dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
+    dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
+    dispatch(
+      task.saveTaskDetail(
+        "totalTime",
+        parseFloat(totalSpendingSeconds - secondsRun.current)
       )
-    }
+    )
+    // }
   }
   const totalSeconds = mode === 0 ? workTime * 60 : breakTime * 60
   // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
@@ -187,10 +187,10 @@ const PromodoroClock = () => {
           }`}
           onClick={() => {
             if (isFirstTimeUser) return
-            if (confirm("quit without saving current change?")) {
-              dispatch({ type: "task/clearTaskWithoutSaving" })
-              navigate(-1)
-            }
+            // if (confirm("quit without saving current change?")) {
+            dispatch({ type: "task/clearTaskWithoutSaving" })
+            navigate(-1)
+            // }
           }}
         >
           <X size={20} />
