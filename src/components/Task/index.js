@@ -72,13 +72,13 @@ const index = () => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
   useEffect(() => {
-    if (calendarDueDate < calendarStartDate) {
+    if (dueDate < startDate) {
       setCalendarDueDate(() => {
         const afterStartDate = new Date(startDate).getTime()
         return afterStartDate
       })
     }
-  }, [calendarStartDate])
+  }, [startDate])
   useEffect(() => {
     const date = new Date(calendarStartDate).getTime()
     const dateContent = { name: "startDate", date }
