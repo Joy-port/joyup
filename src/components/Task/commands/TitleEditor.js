@@ -65,7 +65,8 @@ const TitleEditor = () => {
     setSlashCharacterPosition(null)
     setTagCharacterPosition(null)
     setTimeCharacterPosition(null)
-    selectionIndex(0)
+    setSelectionIndex(0)
+    setIsEditing(false)
   }
   const editTimeSettingCommand = useCallback(() => {
     setText((text) => {

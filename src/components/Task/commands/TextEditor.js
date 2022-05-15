@@ -23,6 +23,21 @@ const TextEditor = () => {
   const updateDescription = (newDescription) => {
     dispatch({ type: "task/description", payload: newDescription })
   }
+  const clearSlashCommand = () => {
+    if (slashCharacterPosition !== null) {
+      setText((text) => {
+        const string =
+          text.substring(0, slashCharacterPosition) +
+          text.substring(inputRef.current?.selectionStart)
+        return string
+      })
+    }
+    setQuery(null)
+    setSlashCharacterPosition(null)
+    setSelectionIndex(0)
+    setIsOnComposition(false)
+    setIsEditing(false)
+  }
   const changeTextStyle = useCallback(() => {
     const content = {
       id: inputRef.current.id,
@@ -307,7 +322,8 @@ const TextEditor = () => {
                     onCompositionEnd={(e) => compositionStatus(e)}
                     ref={inputRef}
                     onBlur={(e) => {
-                      setIsEditing(false)
+                      console.log(e)
+                      clearSlashCommand()
                     }}
                     autoFocus
                     placeholder={
