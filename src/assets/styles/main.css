@@ -1084,6 +1084,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .pb-6 {
   padding-bottom: 1.5rem;
 }
+.pt-1 {
+  padding-top: 0.25rem;
+}
 .text-center {
   text-align: center;
 }
@@ -1135,16 +1138,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(96 175 123 / var(--tw-text-opacity));
 }
-.text-light200 {
-  --tw-text-opacity: 1;
-  color: rgb(172 186 195 / var(--tw-text-opacity));
-}
 .text-slateLight {
   --tw-text-opacity: 1;
   color: rgb(44 47 51 / var(--tw-text-opacity));
 }
 .text-transparentDark {
   color: #23272A99;
+}
+.text-light200 {
+  --tw-text-opacity: 1;
+  color: rgb(172 186 195 / var(--tw-text-opacity));
 }
 .text-success {
   --tw-text-opacity: 1;
@@ -1671,14 +1674,13 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.75rem;
   border-radius: 0.125rem;
 }
 @media (min-width: 768px) {
 
   .tool-bar {
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 }
 /* button */
@@ -2252,6 +2254,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:justify-between {
+    justify-content: space-between;
   }
 
   .md\:gap-4 {

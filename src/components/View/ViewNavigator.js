@@ -9,7 +9,7 @@ const ViewNavigator = () => {
   const { pathname } = useLocation()
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 self-end">
       {viewInfo.map((view) => {
         const IconName = Icon[view.icon]
         const isActive = pathname.split("/").includes(view.path)

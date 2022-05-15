@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
-import { Plus, Clock } from "react-feather"
+import { Plus, Clock, PlayCircle } from "react-feather"
 
 const TaskList = () => {
   const dispatch = useDispatch()
@@ -91,7 +91,14 @@ const TaskList = () => {
                       : "-top-32"
                   }`}
                 >
-                  <ul className="dropdown-list rounded">
+                  <ul
+                    className="dropdown-list rounded"
+                    onBlur={(e) => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      setOpenSelector(false)
+                    }}
+                  >
                     {userTasks.map((id) => {
                       const task = totalTaskList[id]
                       const taskDueDate = new Date(task.dueDate).getDate()
@@ -99,21 +106,23 @@ const TaskList = () => {
                       if (taskDueDate <= new Date().getDate()) return
                       return (
                         <li
-                          className="dropdown-item max-w-full truncate"
+                          className="dropdown-item max-w-full truncate pb-2 border-b-1 border-b-light100 hover:text-white flex justify-between items-center "
                           value={task.id}
                           key={task.id}
                           onClick={() => {
                             openTask(task.id)
                             setOpenSelector(false)
                           }}
-                          onBlur={(e) => {
-                            e.stopPropagation()
-                            e.preventDefault()
-                            setOpenSelector(false)
-                          }}
                         >
-                          <small className="mb-2 block">{projectDetail.title}</small>
-                          <p>{task.title}</p>
+                          <div className="">
+                            <small className="mb-3 p-1 rounded bg-blue100 text-white ">
+                              {projectDetail.title}
+                            </small>
+                            <p className="p-1">{task.title}</p>
+                          </div>
+                          <div className="">
+                            <PlayCircle size={35} strokeWidth={1} />
+                          </div>
                         </li>
                       )
                     })}

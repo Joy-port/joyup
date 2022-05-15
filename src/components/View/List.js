@@ -6,7 +6,7 @@ import * as Icon from "react-feather"
 import { tags } from "../../sliceReducers/actions/tags"
 import DragFunction from "../DragFunction"
 import { v4 as uuidv4 } from "uuid"
-import ViewNavigator from "./ViewNavigator"
+// import ViewNavigator from "./ViewNavigator"
 
 const List = ({ type }) => {
   const { selectedProjectTaskList } = useSelector((state) => state.tags)
@@ -25,7 +25,7 @@ const List = ({ type }) => {
   return (
     <>
       <div className="tool-bar">
-        <ViewNavigator />
+        {/* <ViewNavigator /> */}
         {/* <div className="flex gap-3">
           {viewInfo.map((view) => {
             const IconName = Icon[view.icon]

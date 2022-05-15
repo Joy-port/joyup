@@ -90,14 +90,14 @@ const Month = ({ onView, onNavigate, date }) => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <ViewNavigator />
+      <div className="flex justify-center">
+        {/* <ViewNavigator /> */}
         <div className="rbc-toolbar-label text-center">
           {moment(date).format("MMM DD")}
         </div>
-        <div className="invisible">
+        {/* <div className="invisible">
           <ViewNavigator />
-        </div>
+        </div> */}
       </div>
       <div className="rbc-toolbar justify-between">
         <div className="rbc-btn-group">

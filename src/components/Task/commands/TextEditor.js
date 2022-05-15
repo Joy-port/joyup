@@ -9,7 +9,7 @@ const TextEditor = () => {
   const { description } = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(false)
-  // const [document, setDocument] = useState(description)
+
   const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
   const [text, setText] = useState("")
@@ -56,21 +56,21 @@ const TextEditor = () => {
       updateDescription(newDoc)
     }
   })
-  // useEffect(() => {
-  //   if (description.length === 1 && text === "" && !isEditing) {
-  //     setText("Description")
-  //     const newDescription = description.find((item) => item.id === focusInput.current)
-  //     newDescription.content = "Description"
-  //     newDescription.html = {
-  //       parent: "",
-  //       tag: "p",
-  //       name: "",
-  //       style: "font-semibold",
-  //     }
-  //     dispatch({ type: "task/description", payload: [newDescription] })
-  //     console.log(description)
-  //   }
-  // }, [description, isEditing, text])
+  useEffect(() => {
+    if (isEditing) return
+    if (description.length === 1 && text === "") {
+      setText("Description")
+      const newDescription = description.find((item) => item.id === focusInput.current)
+      newDescription.content = "Description"
+      newDescription.html = {
+        parent: "",
+        tag: "p",
+        name: "",
+        style: "",
+      }
+      dispatch({ type: "task/description", payload: [newDescription] })
+    }
+  }, [isEditing])
   const addNewBlock = useCallback((index, content) => {
     const newDoc = [...description]
     newDoc.splice(index, 0, content)

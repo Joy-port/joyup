@@ -48,10 +48,10 @@ const ProjectList = () => {
       </Helmet>
       <div className="menu-container">
         <div
-          className={`px-4 py-2 flex gap-3 justify-center transition-colors rounded-sm cursor-default`}
+          className={`px-4 py-2 flex gap-3 justify-center transition-colors rounded-sm cursor-default font-semibold`}
         >
           <Folder />
-          Project List
+          Projects
         </div>
         {userProjects.length > 0 && (
           <div

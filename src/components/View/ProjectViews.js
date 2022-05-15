@@ -5,6 +5,7 @@ import { viewInfo } from "../../helpers/config"
 import { useSelector } from "react-redux"
 import * as Icon from "react-feather"
 import Loader from "../../components/Loader"
+import ViewNavigator from "./ViewNavigator"
 
 const ProjectViews = () => {
   const state = useSelector((state) => state.tags)
@@ -12,8 +13,9 @@ const ProjectViews = () => {
   const { userProjects, userTasks } = useSelector((state) => state.user)
   return (
     <>
-      <div className="menu-container">
+      <div className="menu-container flex-col justify-center md:flex-row md:justify-between">
         <Breadcrumb />
+        <ViewNavigator />
         {/* {viewInfo.map((view) => {
           const IconName = Icon[view.icon]
           const isActive = pathname.split("/").includes(view.path)

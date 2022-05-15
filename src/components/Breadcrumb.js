@@ -1,17 +1,17 @@
 import React from "react"
 import { Link, useLocation, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { Folder } from "react-feather"
+import { Folder, File } from "react-feather"
 
 const Breadcrumb = () => {
   const { totalProjectList } = useSelector((state) => state.projects)
   const { projectID } = useParams()
   const location = useLocation()
   return (
-    <div className="flex text-light200">
+    <div className="flex">
       <Link
         to="/projects"
-        className="px-4 py-2 flex gap-3 justify-center transition-colors rounded-sm cursor-pointer"
+        className="px-4 py-2 flex gap-3 justify-center transition-colors rounded-sm cursor-pointer font-semibold"
       >
         <Folder />
         {totalProjectList &&
@@ -19,7 +19,7 @@ const Breadcrumb = () => {
         totalProjectList[projectID] &&
         totalProjectList[projectID].isPublic
           ? "Collaborate Projects"
-          : "Project List"}
+          : "Projects"}
       </Link>
       {location.pathname.split("/").length > 0 && projectID && (
         <>
