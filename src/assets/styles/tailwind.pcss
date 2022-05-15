@@ -1,6 +1,13 @@
 @import "tailwindcss/base.css";
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
+
+@layer base {
+  input,
+  select {
+    @apply focus:outline-transparent;
+  }
+}
 @layer components {
   /* input[type="text"] {
     @apply outline-current focus:outline-current active:outline-current outline-transparent;
@@ -12,7 +19,7 @@
     @apply outline-none focus:outline-none;
   } */
   .alert {
-    @apply absolute top-5 right-0 z-110 mr-0 min-w-40 max-w-36 rounded-lg px-3 py-2  transition-all;
+    @apply absolute top-5 right-0 z-110 mr-0 w-72 rounded-lg px-4 py-4 transition-all flex gap-2;
   }
 }
 

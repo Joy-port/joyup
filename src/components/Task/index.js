@@ -113,7 +113,7 @@ const index = () => {
               <TextEditor />
               {/* <AddSubtask /> */}
             </div>
-            <div className="flex flex-col gap-3 w-full md:w-72">
+            <div className="flex flex-col gap-3 w-full md:w-1/2">
               <div className="pb-4 border-b-1 border-b-light100 flex flex-col gap-3 w-full">
                 <div className="select-group" id="taskEditorProject">
                   <div className="flex gap-2 items-center max-w-24">
@@ -283,7 +283,7 @@ const index = () => {
                 {taskClockSettingModalIsOpen && <TimeModal />}
               </div>
 
-              <div
+              {/* <div
                 id="taskEditorPressClock"
                 className={`button flex justify-center items-center gap-3 h-12 ${
                   mode === 0 ? "button-outline-danger" : "button-primary"
@@ -294,7 +294,7 @@ const index = () => {
                 <p>
                   {getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}
                 </p>
-              </div>
+              </div> */}
 
               {/* <div className="border-group-light200">
               <div className="border-group-title">location</div>
@@ -332,17 +332,26 @@ const index = () => {
           </button>
           <button
             id="taskEditorSave"
-            className="button button-primary flex justify-center gap-3 w-1/2"
+            className="button button-primary flex justify-center items-center gap-3 w-1/2"
             onClick={() => {
               if (title === "") {
-                alert("please fill in text title")
+                dispatch({
+                  type: "alert/status",
+                  payload: { text: "please give the task a title", type: "info" },
+                })
+                // alert("please fill in text title")
                 return
               }
+              dispatch({
+                type: "alert/status",
+                payload: { text: "task is saved successfully", type: "success" },
+              })
               dispatch(task.saveTotalTask())
               navigate(-1)
             }}
           >
             <Save />
+            Save
           </button>
         </div>
       </div>

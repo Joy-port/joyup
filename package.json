@@ -10,7 +10,6 @@
     "axios": "^0.26.1",
     "dayjs": "^1.11.0",
     "firebase": "^9.6.11",
-    "flowbite": "^1.4.5",
     "immer": "^9.0.12",
     "moment": "^2.29.3",
     "prop-types": "^15.8.1",
@@ -30,6 +29,8 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "sass": "^1.51.0",
+    "sweetalert2": "^11.4.14",
+    "sweetalert2-react-content": "^5.0.0",
     "uuid": "^8.3.2",
     "victory": "^36.3.2"
   },

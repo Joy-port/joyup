@@ -19,6 +19,7 @@ import { project } from "./sliceReducers/actions/project"
 import { tags } from "./sliceReducers/actions/tags"
 import AuthProvider from "./components/AuthProvider"
 import IntroductionTour from "./components/IntroTour"
+import Alert from "./components/Alert"
 
 const viewComponents = {
   List,
@@ -76,6 +77,7 @@ function App() {
         <title>JoyUp | Personal Time Management</title>
       </Helmet>
       <AuthProvider>
+        <Alert></Alert>
         <IntroductionTour />
         <Routes>
           <Route path="/">

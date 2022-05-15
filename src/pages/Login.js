@@ -147,18 +147,26 @@ const Login = () => {
                     <label htmlFor="name" className="text-sm mb-1 block">
                       Full Name
                     </label>
-                    <div className="flex gap-3 items-center text-light200 mb-1 ">
+                    <div
+                      className={`flex gap-3 items-center mb-1 ${
+                        nameStatus === 2
+                          ? "text-light200"
+                          : nameStatus === 1
+                          ? "text-success"
+                          : "text-danger"
+                      }`}
+                    >
                       <Icon.User />
                       <input
                         type="text"
                         className={`rounded-lg grow 
-                        border-1 border-light200 text-transparentDark ${
-                          nameStatus === 2
-                            ? " focus:border-light200"
-                            : nameStatus === 1
-                            ? " focus:border-success"
-                            : "focus:border-danger"
-                        } `}
+                         text-transparentDark border-1 border-light200 focus:outline-1 py-2 px-3 ${
+                           nameStatus === 2
+                             ? "  focus:caret-light200 focus:outline-light200"
+                             : nameStatus === 1
+                             ? "  focus:caret-success focus:outline-success"
+                             : " focus:caret-danger focus:outline-danger"
+                         } `}
                         value={name}
                         onChange={(e) => {
                           checkName(e.target.value)
@@ -192,13 +200,14 @@ const Login = () => {
                     <Icon.Mail />
                     <input
                       type="email"
-                      className={`rounded-lg grow border-1 border-light200 text-transparentDark ${
-                        emailStatus === 2
-                          ? "focus:border-light200"
-                          : emailStatus === 1
-                          ? "focus:border-success"
-                          : "focus:border-danger"
-                      } `}
+                      className={`rounded-lg grow 
+                         text-transparentDark border-1 border-light200 focus:outline-1 py-2 px-3 ${
+                           emailStatus === 2
+                             ? "focus:caret-light200 focus:outline-light200"
+                             : emailStatus === 1
+                             ? "focus:caret-success focus:outline-success"
+                             : "focus:caret-danger focus:outline-danger"
+                         } `}
                       value={email}
                       onChange={(e) => {
                         checkEmail(e.target.value)
@@ -207,7 +216,7 @@ const Login = () => {
                     />
                   </div>
                   <div
-                    className={`text-sm flex gap-2 items-center h-5 leading-5 transition-all ${
+                    className={`text-sm flex gap-2 items-center h-5 leading-5 ${
                       emailStatus !== 2 ? "visible" : "invisible"
                     } ${emailStatus ? "text-success" : "text-danger "}`}
                   >
@@ -230,13 +239,14 @@ const Login = () => {
                     <Icon.Lock />
                     <input
                       type="password"
-                      className={`rounded-lg grow border-1 border-light200 text-transparentDark ${
-                        passwordStatus === 2
-                          ? "focus:border-light200"
-                          : passwordStatus === 1
-                          ? "focus:border-success"
-                          : "focus:border-danger"
-                      } `}
+                      className={`rounded-lg grow 
+                         text-transparentDark border-1 border-light200 focus:outline-1 py-2 px-3 ${
+                           passwordStatus === 2
+                             ? "focus:caret-light200 focus:outline-light200"
+                             : passwordStatus === 1
+                             ? "focus:border-success focus:outline-success"
+                             : "focus:outline-danger focus:caret-danger"
+                         } `}
                       value={password}
                       onChange={(e) => {
                         checkPassword(e.target.value)

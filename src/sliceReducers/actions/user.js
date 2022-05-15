@@ -4,7 +4,16 @@ export const user = {
   nativeSignUp: (email, password, userName) => {
     return async (dispatch, getState) => {
       try {
-        const userData = await login.userSignUp(email, password)
+        const userData = await login.userSignUp(email, password, (errorMessage) => {
+          console.log(errorMessage)
+          dispatch({
+            type: "alert/status",
+            payload: {
+              text: errorMessage,
+              type: "danger",
+            },
+          })
+        })
         if (userData.uid) {
           firebase
             .createUserSettingsAndProjectList(userData.uid, userName)
@@ -32,7 +41,16 @@ export const user = {
     return async (dispatch, getState) => {
       try {
         const loginEmail = email.trim()
-        const userData = await login.userSignIn(loginEmail, password)
+        const userData = await login.userSignIn(loginEmail, password, (errorMessage) => {
+          console.error(errorMessage)
+          dispatch({
+            type: "alert/status",
+            payload: {
+              text: errorMessage,
+              type: "danger",
+            },
+          })
+        })
         console.log("%c sign in success ", "background: #AC6B7D; color:#ffffff", userData)
         dispatch({ type: "user/getUserID", payload: userData.uid })
       } catch (error) {
@@ -42,7 +60,16 @@ export const user = {
   },
   logout: () => {
     return async (dispatch, getState) => {
-      await login.userSignOut()
+      await login.userSignOut((errorMessage) => {
+        console.log(errorMessage)
+        dispatch({
+          type: "alert/status",
+          payload: {
+            text: errorMessage,
+            type: "danger",
+          },
+        })
+      })
       dispatch({ type: "user/clearUserData" })
       dispatch({ type: "tags/clearTagsData" })
     }

@@ -34,7 +34,14 @@ const TimeSetting = () => {
   const onKeyDown = (e, type, value) => {
     if (e.key === "Enter") {
       if (!value) {
-        alert("please enter numbers")
+        // alert("please enter numbers")
+        dispatch({
+          type: "alert/status",
+          payload: {
+            text: "please enter numbers",
+            type: "danger",
+          },
+        })
         return
       }
       setTimer(type, value)

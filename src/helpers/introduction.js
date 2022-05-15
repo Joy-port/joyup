@@ -45,7 +45,7 @@ export const steps = {
       title: "Edit Title or Other Settings",
       target: "#taskEditorTitle",
       content: <p>Enter task title or click {"/"} slash for more settings</p>,
-      disableBeacon: true,
+      disableBeacon: false,
     },
     {
       title: "Edit Styling with Slash Command",

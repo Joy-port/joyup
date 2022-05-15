@@ -15,7 +15,7 @@ const NewProject = ({ setIsOpen }) => {
   const createNewProject = (e) => {
     e.preventDefault()
     if (projectTitle.trim() === "") {
-      alert("please give the project a title")
+      // alert("please give the project a title")
       return
     }
     const projectContent = {

@@ -2,11 +2,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
-import { FolderPlus, ChevronDown, Inbox, X, Folder, Users, Edit2 } from "react-feather"
+import { FolderPlus, Inbox, X, Folder } from "react-feather"
 import ProjectSetup from "../components/ProjectSetup"
 import { tags } from "../sliceReducers/actions/tags"
 import { project } from "../sliceReducers/actions/project"
-import Loader from "../components/Loader"
 import { AuthContext } from "../components/AuthProvider"
 import { firebase } from "../helpers/firebase"
 
@@ -54,15 +53,6 @@ const ProjectList = () => {
           <Folder />
           Project List
         </div>
-        {/* <div
-          className={`menu-item  ${
-            type !== 0 ? "menu-item__dark--active" : "menu-item__dark"
-          }`}
-          onClick={() => setType(1)}
-        >
-          <Users />
-          Collaborates
-        </div> */}
         {userProjects.length > 0 && (
           <div
             className="flex gap-3 items-center justify-center button button-primary cursor-pointer ml-auto"
@@ -82,7 +72,9 @@ const ProjectList = () => {
             <>
               <div
                 className="h-full flex flex-col gap-5 justify-center items-center cursor-pointer"
-                onClick={() => setIsOpen(true)}
+                onClick={() =>
+                  dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+                }
               >
                 <FolderPlus size={40} strokeWidth={1} />
                 <p>Create New Project</p>

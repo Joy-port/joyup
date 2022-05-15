@@ -2,15 +2,24 @@ import React, { useEffect, useRef, useState } from "react"
 import { task } from "../../../sliceReducers/actions/task"
 import { getClockTime, getHourTime } from "../../../helpers/functions"
 import { useDispatch, useSelector } from "react-redux"
-import { X, Clock, Circle, FileText } from "react-feather"
+import { X, Clock, Circle, Play } from "react-feather"
 import { checkProjectMessage } from "../../../helpers/config"
+import { useParams } from "react-router-dom"
 
 const TimeModal = () => {
   const modalOpenScrollRef = useRef()
   const { taskClockSettingModalIsOpen } = useSelector((state) => state.modals)
   const dispatch = useDispatch()
-  const { workTime, breakTime, clockNumber, requiredTime, requiredNumber, totalTime } =
-    useSelector((state) => state.task)
+  const {
+    workTime,
+    breakTime,
+    clockNumber,
+    requiredTime,
+    requiredNumber,
+    totalTime,
+    mode,
+  } = useSelector((state) => state.task)
+  const { taskID } = useParams()
   const [requiredNumberError, setRequiredNumberError] = useState(2)
   const [workTimeError, setWorkTimeError] = useState(2)
   const [breakTimeError, setBreakTimeError] = useState(2)
@@ -26,12 +35,36 @@ const TimeModal = () => {
   const checkWhenEditNumber = (value, type) => {
     let limitNumber = 0
     type.includes("required") ? (limitNumber = 0) : (limitNumber = 1)
+    if (Number.isNaN(value)) {
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: "please enter numbers",
+          type: "danger",
+        },
+      })
+      return
+    }
     if (value < limitNumber) {
       dispatch({
+        type: "alert/status",
+        payload: {
+          text: "clock time must more than 0",
+          type: "danger",
+        },
+      })
+      dispatch({
         type: type,
-        payload: limitNumber,
+        payload: value + 1,
       })
     } else if (value.length > 3) {
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: "clock time should set no more than 999 minutes",
+          type: "danger",
+        },
+      })
       dispatch({
         type: type,
         payload: parseInt(value / 10),
@@ -191,13 +224,13 @@ const TimeModal = () => {
             />
             mins
           </div>
-          <small
+          {/* <small
             className={`text-danger ml-5 h-4 -my-1 ${
               requiredNumberErrorMessage ? "visible" : "invisible"
             }`}
           >
             {requiredNumberErrorMessage}
-          </small>
+          </small> */}
           <div className="flex gap-2 items-center">
             =
             <div
@@ -210,7 +243,7 @@ const TimeModal = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex gap-4 items-center">
             <Circle strokeWidth={1} size={10} fill="#ACBAC3" color="#ACBAC3" />
             <p className="group-title">Task Recording</p>
@@ -221,6 +254,17 @@ const TimeModal = () => {
             {getHourTime(totalTime) === 0 ? "none" : getHourTime(totalTime)}
           </div>
         </div>
+        <div
+          id="taskEditorPressClock"
+          className={`button flex justify-center items-center gap-3 h-12 ${
+            mode === 0 ? "button-outline-danger" : "button-primary"
+          }`}
+          onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}
+        >
+          <Play />
+          <p>{getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}</p>
+        </div>
+
         {/* <div
           className="button text-primary flex justify-center items-center gap-3 mb-1"
           onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}

@@ -24,6 +24,11 @@ function statusReducer(state = initialStatus, action) {
         alertType: type,
         alertIsShow: true,
       }
+    case "alert/hide":
+      return {
+        ...state,
+        alertIsShow: false,
+      }
     default:
       return state
   }

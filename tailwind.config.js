@@ -1,7 +1,7 @@
 module.exports = {
   mode: "jit",
   content: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx}"],
-  plugins: [require("flowbite/plugin")],
+  // plugins: [],
   theme: {
     screens: {
       xs: "360px",
@@ -28,13 +28,13 @@ module.exports = {
       red000: "#FDF0ED",
       green200: "#60AF7B",
       green100: "#92C8A5",
-      green000: "#FDF0ED",
+      green000: "#F1F8F4",
       warning: "#FFD860",
       // warningLight: "#FDF0ED",
       danger: "#E56544", //f54e4e
       dangerLight: "#FDF0ED", //f54e4e
       success: "#60AF7B",
-      successLight: "#FDF0ED",
+      successLight: "#F1F8F4",
       info: "#669FBA",
       gray: "#8492a6",
       white: "#fff",

@@ -1,3 +1,7 @@
 .react-joyride__spotlight {
   background-color: var(--transparentLight) !important;
 }
+
+.react-joyride__overlay {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}

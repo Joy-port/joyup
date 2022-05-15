@@ -95,7 +95,7 @@ export const firebase = {
       await updateDoc(userSettingsRef, {
         clockSettings,
       })
-      alert("setting is saved successfully!")
+      // alert("setting is saved successfully!")
     } catch (err) {
       console.error(err)
     }
@@ -107,7 +107,7 @@ export const firebase = {
       await updateDoc(userSettingsRef, {
         name: user.userName,
       })
-      alert("user name is saved")
+      // alert("user name is saved")
     } catch (error) {
       console.error(error)
     }
@@ -483,7 +483,7 @@ export const firebase = {
 }
 export const login = {
   auth: getAuth(app),
-  userSignUp: async function (email, password) {
+  userSignUp: async function (email, password, callback) {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         if (!userCredential) throw new Error("連線錯誤，請重新注冊")
@@ -491,19 +491,19 @@ export const login = {
         return user
       })
       .catch((error) => {
-        console.log(error)
         const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
         if (errMsg === "weak password") {
-          alert("請輸入6位數字密碼")
+          // alert("請輸入6位數字密碼")
           return
         }
-        alert(errMsg)
+        callback && callback(errMsg)
+        // alert(errMsg)
         const errorCode = error.code
         const errorMessage = error.message
         throw new Error(errorCode, errorMessage)
       })
   },
-  userSignIn: async function (email, password) {
+  userSignIn: async function (email, password, callback) {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         if (!userCredential) throw new Error("連線錯誤，請重新登入")
@@ -512,17 +512,20 @@ export const login = {
       })
       .catch((error) => {
         const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
-        alert(errMsg)
+        // alert(errMsg)
+        callback && callback(errMsg)
         const errorCode = error.code
         const errorMessage = error.message
         throw new Error(errorCode, errorMessage)
       })
   },
-  userSignOut: async function () {
+  userSignOut: async function (callback) {
     try {
       await signOut(this.auth)
     } catch (error) {
-      alert(error.message)
+      const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
+      // alert(error.message)
+      callback && callback(errMsg)
       const errorCode = error.code
       const errorMessage = error.message
       throw new Error(errorCode, errorMessage)

@@ -14,7 +14,14 @@ const TaskList = () => {
   const [openSelector, setOpenSelector] = useState(false)
   const createNewTask = () => {
     if (userProjects.length < 1) {
-      alert("please create a new project before add a new task")
+      // alert("please create a new project before add a new task")
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: "please create a new project before add a new task",
+          type: "info",
+        },
+      })
       if (!pathname.includes("dashboard")) {
         navigate("/dashboard")
       }
@@ -43,9 +50,16 @@ const TaskList = () => {
               className="group-title relative w-44 py-2 px-3 rounded"
               onClick={() => {
                 if (userTasks.length < 1) {
-                  alert(
-                    "there is no task, choose or create a project to start a new file for tasks"
-                  )
+                  // alert(
+                  //   "there is no task, choose or create a project to start a new file for tasks"
+                  // )
+                  dispatch({
+                    type: "alert/status",
+                    payload: {
+                      text: "there is no task, choose or create a project to start a new file for tasks",
+                      type: "info",
+                    },
+                  })
                   navigate("/dashboard")
                   return
                 }

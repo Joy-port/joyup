@@ -88,7 +88,14 @@ const Report = () => {
   useEffect(() => {
     if (!userDetail) return
     if (userTasks.length === 0) {
-      alert("there are no projects please create a new one")
+      // alert("there are no projects please create a new one")
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: "there are no projects please create a new one",
+          type: "info",
+        },
+      })
       navigate("/projects")
     }
   }, [])

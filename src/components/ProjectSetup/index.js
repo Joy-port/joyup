@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { project } from "../../sliceReducers/actions/project"
-import { bool, func } from "prop-types"
 import { useNavigate } from "react-router-dom"
 import { tags } from "../../sliceReducers/actions/tags"
 import * as Icon from "react-feather"
@@ -26,7 +25,11 @@ const index = () => {
     e.preventDefault()
     if (currentPage === 2) {
       if (projectTitle.trim() === "") {
-        alert("please give the project a title")
+        dispatch({
+          type: "alert/status",
+          payload: { text: "please give the project a title", type: "info" },
+        })
+        // alert("please give the project a title")
         return
       }
       const projectContent = {
@@ -259,32 +262,3 @@ const index = () => {
 }
 
 export default index
-
-// <div
-//                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
-//                     selectedTemplateType === 1
-//                       ? "border-blue200 text-blue200"
-//                       : "border-light100 text-light300"
-//                   }`}
-//                   onClick={() => {
-//                     setSelectedTemplateType(1)
-//                     setStartCreateProject(true)
-//                   }}
-//                 >
-//                   <h3 className="heading-four">Select A Template</h3>
-//                   <Sidebar size={50} strokeWidth={1.5} />
-//                 </div>
-//                 <div
-//                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
-//                     selectedTemplateType === 2
-//                       ? "border-blue200 text-blue200"
-//                       : "border-light100 text-light300"
-//                   }`}
-//                   onClick={() => {
-//                     setSelectedTemplateType(2)
-//                     setStartCreateProject(true)
-//                   }}
-//                 >
-//                   <h3 className="heading-four">Select A Template</h3>
-//                   <Sidebar size={50} strokeWidth={1.5} />
-//                 </div>
