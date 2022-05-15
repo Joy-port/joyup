@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useEffect } from "react"
-import dayjs from "dayjs"
 import { useDispatch, useSelector } from "react-redux"
 import { task } from "../../../sliceReducers/actions/task"
 import * as Icon from "react-feather"
@@ -36,7 +35,38 @@ const TitleEditor = () => {
     })
     setIsEditingTags(true)
   })
+  const clearExistingCommands = () => {
+    if (slashCharacterPosition !== null) {
+      setText((text) => {
+        const string =
+          text.substring(0, slashCharacterPosition) +
+          text.substring(inputRef.current?.selectionStart)
+        return string
+      })
+    } else if (tagCharacterPosition !== null) {
+      setText((text) => {
+        const string =
+          text.substring(0, tagCharacterPosition) +
+          text.substring(inputRef.current?.selectionStart)
+        return string
+      })
+    } else if (timeCharacterPosition !== null) {
+      setText((text) => {
+        const string =
+          text.substring(0, timeCharacterPosition) +
+          text.substring(inputRef.current?.selectionStart)
+        return string
+      })
+    }
 
+    setQuery(null)
+    setTagsQuery(null)
+    setTimeQuery(null)
+    setSlashCharacterPosition(null)
+    setTagCharacterPosition(null)
+    setTimeCharacterPosition(null)
+    selectionIndex(0)
+  }
   const editTimeSettingCommand = useCallback(() => {
     setText((text) => {
       const string =
@@ -69,7 +99,7 @@ const TitleEditor = () => {
 
   const commands = [
     {
-      icon: "Calendar",
+      icon: "Sun",
       name: "Start Date",
       style: "",
       action: () => {
@@ -424,6 +454,10 @@ const TitleEditor = () => {
           ref={inputRef}
           placeholder="Task name or type ' / ' for commands "
           autoFocus
+          onBlur={() => {
+            console.log("blur clear all commands")
+            clearExistingCommands()
+          }}
         />
       )}
       {matchingCommands.length !== 0 && (
@@ -440,7 +474,7 @@ const TitleEditor = () => {
                   ${index == selectionIndex ? "results__command--selected" : ""}
                 `}
               >
-                <IconName />
+                <IconName strokeWidth={1} />
                 <p className="text-lg">{command.name}</p>
               </div>
             )

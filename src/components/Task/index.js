@@ -21,6 +21,7 @@ import {
   Tag,
   Sunset,
   Circle,
+  Sun,
 } from "react-feather"
 import TimeModal from "./components/TimeModal"
 
@@ -214,8 +215,8 @@ const index = () => {
                   </div>
                 </div>
                 <div className="select-group relative">
-                  <div className="flex gap-2 items-center max-w-24">
-                    <Calendar strokeWidth={1} />
+                  <div className="flex gap-2 items-center max-w-36">
+                    <Sun strokeWidth={1} size={24} />
                     <div className="group-title">Start Date</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -228,8 +229,8 @@ const index = () => {
                   </div>
                 </div>
                 <div className="select-group relative">
-                  <div className="flex gap-2 items-center max-w-24">
-                    <Sunset strokeWidth={1} />
+                  <div className="flex gap-2 items-center max-w-36">
+                    <Sunset strokeWidth={1} size={24} />
                     <div className="group-title">Due Date</div>
                   </div>
                   <div className="flex flex-col w-1/2">
