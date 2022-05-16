@@ -64,12 +64,18 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
     <>
       {JSON.stringify(taskDetail) !== "{}" && (
         <div
-          className={`modal-container-popUp h-32 w-54 text-light300 z-110 ${
+          className={`modal-container-popUp h-32 w-54 text-light300 z-110 cursor-pointer ${
             isOpenModal ? "" : "hidden"
           }`}
           style={{ left, top }}
         >
-          <div className="flex justify-between items-center mb-2">
+          <div
+            className="flex justify-between items-center mb-2 cursor-pointer "
+            onClick={() => {
+              setIsOpenModal(false)
+              navigate(`/tasks/${taskDetail.id}`)
+            }}
+          >
             <div className="text-lg font-semibold ">{taskDetail.title}</div>
             <div
               className="hover:text-transparentDark cursor-pointer"
@@ -98,10 +104,22 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
               <X />
             </div>
           </div>
-          <div className="">
+          <div
+            className=""
+            onClick={() => {
+              setIsOpenModal(false)
+              navigate(`/tasks/${taskDetail.id}`)
+            }}
+          >
             Start : {dayjs(new Date(taskDetail.startDate)).format("MMM DD, HH:MM")}
           </div>
-          <div className="">
+          <div
+            className=""
+            onClick={() => {
+              setIsOpenModal(false)
+              navigate(`/tasks/${taskDetail.id}`)
+            }}
+          >
             Due : {dayjs(new Date(taskDetail.dueDate)).format("MMM DD, HH:MM")}
           </div>
           <div
