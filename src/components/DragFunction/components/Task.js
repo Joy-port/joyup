@@ -29,7 +29,7 @@ const Task = ({ task, index, type }) => {
           : { ...provided.draggableProps.style }
         return (
           <div
-            className={`task task-${type} ${isDragging} transition-shadow cursor-pointer`}
+            className={`task task-${type} ${isDragging} transition-shadow cursor-pointer border-b-1 border-b-light100`}
             {...provided.draggableProps}
             ref={provided.innerRef}
             style={dragging}
