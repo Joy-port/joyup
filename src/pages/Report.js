@@ -8,6 +8,7 @@ import {
   VictoryChart,
   VictoryArea,
   VictoryTheme,
+  VictoryBar,
 } from "victory"
 // import {
 //   scaleDiscontinuous,
@@ -170,7 +171,7 @@ const Report = () => {
                 </div>
               )}
             </div>
-            <div className="text-sm w-full md:w-1/2 h-max">
+            {/* <div className="text-sm w-full md:w-1/2 h-max">
               <h1 className="tag-light200 w-56 px-2 py-1 text-center">
                 Project Time Spending
               </h1>
@@ -216,6 +217,59 @@ const Report = () => {
                     }}
                   >
                     <VictoryArea
+                      style={{ data: { fill: "#c43a31" } }}
+                      data={taskDateRange}
+                    />
+                  </VictoryChart>
+                </div>
+              </div>
+            </div> */}
+            <div className="text-sm w-full md:w-1/2 h-max">
+              <h1 className="tag-light200 w-56 px-2 py-1 text-center">
+                Project Time Spending
+              </h1>
+              <div className="border-rounded-light000 pb-8 w-full">
+                <div className="text-center rounded">
+                  <div
+                    className="group-title border-1 border-light000 rounded relative  px-2 py-1 z-20 max-w-min min-w-44 cursor-pointer"
+                    onClick={() => {
+                      setOpenSelector(!openSelector)
+                    }}
+                  >
+                    {totalProjectList[selectedProject].title}
+                    {openSelector && (
+                      <div className="dropdown-container z-20">
+                        <ul className="dropdown-list">
+                          {userProjects.map((id) => {
+                            const projectDetail = totalProjectList[id]
+                            return (
+                              <li
+                                className="dropdown-item truncate text-left hover:text-white"
+                                value={projectDetail.id}
+                                key={projectDetail.id}
+                                onClick={() => {
+                                  setSelectedProject(projectDetail.id)
+                                  setOpenSelector(false)
+                                }}
+                              >
+                                {projectDetail.title}
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="w-1/2 md:w-full">
+                  <VictoryChart
+                    theme={VictoryTheme.grayscale}
+                    animate={{
+                      duration: 2000,
+                      onLoad: { duration: 1000 },
+                    }}
+                  >
+                    <VictoryBar
                       style={{ data: { fill: "#c43a31" } }}
                       data={taskDateRange}
                     />
