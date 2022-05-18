@@ -8,7 +8,7 @@ import { checkProjectMessage } from "../../utils/config"
 
 const index = () => {
   const { isFirstTimeUser } = useSelector((state) => state.user)
-  const { templateList, totalProjectList } = useSelector((state) => state.projects)
+  const { totalProjectList } = useSelector((state) => state.projects)
   const [isSelectTemplate, setIsSelectTemplate] = useState(null)
   const [selectedTemplateType, setSelectedTemplateType] = useState(null)
   const [currentPage, setCurrentPage] = useState(0)
@@ -21,6 +21,10 @@ const index = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const templateProjects = Object.values(totalProjectList).filter(
+    (project) => project.isTemplate === 1
+  )
+
   const createNewProject = (e) => {
     e.preventDefault()
     if (currentPage === 2) {
@@ -29,7 +33,6 @@ const index = () => {
           type: "alert/status",
           payload: { text: "please give the project a title", type: "info" },
         })
-        // alert("please give the project a title")
         return
       }
       const projectContent = {
@@ -62,9 +65,6 @@ const index = () => {
       )
     }
   }
-  //   useEffect(() => {
-  //     setCurrentPage(0)
-  //   }, [])
 
   const checkTitleMessage = (e) => {
     if (projectTitle.trim()) {
@@ -85,7 +85,6 @@ const index = () => {
             onClick={() => {
               setProjectTitle("")
               setIsPublic(false)
-              // setIsOpen(false)
               dispatch({ type: "modals/switchCreateProjectModal", payload: false })
             }}
           >
@@ -113,7 +112,7 @@ const index = () => {
           >
             {currentPage === 0 ? (
               <>
-                {/* <div
+                <div
                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
                     isSelectTemplate === true
                       ? "border-blue200 text-blue200"
@@ -126,7 +125,7 @@ const index = () => {
                 >
                   <h3 className="heading-four">Select A Template</h3>
                   <Icon.Sidebar size={50} strokeWidth={1.5} />
-                </div> */}
+                </div>
                 <div
                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 border-light100 cursor-pointer hover:shadow-lg hover:border-blue200 text-light300 hover:text-blue200  ${
                     isSelectTemplate === false
@@ -144,7 +143,7 @@ const index = () => {
               </>
             ) : currentPage === 1 ? (
               <>
-                {templateList.map((templateDetail) => {
+                {templateProjects.map((templateDetail) => {
                   const IconName = Icon[templateDetail.icon]
                   return (
                     <div

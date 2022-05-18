@@ -1,21 +1,20 @@
 import React, { useEffect } from "react"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import { viewInfo } from "./utils/config"
+import { user } from "./store/actions/user"
+import { project } from "./store/actions/project"
+import ProjectList from "./pages/ProjectList"
+import Home from "./pages/Home"
+import Report from "./pages/Report"
+import Login from "./pages/Login"
 import Layout from "./components/Layout"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
-import ProjectList from "./pages/ProjectList"
 import List from "./components/View/List"
 import Calendar from "./components/Calendar"
 import DragFunction from "./components/DragFunction"
-import Home from "./pages/Home"
-import Report from "./pages/Report"
 import ProjectViews from "./components/View/ProjectViews"
-import Login from "./pages/Login"
-import { useDispatch, useSelector } from "react-redux"
-import { user } from "./store/actions/user"
-import { project } from "./store/actions/project"
-import { tags } from "./store/actions/tags"
 import AuthProvider from "./components/AuthProvider"
 import IntroductionTour from "./components/IntroTour"
 import Alert from "./components/Alert"
@@ -29,14 +28,7 @@ const viewComponents = {
 }
 
 function App() {
-  // const [userDetail, loading, error] = useContext(AuthContext)
-  const { id } = useSelector((state) => state.user)
-  // const id = "VI3mUOQiM2RrYYvNagMuQU4fLgm1"
   const dispatch = useDispatch()
-  const projectList = useSelector((state) => state.projects)
-  const { totalProjectList } = useSelector((state) => state.projects)
-  const { selectedProjectID } = useSelector((state) => state.tags)
-  const { ownerProjects, userProjects } = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(project.updateProjects())
@@ -45,37 +37,6 @@ function App() {
     dispatch(user.listenUserStatus())
   }, [])
 
-  // useEffect(() => {
-  //   if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-  //     dispatch(user.getUserProjectList(id))
-  //   }
-  // }, [id])
-  useEffect(() => {
-    if (JSON.stringify(projectList) !== "{}") {
-      dispatch(project.getTemplates())
-    }
-  }, [totalProjectList])
-  useEffect(() => {
-    if (id !== undefined && id !== "" && JSON.stringify(projectList) !== "{}") {
-      dispatch(user.getUserProjectList(id))
-      // dispatch(settings.getUserSettings(id))
-    }
-  }, [id, projectList, totalProjectList])
-  useEffect(() => {
-    if (userProjects && id) {
-      dispatch(user.getUserTotalTasks())
-    }
-  }, [userProjects, id, totalProjectList])
-
-  useEffect(() => {
-    if (JSON.stringify(projectList) !== "{}" && ownerProjects.length !== 0) {
-      if (selectedProjectID === "") {
-        dispatch(tags.initialProjectData())
-      } else {
-        dispatch(tags.switchProject(selectedProjectID))
-      }
-    }
-  }, [projectList, ownerProjects])
   return (
     <>
       <AuthProvider>

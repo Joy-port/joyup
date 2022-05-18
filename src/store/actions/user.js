@@ -1,11 +1,11 @@
 import { login, firebase } from "../../utils/firebase"
+import { tags } from "./tags"
 
 export const user = {
   nativeSignUp: (email, password, userName) => {
     return async (dispatch, getState) => {
       try {
         const userData = await login.userSignUp(email, password, (errorMessage) => {
-          console.log(errorMessage)
           dispatch({
             type: "alert/status",
             payload: {
@@ -52,7 +52,9 @@ export const user = {
           })
         })
         console.log("%c sign in success ", "background: #AC6B7D; color:#ffffff", userData)
+        if (!userData) return
         dispatch({ type: "user/getUserID", payload: userData.uid })
+        dispatch(user.getUserProjectList(userData.uid))
       } catch (error) {
         dispatch({ type: "status/ERROR", payload: error })
       }
@@ -122,7 +124,8 @@ export const user = {
           payload: ownerProjects.concat(collaborateProjects),
         })
         console.log("%c listen user project list ", "color:#ee5588;", userProjects)
-        // const { userProjects } = getState().user
+        dispatch(user.getUserTotalTasks())
+        dispatch(tags.initialProjectData())
       })
     }
   },
