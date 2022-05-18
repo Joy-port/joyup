@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
@@ -6,7 +6,6 @@ import { Plus, Clock, PlayCircle } from "react-feather"
 
 const TaskList = () => {
   const dispatch = useDispatch()
-  const task = useSelector((state) => state.task)
   const { totalTaskList, totalProjectList } = useSelector((state) => state.projects)
   const { userTasks, userProjects } = useSelector((state) => state.user)
   let navigate = useNavigate()
@@ -14,7 +13,6 @@ const TaskList = () => {
   const [openSelector, setOpenSelector] = useState(false)
   const createNewTask = () => {
     if (userProjects.length < 1) {
-      // alert("please create a new project before add a new task")
       dispatch({
         type: "alert/status",
         payload: {
@@ -43,10 +41,8 @@ const TaskList = () => {
       const taskDueDate = new Date(taskDetail.dueDate).getDate()
       taskDueDate >= new Date().getDate()
     })
-    console.log(newTaskList)
     return newTaskList
   }
-  //py-2 px-3 w-32
   return (
     <>
       {userTasks.length !== 0 && userProjects.length !== 0 && (
@@ -103,7 +99,7 @@ const TaskList = () => {
                       const task = totalTaskList[id]
                       const taskDueDate = new Date(task.dueDate).getDate()
                       const projectDetail = totalProjectList[task.projectID]
-                      if (taskDueDate <= new Date().getDate()) return
+                      if (taskDueDate < new Date().getDate()) return
                       return (
                         <li
                           className="dropdown-item max-w-full truncate pb-2 border-b-1 border-b-light100 hover:text-white flex justify-between items-center "
@@ -130,17 +126,6 @@ const TaskList = () => {
                 </div>
               )}
             </div>
-            {/* <select
-            value={selectedType.id || -1}
-            onChange={(e) => dispatch(tags.switchType(e.target.value))}
-          >
-            <option value={-1}>please select</option>
-            {types.map((type) => (
-              <option value={type.id} key={type.id}>
-                {type.type}
-              </option>
-            ))}
-          </select> */}
           </div>
           <button
             className="bg-slateLight text-white py-2 px-3 rounded flex items-center gap-2"

@@ -123,14 +123,4 @@ export const task = {
       }
     }
   },
-  // editClockTimer: () => {
-  //   return async (dispatch, getState) => {
-  //     try{
-  //       const {workTime}
-  //     }catch(err){
-  //       dispatch({ type: "status/ERROR", payload: err })
-
-  //     }
-  //   }
-  // }
 }

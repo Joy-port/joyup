@@ -105,7 +105,6 @@ const index = () => {
           <X size={20} />
         </button>
         <div className="modal-body overflow-y-auto flex flex-col px-5 scrollbar">
-          {/* <div className="heading-three">{title}</div> */}
           <div className="flex items-center gap-3 mb-6 pl-3" id="taskEditorTitle">
             <Edit />
             <TitleEditor />
@@ -125,7 +124,9 @@ const index = () => {
                     className="bg-light100 rounded select-light300 cursor-pointer w-1/2 border-0 truncate"
                     value={projectID}
                     onChange={(e) => {
-                      dispatch(task.saveTaskDetail("projectID", e.target.value))
+                      const selectedProjectID = e.target.value
+                      dispatch(tags.switchProject(selectedProjectID))
+                      dispatch(task.saveTaskDetail("projectID", selectedProjectID))
                     }}
                   >
                     {userProjects &&
@@ -256,7 +257,6 @@ const index = () => {
                       type: "modals/switchTaskClockSettingModal",
                       payload: !taskClockSettingModalIsOpen,
                     })
-                    // setIsOpenTimeModal(!isOpenTimeModal)
                   }}
                   onBlur={() =>
                     dispatch({
@@ -284,7 +284,6 @@ const index = () => {
                   </div>
                 </div>
                 {taskClockSettingModalIsOpen && <TimeModal />}
-                {/* <TimeModal /> */}
               </div>
 
               <div
@@ -305,29 +304,9 @@ const index = () => {
                   {getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}
                 </p>
               </div>
-
-              {/* <div className="border-group-light200">
-              <div className="border-group-title">location</div>
-              <p className="text-light300">{location || "no selected location"}</p>
-              <input
-                className="input-light300 select-group mb-1"
-                type="text"
-                placeholder="location"
-                value={address}
-                onChange={(e) => {
-                  setAddress(e.target.value)
-                  dispatch(task.saveTaskDetail("location", e.target.value))
-                }}
-                onKeyDown={(e) => {
-                  setAddress(e.target.value)
-                  dispatch(task.saveTaskDetail("location", e.target.value))
-                }}
-              />
-            </div> */}
             </div>
             <div className="flex flex-col gap-3 h-full grow">
               <TextEditor />
-              {/* <AddSubtask /> */}
             </div>
           </div>
         </div>
@@ -353,7 +332,6 @@ const index = () => {
                   type: "alert/status",
                   payload: { text: "please give the task a title", type: "info" },
                 })
-                // alert("please fill in text title")
                 return
               }
               dispatch({

@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import * as Icon from "react-feather"
 import { task } from "../../../store/actions/task"
-
+import { titleCommandList, dateCommandList } from "../../../utils/slashCommands"
 const TitleEditor = () => {
   const { title } = useSelector((state) => state.task)
   const dispatch = useDispatch()
@@ -16,25 +16,12 @@ const TitleEditor = () => {
   const [tagCharacterPosition, setTagCharacterPosition] = useState(null)
   const [timeCharacterPosition, setTimeCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
-  // const [isSettingTime, setIsSettingTime] = useState(false)
   const [style, setStyle] = useState("heading-three font-semibold")
   const [dateType, setDateType] = useState(null)
-  const [editRequiredNumber, setEditRequiredNumber] = useState(false)
   const [selectedTagType, setSelectedTagType] = useState(null)
-  const [isEditingTags, setIsEditingTags] = useState(false)
-  const [selectedTag, setSelectedTag] = useState(null)
   const inputRef = useRef()
-  const timeRef = useRef()
   const titleRef = useRef()
-  const setTagsAction = useCallback((tagsName) => {
-    setIsEditing(true)
-    setStyle("heading-three font-semibold")
-    setText(() => {
-      const newText = `/${tagsName}`
-      return newText
-    })
-    setIsEditingTags(true)
-  })
+
   const clearExistingCommands = () => {
     if (slashCharacterPosition !== null) {
       setText((text) => {
@@ -98,157 +85,54 @@ const TitleEditor = () => {
     }
   }, [text])
 
-  const commands = [
-    {
-      icon: "Sun",
-      name: "Start Date",
-      style: "",
-      action: () => {
-        setIsEditing(true)
-        setTimeQuery("")
-        setTimeCharacterPosition(inputRef.current.selectionStart - 1)
-        setText(() => {
-          const newText = titleRef.current + "/Start date:"
-          return newText
-        })
-        setStyle("heading-three font-semibold text-light200")
-        setSlashCharacterPosition(null)
-        setQuery(null)
-        setSelectionIndex(0)
-        setDateType("startDate")
-      },
-    },
-    {
-      icon: "Sunset",
-      name: "Due Date",
-      style: "",
-      action: function () {
-        setIsEditing(true)
-        setTimeQuery("")
-        setTimeCharacterPosition(inputRef.current.selectionStart - 1)
-        setText(() => {
-          const newText = titleRef.current + "/Due date:"
-          return newText
-        })
-        setStyle("heading-three font-semibold text-light200")
-        //clear first level command element
-        setSlashCharacterPosition(null)
-        setQuery(null)
-        setSelectionIndex(0)
-        setDateType("dueDate")
-      },
-    },
-    {
-      icon: "Flag",
-      name: "priority",
-      action: function () {
-        setIsEditing(true)
-        setTagCharacterPosition(inputRef.current.selectionStart - 1)
-        setTagsQuery("")
-        setText(() => {
-          const newText = titleRef.current + "/Priority:"
-          return newText
-        })
-        setStyle("heading-three font-semibold text-light200")
-        setSelectedTagType(types.find((item) => item.type === this.name))
-        setQuery(null)
-        setSlashCharacterPosition(null)
-        setSelectionIndex(0)
-      },
-    },
-    {
-      icon: "CheckCircle",
-      name: "progress",
-      action: function () {
-        setIsEditing(true)
-        setTagCharacterPosition(inputRef.current.selectionStart - 1)
-        setTagsQuery("")
-        setText(() => {
-          const newText = titleRef.current + "/Progress:"
-          return newText
-        })
-        setStyle("heading-three font-semibold text-light200")
-        setSelectedTagType(types.find((item) => item.type === this.name))
-        setQuery(null)
-        setSlashCharacterPosition(null)
-        setSelectionIndex(0)
-      },
-    },
-    // {
-    //   icon: "Clock",
-    //   name: "Required time",
-    //   action: () => {
-    //     setEditRequiredNumber(true)
-    //     setText(() => {
-    //       const newText = titleRef.current + "/Required Clocks:"
-    //       return newText
-    //     })
-    //     setStyle("heading-three font-semibold text-light200")
-    //     dispatch(task.saveTaskDetail("requiredNumber", 0))
-    //   },
-    // },
-  ]
-  const dateCommands = [
-    {
-      icon: "Moon",
-      name: "today",
-      action: () => {
-        const date = new Date().getTime()
-        const dateContent = { name: dateType, date }
-        dispatch(task.saveTaskDate(dateContent))
-        editTimeSettingCommand()
-      },
-    },
-    {
-      icon: "Sun",
-      name: "tomorrow",
-      action: () => {
-        const date = new Date(new Date().setDate(new Date().getDate() + 1)).getTime()
-        const dateContent = { name: dateType, date }
-        dispatch(task.saveTaskDate(dateContent))
-        editTimeSettingCommand()
-      },
-    },
-    {
-      icon: "Sunrise",
-      name: "this friday",
-      action: () => {
-        const rangeFromToday =
-          new Date().getDay() < 5
-            ? 5 - new Date().getDay() + 7
-            : 7 - new Date().getDay() + 5
-        const date = new Date(
-          new Date().setDate(new Date().getDate() + rangeFromToday)
-        ).getTime()
-        const dateContent = { name: dateType, date }
-        dispatch(task.saveTaskDate(dateContent))
-        editTimeSettingCommand()
-      },
-    },
-    {
-      icon: "Calendar",
-      name: "next week",
-      action: () => {
-        const date = new Date(new Date().setDate(new Date().getDate() + 7)).getTime()
-        const dateContent = { name: dateType, date }
-        dispatch(task.saveTaskDate(dateContent))
-        editTimeSettingCommand()
-      },
-    },
-  ]
-
-  const deleteSlashCommand = useCallback(() => {
-    setText((text) => {
-      const string =
-        text.substring(0, slashCharacterPosition) +
-        text.substring(inputRef.current?.selectionStart)
-      return string
-    })
-  })
+  // const commands = [
+  //   {
+  //     icon: "Sun",
+  //     name: "Start Date",
+  //     type: "startDate",
+  //   },
+  //   {
+  //     icon: "Sunset",
+  //     name: "Due Date",
+  //     type: "dueDate",
+  //   },
+  //   {
+  //     icon: "Flag",
+  //     name: "priority",
+  //     type: "tag",
+  //   },
+  //   {
+  //     icon: "CheckCircle",
+  //     name: "progress",
+  //     type: "tag",
+  //   },
+  // ]
+  // const dateCommands = [
+  //   {
+  //     icon: "Moon",
+  //     name: "today",
+  //     date: new Date().getTime(),
+  //   },
+  //   {
+  //     icon: "Sun",
+  //     name: "tomorrow",
+  //     date: new Date(getDateFromToday(1)).getTime(),
+  //   },
+  //   {
+  //     icon: "Sunrise",
+  //     name: "this friday",
+  //     date: new Date(getDateFromToday(dayRangeFromToday(5))).getTime(),
+  //   },
+  //   {
+  //     icon: "Calendar",
+  //     name: "next week",
+  //     date: new Date(getDateFromToday(7)).getTime(),
+  //   },
+  // ]
 
   const matchingCommands =
     query !== null
-      ? commands.filter((command) =>
+      ? titleCommandList.filter((command) =>
           command.name.toLowerCase().match(query.toLowerCase())
         )
       : []
@@ -261,7 +145,7 @@ const TitleEditor = () => {
       : []
   const matchingTimeSettings =
     timeQuery !== null
-      ? dateCommands.filter((command) =>
+      ? dateCommandList.filter((command) =>
           command.name.toLowerCase().match(timeQuery.toLowerCase())
         )
       : []
@@ -314,9 +198,37 @@ const TitleEditor = () => {
     }
   }
 
-  const selectCommand = (command) => {
-    command.action()
+  const selectTotalCommand = (command) => {
+    setIsEditing(true)
+    if (command.type === "tag") {
+      setTagsQuery("")
+      setTagCharacterPosition(inputRef.current.selectionStart - 1)
+    } else {
+      setTimeQuery("")
+      setTimeCharacterPosition(inputRef.current.selectionStart - 1)
+    }
+
+    setText(() => {
+      const newText = titleRef.current + `/${command.name}:`
+      return newText
+    })
+
+    setStyle("heading-three font-semibold text-light200")
+    setSlashCharacterPosition(null)
+    setQuery(null)
+    if (command.type === "tag") {
+      setSelectedTagType(types.find((item) => item.type === command.name))
+    } else {
+      setDateType(command.type)
+    }
     setSelectionIndex(0)
+  }
+
+  const selectTimeCommand = (command) => {
+    const date = command.date
+    const dateContent = { name: dateType, date }
+    dispatch(task.saveTaskDate(dateContent))
+    editTimeSettingCommand()
   }
 
   const selectTags = (child) => {
@@ -379,12 +291,12 @@ const TitleEditor = () => {
       return
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
-        selectCommand(matchingCommands[selectionIndex])
+        selectTotalCommand(matchingCommands[selectionIndex])
         // setIsEditing(true)
       } else if (matchingTags[selectionIndex]) {
         selectTags(matchingTags[selectionIndex])
       } else if (matchingTimeSettings[selectionIndex]) {
-        selectCommand(matchingTimeSettings[selectionIndex])
+        selectTimeCommand(matchingTimeSettings[selectionIndex])
       } else if (selectedTagType !== null) {
         selectTags()
       } else if (slashCharacterPosition === null && selectedTagType === null) {
@@ -468,7 +380,7 @@ const TitleEditor = () => {
             return (
               <div
                 key={index}
-                onClick={() => selectCommand(command)}
+                onClick={() => selectTotalCommand(command)}
                 onMouseOver={() => setSelectionIndex(index)}
                 className={`
                   results__command 
@@ -489,7 +401,7 @@ const TitleEditor = () => {
             return (
               <div
                 key={index}
-                onClick={() => selectCommand(command)}
+                onClick={() => selectTimeCommand(command)}
                 onMouseOver={() => setSelectionIndex(index)}
                 className={`
                   results__command 
