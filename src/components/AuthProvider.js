@@ -1,7 +1,7 @@
 import { any } from "prop-types"
 import React, { useEffect } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
-import { login } from "../helpers/firebase"
+import { login } from "../utils/firebase"
 
 export const AuthContext = React.createContext()
 

@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
 import { FolderPlus, Inbox, X, Folder } from "react-feather"
+import { Helmet } from "react-helmet"
+import { tags } from "../store/actions/tags"
+import { project } from "../store/actions/project"
+import { firebase } from "../utils/firebase"
 import ProjectSetup from "../components/ProjectSetup"
-import { tags } from "../sliceReducers/actions/tags"
-import { project } from "../sliceReducers/actions/project"
 import { AuthContext } from "../components/AuthProvider"
-import { firebase } from "../helpers/firebase"
 
 const ProjectList = () => {
   const [userDetail, loading, error] = useContext(AuthContext)

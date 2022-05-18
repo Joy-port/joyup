@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Circular from "./Circular"
-import { task } from "../../sliceReducers/actions/task"
+import { task } from "../../store/actions/task"
 import {
   X,
   CornerDownLeft,

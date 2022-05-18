@@ -6,7 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css"
 import "./assets/styles/main.css"
 import "./assets/styles/components.scss"
 import App from "./App"
-import { store } from "./sliceReducers/store"
+import { store } from "./store/store"
 import { Provider } from "react-redux"
 
 ReactDOM.render(

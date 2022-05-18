@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { task } from "../../../sliceReducers/actions/task"
 import * as Icon from "react-feather"
+import { task } from "../../../store/actions/task"
 
 const TitleEditor = () => {
   const { title } = useSelector((state) => state.task)

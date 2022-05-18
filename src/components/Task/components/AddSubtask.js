@@ -4,14 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { Plus } from "react-feather"
 import { any } from "prop-types"
 import { v4 as uuidv4 } from "uuid"
-import { task } from "../../../sliceReducers/actions/task"
-
-const subTasks = [
-  // {
-  //   id: uuidv4(),
-  //   title: "asdkjalsdjlkasd",
-  // },
-]
 
 const AddSubtask = () => {
   const { id } = useSelector((state) => state.task)

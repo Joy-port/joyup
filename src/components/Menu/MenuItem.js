@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { pathInfo } from "../../helpers/config.js"
+import { pathInfo } from "../../utils/config.js"
 import * as Icon from "react-feather"
 import { array, string } from "prop-types"
 

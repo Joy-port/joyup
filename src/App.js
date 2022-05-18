@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom"
-import { Helmet } from "react-helmet"
-import { viewInfo } from "./helpers/config"
+import { viewInfo } from "./utils/config"
 import Layout from "./components/Layout"
 import Clock from "./components/Clock"
 import Task from "./components/Task"
@@ -14,9 +13,9 @@ import Report from "./pages/Report"
 import ProjectViews from "./components/View/ProjectViews"
 import Login from "./pages/Login"
 import { useDispatch, useSelector } from "react-redux"
-import { user } from "./sliceReducers/actions/user"
-import { project } from "./sliceReducers/actions/project"
-import { tags } from "./sliceReducers/actions/tags"
+import { user } from "./store/actions/user"
+import { project } from "./store/actions/project"
+import { tags } from "./store/actions/tags"
 import AuthProvider from "./components/AuthProvider"
 import IntroductionTour from "./components/IntroTour"
 import Alert from "./components/Alert"
@@ -79,9 +78,6 @@ function App() {
   }, [projectList, ownerProjects])
   return (
     <>
-      <Helmet>
-        <title>JoyUp | Personal Time Management</title>
-      </Helmet>
       <AuthProvider>
         <Confirm />
         <Alert />

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
-import { task } from "../../../sliceReducers/actions/task"
-import { getClockTime, getHourTime } from "../../../helpers/functions"
+import { getHourTime } from "../../../utils/functions"
 import { useDispatch, useSelector } from "react-redux"
 import { X, Clock, Circle, Play } from "react-feather"
-import { checkProjectMessage } from "../../../helpers/config"
+import { checkProjectMessage } from "../../../utils/config"
 import { useParams } from "react-router-dom"
 
 const TimeModal = () => {

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { v4 as uuidv4 } from "uuid"
-import { TextType } from "../../../helpers/config"
-import { task } from "../../../sliceReducers/actions/task"
 import * as Icon from "react-feather"
+import { v4 as uuidv4 } from "uuid"
+import { task } from "../../../store/actions/task"
+import { TextType } from "../../../utils/config"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)

@@ -1,24 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { Helmet } from "react-helmet"
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import { Helmet } from "react-helmet"
 import { BarChart2 } from "react-feather"
 import {
   VictoryPie,
   VictoryContainer,
   VictoryChart,
-  VictoryArea,
   VictoryTheme,
   VictoryBar,
 } from "victory"
-// import {
-//   scaleDiscontinuous,
-//   discontinuitySkipWeekends,
-// } from "@d3fc/d3fc-discontinuous-scale"
-// import { scaleTime } from "d3-scale"
-// import CalendarHeatmap from "reactjs-calendar-heatmap"
-import { getClockTime } from "../helpers/functions"
+import { getClockTime } from "../utils/functions"
 import Loader from "../components/Loader"
-import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../components/AuthProvider"
 
 const Report = () => {
@@ -156,12 +149,6 @@ const Report = () => {
                                     : { style: { fill: "#c43a31" } }
                                 },
                               },
-                              // {
-                              //   target: "labels",
-                              //   mutation: ({ text }) => {
-                              //     return text === "clicked" ? null : { text: "clicked" }
-                              //   },
-                              // },
                             ]
                           },
                         },
@@ -171,59 +158,6 @@ const Report = () => {
                 </div>
               )}
             </div>
-            {/* <div className="text-sm w-full md:w-1/2 h-max">
-              <h1 className="tag-light200 w-56 px-2 py-1 text-center">
-                Project Time Spending
-              </h1>
-              <div className="border-rounded-light000 pb-8 w-full">
-                <div className="text-center rounded">
-                  <div
-                    className="group-title border-1 border-light000 rounded relative  px-2 py-1 z-20 max-w-min min-w-44 cursor-pointer"
-                    onClick={() => {
-                      setOpenSelector(!openSelector)
-                    }}
-                  >
-                    {totalProjectList[selectedProject].title}
-                    {openSelector && (
-                      <div className="dropdown-container z-20">
-                        <ul className="dropdown-list">
-                          {userProjects.map((id) => {
-                            const projectDetail = totalProjectList[id]
-                            return (
-                              <li
-                                className="dropdown-item truncate text-left hover:text-white"
-                                value={projectDetail.id}
-                                key={projectDetail.id}
-                                onClick={() => {
-                                  setSelectedProject(projectDetail.id)
-                                  setOpenSelector(false)
-                                }}
-                              >
-                                {projectDetail.title}
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="w-1/2 md:w-full">
-                  <VictoryChart
-                    theme={VictoryTheme.grayscale}
-                    animate={{
-                      duration: 2000,
-                      onLoad: { duration: 1000 },
-                    }}
-                  >
-                    <VictoryArea
-                      style={{ data: { fill: "#c43a31" } }}
-                      data={taskDateRange}
-                    />
-                  </VictoryChart>
-                </div>
-              </div>
-            </div> */}
             <div className="text-sm w-full md:w-1/2 h-max">
               <h1 className="tag-light200 w-56 px-2 py-1 text-center">
                 Project Time Spending

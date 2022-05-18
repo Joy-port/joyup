@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import DatePicker from "../components/DatePicker"
-import { task } from "../../../sliceReducers/actions/task"
-import dayjs from "dayjs"
 import { X } from "react-feather"
+import dayjs from "dayjs"
 import { func } from "prop-types"
+import { task } from "../../../store/actions/task"
+import DatePicker from "../components/DatePicker"
+
 const DateModal = ({ setIsOpenDateModal }) => {
   const { startDate, dueDate } = useSelector((state) => state.task)
   const focusInput = useRef()

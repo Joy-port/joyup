@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react"
 import JoyRide, { ACTIONS, EVENTS, STATUS } from "react-joyride"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
-import { steps } from "../../helpers/introduction"
+import { steps } from "../../utils/introduction"
 import { AuthContext } from "../AuthProvider"
 import { v4 as uuidv4 } from "uuid"
 

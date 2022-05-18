@@ -1,5 +1,5 @@
 import React from "react"
-import { viewInfo } from "../../helpers/config"
+import { viewInfo } from "../../utils/config"
 import { Link, useLocation } from "react-router-dom"
 import { useSelector } from "react-redux"
 import * as Icon from "react-feather"

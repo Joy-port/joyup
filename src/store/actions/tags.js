@@ -1,5 +1,5 @@
-import { firebase } from "../../helpers/firebase"
-import { filterSelectedTypeTags } from "../../helpers/functions"
+import { firebase } from "../../utils/firebase"
+import { filterSelectedTypeTags } from "../../utils/functions"
 
 export const tags = {
   initialProjectData: function () {

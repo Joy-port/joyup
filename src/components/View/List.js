@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
-import { tags } from "../../sliceReducers/actions/tags"
-import DragFunction from "../DragFunction"
 import { v4 as uuidv4 } from "uuid"
-// import ViewNavigator from "./ViewNavigator"
+import { tags } from "../../store/actions/tags"
+import DragFunction from "../DragFunction"
 
 const List = ({ type }) => {
   const { selectedProjectTaskList } = useSelector((state) => state.tags)

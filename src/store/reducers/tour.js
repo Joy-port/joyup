@@ -1,4 +1,4 @@
-import { steps } from "../../helpers/introduction"
+import { steps } from "../../utils/introduction"
 const initialTourState = {
   key: new Date(),
   run: false,

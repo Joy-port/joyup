@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { project } from "../../sliceReducers/actions/project"
 import { useNavigate } from "react-router-dom"
-import { tags } from "../../sliceReducers/actions/tags"
+import { project } from "../../store/actions/project"
+import { tags } from "../../store/actions/tags"
 import * as Icon from "react-feather"
-import { checkProjectMessage } from "../../helpers/config"
+import { checkProjectMessage } from "../../utils/config"
 
 const index = () => {
   const { isFirstTimeUser } = useSelector((state) => state.user)

@@ -1,7 +1,7 @@
 import React from "react"
 import Breadcrumb from "../Breadcrumb"
 import { Link, Outlet, useLocation, useParams } from "react-router-dom"
-import { viewInfo } from "../../helpers/config"
+import { viewInfo } from "../../utils/config"
 import { useSelector } from "react-redux"
 import * as Icon from "react-feather"
 import Loader from "../../components/Loader"

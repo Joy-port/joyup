@@ -1,10 +1,10 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import { project } from "../../sliceReducers/actions/project"
-import { bool, func } from "prop-types"
 import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import { ArrowRight } from "react-feather"
-import { tags } from "../../sliceReducers/actions/tags"
+import { func } from "prop-types"
+import { project } from "../../store/actions/project"
+import { tags } from "../../store/actions/tags"
 
 const NewProject = ({ setIsOpen }) => {
   const [projectTitle, setProjectTitle] = useState("")

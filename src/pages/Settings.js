@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { User, Clock, Save, Edit } from "react-feather"
-import { settings } from "../sliceReducers/actions/settings"
-import { user } from "../sliceReducers/actions/user"
+import { settings } from "../store/actions/settings"
+import { user } from "../store/actions/user"
 
 const TimeSetting = () => {
   const { workTime, breakTime } = useSelector((state) => state.settings)

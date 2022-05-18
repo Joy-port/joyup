@@ -6,86 +6,13 @@ import moment from "moment"
 import DayToolbar from "./Toolbar/Day"
 import MonthToolbar from "./Toolbar/Month"
 import { v4 as uuidv4 } from "uuid"
-import { task } from "../../sliceReducers/actions/task"
+import { task } from "../../store/actions/task"
 import EventModal from "./EventModal"
-import { string, any } from "prop-types"
+import { string } from "prop-types"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
-import dayjs from "dayjs"
-import { X, Edit3 } from "react-feather"
-// import { Overlay, OverlayTrigger, Popover } from "react-bootstrap"
 
 const localizer = momentLocalizer(moment)
 const DragDropCalendar = withDragAndDrop(Calendar)
-
-// const ToolTipTasks = ({ onClose, event }) => {
-//   const navigate = useNavigate()
-//   const taskDetail = useSelector((state) => state.task)
-//   return (
-//     <Popover id="popover-trigger-click-root-close" style={{ zIndex: 10000 }}>
-//       <div className={`modal-container-popUp h-36 w-60 text-light300`}>
-//         <div className="flex justify-between items-center mb-2">
-//           <div className="text-lg font-semibold ">{event.title}</div>
-//           <div className="cursor-pointer" onClick={onClose}>
-//             <X />
-//           </div>
-//         </div>
-//         <div className="">
-//           Start : {dayjs(new Date(taskDetail.startDate)).format("MMM DD, HH:MM")}
-//         </div>
-//         <div className="">
-//           Due : {dayjs(new Date(taskDetail.dueDate)).format("MMM DD, HH:MM")}
-//         </div>
-//         <div className="button button-dark ml-auto cursor-pointer w-10">
-//           <Edit3 size={20} />
-//         </div>
-//       </div>
-//     </Popover>
-//   )
-// }
-// const Event = (event) => {
-//   const popoverClickRootClose = () => <ToolTipTasks />
-
-//   const [showTooltip, setShowTooltip] = useState(false)
-
-//   const closeTooltip = (e) => {
-//     setShowTooltip(false)
-//     e.stopPropagation()
-//   }
-
-//   const openTooltip = (e) => {
-//     setShowTooltip(true)
-//     e.stopPropagation()
-//   }
-//   const ref = useRef(null)
-//   const getTarget = () => {
-//     // return ReactDOM.findDOMNode(ref.current)
-//     console.log("run modal")
-//   }
-//   return (
-//     <div className="">
-//       <OverlayTrigger
-//         id="help"
-//         trigger="click"
-//         rootClose
-//         placement="top"
-//         overlay={popoverClickRootClose}
-//       ></OverlayTrigger>
-//       {/* {showTooltip && (
-//         <div
-//           className="fixed"
-//           // style={{
-//           //   position: "absolute",
-//           //   inset: "0px auto auto 0px",
-//           //   minWidth: "154.066px",
-//           //   transform: "translate3d(275px, 524.5px, 0px)",
-//           // }}
-//         >
-//           <ToolTipTasks event={event} onClose={closeTooltip} />
-//         </div>
-//       )} */}
-//     </div>
-//   )
-// }
 
 const index = ({ type }) => {
   const [onClickPlace, setOnClickPlace] = useState({})
@@ -197,11 +124,9 @@ const index = ({ type }) => {
     //   return { events: [...state.events] }
     // })
   }
-  //wait to fix
+
   const moveEvent = (draggedEventData) => {
     const { start, end, isAllDay, resourceId, event } = draggedEventData
-    // 直接改 task 的 start end 存到  firebase
-    //存 task state
     const taskID = event.id
     dispatch(task.checkTaskIDToOpen(taskID))
     const startTime = {
@@ -232,10 +157,8 @@ const index = ({ type }) => {
         resizable
         selectable
         longPressThreshold={20}
-        onSelectSlot={createTaskWhenSelected} //add event
-        onSelectEvent={openTaskModal} //onclick once
-        // onDoubleClickEvent={openTaskModal} //onclick twice
-        // onSelecting={createTaskWhenSelected} //add event
+        onSelectSlot={createTaskWhenSelected}
+        onSelectEvent={openTaskModal}
         onEventDrop={moveEvent}
         // onEventResize={onEventResize}
         eventPropGetter={eventPropGetter}
@@ -257,10 +180,6 @@ const index = ({ type }) => {
     </div>
   )
 }
-// ToolTipTasks.propTypes = {
-//   onClose: any,
-//   event: any,
-// }
 index.propTypes = {
   type: string,
 }

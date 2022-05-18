@@ -1,4 +1,4 @@
-import { firebase } from "../../helpers/firebase"
+import { firebase } from "../../utils/firebase"
 
 export const settings = {
   getUserSettings: function (userID) {

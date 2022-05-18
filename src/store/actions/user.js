@@ -1,4 +1,4 @@
-import { login, firebase } from "../../helpers/firebase"
+import { login, firebase } from "../../utils/firebase"
 
 export const user = {
   nativeSignUp: (email, password, userName) => {

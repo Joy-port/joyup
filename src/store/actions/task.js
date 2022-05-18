@@ -1,4 +1,4 @@
-import { firebase } from "../../helpers/firebase"
+import { firebase } from "../../utils/firebase"
 const getDefaultTags = (types) => {
   const taskTagDetail = types.map((type) => {
     const defaultTag = {

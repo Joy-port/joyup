@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import dayjs from "dayjs"
 import { Edit3, X } from "react-feather"
 import { useNavigate } from "react-router-dom"
-import { task } from "../../sliceReducers/actions/task"
-import { status } from "../../sliceReducers/actions/status"
+import { task } from "../../store/actions/task"
 
 const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
   const dispatch = useDispatch()
