@@ -1,8 +1,6 @@
-/* container */
 .rbc-calendar {
   color: var(--slateLight);
 }
-/* header buttons */
 .rbc-toolbar button {
   transition: color 0.3s, background-color 0.3s;
   color: var(--light100);
@@ -13,7 +11,6 @@
 }
 .rbc-toolbar button:hover {
   color: var(--slateLight);
-  /* background-color: var(--light000); */
   background-color: var(--transparent);
   border-color: var(--transparent);
 }
@@ -38,10 +35,8 @@
   border-color: var(--transparent);
 }
 
-/* header Date Title */
 .rbc-toolbar-label {
   font-size: 22px;
-  /* font-weight: 600; */
 }
 .rbc-toolbar .rbc-btn-group:first-child {
   display: none;
@@ -49,9 +44,7 @@
 .rbc-toolbar .rbc-toolbar-label {
   text-align: left;
 }
-.rbc-toolbar {
-  /* flex-direction: column; */
-}
+
 @media (min-width: 768px) {
   .rbc-toolbar {
     flex-direction: row;
@@ -62,17 +55,8 @@
   .rbc-toolbar .rbc-btn-group:first-child {
     display: flex;
   }
-  /* hide today button */
-  /* .rbc-toolbar .rbc-btn-group:first-child :first-child {
-    display: none;
-  } */
-  /* hide back next button */
-  /* .rbc-toolbar .rbc-btn-group:first-child :not(:first-child) {
-    display: none;
-  } */
 }
 
-/* date */
 .rbc-today {
   background-color: var(--blue000);
 }
@@ -82,7 +66,6 @@
 .rbc-row-segment {
   padding: 3px 5px;
 }
-/* event */
 .rbc-event,
 .rbc-day-slot .rbc-background-event {
   color: var(--white);
@@ -124,21 +107,13 @@
 .rbc-agenda-view table.rbc-agenda-table tbody > tr:nth-child(2n) {
   background: var(--light000);
 }
-.rbc-agenda-view table.rbc-agenda-table tbody > tr:nth-child(2n) + tr {
-  /* border-top: 2px solid var(--light100); */
-}
+
 .rbc-agenda-view table.rbc-agenda-table tbody > tr + tr {
-  /* border-top: 1px solid var(--light100); */
   border-bottom: 2px solid var(--light100);
 }
 .rbc-agenda-view table.rbc-agenda-table tbody > tr + tr {
   border-top: 1.5px solid var(--light100);
 }
-
-/* all column */
-/* .rbc-agenda-view table.rbc-agenda-table tbody > tr:nth-child(2n) {
-  background-color: var(--light000);
-} */
 
 .rbc-agenda-date-cell {
   background: var(--white);
@@ -149,7 +124,6 @@
 
 .rbc-agenda-time-cell,
 .rbc-agenda-event-cell {
-  /* background-color: var(--light000); */
   color: var(--slateLight);
   cursor: pointer;
   padding-top: 10px 20px;
@@ -166,12 +140,9 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   cursor: pointer;
 }
 
-/* slot */
 .rbc-timeslot-group {
   min-height: 100px;
 }
-
-/* month view */
 
 .rbc-header {
   background: var(--light000);
@@ -193,19 +164,15 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   margin-top: -2px;
 }
 
-/* indicator */
 .rbc-current-time-indicator {
   height: 3px;
   background-color: var(--success);
 }
 
-/* header home */
 .rbc-time-header.rbc-overflowing {
   border-right: 1px solid var(--transparent);
-  /* margin-right: 13px !important; */
 }
 
-/* agenda view */
 .rbc-agenda-view table.rbc-agenda-table thead > tr > th:first-child {
   display: none;
 }
@@ -229,16 +196,10 @@ rbc-agenda-table tbody tr:nth-of-type(2n).rbc-agenda-event-cell {
   width: 72px;
 }
 .rbc-time-header-content {
-  /* padding-right: 14px; */
-  -webkit-padding-end: 16px;
   -moz-padding-end: 9px;
 }
-/* .rbc-allday-cell {
-  overflow-x: scroll;
-} */
+
 .rbc-time-header .rbc-header:last-of-type {
-  /* flex-basis: calc((100% - 102px) / 7);
-  max-width: calc((100% - 102px) / 7); */
   flex-basis: calc((100% - 115px) / 7);
   max-width: calc((100% - 97px) / 7);
   -webkit-flex-basis: calc((100% - 97px) / 7);

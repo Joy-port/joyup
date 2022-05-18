@@ -104,7 +104,7 @@ const index = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body overflow-y-auto flex flex-col px-5">
+        <div className="modal-body overflow-y-auto flex flex-col px-5 scrollbar">
           {/* <div className="heading-three">{title}</div> */}
           <div className="flex items-center gap-3 mb-6 pl-3" id="taskEditorTitle">
             <Edit />

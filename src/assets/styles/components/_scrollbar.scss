@@ -1,11 +1,8 @@
 .task-scrollbar {
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translateZ(0);
 }
 .task-scrollbar::-webkit-scrollbar-track-piece {
   background: #dce1e5;
-}
-.task-scrollbar::-webkit-scrollbar-track {
 }
 .task-scrollbar::-webkit-scrollbar {
   width: 14px;
@@ -19,12 +16,9 @@
 }
 .scrollbar {
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translateZ(0);
 }
 .scrollbar::-webkit-scrollbar-track-piece {
-  background: #fff;
-}
-.scrollbar::-webkit-scrollbar-track {
+  background: var(--light000);
 }
 .scrollbar::-webkit-scrollbar {
   width: 14px;
@@ -32,41 +26,45 @@
 }
 .scrollbar::-webkit-scrollbar-thumb {
   background: var(--light100);
-  border: 3px solid #fff;
-  /* background-clip: padding-box; */
+  border: 3px solid var(--light000);
+  border-radius: 9999px;
+}
+.clock-scrollbar {
+  -webkit-overflow-scrolling: touch;
+}
+.clock-scrollbar::-webkit-scrollbar-track-piece {
+  background: var(--transparent);
+}
+.clock-scrollbar::-webkit-scrollbar {
+  width: 14px;
+  scrollbar-width: 14px;
+}
+.clock-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--light000);
+  border: 3px solid var(--transparent);
   border-radius: 9999px;
 }
 .rbc-time-content {
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translateZ(0);
 }
 .rbc-time-content::-webkit-scrollbar-track-piece {
   background: #fff;
 }
-.rbc-time-content::-webkit-scrollbar-track {
-}
 .rbc-time-content::-webkit-scrollbar {
-  /* width: auto; */
   width: 14px;
   scrollbar-width: 14px;
 }
 .rbc-time-content::-webkit-scrollbar-thumb {
   background: #dce1e580;
   border: 3px solid #fff;
-  /* background-clip: padding-box; */
   border-radius: 9999px;
 }
 
-/* date picker */
-
 .react-datepicker__time-list {
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translateZ(0);
 }
 .react-datepicker__time-list::-webkit-scrollbar-track-piece {
   background: #fff;
-}
-.react-datepicker__time-list::-webkit-scrollbar-track {
 }
 .react-datepicker__time-list::-webkit-scrollbar {
   width: 10px;
@@ -74,6 +72,5 @@
 .react-datepicker__time-list::-webkit-scrollbar-thumb {
   background: #dce1e580;
   border: 3px solid #fff;
-  /* background-clip: padding-box; */
   border-radius: 9999px;
 }

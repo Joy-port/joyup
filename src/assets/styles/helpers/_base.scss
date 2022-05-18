@@ -7,7 +7,7 @@
   --light200: #acbac3;
   --light100: #dce1e5;
   --light000: #f3f5f6;
-  --blue200: #669fba; /* #0a88c2; */
+  --blue200: #669fba;
   --blue100: #9cc2d3;
   --blue000: #669fba40;
   --warning: #ffd860;
@@ -20,4 +20,15 @@
   --transparentDark: #23272a99;
   --transparentLight: #dce1e533;
   --transparent: transparent;
+}
+input:focus {
+  outline: none;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }

@@ -195,7 +195,7 @@ const PromodoroClock = () => {
         >
           <X size={20} />
         </button>
-        <div className="modal-body flex flex-col items-center justify-center overflow-y-auto">
+        <div className="modal-body flex flex-col items-center justify-center overflow-y-auto clock-scrollbar">
           {taskDetail.id === taskID && (
             <div
               className={`absolute top-5 left-50 bg-white rounded-md p-3 w-5/6 shadow cursor-pointer transition-colors ${

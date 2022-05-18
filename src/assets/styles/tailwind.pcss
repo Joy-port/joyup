@@ -9,30 +9,18 @@
   }
 }
 @layer components {
-  /* input[type="text"] {
-    @apply outline-current focus:outline-current active:outline-current outline-transparent;
-  }
-  input[type="text"]:focus {
-    @apply outline-current active:outline-currenty outline-transparent;
-  }
-  select {
-    @apply outline-none focus:outline-none;
-  } */
   .alert {
     @apply absolute top-5 right-0 z-110 mr-0 w-72 rounded-lg px-4 py-4 transition-all flex gap-2;
   }
 }
 
-/* input px-2 py-1 */
-
-/* container */
 .body {
   @apply h-fit md:h-screen flex flex-col md:flex-row relative text-slateDark;
 }
 .content {
   @apply relative gap-3 w-full h-screen md:overflow-hidden py-3 px-4;
 }
-/* menu */
+
 .menu-container {
   @apply md:absolute flex border-b-2 border-b-light000 shadow-sm md:w-custom-m lg:w-custom-l py-3 px-4 -mx-4 -mt-3 mb-3 md:mb-0;
 }
@@ -45,7 +33,6 @@
 .menu-item__light--active {
   @apply bg-slateLight text-white;
 }
-
 .menu-item {
   @apply px-4 py-2 cursor-pointer flex gap-3 justify-center transition-colors rounded-sm;
 }
@@ -55,7 +42,7 @@
 .menu-item__dark--active {
   @apply text-slateLight;
 }
-/* modal */
+
 .modal-bg {
   @apply fixed w-full h-full inset-x-2/4 inset-y-2/4 -translate-x-2/4 -translate-y-2/4 z-10 bg-transparentDark flex justify-center items-center;
 }
@@ -74,7 +61,6 @@
 .modal-sm {
   @apply w-72 h-56;
 }
-
 .modal-header {
   @apply flex py-2;
 }
@@ -84,6 +70,7 @@
 .modal-footer {
   @apply py-2;
 }
+
 .button {
   @apply rounded font-medium text-lg text-center cursor-pointer px-2 py-1 border-1 border-transparent;
 }
@@ -105,14 +92,19 @@
 .button-outline-dark {
   @apply text-light300 hover:text-white hover:bg-light300;
 }
-
 .button-light {
   @apply text-light200 hover:text-slateLight;
 }
 .button-outline-light {
   @apply hover:bg-light100 hover:border-light100  bg-white text-light300 border-light300;
 }
-/* dropdown group */
+.button-group {
+  @apply flex flex-row justify-between items-center py-1;
+}
+.play-button {
+  @apply rounded-full flex items-center justify-center;
+}
+
 .dropdown-container {
   @apply absolute w-full left-0 mt-2;
 }
@@ -121,10 +113,6 @@
 }
 .dropdown-item {
   @apply px-2 py-1 hover:bg-light100 cursor-pointer;
-}
-
-.button-group {
-  @apply flex flex-row justify-between items-center py-1;
 }
 
 .border-group-light200 {
@@ -138,32 +126,19 @@
   @apply flex md:justify-end items-center gap-3 mb-3 rounded-sm;
 }
 
-/* button */
-.play-button {
-  @apply rounded-full flex items-center justify-center;
-}
-
 .input-light300 {
   @apply bg-light000 focus:bg-white placeholder:text-light200 focus:outline-light200
   focus:border-0;
 }
-
-/* selector */
 .select-light300 {
   @apply bg-light100 text-light300 rounded px-2 py-1 placeholder:text-light200 focus:bg-light000;
 }
-
 .select-group {
   @apply flex gap-3 items-center rounded justify-between px-7 py-3 bg-white;
 }
 .group-title {
   @apply capitalize whitespace-nowrap text-light300;
 }
-
-.select-dropDown {
-  @apply w-2/4;
-}
-
 .editor {
   @apply flex items-start bg-white rounded px-7 py-3 gap-4;
 }
@@ -184,11 +159,6 @@
 .results__command--selected {
   @apply bg-light200 text-white font-medium z-20;
 }
-
-.editor-container {
-  @apply py-2 px-1 h-1/2 border border-light200 rounded-lg bg-white;
-}
-
 .heading-one {
   @apply text-4xl font-semibold;
 }
@@ -201,53 +171,35 @@
 .heading-four {
   @apply text-xl font-medium;
 }
-/*ml-5 pl-3*/
 .unordered-list {
   @apply list-disc pl-4;
 }
 .code-block {
   @apply bg-light000 px-3 py-2 rounded-sm tracking-wider font-mono text-transparentDark;
 }
-/*ml-5 pl-3*/
 .ordered-list {
   @apply list-decimal pl-4;
 }
-/*ml-5 pl-3*/
 .quote-block {
   @apply border-l-4 border-light300 font-semibold pl-3;
-}
-
-.text-bold {
-  @apply font-medium;
-}
-.text-italic {
-  @apply italic;
 }
 
 .results__command {
   @apply p-3 cursor-pointer z-20;
 }
-
 .results__command--selected {
   @apply bg-light200 font-medium z-20;
-}
-
-.editor-container {
-  @apply py-2 px-1 h-1/2 border border-light200 rounded-lg bg-white;
 }
 
 .task {
   @apply flex justify-between items-center rounded-sm p-2 mt-3;
 }
-
 .task-container {
   @apply overflow-y-auto bg-light200;
 }
-
 .view-list {
   @apply flex flex-col gap-3;
 }
-
 .view-board {
   @apply w-full flex gap-3 h-full;
 }
@@ -258,11 +210,9 @@
 .column-list h1 {
   @apply text-light000 bg-light200 max-w-fit rounded-t-sm;
 }
-/*  min-h-32 */
 .column-list-dragging {
   @apply bg-light100 shadow-inner;
 }
-/* min-h-20 */
 .column-list-normal {
   @apply bg-white  shadow-light200 shadow-md rounded-sm border-t-1 border-t-light000;
 }
