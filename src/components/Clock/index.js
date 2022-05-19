@@ -1,18 +1,9 @@
 import React, { useEffect, useRef, useCallback } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import Circular from "./Circular"
+import { useParams, useNavigate } from "react-router-dom"
+import * as Icon from "react-feather"
 import { task } from "../../store/actions/task"
-import {
-  X,
-  CornerDownLeft,
-  Save,
-  Clock,
-  PlayCircle,
-  PauseCircle,
-  XCircle,
-  RotateCcw,
-} from "react-feather"
+import Circular from "./Circular"
 
 const PromodoroClock = () => {
   const { isFirstTimeUser } = useSelector((state) => state.user)
@@ -49,7 +40,7 @@ const PromodoroClock = () => {
         (_, index) => {
           return (
             <div key={index}>
-              <Clock opacity={1} />
+              <Icon.Clock opacity={1} />
             </div>
           )
         }
@@ -60,7 +51,7 @@ const PromodoroClock = () => {
           const hasSpend = index + 1 <= taskDetail.clockNumber
           return (
             <div className="" key={index}>
-              <Clock opacity={hasSpend ? 1 : 0.5} />
+              <Icon.Clock opacity={hasSpend ? 1 : 0.5} />
             </div>
           )
         }
@@ -105,15 +96,7 @@ const PromodoroClock = () => {
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft, secondsRun])
 
-  // useEffect(() => {
-  //   secondsLeftRef.current = workTime * 60
-  //   taskStatus("secondsLeft", secondsLeftRef.current)
-  //   secondsRunRef.current = 0
-  //   taskStatus("secondsRun", secondsRunRef.current)
-  // }, [])
-
   useEffect(() => {
-    // if (secondsLeft === 3600 || isPaused === true) return
     if (secondsRunRef === 0 || isPaused === true) return
     totalTimeRef.current += 1
     dispatch({ type: "clock/calculateTotalTime", payload: totalTimeRef.current })
@@ -128,7 +111,6 @@ const PromodoroClock = () => {
     taskStatus("secondsLeft", nextSeconds)
     taskStatus("secondsRun", secondsRunRef.current)
     taskStatus("mode", nextMode)
-    // dispatch({ type: "task/workMode", payload: mode })
   }
 
   const tickTime = () => {
@@ -140,7 +122,6 @@ const PromodoroClock = () => {
   const resetTimer = () => {
     const currentLeftTime = mode === 0 ? workTime * 60 : breakTime * 60
     if (secondsLeftRef.current === currentLeftTime && secondsRunRef.current === 0) return
-    // if (confirm("do you really want to reset and clear current progress?")) {
     secondsLeftRef.current = currentLeftTime
     taskStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current = 0
@@ -153,10 +134,8 @@ const PromodoroClock = () => {
         parseFloat(totalSpendingSeconds - secondsRun.current)
       )
     )
-    // }
   }
   const totalSeconds = mode === 0 ? workTime * 60 : breakTime * 60
-  // const percentage = Math.round((secondsLeft / totalSeconds) * 100)
   const percentage = Math.round((secondsRun / totalSeconds) * 100)
   let minutes = Math.floor(secondsLeft / 60)
   if (minutes < 10) minutes = "0" + minutes
@@ -165,12 +144,7 @@ const PromodoroClock = () => {
   const modeBackground = mode
     ? "linear-gradient(305deg,#669FBA,#84E0D1)"
     : "linear-gradient(305deg,#E56544,#FF6A99)"
-  //FF6A99
-  //F571AE
-  //FF6AA0
-  //E5666E
-  //3e98c7
-  //f54e4e
+
   return (
     <div className="modal-bg">
       <div
@@ -187,13 +161,11 @@ const PromodoroClock = () => {
           }`}
           onClick={() => {
             if (isFirstTimeUser) return
-            // if (confirm("quit without saving current change?")) {
             dispatch({ type: "task/clearTaskWithoutSaving" })
             navigate(-1)
-            // }
           }}
         >
-          <X size={20} />
+          <Icon.X size={20} />
         </button>
         <div className="modal-body flex flex-col items-center justify-center overflow-y-auto clock-scrollbar">
           {taskDetail.id === taskID && (
@@ -228,37 +200,6 @@ const PromodoroClock = () => {
                 resetTimer={resetTimer}
               />
             </div>
-            {/* <div className="flex justify-center items-center gap-6">
-              {!isPaused && (
-                <button
-                  className={`play-button text-white  hover:text-transparentWhite`}
-                  onClick={() => clockStatus("isPaused", true)}
-                >
-                  <PauseCircle size={50} strokeWidth={0.8} />
-                </button>
-              )}
-              {isPaused && (
-                <>
-                  <button
-                    className={`play-button text-white  hover:text-transparentWhite`}
-                    onClick={() => {
-                      clockStatus("isPaused", false)
-                    }}
-                  >
-                    <PlayCircle size={50} strokeWidth={0.8} />
-                  </button>
-                  <button
-                    className={`play-button text-white  hover:text-transparentWhite`}
-                    onClick={() => {
-                      clockStatus("isPaused", true)
-                      resetTimer()
-                    }}
-                  >
-                    <XCircle size={50} strokeWidth={0.8} />
-                  </button>
-                </>
-              )}
-            </div> */}
           </div>
         </div>
         <div className={`modal-footer transition-all pb-3`}>
@@ -277,7 +218,7 @@ const PromodoroClock = () => {
                 navigate(`/tasks/${taskID}`, { replace: true })
               }}
             >
-              <CornerDownLeft />
+              <Icon.CornerDownLeft />
             </div>
             <div
               className="flex justify-center items-center gap-6"
@@ -288,7 +229,7 @@ const PromodoroClock = () => {
                   className={`play-button text-white  hover:text-transparentWhite`}
                   onClick={() => clockStatus("isPaused", true)}
                 >
-                  <PauseCircle size={50} strokeWidth={0.8} />
+                  <Icon.PauseCircle size={50} strokeWidth={0.8} />
                 </button>
               )}
               {isPaused && (
@@ -302,7 +243,7 @@ const PromodoroClock = () => {
                       clockStatus("isPaused", false)
                     }}
                   >
-                    <PlayCircle size={50} strokeWidth={0.8} />
+                    <Icon.PlayCircle size={50} strokeWidth={0.8} />
                   </button>
 
                   {secondsRunRef.current !== 0 && (
@@ -314,7 +255,7 @@ const PromodoroClock = () => {
                         resetTimer()
                       }}
                     >
-                      <RotateCcw size={50} strokeWidth={0.8} />
+                      <Icon.RotateCcw size={50} strokeWidth={0.8} />
                     </button>
                   )}
                 </>
@@ -322,12 +263,6 @@ const PromodoroClock = () => {
             </div>
 
             <div className={`flex gap-5 ${isPaused ? "visible" : "invisible"}`}>
-              {/* <Link
-                to="/settings"
-                className="button text-white hover:text-transparentWhite"
-              >
-                <Settings />
-              </Link> */}
               <div
                 className="button text-white hover:text-transparentWhite invisible"
                 onClick={() => {
@@ -335,7 +270,7 @@ const PromodoroClock = () => {
                   navigate(-1)
                 }}
               >
-                <Save />
+                <Icon.Save />
               </div>
             </div>
           </div>

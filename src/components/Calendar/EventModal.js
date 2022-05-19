@@ -19,19 +19,12 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
       } else if (position.clientX + 240 > 700) {
         left = 460
       } else {
-        // left = `calc(${position.clientX} - 176px)`
         left = position.clientX - 176
-        // left = (position.left + position.right - position.x) / 2
       }
       if (position.clientY + 128 > 700) {
         top = position.clientY - 250
-        // top = ((position.top + position.bottom - position.y) * 5) / 100
       } else {
         top = position.clientY - 50
-
-        // top = ((position.top + position.bottom - position.y) * 10) / 100
-
-        // top = ((position.top + position.bottom - position.y) * 56) / 100
       }
     } else {
       console.log(position)
@@ -43,19 +36,13 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
         left = left - 80
       } else {
         left += 100
-        // left = (position.left + position.right - position.x) / 2
       }
       if (position.y < 200) {
         top = position.top
       } else if (position.y + 128 > 700) {
-        console.log(position.y)
         top = position.top - 100
-        // top = ((position.top + position.bottom - position.y) * 56) / 100
       } else {
-        console.log(position.y)
         top = top
-        // top = `calc(${position.y} - 2%)`
-        // top = ((position.top + position.bottom - position.y) * 40) / 100
       }
     }
   }
@@ -79,25 +66,9 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
             <div
               className="hover:text-transparentDark cursor-pointer"
               onClick={() => {
-                // const confirmText = {
-                //   context: "Do you want to quit without saving?",
-                //   confirm: "yes",
-                //   action: () => {
-                //     dispatch(task.deleteCurrentTask())
-                //     dispatch({ type: "task/clearTaskWithoutSaving" })
-                //     setIsOpenModal(false)
-                //   },
-                // }
-                // dispatch(status.openConfirmModal(confirmText))
-                // () => {
-                //     dispatch(task.deleteCurrentTask())
-                //     dispatch({ type: "task/clearTaskWithoutSaving" })
-                //     setIsOpenModal(false)
-                // if (confirm("quite without saving?")) {
                 dispatch(task.deleteCurrentTask())
                 dispatch({ type: "task/clearTaskWithoutSaving" })
                 setIsOpenModal(false)
-                // }
               }}
             >
               <X />

@@ -7,8 +7,7 @@ import { string } from "prop-types"
 import moment from "moment"
 import { v4 as uuidv4 } from "uuid"
 import { task } from "../../store/actions/task"
-import DayToolbar from "./Toolbar/Day"
-import MonthToolbar from "./Toolbar/Month"
+import Toolbar from "./Toolbar"
 import EventModal from "./EventModal"
 
 const localizer = momentLocalizer(moment)
@@ -24,8 +23,7 @@ const index = ({ type }) => {
   const bigCalendar = useMemo(
     () => ({
       components: {
-        toolbar: type === "day" ? DayToolbar : MonthToolbar,
-        // event: Event,
+        toolbar: (props) => <Toolbar type={type} {...props} />,
       },
       dayLayoutAlgorithm: "overlap",
       localizer: localizer,
@@ -113,18 +111,6 @@ const index = ({ type }) => {
     setEvents(Object.values(selectedProjectTaskList))
   }, [selectedProjectTaskList])
 
-  const onEventResize = (data) => {
-    const { start, end } = data
-    console.log("%c start ", "color:orange", start)
-    console.log("%c end ", "color:orange", end)
-
-    // this.setState((state) => {
-    //   state.events[0].start = start
-    //   state.events[0].end = end
-    //   return { events: [...state.events] }
-    // })
-  }
-
   const moveEvent = (draggedEventData) => {
     const { start, end, isAllDay, resourceId, event } = draggedEventData
     const taskID = event.id
@@ -160,7 +146,6 @@ const index = ({ type }) => {
         onSelectSlot={createTaskWhenSelected}
         onSelectEvent={openTaskModal}
         onEventDrop={moveEvent}
-        // onEventResize={onEventResize}
         eventPropGetter={eventPropGetter}
         timeslots={2}
         step={30}

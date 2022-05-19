@@ -15,7 +15,7 @@ import { AuthContext } from "../components/AuthProvider"
 import { getClockTime } from "../utils/helpers"
 
 const Report = () => {
-  const [userDetail, loading, error] = useContext(AuthContext)
+  const [userDetail] = useContext(AuthContext)
   const [openSelector, setOpenSelector] = useState(false)
   const { userTasks, userProjects } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList, projectList } = useSelector(
@@ -23,16 +23,12 @@ const Report = () => {
   )
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const tags = useSelector((state) => state.tag)
-  const [type, setType] = useState(0)
   const [selectedProject, setSelectedProject] = useState(projectList[0])
-  const [userTaskDetail, setUserTaskDetail] = useState(() => {
-    return userTasks.map((taskID) => {
-      const taskDetail = totalTaskList[taskID]
-      return { ...taskDetail }
-    })
+  const userTaskDetail = userTasks.map((taskID) => {
+    const taskDetail = totalTaskList[taskID]
+    return { ...taskDetail }
   })
-  const [taskPie, setTaskPie] = useState(() => {
+  const taskPie = () => {
     const taskConvertToPie = userTaskDetail.reduce((total, task) => {
       if (!totalProjectList) return total
       const taskProject = totalProjectList[task.projectID]
@@ -61,9 +57,8 @@ const Report = () => {
         return total
       }
     }, {})
-    console.log(taskConvertToPie)
     return taskConvertToPie
-  })
+  }
   const switchProjectTasks = useCallback(() => {
     const combineTaskDate = userTaskDetail
       .filter((task) => task.projectID === selectedProject)
@@ -87,7 +82,6 @@ const Report = () => {
   useEffect(() => {
     if (!userDetail) return
     if (userTasks.length === 0) {
-      // alert("there are no projects please create a new one")
       dispatch({
         type: "alert/status",
         payload: {
@@ -123,12 +117,12 @@ const Report = () => {
               <h1 className="tag-light200 w-56 px-2 py-1 text-center">
                 Total Time Spending
               </h1>
-              {Object.keys(taskPie).length === 0 ? (
+              {Object.keys(taskPie()).length === 0 ? (
                 <div className="w-full">--</div>
               ) : (
                 <div className="border-rounded-light000 pb-8">
                   <VictoryPie
-                    data={Object.values(taskPie)}
+                    data={Object.values(taskPie())}
                     colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
                     containerComponent={<VictoryContainer preserveAspectRatio="none" />}
                     animate={{

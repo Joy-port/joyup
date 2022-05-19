@@ -11,8 +11,8 @@ import backgroundImage from "../assets/illustrations/Life Management.png"
 
 const Login = () => {
   const { id } = useSelector((state) => state.user)
-  const [userDetail, loading, error] = useContext(AuthContext)
-  const { ownerProjects, userTasks, userProjects } = useSelector((state) => state.user)
+  const [userDetail, loading, _] = useContext(AuthContext)
+  const { ownerProjects } = useSelector((state) => state.user)
   const [email, setEmail] = useState("joy3124@gmail.com")
   const [password, setPassword] = useState("111111")
   const [name, setName] = useState("")
@@ -32,15 +32,9 @@ const Login = () => {
     if (userDetail && id !== "") {
       console.log("after login", userDetail, id)
       if (isLoginPath) {
-        // if (userProjects.length === 0 && userTasks.length === 0) {
-        //   dispatch({ type: "modals/switchCreateProjectModal", payload: true })
-        //   dispatch({ type: "user/setIsFirstTimeUser", payload: true })
-        //   navigate("/projects")
-        // }
         navigate("/projects")
-        //&& userProjects.length !== 0
-        // } else if (isLoginPath && userProjects.length === 0 && userTasks.length === 0) {
-      } else if (!isLoginPath) {
+      }
+      if (!isLoginPath) {
         dispatch({ type: "modals/switchCreateProjectModal", payload: true })
         dispatch({ type: "user/setIsFirstTimeUser", payload: true })
         navigate("/projects")
@@ -71,8 +65,6 @@ const Login = () => {
     }
   }
   const checkEmail = useCallback((userEmail) => {
-    // const reg =
-    //   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
     const reg = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/
     if (!userEmail.trim()) {
       setEmailStatus(0)

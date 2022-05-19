@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet"
 import * as Icon from "react-feather"
 import moment from "moment"
 import CustomCalendar from "../components/Calendar"
-import AgendaToolbar from "../components/Calendar/Toolbar/Agenda"
+import Toolbar from "../components/Calendar/Toolbar"
 
 const localizer = momentLocalizer(moment)
 
@@ -50,7 +50,7 @@ const Home = () => {
   const AgendaView = useMemo(
     () => ({
       components: {
-        toolbar: AgendaToolbar,
+        toolbar: (props) => <Toolbar {...props} />,
       },
       formats: {
         agendaHeaderFormat: ({ start, end }, culture, localizer) =>

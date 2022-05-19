@@ -46,14 +46,7 @@ function App() {
         <Routes>
           <Route path="/">
             <Route path="signin" element={<Login />} />
-            <Route
-              path="signup"
-              element={
-                <AuthProvider>
-                  <Login />
-                </AuthProvider>
-              }
-            />
+            <Route path="signup" element={<Login />} />
             <Route
               element={
                 <Layout>
@@ -62,7 +55,9 @@ function App() {
               }
             >
               <Route index element={<Navigate to="/calendar" replace />} />
-              <Route path="calendar" element={<Home />} />
+              <Route path="calendar" element={<Home />}>
+                <Route path=":calendarView" element={<Home />} />
+              </Route>
               <Route path="agenda" element={<Home />} />
               <Route path="reports" element={<Report />} />
               <Route path="projects">

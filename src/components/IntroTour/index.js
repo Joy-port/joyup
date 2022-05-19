@@ -50,20 +50,12 @@ const index = () => {
   useEffect(() => {
     if (!isFirstTimeUser && runTour) return
     if (pathname.includes("/projects") && tourStage === 0) {
-      //   if (introSteps === 1) {
-      console.log("check if start after create project")
-      startTour()
-      // startTour()
-      //   }
     } else if (pathname.includes("/tasks") && tourStage === 1) {
       dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introTask })
-
-      startTour()
     } else if (pathname.includes("/clocks") && tourStage === 2) {
       dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introClock })
-
-      startTour()
     }
+    startTour()
   }, [pathname, runTour])
 
   const tourActions = (data) => {
@@ -103,21 +95,10 @@ const index = () => {
     <>
       {isFirstTimeUser && (
         <>
-          {/* {pathname.includes("projects") && (
-            <button
-              className="button button-primary"
-              onClick={startTour}
-              style={{ zIndex: 1000000, position: "fixed" }}
-            >
-              Start Tour
-            </button>
-          )} */}
           <JoyRide
             {...tourStatus}
             callback={tourActions}
             continuous={true}
-            // showSkipButton={true}
-            // showProgress={true}
             run={runTour}
             styles={{
               tooltipContainer: {
