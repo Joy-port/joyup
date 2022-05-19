@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import * as Icon from "react-feather"
 import { task } from "../../../store/actions/task"
 import { titleCommandList, dateCommandList } from "../../../utils/slashCommands"
+
 const TitleEditor = () => {
   const { title } = useSelector((state) => state.task)
   const dispatch = useDispatch()
@@ -72,7 +73,6 @@ const TitleEditor = () => {
   })
 
   useEffect(() => {
-    // if (!inputRef.current) return
     if (
       slashCharacterPosition === null &&
       selectedTagType === null &&
@@ -81,54 +81,8 @@ const TitleEditor = () => {
     ) {
       titleRef.current = text
       dispatch(task.saveTaskDetail("title", text))
-      // setIsEditing(false)
     }
   }, [text])
-
-  // const commands = [
-  //   {
-  //     icon: "Sun",
-  //     name: "Start Date",
-  //     type: "startDate",
-  //   },
-  //   {
-  //     icon: "Sunset",
-  //     name: "Due Date",
-  //     type: "dueDate",
-  //   },
-  //   {
-  //     icon: "Flag",
-  //     name: "priority",
-  //     type: "tag",
-  //   },
-  //   {
-  //     icon: "CheckCircle",
-  //     name: "progress",
-  //     type: "tag",
-  //   },
-  // ]
-  // const dateCommands = [
-  //   {
-  //     icon: "Moon",
-  //     name: "today",
-  //     date: new Date().getTime(),
-  //   },
-  //   {
-  //     icon: "Sun",
-  //     name: "tomorrow",
-  //     date: new Date(getDateFromToday(1)).getTime(),
-  //   },
-  //   {
-  //     icon: "Sunrise",
-  //     name: "this friday",
-  //     date: new Date(getDateFromToday(dayRangeFromToday(5))).getTime(),
-  //   },
-  //   {
-  //     icon: "Calendar",
-  //     name: "next week",
-  //     date: new Date(getDateFromToday(7)).getTime(),
-  //   },
-  // ]
 
   const matchingCommands =
     query !== null
@@ -237,7 +191,6 @@ const TitleEditor = () => {
       child: child.id,
       type: selectedTagType.type,
     }
-    setSelectedTag(child.id)
     dispatch(task.saveTaskTag(tagType))
     setSelectedTagType(null)
     setText((text) => {
@@ -247,7 +200,6 @@ const TitleEditor = () => {
       return string
     })
     setStyle("heading-three")
-    // setIsEditing(false)
     setSelectionIndex(0)
     setTagsQuery(null)
     setIsEditing(true)
@@ -292,7 +244,6 @@ const TitleEditor = () => {
     } else if (e.key === "Enter") {
       if (matchingCommands[selectionIndex]) {
         selectTotalCommand(matchingCommands[selectionIndex])
-        // setIsEditing(true)
       } else if (matchingTags[selectionIndex]) {
         selectTags(matchingTags[selectionIndex])
       } else if (matchingTimeSettings[selectionIndex]) {
@@ -305,7 +256,6 @@ const TitleEditor = () => {
         if (text.trim() === "") return
         titleRef.current = text
         dispatch(task.saveTaskDetail("title", text))
-        // setIsEditing(false)
         return
       }
     } else if (e.key === "/") {
@@ -349,7 +299,6 @@ const TitleEditor = () => {
         <div
           className="heading-three font-semibold text-light300 px-2 py-1 rounded bg-white"
           onClick={() => {
-            // inputRef.current = null
             setIsEditing(true)
             setText(text)
           }}
@@ -433,24 +382,6 @@ const TitleEditor = () => {
               </div>
             )
           })}
-          {/* {selectedTagType?.child && (
-        <div className="results top-10 mt-1 z-10 ">
-          {selectedTagType.child.map((child, index) => {
-            return (
-              <div
-                key={child.id}
-                onClick={() => selectTags(child.id)}
-                onMouseOver={() => setSelectionIndex(index)}
-                className={
-                  "results__command " +
-                  (index == selectionIndex ? "results__command--selected" : "")
-                }
-              >
-                <Icon.Tag strokeWidth={1.5} />
-                <p className="text-lg">{child.name}</p>
-              </div>
-            )
-          })} */}
         </div>
       )}
     </div>

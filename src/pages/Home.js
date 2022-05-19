@@ -1,29 +1,23 @@
-import React, { useCallback, useEffect, useState, useMemo, useContext } from "react"
-import { Helmet } from "react-helmet"
+import React, { useCallback, useEffect, useState, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
+import { Helmet } from "react-helmet"
+import * as Icon from "react-feather"
 import moment from "moment"
 import CustomCalendar from "../components/Calendar"
 import AgendaToolbar from "../components/Calendar/Toolbar/Agenda"
-import * as Icon from "react-feather"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { AuthContext } from "../components/AuthProvider"
 
 const localizer = momentLocalizer(moment)
 
 const Home = () => {
-  const [userDetail, loading, error] = useContext(AuthContext)
-  const { userTasks, userProjects } = useSelector((state) => state.user)
-  const { totalTaskList, totalProjectList } = useSelector((state) => state.projects)
+  const { userTasks } = useSelector((state) => state.user)
+  const { totalTaskList } = useSelector((state) => state.projects)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const updateEvents = useCallback(() => {
     if (userTasks.length === 0) return []
     const newEvents = userTasks.map((taskID) => {
-      // if (!totalTaskList[taskID]) {
-      //   console.log(taskID)
-      //   return {}
-      // }
       const taskDetail = {
         ...totalTaskList[taskID],
         start: new Date(totalTaskList[taskID].startDate),

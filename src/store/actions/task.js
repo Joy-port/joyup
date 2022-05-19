@@ -17,7 +17,6 @@ export const task = {
       const { totalTaskList } = getState().projects
       const taskDetail = totalTaskList[taskID]
       if (taskDetail === "") {
-        //create new task
         dispatch({ type: "task/setTaskID", payload: taskID })
       } else {
         dispatch({ type: "task/getTaskDetails", payload: taskDetail })
@@ -35,8 +34,6 @@ export const task = {
           newTagState.push(tagContent)
         }
         dispatch({ type: "task/editTags", payload: newTagState })
-        //firebase save to task
-        //firebase save to project
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
       }

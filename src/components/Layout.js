@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react"
-import { Outlet, useLocation, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { Outlet, useNavigate } from "react-router-dom"
 import { LogOut } from "react-feather"
+import { user } from "../store/actions/user"
+import { AuthContext } from "./AuthProvider"
 import MenuItem from "./Menu/MenuItem"
 import TaskList from "./Task/TaskList"
-import { user } from "../store/actions/user"
-import { useDispatch } from "react-redux"
-import { AuthContext } from "./AuthProvider"
 import Loader from "./Loader"
 const Layout = () => {
   const [userDetail, loading, error] = useContext(AuthContext)

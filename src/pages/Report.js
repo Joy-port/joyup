@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { BarChart2 } from "react-feather"
 import {
@@ -10,9 +10,9 @@ import {
   VictoryTheme,
   VictoryBar,
 } from "victory"
-import { getClockTime } from "../utils/functions"
 import Loader from "../components/Loader"
 import { AuthContext } from "../components/AuthProvider"
+import { getClockTime } from "../utils/helpers"
 
 const Report = () => {
   const [userDetail, loading, error] = useContext(AuthContext)

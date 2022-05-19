@@ -1,5 +1,5 @@
 import { create } from "./config"
-import { getTagList } from "./functions"
+import { getTagList } from "./helpers"
 import { initializeApp } from "firebase/app"
 import {
   getFirestore,

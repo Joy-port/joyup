@@ -1,7 +1,7 @@
-import { func, object, any } from "prop-types"
 import React, { useCallback, useEffect, useState } from "react"
-import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
+import { func, object } from "prop-types"
+import moment from "moment"
 
 const Day = ({ onView, onNavigate, date }) => {
   const [viewState, setViewState] = useState("day")

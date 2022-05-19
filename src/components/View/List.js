@@ -1,8 +1,8 @@
-import { string } from "prop-types"
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
+import { string } from "prop-types"
 import { v4 as uuidv4 } from "uuid"
 import { tags } from "../../store/actions/tags"
 import DragFunction from "../DragFunction"
@@ -24,26 +24,6 @@ const List = ({ type }) => {
   return (
     <>
       <div className="tool-bar">
-        {/* <ViewNavigator /> */}
-        {/* <div className="flex gap-3">
-          {viewInfo.map((view) => {
-            const IconName = Icon[view.icon]
-            const isActive = pathname.split("/").includes(view.path)
-            const calendarDefaultView = view.name === "Calendar" ? "/month" : ""
-            return (
-              <Link
-                key={view.path}
-                to={`/projects/${state.selectedProjectID}/${view.path}${calendarDefaultView}`}
-                className={`menu-item ${
-                  isActive ? "menu-item__dark--active" : "menu-item__dark"
-                }`}
-              >
-                <IconName />
-                <p className="lg:block hidden">{view.name}</p>
-              </Link>
-            )
-          })}
-        </div> */}
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
             <div

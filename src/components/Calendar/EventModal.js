@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { object, func, bool, string } from "prop-types"
-import { useDispatch, useSelector } from "react-redux"
-import dayjs from "dayjs"
-import { Edit3, X } from "react-feather"
+import React from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Edit3, X } from "react-feather"
+import { object, func, bool, string } from "prop-types"
+import dayjs from "dayjs"
 import { task } from "../../store/actions/task"
 
 const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {

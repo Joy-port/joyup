@@ -19,17 +19,4 @@ export const settings = {
       }
     }
   },
-  editSettingsTimer: function () {
-    return async (dispatch, getState) => {
-      try {
-        const clockSettings = { ...getState().settings }
-        const { id } = getState().user
-        await firebase.editUserSettingsTimer(id, clockSettings)
-      } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
-      }
-    }
-  },
-  //create new user settings
-  //add basic task
 }

@@ -1,7 +1,7 @@
-import { func, object } from "prop-types"
 import React, { useCallback, useEffect, useState } from "react"
-import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
+import { func, object } from "prop-types"
+import moment from "moment"
 
 const Day = ({ onView, onNavigate, date }) => {
   const [viewState, setViewState] = useState("week")
@@ -13,7 +13,6 @@ const Day = ({ onView, onNavigate, date }) => {
     if (date.getDate() != d) {
       date.setDate(0)
     }
-    // console.log(date)
     return date
   })
 
@@ -24,7 +23,6 @@ const Day = ({ onView, onNavigate, date }) => {
 
   const addDays = useCallback((date, days) => {
     date.setDate(date.getDate() + days)
-    // console.log(date)
     return date
   })
 
@@ -36,10 +34,6 @@ const Day = ({ onView, onNavigate, date }) => {
     onView("week")
     setViewState("week")
   }
-  // const goToMonthView = () => {
-  //   onView("month")
-  //   setViewState("month")
-  // }
 
   const goToBack = () => {
     if (viewState === "month") {

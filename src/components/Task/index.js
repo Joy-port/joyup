@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { getHourTime } from "../../utils/functions"
+import { getHourTime } from "../../utils/helpers"
 import { tags } from "../../store/actions/tags"
 import { task } from "../../store/actions/task"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import DatePicker from "./components/DatePicker"
-import {
-  Clock,
-  X,
-  Trash,
-  Save,
-  Edit,
-  Play,
-  Calendar,
-  Folder,
-  Flag,
-  CheckSquare,
-  Tag,
-  Sunset,
-  Circle,
-  Sun,
-} from "react-feather"
+import * as Icon from "react-feather"
 import TimeModal from "./components/TimeModal"
 
 const index = () => {
@@ -102,11 +87,11 @@ const index = () => {
             // }
           }}
         >
-          <X size={20} />
+          <Icon.X size={20} />
         </button>
         <div className="modal-body overflow-y-auto flex flex-col px-5 scrollbar">
           <div className="flex items-center gap-3 mb-6 pl-3" id="taskEditorTitle">
-            <Edit />
+            <Icon.Edit />
             <TitleEditor />
           </div>
           <div className="grow flex flex-col-reverse md:flex-row gap-5 task-scrollbar">
@@ -117,7 +102,7 @@ const index = () => {
               >
                 <div className="select-group">
                   <div className="flex gap-4 items-center max-w-36">
-                    <Folder strokeWidth={1.5} />
+                    <Icon.Folder strokeWidth={1.5} />
                     <p className="group-title">Project</p>
                   </div>
                   <select
@@ -150,11 +135,11 @@ const index = () => {
                       >
                         <div className="flex gap-4 items-center max-w-36">
                           {item.type === "priority" ? (
-                            <Flag strokeWidth={1.5} />
+                            <Icon.Flag strokeWidth={1.5} />
                           ) : item.type === "progress" ? (
-                            <CheckSquare strokeWidth={1.5} />
+                            <Icon.CheckSquare strokeWidth={1.5} />
                           ) : (
-                            <Tag strokeWidth={1.5} />
+                            <Icon.Tag strokeWidth={1.5} />
                           )}
                           <p className="group-title">{item.type} </p>
                         </div>
@@ -190,7 +175,7 @@ const index = () => {
               >
                 <div className="select-group relative">
                   <div className="flex gap-4 items-center max-w-36">
-                    <Calendar strokeWidth={1.5} />
+                    <Icon.Calendar strokeWidth={1.5} />
                     <div className="group-title">All Day</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -211,14 +196,14 @@ const index = () => {
                           allDay ? "ml-auto" : "mr-auto"
                         }`}
                       >
-                        <Circle color="white" fill="white" />
+                        <Icon.Circle color="white" fill="white" />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="select-group relative">
                   <div className="flex gap-4 items-center max-w-36">
-                    <Sun strokeWidth={1.5} size={24} />
+                    <Icon.Sun strokeWidth={1.5} size={24} />
                     <div className="group-title">Start Date</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -226,13 +211,12 @@ const index = () => {
                       date={startDate}
                       setDate={setCalendarStartDate}
                       hasMinDate={false}
-                      showTime={!allDay}
                     />
                   </div>
                 </div>
                 <div className="select-group relative">
                   <div className="flex gap-4 items-center max-w-36">
-                    <Sunset strokeWidth={1.5} size={24} />
+                    <Icon.Sunset strokeWidth={1.5} size={24} />
                     <div className="group-title">Due Date</div>
                   </div>
                   <div className="flex flex-col w-1/2">
@@ -240,14 +224,13 @@ const index = () => {
                       date={dueDate}
                       setDate={setCalendarDueDate}
                       hasMinDate={true}
-                      showTime={!allDay}
                     />
                   </div>
                 </div>
               </div>
               <div className="select-group relative" id="taskEditorClock">
                 <div className="flex gap-4 items-center max-w-36">
-                  <Clock strokeWidth={1.5} />
+                  <Icon.Clock strokeWidth={1.5} />
                   <div className="group-title">Tracker</div>
                 </div>
                 <div
@@ -270,7 +253,7 @@ const index = () => {
                       clockNumber ? "" : "opacity-50"
                     }`}
                   >
-                    <Clock color="#DCE1E5" fill="#E56544" />
+                    <Icon.Clock color="#DCE1E5" fill="#E56544" />
                     {clockNumber}
                   </div>
                   /
@@ -279,7 +262,7 @@ const index = () => {
                       requiredNumber ? "" : "opacity-50"
                     }`}
                   >
-                    <Clock color="#DCE1E5" fill="#E56544" />
+                    <Icon.Clock color="#DCE1E5" fill="#E56544" />
                     {requiredNumber}
                   </div>
                 </div>
@@ -299,7 +282,7 @@ const index = () => {
                   navigate(`/clocks/${taskID}`, { replace: true })
                 }}
               >
-                <Play />
+                <Icon.Play />
                 <p>
                   {getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}
                 </p>
@@ -321,7 +304,7 @@ const index = () => {
               // }
             }}
           >
-            <Trash />
+            <Icon.Trash />
           </button>
           <button
             id="taskEditorSave"
@@ -342,7 +325,7 @@ const index = () => {
               navigate(-1)
             }}
           >
-            <Save />
+            <Icon.Save />
             Save
           </button>
         </div>

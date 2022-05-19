@@ -1,7 +1,7 @@
-import React, { useMemo } from "react"
+import React from "react"
 import { Droppable } from "react-beautiful-dnd"
-import Task from "./Task"
 import { array, object, string } from "prop-types"
+import Task from "./Task"
 
 const InnerTaskList = ({ taskList, type }) => {
   return (

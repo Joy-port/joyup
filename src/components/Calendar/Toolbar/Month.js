@@ -1,9 +1,8 @@
-import { func, object } from "prop-types"
 import React, { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import moment from "moment"
 import { ChevronRight, ChevronLeft } from "react-feather"
-import ViewNavigator from "../../View/ViewNavigator"
+import { func, object } from "prop-types"
+import moment from "moment"
 
 const Month = ({ onView, onNavigate, date }) => {
   const { calendarView } = useParams()

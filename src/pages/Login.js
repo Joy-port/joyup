@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import { useLocation, useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
 import { user } from "../store/actions/user"
-import { checkLoginMessage } from "../utils/config"
 import { AuthContext } from "../components/AuthProvider"
 import Loader from "../components/Loader"
+import { checkLoginMessage } from "../utils/config"
 import logo from "../assets/images/logo/primary/logo_transparent.png"
 import backgroundImage from "../assets/illustrations/Life Management.png"
 

@@ -1,16 +1,16 @@
 import React, { useContext, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { FolderPlus, Inbox, X, Folder } from "react-feather"
 import { Helmet } from "react-helmet"
+import * as Icon from "react-feather"
 import { tags } from "../store/actions/tags"
 import { project } from "../store/actions/project"
-import { firebase } from "../utils/firebase"
 import ProjectSetup from "../components/ProjectSetup"
 import { AuthContext } from "../components/AuthProvider"
+import { firebase } from "../utils/firebase"
 
 const ProjectList = () => {
-  const [userDetail, loading, error] = useContext(AuthContext)
+  const [_, loading, error] = useContext(AuthContext)
   const { ownerProjects, collaborateProjects, userProjects, userTasks } = useSelector(
     (state) => state.user
   )
@@ -18,7 +18,6 @@ const ProjectList = () => {
   const { totalProjectList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const [isOpen, setIsOpen] = useState(false)
   const [isEditTitle, setIsEditTitle] = useState("")
   const [projectTitle, setProjectTile] = useState("")
   const [type, setType] = useState(0)
@@ -50,7 +49,7 @@ const ProjectList = () => {
         <div
           className={`px-4 py-2 flex gap-3 justify-center transition-colors rounded-sm cursor-default font-semibold`}
         >
-          <Folder />
+          <Icon.Folder />
           Projects
         </div>
         {userProjects.length > 0 && (
@@ -60,7 +59,7 @@ const ProjectList = () => {
               dispatch({ type: "modals/switchCreateProjectModal", payload: true })
             }
           >
-            <FolderPlus />
+            <Icon.FolderPlus />
             <p>Create Project</p>
           </div>
         )}
@@ -76,7 +75,7 @@ const ProjectList = () => {
                   dispatch({ type: "modals/switchCreateProjectModal", payload: true })
                 }
               >
-                <FolderPlus size={40} strokeWidth={1} />
+                <Icon.FolderPlus size={40} strokeWidth={1} />
                 <p>Create New Project</p>
               </div>
               {createProjectModalIsOpen && <ProjectSetup />}
@@ -99,7 +98,6 @@ const ProjectList = () => {
                     >
                       <div className="flex justify-between items-start h-full">
                         <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10">
-                          {/* -ml-3 -mr-3 -mt-2 */}
                           {isEditTitle === ownerProject.id ? (
                             <input
                               className="font-semibold bg-transparent rounded z-20 block focus:outline-200 border-1 border-light200 w-32 -m-1 bg-white text-light200"
@@ -148,7 +146,7 @@ const ProjectList = () => {
                             deleteProject(ownerProject.id)
                           }}
                         >
-                          <X strokeWidth={1} />
+                          <Icon.X strokeWidth={1} />
                         </button>
                       </div>
                     </div>
@@ -168,7 +166,7 @@ const ProjectList = () => {
                   dispatch({ type: "modals/switchCreateProjectModal", payload: true })
                 }
               >
-                <Inbox size={28} />
+                <Icon.Inbox size={28} />
                 <p>Invitation</p>
               </div>
             </div>
@@ -193,7 +191,7 @@ const ProjectList = () => {
                     className="block px-4 py-3"
                     onClick={() => deleteProject(collaborateProject.id)}
                   >
-                    <X strokeWidth={1} />
+                    <Icon.X strokeWidth={1} />
                   </button>
                 </div>
               )

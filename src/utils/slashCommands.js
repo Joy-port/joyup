@@ -1,4 +1,4 @@
-import { dayRangeFromToday, getDateFromToday } from "./functions"
+import { dayRangeFromToday, getDateFromToday } from "./helpers"
 
 export const titleCommandList = [
   {

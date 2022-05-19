@@ -1,9 +1,9 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { Draggable } from "react-beautiful-dnd"
-import { number, object, string } from "prop-types"
-import { Menu } from "react-feather"
 import { useDispatch, useSelector } from "react-redux"
+import { Draggable } from "react-beautiful-dnd"
+import { Menu } from "react-feather"
+import { number, object, string } from "prop-types"
 
 const Task = ({ task, index, type }) => {
   const navigate = useNavigate()

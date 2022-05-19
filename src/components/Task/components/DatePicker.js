@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect, useRef } from "react"
+import React, { useState, useCallback, useEffect } from "react"
+import { useSelector } from "react-redux"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
 import dayjs from "dayjs"
-import { useDispatch, useSelector } from "react-redux"
 
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
@@ -13,18 +13,16 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
       value={value}
       id={id}
       onClick={onClick}
-      // isSecure={isSecure}
     />
   )
 }
 
-const DatePick = ({ date, setDate, hasMinDate, showTime }) => {
+const DatePick = ({ date, setDate, hasMinDate }) => {
   const current = new Date()
-  const { startDate, dueDate, allDay } = useSelector((state) => state.task)
+  const { startDate, allDay } = useSelector((state) => state.task)
   const [dateFormat, setDateFormat] = useState(() =>
     allDay ? "MMM dd" : "MMM dd, HH:mm"
   )
-  const dispatch = useDispatch()
   const dateFormatting = useCallback(() => {
     if (allDay) {
       setDateFormat("MMM dd")
@@ -35,16 +33,6 @@ const DatePick = ({ date, setDate, hasMinDate, showTime }) => {
   useEffect(() => {
     dateFormatting()
   }, [dateFormatting, allDay])
-
-  useEffect(() => {
-    // if (new Date(startDate).getDate() !== new Date(dueDate).getDate()) {
-    //   if (allDay) return
-    //   dispatch({ type: "task/editDate", payload: { name: "allDay", date: true } })
-    // } else {
-    //   if (!allDay) return
-    //   dispatch({ type: "task/editDate", payload: { name: "allDay", date: false } })
-    // }
-  }, [showTime])
 
   const addTime = (addTime) => {
     const nowTime = current.getTime()
@@ -132,14 +120,11 @@ CustomInput.propTypes = {
   value: any,
   id: any,
   onClick: func,
-  // isSecure: bool.isRequired,
 }
 DatePick.propTypes = {
   date: any.isRequired,
   setDate: func.isRequired,
   hasMinDate: bool.isRequired,
-  showTime: bool.isRequired,
-  // hasCustomButton: bool.isRequired,
 }
 
 export default DatePick

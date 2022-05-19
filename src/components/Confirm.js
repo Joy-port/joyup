@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import * as Icon from "react-feather"
 
 const Confirm = () => {
   const { openConfirm, confirmText, confirmActionText, action } = useSelector(
     (state) => state.status
   )
   const dispatch = useDispatch()
-
-  //   useEffect(() => {
-  //     console.log("alert", alertText, alertType)
-  //   }, [alertText, alertType])
 
   return (
     <>

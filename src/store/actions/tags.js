@@ -1,11 +1,10 @@
 import { firebase } from "../../utils/firebase"
-import { filterSelectedTypeTags } from "../../utils/functions"
+import { filterSelectedTypeTags } from "../../utils/helpers"
 
 export const tags = {
   initialProjectData: function () {
     return async (dispatch, getState) => {
       try {
-        //get initial all project Data
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const { ownerProjects } = getState().user
         const projectID = ownerProjects[0]
@@ -28,7 +27,6 @@ export const tags = {
           }
           return type
         })
-        //get first type tags
         const selectedTypeData = projectTotalTypes[0]
         const initialTypeID = projectTotalTagsParent[0]
         const selectedColumnOrder = initialProject[initialTypeID]
@@ -60,7 +58,6 @@ export const tags = {
   switchProject: function (projectID) {
     return async (dispatch, getState) => {
       try {
-        //get initial all project Data
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const currentProject = totalProjectList[projectID]
         const projectTasks = currentProject.tasks
@@ -81,7 +78,6 @@ export const tags = {
           }
           return type
         })
-        //get first type tags
         const selectedTypeData = currentProject.currentType
           ? projectTotalTypes.find((type) => type.id === currentProject.currentType)
           : projectTotalTypes[0]
@@ -146,7 +142,7 @@ export const tags = {
     return async (dispatch, getState) => {
       try {
         const { selectedProjectID } = getState().tags
-        // dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
+        dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
         await firebase.saveTaskOrder(selectedProjectID, taskTagContent)
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })

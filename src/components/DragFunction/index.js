@@ -1,8 +1,8 @@
 import React, { useCallback } from "react"
-import { DragDropContext } from "react-beautiful-dnd"
 import { useDispatch, useSelector } from "react-redux"
-import Column from "./components/Column"
+import { DragDropContext } from "react-beautiful-dnd"
 import { tags } from "../../store/actions/tags"
+import Column from "./components/Column"
 
 const index = ({ type }) => {
   const { selectedTagColumns, selectedColumnOrder, selectedTagTasks, selectedType } =

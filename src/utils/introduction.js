@@ -70,27 +70,4 @@ export const steps = {
       locale: { next: "Start My Task" },
     },
   ],
-  // startClock: [],
-  // homePage: [
-  //   {
-  //     title: "Home Page",
-  //     target: "#Home",
-  //     content: <p>Click on the side bar menu to home page and browse the tasks </p>,
-  //   },
-  //   {
-  //     title: "Home Page",
-  //     target: "#Reports",
-  //     content: <p>Click on the side bar menu to home page and browse the tasks </p>,
-  //   },
-  //   {
-  //     title: "Projects Page",
-  //     target: "#Projects",
-  //     content: <p>Click on the side bar menu to Browse all the projects</p>,
-  //   },
-  //   {
-  //     title: "Start to Concentrate",
-  //     target: "#openClockButton",
-  //     content: <p>Click here to select existed tasks and start to concentrate</p>,
-  //   },
-  // ],
 }

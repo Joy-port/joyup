@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import * as Icon from "react-feather"
 import { project } from "../../store/actions/project"
 import { tags } from "../../store/actions/tags"
-import * as Icon from "react-feather"
 import { checkProjectMessage } from "../../utils/config"
 
 const index = () => {

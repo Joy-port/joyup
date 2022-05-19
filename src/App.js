@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { viewInfo } from "./utils/config"
 import { user } from "./store/actions/user"
 import { project } from "./store/actions/project"
 import ProjectList from "./pages/ProjectList"
@@ -19,6 +18,7 @@ import AuthProvider from "./components/AuthProvider"
 import IntroductionTour from "./components/IntroTour"
 import Alert from "./components/Alert"
 import Confirm from "./components/Confirm"
+import { viewInfo } from "./utils/config"
 
 const viewComponents = {
   List,

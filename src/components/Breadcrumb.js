@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, useLocation, useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { Folder, File } from "react-feather"
+import { useSelector } from "react-redux"
+import { Folder } from "react-feather"
 
 const Breadcrumb = () => {
   const { totalProjectList } = useSelector((state) => state.projects)
