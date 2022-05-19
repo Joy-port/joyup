@@ -112,7 +112,7 @@ const index = ({ type }) => {
   }, [selectedProjectTaskList])
 
   const moveEvent = (draggedEventData) => {
-    const { start, end, isAllDay, resourceId, event } = draggedEventData
+    const { start, end, isAllDay, event } = draggedEventData
     const taskID = event.id
     dispatch(task.checkTaskIDToOpen(taskID))
     const startTime = {

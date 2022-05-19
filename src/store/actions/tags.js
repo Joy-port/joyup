@@ -51,7 +51,7 @@ export const tags = {
         dispatch({ type: "tags/switchType", payload: selectedTag })
         console.log("%c initial tags projectData ", "background: #ffeecc; color:#225566")
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -104,7 +104,7 @@ export const tags = {
         dispatch({ type: "tags/switchType", payload: selectedTag })
         // console.log("%c switch projectData ", "background: #ffeecc; color:#225566")
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -134,7 +134,7 @@ export const tags = {
         dispatch({ type: "tags/switchType", payload: selectedTag })
         console.log("%c switch type ", "background: #ffeecc; color:#225566")
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -145,7 +145,7 @@ export const tags = {
         dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
         await firebase.saveTaskOrder(selectedProjectID, taskTagContent)
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -154,7 +154,7 @@ export const tags = {
       try {
         await firebase.saveTaskTags(taskContent)
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },

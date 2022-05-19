@@ -11,16 +11,13 @@ import { firebase } from "../utils/firebase"
 
 const ProjectList = () => {
   const [_, loading, error] = useContext(AuthContext)
-  const { ownerProjects, collaborateProjects, userProjects, userTasks } = useSelector(
-    (state) => state.user
-  )
+  const { ownerProjects, userProjects } = useSelector((state) => state.user)
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)
   const { totalProjectList } = useSelector((state) => state.projects)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isEditTitle, setIsEditTitle] = useState("")
   const [projectTitle, setProjectTile] = useState("")
-  const [type, setType] = useState(0)
   const openProject = (projectID) => {
     if (loading || error) return
     dispatch(tags.switchProject(projectID))
@@ -34,7 +31,7 @@ const ProjectList = () => {
     try {
       await firebase.editProjectTitle(projectID, projectTitle)
     } catch (error) {
-      dispatch({ type: "status/ERROR", payload: error })
+      dispatch({ type: "status/error", payload: error })
     }
   }
 
@@ -63,140 +60,94 @@ const ProjectList = () => {
         )}
       </div>
       <div className="hidden md:block -mt-5 min-h-18"></div>
-      {type === 0 ? (
+      {ownerProjects.length === 0 ? (
         <>
-          {ownerProjects.length === 0 ? (
-            <>
-              <div
-                className="h-full flex flex-col gap-5 justify-center items-center cursor-pointer"
-                onClick={() =>
-                  dispatch({ type: "modals/switchCreateProjectModal", payload: true })
-                }
-              >
-                <Icon.FolderPlus size={40} strokeWidth={1} />
-                <p>Create New Project</p>
-              </div>
-              {createProjectModalIsOpen && <ProjectSetup />}
-            </>
-          ) : (
-            <>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
-                {ownerProjects.map((projectID) => {
-                  if (projectID === "") {
-                    return
-                  }
-                  const ownerProject = totalProjectList[projectID]
-                  return (
-                    <div
-                      key={ownerProject.id}
-                      className="border-1 shadow border-light100 bg-white hover:bg-light000 hover:border-light000 rounded cursor-pointer h-28 p-4"
-                      onClick={() => {
-                        openProject(ownerProject.id)
-                      }}
-                    >
-                      <div className="flex justify-between items-start h-full">
-                        <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10">
-                          {isEditTitle === ownerProject.id ? (
-                            <input
-                              className="font-semibold bg-transparent rounded z-20 block focus:outline-200 border-1 border-light200 w-32 -m-1 bg-white text-light200"
-                              type="text"
-                              value={projectTitle}
-                              onChange={(e) => {
-                                setProjectTile(e.target.value)
-                              }}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                              }}
-                              onBlur={(e) => {
-                                console.log(e, "onBlur")
-                                editProjectName(ownerProject.id)
-                                setIsEditTitle("")
-                                setProjectTile("")
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  editProjectName(ownerProject.id)
-                                  setIsEditTitle("")
-                                  setProjectTile("")
-                                }
-                              }}
-                            />
-                          ) : (
-                            <p
-                              className="text-overflow-ellipsis h-full overflow-hidden cursor-text"
-                              onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                setIsEditTitle(ownerProject.id)
-                                setProjectTile(ownerProject.title)
-                              }}
-                            >
-                              {ownerProject.title}
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          className={`text-light200 hover:text-light300 ${
-                            isEditTitle ? "hidden" : "block"
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            deleteProject(ownerProject.id)
-                          }}
-                        >
-                          <Icon.X strokeWidth={1} />
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </>
-          )}
+          <div
+            className="h-full flex flex-col gap-5 justify-center items-center cursor-pointer"
+            onClick={() =>
+              dispatch({ type: "modals/switchCreateProjectModal", payload: true })
+            }
+          >
+            <Icon.FolderPlus size={40} strokeWidth={1} />
+            <p>Create New Project</p>
+          </div>
+          {createProjectModalIsOpen && <ProjectSetup />}
         </>
       ) : (
-        <div className="collaborate-project">
-          <div className="flex justify-end items-center mb-5">
-            <div className="flex gap-3 items-center">
-              <div
-                className="flex gap-3 items-center justify-center button button-light cursor-pointer w-40"
-                onClick={() =>
-                  dispatch({ type: "modals/switchCreateProjectModal", payload: true })
-                }
-              >
-                <Icon.Inbox size={28} />
-                <p>Invitation</p>
-              </div>
-            </div>
-          </div>
-          {collaborateProjects &&
-            collaborateProjects.map((projectID) => {
-              const collaborateProject = totalProjectList[projectID]
-              collaborateProject && (
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
+            {ownerProjects.map((projectID) => {
+              if (projectID === "") {
+                return
+              }
+              const ownerProject = totalProjectList[projectID]
+              return (
                 <div
-                  key={collaborateProject.id}
-                  className="shadow-md border-1 border-light000 bg-white hover:bg-light200 hover:text-white hover:border-light200 rounded flex justify-between"
+                  key={ownerProject.id}
+                  className="border-1 shadow border-light100 bg-white hover:bg-light000 hover:border-light000 rounded cursor-pointer h-28 p-4"
+                  onClick={() => {
+                    openProject(ownerProject.id)
+                  }}
                 >
-                  <div
-                    className="uppercase cursor-pointer px-4 py-3 grow"
-                    onClick={() => {
-                      openProject(collaborateProject.id)
-                    }}
-                  >
-                    {collaborateProject.title}
+                  <div className="flex justify-between items-start h-full">
+                    <div className="capitalize font-semibold grow hide flex gap-4 items-center z-10">
+                      {isEditTitle === ownerProject.id ? (
+                        <input
+                          className="font-semibold bg-transparent rounded z-20 block focus:outline-200 border-1 border-light200 w-32 -m-1 bg-white text-light200"
+                          type="text"
+                          value={projectTitle}
+                          onChange={(e) => {
+                            setProjectTile(e.target.value)
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                          onBlur={(e) => {
+                            console.log(e, "onBlur")
+                            editProjectName(ownerProject.id)
+                            setIsEditTitle("")
+                            setProjectTile("")
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              editProjectName(ownerProject.id)
+                              setIsEditTitle("")
+                              setProjectTile("")
+                            }
+                          }}
+                        />
+                      ) : (
+                        <p
+                          className="text-overflow-ellipsis h-full overflow-hidden cursor-text"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setIsEditTitle(ownerProject.id)
+                            setProjectTile(ownerProject.title)
+                          }}
+                        >
+                          {ownerProject.title}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      className={`text-light200 hover:text-light300 ${
+                        isEditTitle ? "hidden" : "block"
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        deleteProject(ownerProject.id)
+                      }}
+                    >
+                      <Icon.X strokeWidth={1} />
+                    </button>
                   </div>
-                  <button
-                    className="block px-4 py-3"
-                    onClick={() => deleteProject(collaborateProject.id)}
-                  >
-                    <Icon.X strokeWidth={1} />
-                  </button>
                 </div>
               )
             })}
-        </div>
+          </div>
+        </>
       )}
-
       {createProjectModalIsOpen && <ProjectSetup />}
     </>
   )

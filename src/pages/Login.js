@@ -30,7 +30,6 @@ const Login = () => {
     console.log("check login status", userDetail, loading, pathname)
     if (loading) return
     if (userDetail && id !== "") {
-      console.log("after login", userDetail, id)
       if (isLoginPath) {
         navigate("/projects")
       }
