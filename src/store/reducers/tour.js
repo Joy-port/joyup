@@ -5,19 +5,15 @@ const initialTourState = {
   continuous: true,
   loading: false,
   stepIndex: 0,
-  steps: steps.startTask, //startTask //introTask//introClock
+  steps: steps.startTask,
 }
 const tourReducer = (state = initialTourState, action) => {
   switch (action.type) {
-    case "tour/START":
-      return { ...state, run: true }
-    case "tour/RESET":
-      return { ...state, stepIndex: 0 }
-    case "tour/STOP":
+    case "tour/stop":
       return { ...state, run: false }
-    case "tour/NEXT_OR_PREV":
+    case "tour/toNextOrToPrevious":
       return { ...state, ...action.payload }
-    case "tour/RESTART":
+    case "tour/restart":
       return {
         ...state,
         stepIndex: 0,
@@ -25,7 +21,7 @@ const tourReducer = (state = initialTourState, action) => {
         loading: false,
         key: new Date(),
       }
-    case "tour/SWITCH_STEPS":
+    case "tour/switchSteps":
       return {
         ...state,
         steps: action.payload,

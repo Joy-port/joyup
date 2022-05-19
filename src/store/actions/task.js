@@ -35,7 +35,7 @@ export const task = {
         }
         dispatch({ type: "task/editTags", payload: newTagState })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -48,7 +48,7 @@ export const task = {
           [dateContent.name]: dateContent.date,
         })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -62,7 +62,7 @@ export const task = {
           [type]: content,
         })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -82,7 +82,7 @@ export const task = {
           // await firebase.saveTagsToProjectIDfromTask(content)
         })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -106,7 +106,7 @@ export const task = {
         dispatch({ type: "task/projectID", payload: selectedProjectID })
         dispatch({ type: "task/editTags", payload: defaultTagList })
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -116,7 +116,7 @@ export const task = {
         const { id, projectID, tagList } = getState().task
         await firebase.deleteTaskFromTaskAndProjects(id, projectID, tagList)
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },

@@ -34,7 +34,6 @@ function App() {
     dispatch(project.updateProjects())
     dispatch(project.updateTags())
     dispatch(project.updateTasks())
-    dispatch(user.listenUserStatus())
   }, [])
 
   return (

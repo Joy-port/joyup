@@ -12,21 +12,17 @@ import TimeModal from "./components/TimeModal"
 
 const index = () => {
   const { taskClockSettingModalIsOpen } = useSelector((state) => state.modals)
-  const { totalTaskList, userProjects, isFirstTimeUser } = useSelector(
-    (state) => state.user
-  )
+  const { totalTaskList, userProjects } = useSelector((state) => state.user)
   const { totalProjectList } = useSelector((state) => state.projects)
   const { types, selectedColumnOrder, selectedProjectID } = useSelector(
     (state) => state.tags
   )
   const {
-    id,
     mode,
     title,
     projectID,
     startDate,
     dueDate,
-    parent,
     tagList,
     clockNumber,
     requiredNumber,
@@ -81,10 +77,8 @@ const index = () => {
         <button
           className="modal-header self-end"
           onClick={() => {
-            // if (confirm("quit without saving current change?")) {
             dispatch({ type: "task/clearTaskWithoutSaving" })
             navigate(-1)
-            // }
           }}
         >
           <Icon.X size={20} />
@@ -298,10 +292,8 @@ const index = () => {
             className="button button-light flex justify-center items-center gap-3 w-1/2"
             id="taskEditorDelete"
             onClick={() => {
-              // if (confirm("confirm to delete the task ")) {
               dispatch(task.deleteCurrentTask())
               navigate(-1)
-              // }
             }}
           >
             <Icon.Trash />

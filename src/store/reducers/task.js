@@ -54,9 +54,6 @@ function taskReducer(state = initialTaskState, action) {
       const { name, date } = action.payload
       return { ...state, [name]: date }
     case "task/description":
-      // if (action.payload.content !== "") {
-      //   await firebase.saveDescription(state)
-      // }
       return { ...state, description: [...action.payload] }
     case "task/title":
       return { ...state, title: action.payload }

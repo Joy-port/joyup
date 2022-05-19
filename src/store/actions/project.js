@@ -2,18 +2,13 @@ import { firebase } from "../../utils/firebase"
 
 export const project = {
   updateProjects: function () {
-    return async function (dispatch, getState) {
+    return async function (dispatch) {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
           dispatch({ type: "projects/updateProjects", payload: projects })
-          // const projectTasks = Object.keys(projects).flatMap((projectID) => {
-          //   return projects[projectID].tasks
-          // })
-          // dispatch({ type: "user/getUserTasks", payload: projectTasks })
-          console.log("%c listen project update", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -25,32 +20,19 @@ export const project = {
           console.log("%c listen tags update ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
   updateTasks: function () {
-    return async function (dispatch, getState) {
+    return async function (dispatch) {
       try {
         await firebase.getRealTimeData("tasks", (tasks) => {
           dispatch({ type: "projects/updateAllTasks", payload: tasks })
           console.log("%c listen tasks update ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
-      }
-    }
-  },
-  getTemplates: function () {
-    return async function (dispatch, getState) {
-      try {
-        const { totalProjectList } = getState().projects
-        const templateProjects = Object.values(totalProjectList).filter(
-          (project) => project.isTemplate === 1
-        )
-        dispatch({ type: "projects/updateTemplate", payload: templateProjects })
-      } catch (err) {
-        dispatch({ type: "status/ERROR", payload: err })
+        dispatch({ type: "status/error", payload: err })
       }
     }
   },
@@ -70,7 +52,7 @@ export const project = {
           callback && callback(projectID)
         })
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: error })
+        dispatch({ type: "status/error", payload: error })
       }
     }
   },
@@ -80,7 +62,7 @@ export const project = {
         const { id } = getState().user
         await firebase.deleteProject(projectID, id)
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: error })
+        dispatch({ type: "status/error", payload: error })
       }
     }
   },
@@ -102,12 +84,11 @@ export const project = {
         await firebase
           .saveProjectToUserProjects(id, newProjectID, "ownerProjects")
           .then(() => {
-            // console.log(callback)
             callback && callback(newProjectID)
           })
           .catch((err) => console.error(err))
       } catch (error) {
-        dispatch({ type: "status/ERROR", payload: error })
+        dispatch({ type: "status/error", payload: error })
       }
     }
   },

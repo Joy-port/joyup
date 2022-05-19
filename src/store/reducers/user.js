@@ -2,7 +2,6 @@ const initialUserState = {
   userProjects: [],
   collaborateProjects: [],
   ownerProjects: [],
-  invitationProjects: [],
   userTasks: [],
   userName: "",
   id: "",
@@ -26,11 +25,6 @@ function userReducer(state = initialUserState, action) {
         ...state,
         ownerProjects: [...ownerProjects],
         collaborateProjects: [...collaborateProjects],
-      }
-    case "user/receiveInvitationProjectList":
-      return {
-        ...state,
-        invitationProjects: [...action.payload],
       }
     case "user/getUserProfile":
       const { id, userName } = action.payload

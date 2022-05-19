@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import * as Icon from "react-feather"
 const Alert = () => {
   const { alertText, alertType, alertIsShow } = useSelector((state) => state.status)
-  const dispatch = useDispatch()
   const [isShow, setIsShow] = useState(alertIsShow)
+  const dispatch = useDispatch()
   const IconName = (type) => {
     if (type === "danger") {
       return <Icon.AlertCircle color="#FDF0ED" fill="#E56544" />

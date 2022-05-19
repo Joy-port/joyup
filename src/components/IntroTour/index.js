@@ -7,7 +7,7 @@ import { AuthContext } from "../AuthProvider"
 import { v4 as uuidv4 } from "uuid"
 
 const index = () => {
-  const [userDetail, loading, error] = useContext(AuthContext)
+  const [userDetail] = useContext(AuthContext)
   const [runTour, setRunTour] = useState(false)
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)
   const { isFirstTimeUser, tourStage } = useSelector((state) => state.user)
@@ -29,7 +29,7 @@ const index = () => {
       }
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       dispatch({
-        type: "tour/NEXT_OR_PREV",
+        type: "tour/toNextOrToPrevious",
         payload: { stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) },
       })
     }
@@ -41,7 +41,7 @@ const index = () => {
       pathname.includes("/projects") &&
       createProjectModalIsOpen === false
     ) {
-      dispatch({ type: "tour/SWITCH_STEPS", payload: steps.startTask })
+      dispatch({ type: "tour/switchSteps", payload: steps.startTask })
       setRunTour(true)
     }
     return
@@ -51,9 +51,9 @@ const index = () => {
     if (!isFirstTimeUser && runTour) return
     if (pathname.includes("/projects") && tourStage === 0) {
     } else if (pathname.includes("/tasks") && tourStage === 1) {
-      dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introTask })
+      dispatch({ type: "tour/switchSteps", payload: steps.introTask })
     } else if (pathname.includes("/clocks") && tourStage === 2) {
-      dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introClock })
+      dispatch({ type: "tour/switchSteps", payload: steps.introClock })
     }
     startTour()
   }, [pathname, runTour])
@@ -61,23 +61,23 @@ const index = () => {
   const tourActions = (data) => {
     if (pathname.includes("/projects")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/STOP" })
+        dispatch({ type: "tour/stop" })
         dispatch({ type: "task/createNewTask", payload: newTaskID })
-        dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introTask })
+        dispatch({ type: "tour/switchSteps", payload: steps.introTask })
         dispatch({ type: "user/setTourStage", payload: 1 })
         navigate(`/tasks/${newTaskID}`)
       })
     } else if (pathname.includes("tasks")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/STOP" })
-        dispatch({ type: "tour/SWITCH_STEPS", payload: steps.introClock })
+        dispatch({ type: "tour/stop" })
+        dispatch({ type: "tour/switchSteps", payload: steps.introClock })
         dispatch({ type: "user/setTourStage", payload: 2 })
         navigate(`/clocks/${newTaskID}`, { replace: true })
       })
     } else if (pathname.includes("clocks")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/STOP" })
-        dispatch({ type: "tour/SWITCH_STEPS", payload: steps.homePage })
+        dispatch({ type: "tour/stop" })
+        dispatch({ type: "tour/switchSteps", payload: steps.homePage })
         dispatch({ type: "user/setIsFirstTimeUser", payload: false })
         dispatch({ type: "user/setTourStage", payload: 3 })
         setRunTour(false)
@@ -88,7 +88,7 @@ const index = () => {
 
   const startTour = () => {
     if (!isFirstTimeUser) return
-    dispatch({ type: "tour/RESTART" })
+    dispatch({ type: "tour/restart" })
   }
 
   return (

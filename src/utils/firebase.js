@@ -1,5 +1,4 @@
 import { create } from "./config"
-import { getTagList } from "./helpers"
 import { initializeApp } from "firebase/app"
 import {
   getFirestore,
@@ -21,36 +20,18 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  deleteUser,
-  onAuthStateChanged,
 } from "firebase/auth"
-// import { getAnalytics } from "firebase/analytics"
-// const analytics = getAnalytics(app)
-
-//joyup
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD_0PAwmG4T-MAMAuJ0RKVxeLfONWS_9jg",
-//   authDomain: "joyup-management.firebaseapp.com",
-//   projectId: "joyup-management",
-//   storageBucket: "joyup-management.appspot.com",
-//   messagingSenderId: "974089768584",
-//   appId: "1:974089768584:web:5e9b8a9c0fcf5b7c28593d",
-//   measurementId: "G-BC10DC990F",
-// }
-
-//test account for storage
 const firebaseConfig = {
-  apiKey: "AIzaSyAn2Rn0KtkKJi1OMuj1NLMHE6ojyeMRUvk",
-  authDomain: "designworks-project.firebaseapp.com",
-  projectId: "designworks-project",
-  storageBucket: "designworks-project.appspot.com",
-  messagingSenderId: "773350951759",
-  appId: "1:773350951759:web:b30f70ffe1d872adbe133a",
-  measurementId: "G-4KNVP5V95N",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: "joyup-management.firebaseapp.com",
+  projectId: "joyup-management",
+  storageBucket: "joyup-management.appspot.com",
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 }
 
 const app = initializeApp(firebaseConfig)
-
 export const firebase = {
   db: getFirestore(app),
   getRealTimeData: async function (collectionName, callback) {
@@ -88,30 +69,6 @@ export const firebase = {
       callback(dataObject)
     })
   },
-  editUserSettingsTimer: async function (userID, clockSettings) {
-    try {
-      const collectionName = "userSettings"
-      const userSettingsRef = doc(this.db, collectionName, userID)
-      await updateDoc(userSettingsRef, {
-        clockSettings,
-      })
-      // alert("setting is saved successfully!")
-    } catch (err) {
-      console.error(err)
-    }
-  },
-  saveUserSettingsUserName: async function (user) {
-    try {
-      const collectionName = "userSettings"
-      const userSettingsRef = doc(this.db, collectionName, user.id)
-      await updateDoc(userSettingsRef, {
-        name: user.userName,
-      })
-      // alert("user name is saved")
-    } catch (error) {
-      console.error(error)
-    }
-  },
   getTotalProjects: async function () {
     const collectionName = "projects"
     const projectRef = collection(this.db, collectionName)
@@ -122,55 +79,16 @@ export const firebase = {
     })
     return totalProjects
   },
-  // getUserProjects: async function (userID) {
-  //   //has problem to fix
-  //   const userCollection = "userProjects"
-  //   const userRef = doc(this.db, userCollection, userID)
-  //   const userProjects = await getDoc(userRef)
-  //   if (!userProjects.exists()) return {}
-  //   const ownerProjects = userProjects.data().ownerProjects || []
-  //   const collaborateProjects = userProjects.data().collaborateProjects || []
-  //   return { ownerProjects, collaborateProjects }
-  // },
-  // createNewProject: async function (projectID, projectTitle, userID) {
-  //   //when created project with defaultTags
-  //   try {
-  //     //create data in project collections
-  //     const collectionName = "projects"
-  //     const projectRef = doc(this.db, collectionName, projectID)
-  //     const projectContent = {
-  //       title: projectTitle,
-  //       tags: [...defaultTypes],
-  //       ...defaultTags,
-  //     }
-  //     await setDoc(projectRef, projectContent)
-  //     //create data in user
-  //     const userCollection = "userProjects"
-  //     //project Type needed to be added
-  //     // ownerProjects or  collaborateProjects
-  //     const projectType = "ownerProjects"
-  //     const userRef = doc(this.db, userCollection, userID)
-  //     await updateDoc(userRef, {
-  //       [projectType]: arrayUnion(projectID),
-  //     })
-
-  //     return projectContent
-  //   } catch (err) {
-  //     console.error(error)
-  //   }
-  // },
   saveTagsToProjectID: async function (content) {
     const { parentTag, childTag, taskID, projectID } = content
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
     const projectTags = await getDoc(projectRef)
-    //add if new create
     if (!projectTags.data().tasks.some((item) => item === taskID)) {
       await updateDoc(projectRef, {
         tasks: arrayUnion(taskID),
       })
     }
-    //delete previous
     const tagList = [...projectTags.data()[parentTag]]
     const prevTag = tagList.find((tagID) => {
       const hasTask = projectTags.data()[tagID].find((task) => task === taskID)
@@ -182,7 +100,6 @@ export const firebase = {
         [prevTag]: arrayRemove(taskID),
       })
     }
-    //add to new
     if (!projectTags.data()[childTag]) {
       await updateDoc(projectRef, {
         [childTag]: [],
@@ -195,7 +112,6 @@ export const firebase = {
   saveTaskOrder: async function (projectID, columnContent) {
     const collectionName = "projects"
     const projectRef = doc(this.db, collectionName, projectID)
-    // const projectDoc = await getDoc(projectRef)
     await updateDoc(projectRef, {
       [columnContent.id]: columnContent.taskIds,
     })
@@ -226,19 +142,6 @@ export const firebase = {
       console.error(err)
     }
   },
-  getTagColumnRelatedTaskIds: async function (projectID, columnIDs) {
-    const collectionName = "projects"
-    const projectRef = doc(this.db, collectionName, projectID)
-    const projectTags = await getDoc(projectRef)
-    const columnTaskIds = {}
-    columnIDs.forEach((column) => {
-      const columnContent = {
-        taskIds: projectTags.data()[column.id],
-      }
-      columnTaskIds[column.id] = columnContent
-    })
-    return columnTaskIds
-  },
   saveCurrentProjectOrderType: async function (typeID, projectID) {
     try {
       const collectionName = "projects"
@@ -251,35 +154,8 @@ export const firebase = {
       console.error(error)
     }
   },
-  getDefaultTags: async function (projectID) {
-    try {
-      const collectionName = "tags"
-      const tagsData = collection(this.db, collectionName)
-      const q = query(tagsData, where("createdBy", "==", "0"))
-      const qProject = query(tagsData, where("projectID", "==", projectID))
-      const defaultTagList = await getDocs(q)
-      const projectTagList = await getDocs(q)
-      const defaultTags = getTagList(defaultTagList)
-      const customTags = getTagList(projectTagList)
-      if (customTags !== []) defaultTags.concat(customTags)
-      return defaultTags
-    } catch (error) {
-      console.error(error)
-    }
-  },
-  getProjectTags: async function (projectID) {
-    try {
-      const collectionName = "projects"
-      const projectRef = doc(this.db, collectionName, projectID)
-      const projectTagsDocument = await getDoc(projectRef)
-      return { ...projectTagsDocument.data() }
-    } catch (err) {
-      console.error(err)
-    }
-  },
   saveTask: async function (taskContent) {
     try {
-      console.log("save task", taskContent)
       const collectionName = "tasks"
       const taskRef = doc(this.db, collectionName, taskContent.id)
       const taskDoc = await getDoc(taskRef)
@@ -346,16 +222,9 @@ export const firebase = {
           [tagID]: arrayRemove(taskID),
         })
       })
-      // console.log(tags)
     } catch (error) {
       console.error(error)
     }
-  },
-  saveDefaultTagsToTags: async function () {
-    const q = [this.db, "tags"]
-    create.tags.forEach(async (tag) => {
-      await setDoc(doc(...q, tag.id), { ...tag })
-    })
   },
   createProjectWithTemplate: async function (projectContent, userID) {
     try {
@@ -443,17 +312,6 @@ export const firebase = {
       console.error(error)
     }
   },
-  editUserName: async function (userID, title) {
-    try {
-      const userCollection = "userSettings"
-      const userRef = doc(this.db, userCollection, userID)
-      await updateDoc(userRef, {
-        title,
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  },
   deleteProject: async function (projectID, userID) {
     try {
       const projectCollection = "projects"
@@ -463,10 +321,8 @@ export const firebase = {
         collection(this.db, taskCollection),
         where("projectID", "==", projectID)
       )
-      console.log("delete project")
       const taskSnapShot = await getDocs(taskQuery)
       taskSnapShot.forEach(async (task) => {
-        console.log(task.id)
         if (task.id) {
           await deleteDoc(doc(this.db, taskCollection, task.id))
         }
@@ -490,18 +346,16 @@ export const login = {
   userSignUp: async function (email, password, callback) {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
-        if (!userCredential) throw new Error("連線錯誤，請重新注冊")
+        if (!userCredential) {
+          callback && callback("connect error, please try again")
+          return
+        }
         const user = userCredential.user
         return user
       })
       .catch((error) => {
         const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
-        if (errMsg === "weak password") {
-          // alert("請輸入6位數字密碼")
-          return
-        }
         callback && callback(errMsg)
-        // alert(errMsg)
         const errorCode = error.code
         const errorMessage = error.message
         throw new Error(errorCode, errorMessage)
@@ -510,13 +364,15 @@ export const login = {
   userSignIn: async function (email, password, callback) {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
-        if (!userCredential) throw new Error("連線錯誤，請重新登入")
+        if (!userCredential) {
+          callback && callback("connect error, please try again")
+          return
+        }
         const user = userCredential.user
         return user
       })
       .catch((error) => {
         const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
-        // alert(errMsg)
         callback && callback(errMsg)
         const errorCode = error.code
         const errorMessage = error.message
@@ -528,29 +384,10 @@ export const login = {
       await signOut(this.auth)
     } catch (error) {
       const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
-      // alert(error.message)
       callback && callback(errMsg)
       const errorCode = error.code
       const errorMessage = error.message
       throw new Error(errorCode, errorMessage)
     }
-  },
-  // deleteProfile: function () {
-  //   deleteUser(this.auth.currentUser)
-  //     .then(() => {
-  //       console.log("deleted")
-  //     })
-  //     .catch((error) => {
-  //       console.error(error)
-  //     })
-  // },
-  userStatusChange: async function (isSignInCallBack, isSignOutCallBack) {
-    return onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        isSignInCallBack(user)
-      } else {
-        isSignOutCallBack()
-      }
-    })
   },
 }

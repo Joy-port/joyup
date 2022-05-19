@@ -1,5 +1,4 @@
 const initialStatus = {
-  isLoading: true,
   alertText: "",
   alertType: "",
   alertIsShow: false,
@@ -12,11 +11,7 @@ const initialStatus = {
 
 function statusReducer(state = initialStatus, action) {
   switch (action.type) {
-    case "status/SUCCESS":
-      return { ...state, isLoading: false }
-    case "status/LOADING":
-      return { ...state, isLoading: true }
-    case "status/ERROR":
+    case "status/error":
       const err = action.payload
       console.error(err.code, err.message, err)
       return state
