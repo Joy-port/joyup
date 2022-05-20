@@ -32,14 +32,15 @@ const TaskList = () => {
     navigate(`/tasks/${newTaskID}`)
   }
 
-  const filterTaskList = () => {
-    const newTaskList = userTasks.filter((taskID) => {
+  const filterTaskList = userTasks
+    .filter((taskID) => {
       const taskDetail = totalTaskList[taskID]
       const taskDueDate = new Date(taskDetail.dueDate).getDate()
-      taskDueDate >= new Date().getDate()
+      return taskDueDate >= new Date().getDate()
     })
-    return newTaskList
-  }
+    .sort((a, b) => {
+      return totalTaskList[a].dueDate - totalTaskList[b].dueDate
+    })
   return (
     <>
       {userTasks.length !== 0 && userProjects.length !== 0 && (
@@ -72,7 +73,7 @@ const TaskList = () => {
                 <Clock />
                 Select Task to Start
               </p>
-              {openSelector && (
+              {openSelector && filterTaskList.length > 0 && (
                 <div
                   className={`dropdown-container max-h-28 overflow-y-auto overflow-x-hidden scrollbar shadow-md shadow-light200 border-t-2 border-t-light100 ${
                     userTasks.length === 1
@@ -92,11 +93,9 @@ const TaskList = () => {
                       setOpenSelector(false)
                     }}
                   >
-                    {userTasks.map((id) => {
+                    {filterTaskList.map((id) => {
                       const task = totalTaskList[id]
-                      const taskDueDate = new Date(task.dueDate).getDate()
                       const projectDetail = totalProjectList[task.projectID]
-                      if (taskDueDate < new Date().getDate()) return
                       return (
                         <li
                           className="dropdown-item max-w-full truncate pb-2 border-b-1 border-b-light100 hover:text-white flex justify-between items-center "

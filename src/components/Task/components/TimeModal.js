@@ -9,22 +9,12 @@ const TimeModal = () => {
   const modalOpenScrollRef = useRef()
   const { taskClockSettingModalIsOpen } = useSelector((state) => state.modals)
   const dispatch = useDispatch()
-  const {
-    workTime,
-    breakTime,
-    clockNumber,
-    requiredTime,
-    requiredNumber,
-    totalTime,
-    mode,
-  } = useSelector((state) => state.task)
+  const { workTime, breakTime, requiredTime, requiredNumber, totalTime, mode } =
+    useSelector((state) => state.task)
   const { taskID } = useParams()
   const [requiredNumberError, setRequiredNumberError] = useState(2)
   const [workTimeError, setWorkTimeError] = useState(2)
   const [breakTimeError, setBreakTimeError] = useState(2)
-  const [requiredNumberErrorMessage, setRequiredNumberErrorMessage] = useState("")
-  const [workTimeErrorMessage, setWorkTimeErrorMessage] = useState("")
-  const [breakTimeErrorMessage, setBreakTimeErrorMessage] = useState("")
   useEffect(() => {
     if (taskClockSettingModalIsOpen && modalOpenScrollRef) {
       modalOpenScrollRef.current.scrollIntoView({ behavior: "smooth" })
@@ -78,46 +68,49 @@ const TimeModal = () => {
 
   const checkWorkTime = (inputWorkTime, type) => {
     let errorType = null
-    let errorMessage = null
+    let errorTitle = ""
     type.includes("workTime")
       ? (errorType = setWorkTimeError)
+      : type.includes("requiredTime")
+      ? (errorType = setRequiredNumberError)
       : (errorType = setBreakTimeError)
     type.includes("workTime")
-      ? (errorMessage = setWorkTimeErrorMessage)
-      : (errorMessage = setBreakTimeErrorMessage)
+      ? (errorTitle = "Work time ")
+      : type.includes("requiredTime")
+      ? (errorTitle = "Total Required Time")
+      : (errorTitle = "Break time ")
     if (inputWorkTime) {
       errorType(2)
-      errorMessage("")
     } else if (!parseFloat(inputWorkTime)) {
       errorType(0)
-      errorMessage(checkProjectMessage.editClockWorkTime.notNumber)
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: errorTitle + checkProjectMessage.editClockWorkTime.notNumber,
+          type: "danger",
+        },
+      })
     } else if (inputWorkTime.length > 480) {
       errorType(0)
-      errorMessage(checkProjectMessage.editClockWorkTime.lengthError)
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: errorTitle + checkProjectMessage.editClockWorkTime.lengthError,
+          type: "danger",
+        },
+      })
     } else if (inputWorkTime.length < 1) {
+      if (type.includes("requiredTime")) return
       errorType(2)
-      errorMessage(checkProjectMessage.editClockWorkTime.required)
+      dispatch({
+        type: "alert/status",
+        payload: {
+          text: errorTitle + checkProjectMessage.editClockWorkTime.required,
+          type: "danger",
+        },
+      })
     } else {
       errorType(2)
-      errorMessage("")
-    }
-  }
-
-  const checkRequiredNumber = (e) => {
-    const inputRequiredTime = e.target.value
-    if (inputRequiredTime) {
-      console.log(inputRequiredTime)
-      setRequiredNumberError(2)
-      setRequiredNumberErrorMessage("")
-    } else if (!parseFloat(inputRequiredTime)) {
-      setRequiredNumberError(0)
-      setRequiredNumberErrorMessage(checkProjectMessage.editClockWorkTime.notNumber)
-    } else if (inputRequiredTime.length > 480) {
-      setRequiredNumberError(0)
-      setRequiredNumberErrorMessage(checkProjectMessage.editClockWorkTime.lengthError)
-    } else {
-      setRequiredNumberError(2)
-      setRequiredNumberErrorMessage("")
     }
   }
 
@@ -158,7 +151,7 @@ const TimeModal = () => {
                 type="number"
                 value={requiredTime}
                 onChange={(e) => {
-                  checkRequiredNumber(e)
+                  checkWorkTime(e.target.value, "requiredTime")
                   checkWhenEditNumber(e.target.value, "task/requiredTime")
                 }}
               />
@@ -173,15 +166,6 @@ const TimeModal = () => {
               {requiredNumber}
             </div>
           </div>
-
-          {/* <small
-            className={`text-danger ml-5 h-4 -my-1 ${
-              requiredNumberErrorMessage ? "visible" : "invisible"
-            }`}
-          >
-            {requiredNumberErrorMessage}
-          </small> */}
-          {/* <div className="flex gap-2 items-center">=</div> */}
         </div>
         <div className="flex gap-12 justify-between items-center pb-2 ">
           <div className="flex gap-4 items-center">
@@ -208,15 +192,6 @@ const TimeModal = () => {
             <p className="">mins</p>
           </div>
         </div>
-        {/* <div className="-mt-4 ml-auto">
-          <small
-            className={`text-danger h-2 ${
-              workTimeErrorMessage ? "visible" : "invisible"
-            }`}
-          >
-            {workTimeErrorMessage}
-          </small>
-        </div> */}
         <div className="flex gap-12 justify-between items-center pb-5 border-b-1 border-b-light100">
           <div className="flex gap-4 items-center">
             <Clock strokeWidth={1} fill="#ACBAC3" color="#ffffff" />
@@ -242,16 +217,6 @@ const TimeModal = () => {
             <p className="">mins</p>
           </div>
         </div>
-        {/* <div className="">
-          <small
-            className={`text-danger ml-5 h-2 -my-3 ${
-              breakTimeErrorMessage ? "visible" : "invisible"
-            }`}
-          >
-            {breakTimeErrorMessage}
-          </small>
-        </div> */}
-
         <div className="flex gap-12 justify-between items-center mb-4">
           <div className="flex gap-4 items-center">
             <Circle strokeWidth={1} size={10} fill="#ACBAC3" color="#ACBAC3" />
@@ -277,14 +242,6 @@ const TimeModal = () => {
           <Play />
           <p>{getHourTime(totalTime) === 0 ? "Start Timer" : getHourTime(totalTime)}</p>
         </div>
-
-        {/* <div
-          className="button text-primary flex justify-center items-center gap-3 mb-1"
-          onClick={() => navigate(`/clocks/${taskID}`, { replace: true })}
-        >
-          <PlayCircle />
-          <p>Start Timer</p>
-        </div> */}
       </div>
     </div>
   )
