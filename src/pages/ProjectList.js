@@ -102,8 +102,7 @@ const ProjectList = () => {
                           onClick={(e) => {
                             e.stopPropagation()
                           }}
-                          onBlur={(e) => {
-                            console.log(e, "onBlur")
+                          onBlur={() => {
                             editProjectName(ownerProject.id)
                             setIsEditTitle("")
                             setProjectTile("")

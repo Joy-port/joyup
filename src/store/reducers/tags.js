@@ -35,7 +35,6 @@ function tagsReducer(state = initialTagState, action) {
         selectedTagColumns: { ...selectedColumns },
         selectedTagTasks: selectedTasks,
         selectedColumnOrder: [...selectedColumnOrder],
-        // noneTagTasks: noneGroupTask,
       }
     case "tags/switchTaskOrders":
       const columnContent = { ...action.payload }
@@ -59,21 +58,6 @@ function tagsReducer(state = initialTagState, action) {
       return {
         ...JSON.parse(JSON.stringify(initialTagState)),
       }
-    case "getAllProjects":
-      // const totalProjects = await firebase.getTotalProjects()
-      return { ...state, totalProjectList: [...totalProjects] }
-    case "getProjectList":
-      const { userID } = action.payload
-      // const [ownerProjects, collaborateProjects] = await firebase.getUserProjects(userID)
-      // projectList: projects, currentProjectID: projects[0]
-      // console.log(ownerProjects)
-      return {
-        ...state,
-        ownerProjectList: [...ownerProjects],
-        collaborateProjectList: [...collaborateProjects],
-      }
-    // case "switchProject":
-    //   return { ...state, currentProjectID: action.payload }
     default:
       return state
   }

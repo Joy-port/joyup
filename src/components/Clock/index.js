@@ -34,14 +34,13 @@ const PromodoroClock = () => {
       })
     }
   }
-  const clockShowNumberIcons = useCallback(() => {
-    if (!taskDetail.requiredNumber > 0 || !taskDetail.clockNumber > 0) return
+  const clockShowNumberIcons = () => {
     if (taskDetail.clockNumber >= taskDetail.requiredNumber) {
       return Object.keys(Array.apply(0, Array(taskDetail.clockNumber))).map(
         (_, index) => {
           return (
             <div key={index}>
-              <Icon.Clock opacity={1} />
+              <Icon.Clock opacity={1} fill="#E56544" color="white" />
             </div>
           )
         }
@@ -58,10 +57,7 @@ const PromodoroClock = () => {
         }
       )
     }
-  })
-  useEffect(() => {
-    clockShowNumberIcons()
-  }, [clockShowNumberIcons])
+  }
   const clockStatus = (type, status) => {
     dispatch({
       type: "clockAction",
@@ -80,7 +76,7 @@ const PromodoroClock = () => {
       dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
       dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
     }
-  }, [totalSpendingSeconds, isPaused])
+  }, [isPaused])
   useEffect(() => {
     dispatch(task.saveTaskDetail("clockNumber", parseFloat(workNumbers)))
   }, [workNumbers])

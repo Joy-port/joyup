@@ -283,10 +283,7 @@ const TitleEditor = () => {
           ref={inputRef}
           placeholder="Task name or type ' / ' for commands "
           autoFocus
-          onBlur={() => {
-            console.log("blur clear all commands")
-            clearExistingCommands()
-          }}
+          onBlur={() => clearExistingCommands()}
         />
       )}
       {matchingCommands.length !== 0 && (
