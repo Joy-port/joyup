@@ -74,3 +74,9 @@ export function filterSelectedTypeTags(
 
   return [selectedColumns, selectedTasks]
 }
+
+export const filterCommandListByQuery = (commandList, queryType) => {
+  return commandList.filter((command) =>
+    command.name.toLowerCase().match(queryType.toLowerCase())
+  )
+}

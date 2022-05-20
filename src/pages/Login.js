@@ -27,7 +27,6 @@ const Login = () => {
   const [passwordMessage, setPasswordMessage] = useState("")
   const isLoginPath = pathname === "/signin"
   useEffect(() => {
-    console.log("check login status", userDetail, loading, pathname)
     if (loading) return
     if (userDetail && id !== "") {
       if (isLoginPath) {

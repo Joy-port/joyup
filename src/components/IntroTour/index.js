@@ -12,9 +12,9 @@ const index = () => {
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)
   const { isFirstTimeUser, tourStage } = useSelector((state) => state.user)
   const tourStatus = useSelector((state) => state.tour)
+  const { pathname } = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { pathname } = useLocation()
   const newTaskID = uuidv4()
   const runNextStepTour = (data, callback) => {
     const { action, index, type, status } = data
@@ -23,8 +23,8 @@ const index = () => {
       (status === STATUS.SKIPPED && tourStatus.run) ||
       status === STATUS.FINISHED
     ) {
-      console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
       if (action === "next" && status === "finished") {
+        dispatch({ type: "tour/stop" })
         callback && callback()
       }
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
@@ -49,8 +49,7 @@ const index = () => {
 
   useEffect(() => {
     if (!isFirstTimeUser && runTour) return
-    if (pathname.includes("/projects") && tourStage === 0) {
-    } else if (pathname.includes("/tasks") && tourStage === 1) {
+    if (pathname.includes("/tasks") && tourStage === 1) {
       dispatch({ type: "tour/switchSteps", payload: steps.introTask })
     } else if (pathname.includes("/clocks") && tourStage === 2) {
       dispatch({ type: "tour/switchSteps", payload: steps.introClock })
@@ -61,7 +60,6 @@ const index = () => {
   const tourActions = (data) => {
     if (pathname.includes("/projects")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/stop" })
         dispatch({ type: "task/createNewTask", payload: newTaskID })
         dispatch({ type: "tour/switchSteps", payload: steps.introTask })
         dispatch({ type: "user/setTourStage", payload: 1 })
@@ -69,14 +67,12 @@ const index = () => {
       })
     } else if (pathname.includes("tasks")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/stop" })
         dispatch({ type: "tour/switchSteps", payload: steps.introClock })
         dispatch({ type: "user/setTourStage", payload: 2 })
         navigate(`/clocks/${newTaskID}`, { replace: true })
       })
     } else if (pathname.includes("clocks")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/stop" })
         dispatch({ type: "tour/switchSteps", payload: steps.homePage })
         dispatch({ type: "user/setIsFirstTimeUser", payload: false })
         dispatch({ type: "user/setTourStage", payload: 3 })
@@ -93,38 +89,36 @@ const index = () => {
 
   return (
     <>
-      {isFirstTimeUser && (
-        <>
-          <JoyRide
-            {...tourStatus}
-            callback={tourActions}
-            continuous={true}
-            run={runTour}
-            styles={{
-              tooltipContainer: {
-                textAlign: "left",
-              },
-              buttonNext: {
-                backgroundColor: "#669FBA",
-              },
-              buttonBack: {
-                color: "#E3EDF2",
-                marginRight: 10,
-                cursor: "default",
-              },
-              buttonSkip: {
-                color: "#E3EDF2",
-              },
-              spotlightPadding: 5,
-            }}
-            locale={{
-              last: "Next",
-              skip: "Skip",
-              next: "Next",
-              back: "←",
-            }}
-          />
-        </>
+      {isFirstTimeUser && runTour && (
+        <JoyRide
+          {...tourStatus}
+          callback={tourActions}
+          continuous={true}
+          run={runTour}
+          styles={{
+            tooltipContainer: {
+              textAlign: "left",
+            },
+            buttonNext: {
+              backgroundColor: "#669FBA",
+            },
+            buttonBack: {
+              color: "#E3EDF2",
+              marginRight: 10,
+              cursor: "default",
+            },
+            buttonSkip: {
+              color: "#E3EDF2",
+            },
+            spotlightPadding: 5,
+          }}
+          locale={{
+            last: "Next",
+            skip: "Skip",
+            next: "Next",
+            back: "←",
+          }}
+        />
       )}
     </>
   )

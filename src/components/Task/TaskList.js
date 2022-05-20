@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Plus, Clock, PlayCircle } from "react-feather"
 import { v4 as uuidv4 } from "uuid"
+import useOpenTaskPage from "../../hooks/useOpenTaskPage"
 
 const TaskList = () => {
   const dispatch = useDispatch()
@@ -11,6 +12,7 @@ const TaskList = () => {
   let navigate = useNavigate()
   let { pathname } = useLocation()
   const [openSelector, setOpenSelector] = useState(false)
+  const openTaskPage = useOpenTaskPage()
   const createNewTask = () => {
     if (userProjects.length < 1) {
       dispatch({
@@ -30,11 +32,6 @@ const TaskList = () => {
     navigate(`/tasks/${newTaskID}`)
   }
 
-  const openTask = (taskID) => {
-    const taskDetail = JSON.parse(JSON.stringify(totalTaskList[taskID]))
-    dispatch({ type: "task/openSavedTask", payload: taskDetail })
-    navigate(`/clocks/${taskID}`)
-  }
   const filterTaskList = () => {
     const newTaskList = userTasks.filter((taskID) => {
       const taskDetail = totalTaskList[taskID]
@@ -106,7 +103,7 @@ const TaskList = () => {
                           value={task.id}
                           key={task.id}
                           onClick={() => {
-                            openTask(task.id)
+                            openTaskPage(task.id)
                             setOpenSelector(false)
                           }}
                         >

@@ -5,6 +5,7 @@ export const steps = {
       title: "Start to Concentrate",
       target: "#openClockButton",
       content: <p>Click here to select a existing task and start to focus</p>,
+      disableBeacon: false,
     },
     {
       title: "New Task",

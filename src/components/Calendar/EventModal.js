@@ -27,7 +27,6 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
         top = position.clientY - 50
       }
     } else {
-      console.log(position)
       left = (position.left + position.right - position.x) / 2 + 50
       top = ((position.top + position.bottom - position.y) * 56) / 100
       if (position.x - 200 < 0) {
@@ -75,7 +74,6 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
             </div>
           </div>
           <div
-            className=""
             onClick={() => {
               setIsOpenModal(false)
               navigate(`/tasks/${taskDetail.id}`)
@@ -84,7 +82,6 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
             Start : {dayjs(new Date(taskDetail.startDate)).format("MMM DD, HH:MM")}
           </div>
           <div
-            className=""
             onClick={() => {
               setIsOpenModal(false)
               navigate(`/tasks/${taskDetail.id}`)
