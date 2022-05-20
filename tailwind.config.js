@@ -1,7 +1,6 @@
 module.exports = {
   mode: "jit",
   content: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx}"],
-  // plugins: [],
   theme: {
     screens: {
       xs: "360px",
@@ -17,12 +16,12 @@ module.exports = {
       slateDark: "#23272A",
       slateLight: "#2C2F33",
       light300: "#4D5F6A",
-      light200: "#ACBAC3", // "#8492a6", //#ACBAC3
+      light200: "#ACBAC3",
       light100: "#DCE1E5",
       light000: "#F3F5F6",
       blue200: "#669FBA",
       blue100: "#9CC2D3",
-      blue000: "#E3EDF2", //E2EDF3
+      blue000: "#E3EDF2",
       red200: "#E56544",
       red100: "#EB886F",
       red000: "#FDF0ED",
@@ -30,9 +29,8 @@ module.exports = {
       green100: "#92C8A5",
       green000: "#F1F8F4",
       warning: "#FFD860",
-      // warningLight: "#FDF0ED",
-      danger: "#E56544", //f54e4e
-      dangerLight: "#FDF0ED", //f54e4e
+      danger: "#E56544",
+      dangerLight: "#FDF0ED",
       success: "#60AF7B",
       successLight: "#F1F8F4",
       info: "#669FBA",
@@ -74,7 +72,6 @@ module.exports = {
       },
       borderRadius: {
         "4xl": "2rem",
-        // full: "9999px",
       },
       height: {
         "custom-lg": "calc(100vh - 200px)",
@@ -372,15 +369,4 @@ module.exports = {
       opacity: ["disabled"],
     },
   },
-  // plugins: [
-  //   plugin(function ({ addComponents }) {
-  //     addComponents({
-  //       ".btn": {
-  //         padding: ".5rem 1rem",
-  //         borderRadius: ".25rem",
-  //         fontWeight: "600",
-  //       },
-  //     })
-  //   }),
-  // ],
 }

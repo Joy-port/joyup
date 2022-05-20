@@ -49,7 +49,6 @@ export const tags = {
         dispatch({ type: "tags/getProjectTasks", payload: projectTaskDetail })
         dispatch({ type: "tags/getProjectInitialTypes", payload: projectTotalTypes })
         dispatch({ type: "tags/switchType", payload: selectedTag })
-        console.log("%c initial tags projectData ", "background: #ffeecc; color:#225566")
       } catch (err) {
         dispatch({ type: "status/error", payload: err })
       }
@@ -102,7 +101,6 @@ export const tags = {
         dispatch({ type: "tags/getProjectTasks", payload: projectTaskDetail })
         dispatch({ type: "tags/getProjectInitialTypes", payload: projectTotalTypes })
         dispatch({ type: "tags/switchType", payload: selectedTag })
-        // console.log("%c switch projectData ", "background: #ffeecc; color:#225566")
       } catch (err) {
         dispatch({ type: "status/error", payload: err })
       }
@@ -113,7 +111,6 @@ export const tags = {
       try {
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const { selectedProjectID, types } = getState().tags
-        console.log("switch type project ID", selectedProjectID, selectedTypeID)
         const currentProject = totalProjectList[selectedProjectID]
         const selectedTypeData = types.find((type) => type.id === selectedTypeID)
         const selectedColumnOrder = currentProject[selectedTypeID]
@@ -132,7 +129,6 @@ export const tags = {
         }
         await firebase.saveCurrentProjectOrderType(selectedTypeID, selectedProjectID)
         dispatch({ type: "tags/switchType", payload: selectedTag })
-        console.log("%c switch type ", "background: #ffeecc; color:#225566")
       } catch (err) {
         dispatch({ type: "status/error", payload: err })
       }

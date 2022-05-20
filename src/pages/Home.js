@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import { Helmet } from "react-helmet"
 import * as Icon from "react-feather"
@@ -109,8 +107,7 @@ const Home = () => {
           events={events}
           formats={AgendaView.formats}
           length={0.25}
-          onSelectEvent={handleSelectEvent} //onclick once
-          // onDoubleClickEvent={onDoubleClickEvent} //onclick twice
+          onSelectEvent={handleSelectEvent}
         />
       )}
     </>

@@ -16,7 +16,6 @@ function statusReducer(state = initialStatus, action) {
       console.error(err.code, err.message, err)
       return state
     case "alert/status":
-      console.log(action.payload)
       const { text, type } = action.payload
       return {
         ...state,

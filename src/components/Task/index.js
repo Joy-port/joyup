@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getHourTime } from "../../utils/helpers"
@@ -34,10 +34,11 @@ const index = () => {
   const navigate = useNavigate()
   const [calendarStartDate, setCalendarStartDate] = useState(startDate)
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
-
-  useEffect(() => {
-    dispatch(task.saveTaskDetail("projectID", selectedProjectID))
-  }, [selectedProjectID])
+  const selectDate = useCallback((selectedDateType, name) => {
+    const date = new Date(selectedDateType).getTime()
+    const dateContent = { name, date }
+    dispatch(task.saveTaskDate(dateContent))
+  })
   useEffect(() => {
     if (!totalTaskList?.taskID) {
       types.forEach((type) => {
@@ -51,6 +52,10 @@ const index = () => {
     }
   }, [])
   useEffect(() => {
+    if (!selectedProjectID) return
+    dispatch(task.saveTaskDetail("projectID", selectedProjectID))
+  }, [selectedProjectID])
+  useEffect(() => {
     dispatch(task.checkTaskIDToOpen(taskID))
   }, [taskID])
   useEffect(() => {
@@ -62,14 +67,10 @@ const index = () => {
     }
   }, [startDate])
   useEffect(() => {
-    const date = new Date(calendarStartDate).getTime()
-    const dateContent = { name: "startDate", date }
-    dispatch(task.saveTaskDate(dateContent))
+    selectDate(calendarStartDate, "startDate")
   }, [calendarStartDate])
   useEffect(() => {
-    const date = new Date(calendarDueDate).getTime()
-    const dateContent = { name: "dueDate", date }
-    dispatch(task.saveTaskDate(dateContent))
+    selectDate(calendarDueDate, "dueDate")
   }, [calendarDueDate])
   return (
     <div className="modal-bg">

@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react"
 import { useSelector } from "react-redux"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
-import dayjs from "dayjs"
+import moment from "moment"
 
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
   return (
@@ -24,11 +24,7 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
     allDay ? "MMM dd" : "MMM dd, HH:mm"
   )
   const dateFormatting = useCallback(() => {
-    if (allDay) {
-      setDateFormat("MMM dd")
-    } else {
-      setDateFormat("MMM dd, HH:mm")
-    }
+    allDay ? setDateFormat("MMM dd") : setDateFormat("MMM dd, HH:mm")
   })
   useEffect(() => {
     dateFormatting()
@@ -41,8 +37,8 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
     return newDateObj
   }
   const requiredTime = useCallback((time) => {
-    const minute = dayjs(time).minute()
-    const hour = dayjs(time).hour()
+    const minute = moment(time).minute()
+    const hour = moment(time).hour()
     const requireHour = minute > 30 ? 24 - hour : 23 - hour
     const requireMinute = minute > 30 ? "" : ".5"
     return parseFloat(requireHour + requireMinute)
@@ -52,11 +48,9 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
   })
   const onChange = (date) => {
     if (hasMinDate) {
-      if (date.toString() !== startDate.toString()) {
-        setMaxTime(addTime(23))
-      } else {
-        setMaxTime(addTime(requiredTime()))
-      }
+      date.toString() !== startDate.toString()
+        ? setMaxTime(addTime(23))
+        : setMaxTime(addTime(requiredTime()))
     }
 
     return setDate(new Date(date).getTime())
@@ -65,15 +59,15 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
     if (value === undefined) return
     if (value.trim().toLowerCase() === "tomorrow") {
       setDate(() => {
-        return new Date(dayjs(current).add(1, "day"))
+        return new Date(moment(current).add(1, "days"))
       })
     } else if (value.trim().toLowerCase() === "next week") {
       setDate(() => {
-        return new Date(dayjs(current).add(7, "day"))
+        return new Date(moment(current).add(7, "days"))
       })
     } else if (value.trim().toLowerCase() === "next month") {
       setDate(() => {
-        return new Date(dayjs(current).add(1, "month"))
+        return new Date(moment(current).add(1, "months"))
       })
     }
   }
@@ -102,9 +96,7 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
           showDisabledMonthNavigation
           selected={date}
           timeIntervals={30}
-          onChange={(date) => {
-            onChange(date)
-          }}
+          onChange={(date) => onChange(date)}
           onChangeRaw={(event) => handleChangeRaw(event.target.value)}
           dateFormat={dateFormat}
           customInput={<CustomInput />}

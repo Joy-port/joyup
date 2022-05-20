@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { Edit3, X } from "react-feather"
 import { object, func, bool, string } from "prop-types"
-import dayjs from "dayjs"
+import moment from "moment"
 import { task } from "../../store/actions/task"
 
 const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
@@ -79,7 +79,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
               navigate(`/tasks/${taskDetail.id}`)
             }}
           >
-            Start : {dayjs(new Date(taskDetail.startDate)).format("MMM DD, HH:MM")}
+            Start : {moment(new Date(taskDetail.startDate)).format("MMM DD, HH:mm")}
           </div>
           <div
             onClick={() => {
@@ -87,7 +87,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
               navigate(`/tasks/${taskDetail.id}`)
             }}
           >
-            Due : {dayjs(new Date(taskDetail.dueDate)).format("MMM DD, HH:MM")}
+            Due : {moment(new Date(taskDetail.dueDate)).format("MMM DD, HH:mm")}
           </div>
           <div
             className="button button-dark ml-auto cursor-pointer w-10"
