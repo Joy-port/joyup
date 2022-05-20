@@ -7,14 +7,14 @@ import * as Icon from "react-feather"
 import moment from "moment"
 import CustomCalendar from "../components/Calendar"
 import Toolbar from "../components/Calendar/Toolbar"
+import useOpenTaskPage from "../hooks/useOpenTaskPage"
 
 const localizer = momentLocalizer(moment)
 
 const Home = () => {
   const { userTasks } = useSelector((state) => state.user)
   const { totalTaskList } = useSelector((state) => state.projects)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const openTaskPage = useOpenTaskPage()
   const updateEvents = useCallback(() => {
     if (userTasks.length === 0) return []
     const newEvents = userTasks.map((taskID) => {
@@ -35,8 +35,7 @@ const Home = () => {
 
   const handleSelectEvent = useCallback((event) => {
     if (totalTaskList[event.id]) {
-      dispatch({ type: "task/openSavedTask", payload: event })
-      navigate(`/tasks/${event.id}`)
+      openTaskPage(event.id)
     }
   })
 

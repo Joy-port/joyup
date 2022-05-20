@@ -36,7 +36,7 @@ export const project = {
       }
     }
   },
-  createNewProject: function (projectContent, callback) {
+  createNewProject: function (projectContent, callback, alert) {
     return async (dispatch, getState) => {
       try {
         const { projectTitle, isPublic } = projectContent
@@ -48,9 +48,14 @@ export const project = {
           id,
           publicStatus
         )
-        await firebase.saveProjectToUserProjects(id, projectID, type).then(() => {
-          callback && callback(projectID)
-        })
+        await firebase
+          .saveProjectToUserProjects(id, projectID, type)
+          .then(() => {
+            callback && callback(projectID)
+          })
+          .then(() => {
+            alert && alert(projectID)
+          })
       } catch (error) {
         dispatch({ type: "status/error", payload: error })
       }
@@ -66,7 +71,7 @@ export const project = {
       }
     }
   },
-  createNewProjectFromTemplate: function (projectID, callback) {
+  createNewProjectFromTemplate: function (projectID, callback, alert) {
     return async (dispatch, getState) => {
       try {
         const { id } = getState().user
@@ -85,6 +90,9 @@ export const project = {
           .saveProjectToUserProjects(id, newProjectID, "ownerProjects")
           .then(() => {
             callback && callback(newProjectID)
+          })
+          .then(() => {
+            alert && alert(newProjectID)
           })
           .catch((err) => console.error(err))
       } catch (error) {

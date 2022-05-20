@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid"
 import { task } from "../../store/actions/task"
 import Toolbar from "./Toolbar"
 import EventModal from "./EventModal"
+import useOpenTaskPage from "../../hooks/useOpenTaskPage"
 
 const localizer = momentLocalizer(moment)
 const DragDropCalendar = withDragAndDrop(Calendar)
@@ -20,6 +21,7 @@ const index = ({ type }) => {
   const [newTaskID, setNewTaskID] = useState("")
   const currentRef = useRef()
   const { calendarView } = useParams()
+  const openTaskPage = useOpenTaskPage()
   const bigCalendar = useMemo(
     () => ({
       components: {
@@ -47,11 +49,11 @@ const index = ({ type }) => {
     }
   }, [newTaskID])
 
-  const eventPropGetter = useCallback((event, start, end, isSelected) => {
+  const eventPropGetter = useCallback((event, isSelected) => {
     return {
       ...(isSelected && {
         style: {
-          backgroundColor: "#000",
+          backgroundColor: "#669FBA",
         },
       }),
       ...(event.title.toLowerCase().includes("meeting") && {
@@ -65,9 +67,7 @@ const index = ({ type }) => {
     window.clearTimeout(currentRef?.current)
     currentRef.current = window.setTimeout(() => {
       if (totalTaskList[event.id]) {
-        const taskDetail = JSON.parse(JSON.stringify(totalTaskList[event.id]))
-        dispatch({ type: "task/openSavedTask", payload: taskDetail })
-        navigate(`/tasks/${taskDetail.id}`)
+        openTaskPage(event.id)
       }
     }, 100)
   }, [])

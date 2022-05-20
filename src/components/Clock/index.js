@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
 import { task } from "../../store/actions/task"
 import Circular from "./Circular"
+import useOpenTaskPage from "../../hooks/useOpenTaskPage"
 
 const PromodoroClock = () => {
   const { isFirstTimeUser } = useSelector((state) => state.user)
@@ -13,7 +14,6 @@ const PromodoroClock = () => {
   const { isPaused, workNumbers, totalSpendingSeconds } = useSelector(
     (state) => state.clock
   )
-  const { totalTaskList } = useSelector((state) => state.projects)
   const taskDetail = useSelector((state) => state.task)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -21,6 +21,7 @@ const PromodoroClock = () => {
   const secondsRunRef = useRef(secondsRun)
   const totalTimeRef = useRef(0)
   const { taskID } = useParams()
+  const openTaskPage = useOpenTaskPage()
   const setTimer = (clockType) => {
     dispatch({
       type: "clock/addClockNumber",
@@ -173,13 +174,7 @@ const PromodoroClock = () => {
               className={`absolute top-5 left-50 bg-white rounded-md p-3 w-5/6 shadow cursor-pointer transition-colors ${
                 mode ? "text-blue200" : "text-red200"
               }`}
-              onClick={() => {
-                const taskDetail = totalTaskList[taskID]
-                if (taskDetail) {
-                  dispatch({ type: "task/openSavedTask", payload: taskDetail })
-                }
-                navigate(`/tasks/${taskID}`, { replace: true })
-              }}
+              onClick={() => openTaskPage(taskID, true)}
             >
               <div className="flex justify-between items-center">
                 <div className={`text-lg ${taskDetail.title !== "" ? "" : "opacity-50"}`}>
@@ -211,11 +206,7 @@ const PromodoroClock = () => {
               } ${isFirstTimeUser ? "cursor-default" : ""}`}
               onClick={() => {
                 if (isFirstTimeUser) return
-                const taskDetail = totalTaskList[taskID]
-                if (taskDetail) {
-                  dispatch({ type: "task/openSavedTask", payload: taskDetail })
-                }
-                navigate(`/tasks/${taskID}`, { replace: true })
+                openTaskPage(taskID, true)
               }}
             >
               <Icon.CornerDownLeft />

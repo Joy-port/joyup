@@ -12,9 +12,9 @@ const index = () => {
   const { createProjectModalIsOpen } = useSelector((state) => state.modals)
   const { isFirstTimeUser, tourStage } = useSelector((state) => state.user)
   const tourStatus = useSelector((state) => state.tour)
+  const { pathname } = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { pathname } = useLocation()
   const newTaskID = uuidv4()
   const runNextStepTour = (data, callback) => {
     const { action, index, type, status } = data
@@ -25,6 +25,7 @@ const index = () => {
     ) {
       console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
       if (action === "next" && status === "finished") {
+        dispatch({ type: "tour/stop" })
         callback && callback()
       }
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
@@ -61,7 +62,6 @@ const index = () => {
   const tourActions = (data) => {
     if (pathname.includes("/projects")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/stop" })
         dispatch({ type: "task/createNewTask", payload: newTaskID })
         dispatch({ type: "tour/switchSteps", payload: steps.introTask })
         dispatch({ type: "user/setTourStage", payload: 1 })
@@ -69,14 +69,12 @@ const index = () => {
       })
     } else if (pathname.includes("tasks")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/stop" })
         dispatch({ type: "tour/switchSteps", payload: steps.introClock })
         dispatch({ type: "user/setTourStage", payload: 2 })
         navigate(`/clocks/${newTaskID}`, { replace: true })
       })
     } else if (pathname.includes("clocks")) {
       runNextStepTour(data, () => {
-        dispatch({ type: "tour/stop" })
         dispatch({ type: "tour/switchSteps", payload: steps.homePage })
         dispatch({ type: "user/setIsFirstTimeUser", payload: false })
         dispatch({ type: "user/setTourStage", payload: 3 })

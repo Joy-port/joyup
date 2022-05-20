@@ -24,6 +24,17 @@ const index = () => {
   const templateProjects = Object.values(totalProjectList).filter(
     (project) => project.isTemplate === 1
   )
+  const closeProjectModalAndSwitchProject = (projectID) => {
+    dispatch({ type: "modals/switchCreateProjectModal", payload: false })
+    dispatch(tags.switchProject(projectID))
+  }
+  const runAlertWhenSuccessAndSwitchToPage = (projectID) => {
+    dispatch({
+      type: "alert/status",
+      payload: { text: "Project is set up", type: "success" },
+    })
+    navigate(`${projectID}`)
+  }
 
   const createNewProject = (e) => {
     e.preventDefault()
@@ -40,34 +51,25 @@ const index = () => {
         isPublic,
       }
       dispatch(
-        project.createNewProject(projectContent, (projectID) => {
-          dispatch(tags.switchProject(projectID))
-          dispatch({ type: "modals/switchCreateProjectModal", payload: false })
-          dispatch({
-            type: "alert/status",
-            payload: { text: "Project is set up", type: "success" },
-          })
-          navigate(`${projectID}`)
-        })
+        project.createNewProject(
+          projectContent,
+          closeProjectModalAndSwitchProject,
+          runAlertWhenSuccessAndSwitchToPage
+        )
       )
-      // navigate("/projects")
     } else if (currentPage === 1) {
       dispatch(
-        project.createNewProjectFromTemplate(selectedTemplateType, (projectID) => {
-          dispatch({ type: "modals/switchCreateProjectModal", payload: false })
-          dispatch(tags.switchProject(projectID))
-          dispatch({
-            type: "alert/status",
-            payload: { text: "project is set up", type: "success" },
-          })
-          navigate(`${projectID}`)
-        })
+        project.createNewProjectFromTemplate(
+          selectedTemplateType,
+          closeProjectModalAndSwitchProject,
+          runAlertWhenSuccessAndSwitchToPage
+        )
       )
     }
   }
 
-  const checkTitleMessage = (e) => {
-    if (projectTitle.trim()) {
+  const checkTitleMessage = (content) => {
+    if (content.trim()) {
       setTitleAlertMessage(checkProjectMessage.createEmptyProject.required)
       return false
     } else {

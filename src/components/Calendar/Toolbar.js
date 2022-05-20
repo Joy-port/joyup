@@ -44,11 +44,7 @@ const Day = ({ onView, onNavigate, date, view, type }) => {
   }
 
   useEffect(() => {
-    if (date.getDate() === new Date().getDate()) {
-      setIsToday(true)
-    } else {
-      setIsToday(false)
-    }
+    setIsToday(date.getDate() === new Date().getDate())
   }, [switchDayBackOrForth, switchBetweenViews, switchToCurrentDate])
 
   return (

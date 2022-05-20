@@ -1,6 +1,6 @@
 import { combineReducers } from "redux"
 import user from "./reducers/user"
-import projects from "./reducers/project"
+import projects from "./reducers/projects"
 import task from "./reducers/task"
 import tags from "./reducers/tags"
 import clock from "./reducers/clock"
