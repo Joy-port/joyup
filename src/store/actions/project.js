@@ -1,11 +1,16 @@
 import { firebase } from "../../utils/firebase"
+import { tags } from "./tags"
 
 export const project = {
   updateProjects: function () {
-    return async function (dispatch) {
+    return async function (dispatch, getState) {
       try {
+        const { selectedProjectID } = getState().tags
         await firebase.getRealTimeData("projects", (projects) => {
           dispatch({ type: "projects/updateProjects", payload: projects })
+          selectedProjectID
+            ? dispatch(tags.switchProject(selectedProjectID))
+            : dispatch(tags.initialProjectData())
         })
       } catch (err) {
         dispatch({ type: "status/error", payload: err })
@@ -24,10 +29,14 @@ export const project = {
     }
   },
   updateTasks: function () {
-    return async function (dispatch) {
+    return async function (dispatch, getState) {
       try {
+        const { selectedProjectID } = getState().tags
         await firebase.getRealTimeData("tasks", (tasks) => {
           dispatch({ type: "projects/updateAllTasks", payload: tasks })
+          selectedProjectID
+            ? dispatch(tags.switchProject(selectedProjectID))
+            : dispatch(tags.initialProjectData())
         })
       } catch (err) {
         dispatch({ type: "status/error", payload: err })

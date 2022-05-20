@@ -71,18 +71,16 @@ const PromodoroClock = () => {
     })
   }
   useEffect(() => {
-    if (isPaused) {
-      dispatch(task.saveTaskDetail("totalTime", parseFloat(totalSpendingSeconds)))
-      dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
-      dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
-    }
-  }, [isPaused])
-  useEffect(() => {
     dispatch(task.saveTaskDetail("clockNumber", parseFloat(workNumbers)))
   }, [workNumbers])
   useEffect(() => {
     const timer = setInterval(() => {
-      if (isPaused) return
+      if (isPaused) {
+        dispatch(task.saveTaskDetail("totalTime", parseFloat(totalSpendingSeconds)))
+        dispatch(task.saveTaskDetail("secondsLeft", parseFloat(secondsLeftRef.current)))
+        dispatch(task.saveTaskDetail("secondsRun", parseFloat(secondsRunRef.current)))
+        return
+      }
       const totalRunTime = mode === 0 ? workTime * 60 : breakTime * 60
       if (secondsRunRef.current === totalRunTime && secondsLeftRef.current === 0) {
         return switchMode()
@@ -92,12 +90,6 @@ const PromodoroClock = () => {
 
     return () => clearInterval(timer)
   }, [isPaused, mode, secondsLeft, secondsRun])
-
-  useEffect(() => {
-    if (secondsRunRef === 0 || isPaused === true) return
-    totalTimeRef.current += 1
-    dispatch({ type: "clock/calculateTotalTime", payload: totalTimeRef.current })
-  }, [secondsRun])
 
   const switchMode = () => {
     mode === 0 ? setTimer("workNumbers") : setTimer("breakNumbers")
@@ -115,6 +107,8 @@ const PromodoroClock = () => {
     taskStatus("secondsLeft", secondsLeftRef.current)
     secondsRunRef.current++
     taskStatus("secondsRun", secondsRunRef.current)
+    totalTimeRef.current += 1
+    dispatch({ type: "clock/calculateTotalTime", payload: totalTimeRef.current })
   }
   const resetTimer = () => {
     const currentLeftTime = mode === 0 ? workTime * 60 : breakTime * 60

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react"
+import { useSelector } from "react-redux"
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import { Helmet } from "react-helmet"
 import * as Icon from "react-feather"

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
 import { Routes, Route, Navigate, Outlet } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { user } from "./store/actions/user"
 import { project } from "./store/actions/project"
 import ProjectList from "./pages/ProjectList"
 import Home from "./pages/Home"
