@@ -41,7 +41,6 @@ const index = ({ type }) => {
   const { totalTaskList } = useSelector((state) => state.projects)
   const [events, setEvents] = useState(Object.values(selectedProjectTaskList))
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (newTaskID) {

@@ -4,11 +4,12 @@ import * as Icon from "react-feather"
 import { v4 as uuidv4 } from "uuid"
 import { task } from "../../../store/actions/task"
 import { TextType } from "../../../utils/config"
+import { filterCommandListByQuery } from "../../../utils/helpers"
 
 const TextEditor = () => {
   const { description } = useSelector((state) => state.task)
-  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(false)
+  const dispatch = useDispatch()
 
   const [HTMLStyle, setHTMLStyle] = useState({})
   const [textContent, setTextContent] = useState({})
@@ -105,15 +106,10 @@ const TextEditor = () => {
     dispatch(task.saveTaskDetail("editDescription", [...description]))
   }, [description])
 
-  const matchingCommands =
-    query !== null
-      ? TextType.filter((command) =>
-          command.name.toLowerCase().match(query.toLowerCase())
-        )
-      : []
+  const matchingCommands = query !== null ? filterCommandListByQuery(TextType, query) : []
 
-  const onChange = (e) => {
-    const newText = e.target.value
+  const onChange = (inputText) => {
+    const newText = inputText
     setText(newText)
     description.find((item) => item.id === inputRef.current.id).content = newText
     if (slashCharacterPosition !== null) {
@@ -133,23 +129,6 @@ const TextEditor = () => {
   const selectCommand = (command) => {
     deleteSlashCommand()
     description.find((item) => item.id === inputRef.current.id).html = command
-    // if (command.combine) {
-    //   const currentHTMLStyle = HTMLStyle.style
-    //   const addStyle = `${currentHTMLStyle} ${command.style}`
-    //   const newStyle = { ...HTMLStyle.style, style: addStyle }
-    //   selectCommand((prevStyle) => {
-    //     return {
-    //       ...prevStyle,
-    //       style: addStyle,
-    //     }
-    //   })
-    //   setHTMLStyle(newStyle)
-    //   console.log(command)
-    //   console.log(HTMLStyle)
-    //   setSlashCharacterPosition(null)
-    //   setQuery(null)
-    //   return
-    // }
     setHTMLStyle(command)
     setSlashCharacterPosition(null)
     setQuery(null)
@@ -157,42 +136,10 @@ const TextEditor = () => {
     setIsEditing(true)
   }
 
-  const switchToNextLine = useCallback(() => {
-    setIsEditing(false)
-    const index = description.findIndex((item) => item.id === inputRef.current.id)
-    if (description[index + 1]) {
-      setText(description[index + 1].content)
-      focusInput.current = description[index + 1].id
-      setIsEditing(true)
-      setSlashCharacterPosition(null)
-      setQuery(null)
-    } else {
-      setHTMLStyle({})
-      const blank = {
-        content: "",
-        id: uuidv4(),
-        html: {
-          tag: "p",
-          name: "Text",
-          style: "",
-        },
-      }
-      addNewBlock(index + 1, blank)
-      setTextContent(blank)
-      setText(blank.content)
-      setHTMLStyle({ ...blank.html })
-      focusInput.current = blank.id
-      setIsEditing(true)
-      setSlashCharacterPosition(null)
-      setQuery(null)
-    }
-  })
-
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
       if (slashCharacterPosition === null) {
         changeTextStyle()
-
         setIsEditing(false)
         const currentBlock = currentBlockIndex()
         const nextBlock =
@@ -291,10 +238,6 @@ const TextEditor = () => {
           setHTMLStyle(currentContent.html)
           focusInput.current = currentContent.id
           setIsEditing(true)
-
-          // description.filter((item) => item.id !== inputRef.current.id)
-          // focusInput.current = toSpecificBlock(currentBlock).id
-          // setText(toSpecificBlock(currentBlock).content)
         }
       }
     }
@@ -314,9 +257,7 @@ const TextEditor = () => {
         className={`editor border-1 min-h-fix-400 ${
           isEditing ? "border-light300" : "border-transparent"
         }`}
-        onClick={(e) => {
-          setIsEditing(true)
-        }}
+        onClick={() => setIsEditing(true)}
       >
         <div className="text-light300 group-title">
           <Icon.Type strokeWidth={1.5} />
@@ -337,15 +278,13 @@ const TextEditor = () => {
                       cols="30"
                       rows="10"
                       value={text}
-                      onChange={(e) => onChange(e)}
+                      onChange={(e) => onChange(e.target.value)}
                       onKeyDown={(e) => onKeyDown(e)}
                       onCompositionStart={(e) => compositionStatus(e)}
                       onCompositionUpdate={(e) => compositionStatus(e)}
                       onCompositionEnd={(e) => compositionStatus(e)}
                       ref={inputRef}
-                      onBlur={() => {
-                        clearSlashCommand()
-                      }}
+                      onBlur={clearSlashCommand}
                       autoFocus
                       placeholder={
                         firstInput

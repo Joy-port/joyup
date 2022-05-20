@@ -14,11 +14,7 @@ const InnerTaskList = ({ taskList, type }) => {
   )
 }
 function taskIsSameInColumn(prevProp, nextProp) {
-  if (prevProp.taskList === nextProp.taskList) {
-    return true
-  } else {
-    return false
-  }
+  return prevProp.taskList === nextProp.taskList
 }
 const MemoTaskList = React.memo(InnerTaskList, taskIsSameInColumn)
 
@@ -47,10 +43,6 @@ const Column = ({ column, taskList, type }) => {
               {...provided.droppableProps}
             >
               <MemoTaskList taskList={taskList} type={type} />
-              {/* {taskList &&
-                taskList.map((item, index) => (
-                  <Task key={item.id} task={item} index={index} type={type} />
-                ))} */}
               {provided.placeholder}
             </div>
           )

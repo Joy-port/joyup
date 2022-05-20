@@ -23,7 +23,6 @@ const index = () => {
       (status === STATUS.SKIPPED && tourStatus.run) ||
       status === STATUS.FINISHED
     ) {
-      console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
       if (action === "next" && status === "finished") {
         dispatch({ type: "tour/stop" })
         callback && callback()
@@ -50,8 +49,7 @@ const index = () => {
 
   useEffect(() => {
     if (!isFirstTimeUser && runTour) return
-    if (pathname.includes("/projects") && tourStage === 0) {
-    } else if (pathname.includes("/tasks") && tourStage === 1) {
+    if (pathname.includes("/tasks") && tourStage === 1) {
       dispatch({ type: "tour/switchSteps", payload: steps.introTask })
     } else if (pathname.includes("/clocks") && tourStage === 2) {
       dispatch({ type: "tour/switchSteps", payload: steps.introClock })
@@ -91,38 +89,36 @@ const index = () => {
 
   return (
     <>
-      {isFirstTimeUser && (
-        <>
-          <JoyRide
-            {...tourStatus}
-            callback={tourActions}
-            continuous={true}
-            run={runTour}
-            styles={{
-              tooltipContainer: {
-                textAlign: "left",
-              },
-              buttonNext: {
-                backgroundColor: "#669FBA",
-              },
-              buttonBack: {
-                color: "#E3EDF2",
-                marginRight: 10,
-                cursor: "default",
-              },
-              buttonSkip: {
-                color: "#E3EDF2",
-              },
-              spotlightPadding: 5,
-            }}
-            locale={{
-              last: "Next",
-              skip: "Skip",
-              next: "Next",
-              back: "←",
-            }}
-          />
-        </>
+      {isFirstTimeUser && runTour && (
+        <JoyRide
+          {...tourStatus}
+          callback={tourActions}
+          continuous={true}
+          run={runTour}
+          styles={{
+            tooltipContainer: {
+              textAlign: "left",
+            },
+            buttonNext: {
+              backgroundColor: "#669FBA",
+            },
+            buttonBack: {
+              color: "#E3EDF2",
+              marginRight: 10,
+              cursor: "default",
+            },
+            buttonSkip: {
+              color: "#E3EDF2",
+            },
+            spotlightPadding: 5,
+          }}
+          locale={{
+            last: "Next",
+            skip: "Skip",
+            next: "Next",
+            back: "←",
+          }}
+        />
       )}
     </>
   )
