@@ -50,7 +50,6 @@ const TaskList = () => {
         <div
           className="relative w-56 py-2 px-3 rounded capitalize whitespace-nowrap"
           onClick={() => {
-            // if (userProjects.length < 1) return
             if (userTasks.length < 1) {
               dispatch({
                 type: "alert/status",

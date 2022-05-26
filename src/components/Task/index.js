@@ -145,7 +145,7 @@ const index = () => {
                               ?.child || selectedColumnOrder[0]
                           }
                           onChange={(e) => {
-                            dispatch(tags.switchType(item.type))
+                            dispatch(tags.switchType(item.id))
                             const tag = {
                               parent: item.id,
                               child: e.target.value,

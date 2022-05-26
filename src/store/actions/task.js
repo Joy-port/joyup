@@ -79,7 +79,6 @@ export const task = {
             projectID: task.projectID,
           }
           await firebase.saveTagsToProjectID(content)
-          // await firebase.saveTagsToProjectIDfromTask(content)
         })
       } catch (err) {
         dispatch({ type: "status/error", payload: err })

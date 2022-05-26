@@ -8,6 +8,7 @@ export const tags = {
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const { ownerProjects } = getState().user
         const projectID = ownerProjects[0]
+        if (!projectID) return
         const initialProject = totalProjectList[projectID]
         const projectTasks = initialProject.tasks
         const projectTaskDetail = {}
@@ -54,11 +55,68 @@ export const tags = {
       }
     }
   },
+  updateProjectDataAndSwitchTags: function (projectID = "") {
+    return async (dispatch, getState) => {
+      try {
+        const { totalTagList, totalProjectList, totalTaskList } = getState().projects
+        const { ownerProjects } = getState().user
+        if (!ownerProjects) return
+        const currentProject = projectID
+          ? totalProjectList[projectID]
+          : totalProjectList.ownerProjects[0]
+        const projectTasks = currentProject.tasks
+        const projectTaskDetail = {}
+        projectTasks.forEach((taskID) => {
+          projectTaskDetail[taskID] = {
+            ...totalTaskList[taskID],
+            start: new Date(totalTaskList[taskID].startDate),
+            end: new Date(totalTaskList[taskID].dueDate),
+          }
+        })
+        const projectTotalTagsParent = currentProject.tags
+        const projectTotalTypes = projectTotalTagsParent.map((typeId) => {
+          const type = {
+            type: totalTagList[typeId].name,
+            id: totalTagList[typeId].id,
+            children: currentProject[typeId].map((tagID) => totalTagList[tagID]),
+          }
+          return type
+        })
+        const selectedTypeData = !projectID
+          ? projectTotalTypes[0]
+          : projectTotalTypes.find((type) => type.id === currentProject.currentType)
+        const initialTypeID = projectTotalTagsParent[0] || currentProject.currentType
+        const selectedColumnOrder = currentProject[initialTypeID]
+        const [selectedColumns, selectedTasks] = filterSelectedTypeTags(
+          projectID,
+          initialTypeID,
+          totalTagList,
+          totalTaskList,
+          totalProjectList
+        )
+        const selectedTag = {
+          selectedTypeData,
+          selectedColumns,
+          selectedTasks,
+          selectedColumnOrder,
+        }
+
+        dispatch({ type: "tags/selectedProject", payload: projectID })
+        dispatch({ type: "task/selectedProject", payload: projectID })
+        dispatch({ type: "tags/getProjectTasks", payload: projectTaskDetail })
+        dispatch({ type: "tags/getProjectInitialTypes", payload: projectTotalTypes })
+        dispatch({ type: "tags/switchType", payload: selectedTag })
+      } catch (err) {
+        dispatch({ type: "status/error", payload: err })
+      }
+    }
+  },
   switchProject: function (projectID) {
     return async (dispatch, getState) => {
       try {
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const currentProject = totalProjectList[projectID]
+        console.log(totalProjectList[projectID])
         const projectTasks = currentProject.tasks
         const projectTaskDetail = {}
         projectTasks.forEach((taskID) => {

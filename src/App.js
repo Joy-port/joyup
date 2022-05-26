@@ -61,6 +61,7 @@ function App() {
               <Route path="projects">
                 <Route index element={<ProjectList />} />
                 <Route path=":projectID" element={<ProjectViews />}>
+                  <Route path="*" element={<Navigate to="/" replace />} />
                   <Route index element={<Navigate to="list" replace />} />
                   {viewInfo.map((view, index) => {
                     const Component = viewComponents[view.component]
@@ -71,7 +72,7 @@ function App() {
                         path={`${view.path}${calendarParams ? "/:calendarView" : ""}`}
                         key={index}
                         element={<Component type={type} />}
-                      ></Route>
+                      />
                     )
                   })}
                 </Route>

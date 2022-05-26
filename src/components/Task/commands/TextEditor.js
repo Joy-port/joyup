@@ -135,7 +135,6 @@ const TextEditor = () => {
     inputRef.current.focus()
     setIsEditing(true)
   }
-
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
       if (slashCharacterPosition === null) {
@@ -174,13 +173,11 @@ const TextEditor = () => {
         focusInput.current = nextBlock.id
         setIsEditing(true)
       } else {
-        setSelectionIndex((prevIndex) => {
-          if (prevIndex + 1 === matchingCommands.length) {
-            return 0
-          } else {
-            return Math.min(matchingCommands.length - 1, prevIndex + 1)
-          }
-        })
+        setSelectionIndex((prevIndex) =>
+          prevIndex + 1 === matchingCommands.length
+            ? 0
+            : Math.min(matchingCommands.length - 1, prevIndex + 1)
+        )
         e.stopPropagation()
         e.preventDefault()
       }
@@ -331,55 +328,54 @@ const TextEditor = () => {
                     )}
                   </div>
                 )
-              } else {
-                if (!item.content) {
-                  return (
-                    <p
-                      className={`editor-text border-l-transparent ${item.html.style}`}
-                      key={item.id}
-                      onClick={() => {
-                        focusInput.current = item.id
-                        setIsEditing(true)
-                        setText(item.content)
-                        setHTMLStyle(item.html)
-                      }}
-                    >
-                      &#160;
-                    </p>
-                  )
-                } else if (item.content && !item.html.parent) {
-                  return (
-                    <TagName
-                      key={item.id}
-                      className={`editor-text border-l-transparent ${item.html.style}`}
-                      onClick={() => {
-                        focusInput.current = item.id
-                        setIsEditing(true)
-                        setText(item.content)
-                        setHTMLStyle(item.html)
-                      }}
-                    >
-                      {item.content}
-                    </TagName>
-                  )
-                } else {
-                  const TagParent = item.html.parent
-                  return (
-                    <TagParent key={index} id={index} className={item.html.style}>
-                      <TagName
-                        onClick={() => {
-                          focusInput.current = item.id
-                          setIsEditing(true)
-                          setText(item.content)
-                          setHTMLStyle(item.html)
-                        }}
-                      >
-                        {item.content}
-                      </TagName>
-                    </TagParent>
-                  )
-                }
               }
+              if (!item.content) {
+                return (
+                  <p
+                    className={`editor-text border-l-transparent ${item.html.style}`}
+                    key={item.id}
+                    onClick={() => {
+                      focusInput.current = item.id
+                      setIsEditing(true)
+                      setText(item.content)
+                      setHTMLStyle(item.html)
+                    }}
+                  >
+                    &#160;
+                  </p>
+                )
+              }
+              if (item.content && !item.html.parent) {
+                return (
+                  <TagName
+                    key={item.id}
+                    className={`editor-text border-l-transparent ${item.html.style}`}
+                    onClick={() => {
+                      focusInput.current = item.id
+                      setIsEditing(true)
+                      setText(item.content)
+                      setHTMLStyle(item.html)
+                    }}
+                  >
+                    {item.content}
+                  </TagName>
+                )
+              }
+              const TagParent = item.html.parent
+              return (
+                <TagParent key={index} id={index} className={item.html.style}>
+                  <TagName
+                    onClick={() => {
+                      focusInput.current = item.id
+                      setIsEditing(true)
+                      setText(item.content)
+                      setHTMLStyle(item.html)
+                    }}
+                  >
+                    {item.content}
+                  </TagName>
+                </TagParent>
+              )
             })}
         </div>
       </div>

@@ -25,9 +25,9 @@ const initialTaskState = {
   totalTime: 0,
   breakTime: 5,
   workTime: 25,
-  clockNumber: 0, //workTime
+  clockNumber: 0,
   requiredTime: 0,
-  requiredNumber: 0, //totalRequired clock number
+  requiredNumber: 0,
   location: "",
   parent: "",
   tagList: [],
@@ -136,17 +136,6 @@ function taskReducer(state = initialTaskState, action) {
       return backToInitialState
     case "task/openSavedTask":
       return { ...state, ...action.payload }
-    case "saveTagToProjectTags":
-      //when created new Tasks
-      const [parentTag, childTag] = action.payload
-      const content = {
-        parentTag,
-        childTag,
-        taskID: state.id,
-        projectID: state.projectID,
-      }
-
-      return state
     default:
       return state
   }

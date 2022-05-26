@@ -71,10 +71,6 @@ const Login = () => {
       setEmailStatus(0)
       setEmailMessage(checkLoginMessage.email.error)
       return false
-    } else if (userEmail.toLowerCase().match(reg)) {
-      setEmailStatus(2)
-      setEmailMessage("")
-      return true
     } else {
       setEmailStatus(2)
       setEmailMessage("")

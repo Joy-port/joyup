@@ -96,12 +96,8 @@ const ProjectList = () => {
                           className="font-semibold bg-transparent rounded z-20 block focus:outline-200 border-1 border-light200 w-32 -m-1 bg-white text-light200"
                           type="text"
                           value={projectTitle}
-                          onChange={(e) => {
-                            setProjectTile(e.target.value)
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                          }}
+                          onChange={(e) => setProjectTile(e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
                           onBlur={() => {
                             editProjectName(ownerProject.id)
                             setIsEditTitle("")

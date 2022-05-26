@@ -6,21 +6,22 @@ import { titleCommandList, dateCommandList } from "../../../utils/slashCommands"
 import { filterCommandListByQuery } from "../../../utils/helpers"
 
 const TitleEditor = () => {
+  const clearCommands = {
+    query: null,
+    slashCharacterPosition: null,
+  }
   const { title } = useSelector((state) => state.task)
-  const dispatch = useDispatch()
   const { types } = useSelector((state) => state.tags)
+  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(true)
   const [text, setText] = useState(title)
-  const [query, setQuery] = useState(null)
-  const [tagsQuery, setTagsQuery] = useState(null)
-  const [timeQuery, setTimeQuery] = useState(null)
-  const [slashCharacterPosition, setSlashCharacterPosition] = useState(null)
-  const [tagCharacterPosition, setTagCharacterPosition] = useState(null)
-  const [timeCharacterPosition, setTimeCharacterPosition] = useState(null)
+  const [totalCommands, setTotalCommands] = useState({ ...clearCommands })
+  const [timeCommands, setTimeCommands] = useState({ ...clearCommands })
+  const [tagCommands, setTagCommands] = useState({ ...clearCommands })
+  const [selectedTagType, setSelectedTagType] = useState(null)
+  const [dateType, setDateType] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
   const [style, setStyle] = useState("heading-three font-semibold")
-  const [dateType, setDateType] = useState(null)
-  const [selectedTagType, setSelectedTagType] = useState(null)
   const inputRef = useRef()
   const titleRef = useRef()
   const deleteSlash = (deleteFromPosition, slashPosition) => {
@@ -38,28 +39,25 @@ const TitleEditor = () => {
     })
   }
   const clearExistingCommands = () => {
-    if (slashCharacterPosition !== null) {
-      deleteSlash(0, slashCharacterPosition)
-    } else if (tagCharacterPosition !== null) {
-      deleteSlash(0, tagCharacterPosition)
-    } else if (timeCharacterPosition !== null) {
-      deleteSlash(0, timeCharacterPosition)
+    if (totalCommands.slashCharacterPosition !== null) {
+      deleteSlash(0, totalCommands.slashCharacterPosition)
+    } else if (tagCommands.slashCharacterPosition !== null) {
+      deleteSlash(0, tagCommands.previousCharacterPosition)
+    } else if (timeCommands.slashCharacterPosition !== null) {
+      deleteSlash(0, timeCommands.previousCharacterPosition)
     }
-
-    setQuery(null)
-    setTagsQuery(null)
-    setTimeQuery(null)
-    setSlashCharacterPosition(null)
-    setTagCharacterPosition(null)
-    setTimeCharacterPosition(null)
+    setTotalCommands({ ...clearCommands })
+    setTimeCommands({ ...clearCommands })
+    setTagCommands({ ...clearCommands })
     setSelectionIndex(0)
     setIsEditing(false)
   }
   const editTimeSettingCommand = useCallback(() => {
-    deleteSlash(0, timeCharacterPosition)
+    deleteSlash(0, timeCommands.previousCharacterPosition)
     setDateType(null)
-    setTimeCharacterPosition(null)
-    setTimeQuery(null)
+    setTimeCommands({
+      ...clearCommands,
+    })
     setSelectionIndex(0)
     setStyle("heading-three font-semibold")
     setIsEditing(true)
@@ -68,24 +66,26 @@ const TitleEditor = () => {
 
   useEffect(() => {
     if (
-      slashCharacterPosition === null &&
-      selectedTagType === null &&
-      timeCharacterPosition === null &&
-      tagCharacterPosition === null
+      totalCommands.slashCharacterPosition === null &&
+      timeCommands.slashCharacterPosition === null &&
+      tagCommands.slashCharacterPosition === null
     ) {
       titleRef.current = text
       dispatch(task.saveTaskDetail("title", text))
     }
     setIsEditing(true)
   }, [text])
-  const matchingCommands =
-    query !== null ? filterCommandListByQuery(titleCommandList, query) : []
-  const matchingTags =
-    tagsQuery !== null
-      ? filterCommandListByQuery(selectedTagType.children, tagsQuery)
-      : []
-  const matchingTimeSettings =
-    timeQuery !== null ? filterCommandListByQuery(dateCommandList, timeQuery) : []
+
+  const getMatchingCommands = (queryContent, commandList) => {
+    if (queryContent !== null) {
+      return filterCommandListByQuery(queryContent, commandList)
+    } else {
+      return []
+    }
+  }
+  const matchingCommands = getMatchingCommands(totalCommands.query, titleCommandList)
+  const matchingTags = getMatchingCommands(tagCommands.query, selectedTagType?.children)
+  const matchingTimeSettings = getMatchingCommands(timeCommands.query, dateCommandList)
 
   useEffect(() => {
     if (
@@ -100,50 +100,82 @@ const TitleEditor = () => {
   const getFirstLayerQueryCommandContents = (inputTextContent) => {
     const newText = inputTextContent
     setText(newText)
-    if (slashCharacterPosition !== null) {
-      const isSlashStillActive = newText[slashCharacterPosition] === "/"
+    if (totalCommands.slashCharacterPosition !== null) {
+      const isSlashStillActive = newText[totalCommands.slashCharacterPosition] === "/"
       if (isSlashStillActive) {
-        setQuery(
-          newText.substring(slashCharacterPosition + 1, inputRef.current?.selectionStart)
-        )
+        setTotalCommands((prev) => {
+          return {
+            ...prev,
+            query: newText.substring(
+              prev.slashCharacterPosition + 1,
+              inputRef.current?.selectionStart
+            ),
+          }
+        })
         setSelectionIndex(0)
       } else {
-        setSlashCharacterPosition(null)
-        setQuery(null)
+        setTotalCommands({
+          ...clearCommands,
+        })
       }
-    } else if (tagCharacterPosition !== null) {
-      const isSlashStillActive = newText[tagCharacterPosition] === ":"
+    } else if (tagCommands.slashCharacterPosition !== null) {
+      const isSlashStillActive = newText[tagCommands.slashCharacterPosition] === ":"
       if (isSlashStillActive) {
-        setTagsQuery(
-          newText.substring(tagCharacterPosition + 1, inputRef.current?.selectionStart)
-        )
+        setTagCommands((prev) => {
+          return {
+            ...prev,
+            query: newText.substring(
+              tagCommands.slashCharacterPosition + 1,
+              inputRef.current?.selectionStart
+            ),
+          }
+        })
         setSelectionIndex(0)
       } else {
-        setTagCharacterPosition(null)
-        setTagsQuery(null)
+        setTagCommands({
+          ...clearCommands,
+        })
       }
-    } else if (timeCharacterPosition !== null) {
-      const isSlashStillActive = newText[timeCharacterPosition] === "/"
+    } else if (timeCommands.slashCharacterPosition !== null) {
+      const isSlashStillActive = newText[timeCommands.slashCharacterPosition - 1] === ":"
       if (isSlashStillActive) {
-        setTimeQuery(
-          newText.substring(timeCharacterPosition + 1, inputRef.current?.selectionStart)
-        )
+        setTimeCommands((prev) => {
+          return {
+            ...prev,
+            query: newText.substring(
+              timeCommands.slashCharacterPosition,
+              inputRef.current?.selectionStart
+            ),
+          }
+        })
         setSelectionIndex(0)
       }
     } else {
-      setTimeCharacterPosition(null)
-      setTimeQuery(null)
+      setTimeCommands({
+        ...clearCommands,
+      })
     }
   }
 
   const selectTotalCommand = (command) => {
     setIsEditing(true)
+    const slashCharacterPosition =
+      inputRef.current?.selectionStart +
+      command.name.length +
+      command.name.split(" ").length -
+      1
     if (command.type === "tag") {
-      setTagsQuery("")
-      setTagCharacterPosition(inputRef.current?.selectionStart - 1)
+      setTagCommands({
+        query: "",
+        slashCharacterPosition,
+        previousCharacterPosition: totalCommands.slashCharacterPosition,
+      })
     } else {
-      setTimeQuery("")
-      setTimeCharacterPosition(inputRef.current?.selectionStart - 1)
+      setTimeCommands({
+        query: "",
+        slashCharacterPosition,
+        previousCharacterPosition: totalCommands.slashCharacterPosition,
+      })
     }
     setText(() => {
       const newText = titleRef.current + `/${command.name}:`
@@ -151,8 +183,7 @@ const TitleEditor = () => {
     })
 
     setStyle("heading-three font-semibold text-light200")
-    setSlashCharacterPosition(null)
-    setQuery(null)
+    setTotalCommands({ ...clearCommands })
     if (command.type === "tag") {
       setSelectedTagType(types.find((item) => item.type === command.name))
     } else {
@@ -176,10 +207,15 @@ const TitleEditor = () => {
     }
     dispatch(task.saveTaskTag(tagType))
     setSelectedTagType(null)
-    deleteSlash(0, tagCharacterPosition)
+    deleteSlash(0, tagCommands.previousCharacterPosition)
     setStyle("heading-three")
     setSelectionIndex(0)
-    setTagsQuery(null)
+    setTagCommands((prev) => {
+      return {
+        ...prev,
+        query: null,
+      }
+    })
     setIsEditing(true)
     inputRef.current.focus()
   }
@@ -187,9 +223,9 @@ const TitleEditor = () => {
   const onKeyDown = (e) => {
     if (e.key === "ArrowUp") {
       if (
-        slashCharacterPosition !== null ||
-        tagCharacterPosition !== null ||
-        timeCharacterPosition !== null
+        totalCommands.slashCharacterPosition !== null ||
+        tagCommands.slashCharacterPosition !== null ||
+        timeCommands.slashCharacterPosition !== null
       ) {
         setSelectionIndex((prevIndex) => Math.max(0, prevIndex - 1))
       }
@@ -197,13 +233,13 @@ const TitleEditor = () => {
       e.preventDefault()
       return
     } else if (e.key === "ArrowDown") {
-      if (slashCharacterPosition !== null) {
+      if (totalCommands.slashCharacterPosition !== null) {
         setSelectionIndex((prevIndex) =>
           Math.min(matchingCommands.length - 1, prevIndex + 1)
         )
-      } else if (tagCharacterPosition !== null) {
+      } else if (tagCommands.slashCharacterPosition !== null) {
         setSelectionIndex((prevIndex) => Math.min(matchingTags.length - 1, prevIndex + 1))
-      } else if (timeCharacterPosition !== null) {
+      } else if (timeCommands.slashCharacterPosition !== null) {
         setSelectionIndex((prevIndex) =>
           Math.min(matchingTimeSettings.length - 1, prevIndex + 1)
         )
@@ -224,7 +260,7 @@ const TitleEditor = () => {
         selectTimeCommand(matchingTimeSettings[selectionIndex])
         return
       }
-      if (slashCharacterPosition === null && selectedTagType === null) {
+      if (totalCommands.slashCharacterPosition === null && selectedTagType === null) {
         e.stopPropagation()
         e.preventDefault()
         if (text.trim() === "") return
@@ -233,28 +269,59 @@ const TitleEditor = () => {
         return
       }
     } else if (e.key === "/") {
-      setSlashCharacterPosition(inputRef.current?.selectionStart)
+      setTotalCommands((prev) => {
+        return { ...prev, slashCharacterPosition: inputRef.current?.selectionStart }
+      })
       setIsEditing(true)
     } else if (e.key === "Backspace") {
       if (!text.includes("/")) {
-        setQuery(null)
-        setTagsQuery(null)
-        setTimeQuery(null)
+        const query = null
+        setTotalCommands((prev) => {
+          return {
+            ...prev,
+            query,
+          }
+        })
+        setTagCommands((prev) => {
+          return {
+            ...prev,
+            query,
+          }
+        })
+        setTimeCommands((prev) => {
+          return {
+            ...prev,
+            query,
+          }
+        })
       } else {
-        if (timeCharacterPosition && text.endsWith(":")) {
+        if (timeCommands.slashCharacterPosition && text.endsWith(":")) {
           e.preventDefault()
-          setSlashCharacterPosition(timeCharacterPosition)
-          addSlash(0, timeCharacterPosition)
-          setTimeCharacterPosition(null)
-          setTimeQuery(null)
-        } else if (tagCharacterPosition && text.endsWith(":")) {
+          setTotalCommands((prev) => {
+            return {
+              ...prev,
+              slashCharacterPosition: timeCommands.slashCharacterPosition,
+            }
+          })
+          addSlash(0, timeCommands.slashCharacterPosition)
+          setTimeCommands({ ...clearCommands })
+        } else if (tagCommands.slashCharacterPosition && text.endsWith(":")) {
           e.preventDefault()
-          setSlashCharacterPosition(tagCharacterPosition)
-          addSlash(0, tagCharacterPosition)
-          setTagCharacterPosition(null)
-          setTagsQuery(null)
+          setTotalCommands((prev) => {
+            return {
+              ...prev,
+              slashCharacterPosition: tagCommands.slashCharacterPosition,
+            }
+          })
+          addSlash(0, tagCommands.slashCharacterPosition)
+          setTagCommands({ ...clearCommands })
         }
-        setQuery("")
+        setTotalCommands((prev) => {
+          return {
+            ...prev,
+            query: "",
+          }
+        })
         setDateType(null)
         setSelectionIndex(0)
       }
@@ -307,6 +374,7 @@ const TitleEditor = () => {
           })}
         </div>
       )}
+
       {matchingTimeSettings.length !== 0 && (
         <div className="results top-10 mt-1 z-10">
           {matchingTimeSettings.map((command, index) => {
