@@ -1,44 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+<div align="center">
+  <a href="https://joyup-management.web.app" style="margin-bottom:20px; display:block;">
+    <img src="./src/assets/images/logo/dark-name/rectengle_logo.png" alt="Logo" max-width="50%">
+  </a>
 
-## Available Scripts
+![npm peer dependency version (scoped)](https://img.shields.io/npm/dependency-version/eslint-config-prettier/peer/eslint) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-In the project directory, you can run:
 
-### `yarn start`
+  <p align="center">
+    <a href="https://github.com/Joy-port/joyup# About-JoyUp">About</a>
+    |
+    <a href="https://github.com/Joy-port/joyup# Demo">Demo</a>
+    |
+    <a href="https://github.com/Joy-port/joyup#Contact">Contact</a>
+  </p>
+</div>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# JoyUp
+[JoyUp](https://joyup-management.web.app) is a task and project management tool combined with Pomodoro Timer, which helps users to manage time effectively and increase their productivity.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## About JoyUp
+- Implemented customizable and extendable **slash commands** with config in self-build text editor.
+- Built self-calculated component for countdown **pomodoro clock** animation. 
+- Created calendar with `react-big-calendar` and DnD board with `react-beatiful-dnd`, making task management more efficient. 
+- Applied `Firebase Firestore` as database, and `Firebase Hosting` with deployment of react app.
 
-### `yarn test`
+## Built with
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black) ![Yarn](https://img.shields.io/badge/yarn-%232C8EBB.svg?style=for-the-badge&logo=yarn&logoColor=white) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 
-### `yarn build`
+**Base**
+- React app
+- Redux
+- Firebase
+- Tailwind
+- ESLint
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Libraries**
+- react-beautiful-dnd
+- react-big-calendar
+- react-datepicker
+- react-joyride
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Flow chart
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Demo
+7. Future Features(optional)
+### Contact
+  <a href="https://www.linkedin.com/in/joy-ciao">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:joy.cheng97324@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+  </a>
