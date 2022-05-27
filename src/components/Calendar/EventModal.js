@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { object, func, bool, string } from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
-import dayjs from "dayjs"
+import moment from "moment"
 import { Edit3, X } from "react-feather"
 import { useNavigate } from "react-router-dom"
 import { task } from "../../sliceReducers/actions/task"
@@ -35,7 +35,6 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
         // top = ((position.top + position.bottom - position.y) * 56) / 100
       }
     } else {
-      console.log(position)
       left = (position.left + position.right - position.x) / 2 + 50
       top = ((position.top + position.bottom - position.y) * 56) / 100
       if (position.x - 200 < 0) {
@@ -49,11 +48,9 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
       if (position.y < 200) {
         top = position.top
       } else if (position.y + 128 > 700) {
-        console.log(position.y)
         top = position.top - 100
         // top = ((position.top + position.bottom - position.y) * 56) / 100
       } else {
-        console.log(position.y)
         top = top
         // top = `calc(${position.y} - 2%)`
         // top = ((position.top + position.bottom - position.y) * 40) / 100
@@ -111,7 +108,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
               navigate(`/tasks/${taskDetail.id}`)
             }}
           >
-            Start : {dayjs(new Date(taskDetail.startDate)).format("MMM DD, HH:MM")}
+            Start : {moment(new Date(taskDetail.startDate)).format("MMM DD, HH:MM")}
           </div>
           <div
             className=""
@@ -120,7 +117,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
               navigate(`/tasks/${taskDetail.id}`)
             }}
           >
-            Due : {dayjs(new Date(taskDetail.dueDate)).format("MMM DD, HH:MM")}
+            Due : {moment(new Date(taskDetail.dueDate)).format("MMM DD, HH:MM")}
           </div>
           <div
             className="button button-dark ml-auto cursor-pointer w-10"

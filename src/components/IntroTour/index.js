@@ -23,7 +23,7 @@ const index = () => {
       (status === STATUS.SKIPPED && tourStatus.run) ||
       status === STATUS.FINISHED
     ) {
-      console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
+      // console.log("this is finished", tourStatus.run, STATUS.SKIPPED)
       if (action === "next" && status === "finished") {
         callback && callback()
       }
@@ -51,7 +51,7 @@ const index = () => {
     if (!isFirstTimeUser && runTour) return
     if (pathname.includes("/projects") && tourStage === 0) {
       //   if (introSteps === 1) {
-      console.log("check if start after create project")
+      // console.log("check if start after create project")
       startTour()
       // startTour()
       //   }

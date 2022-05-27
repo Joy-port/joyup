@@ -1,16 +1,11 @@
 import { firebase } from "../../helpers/firebase"
-
+import { v4 as uuidv4 } from "uuid"
 export const project = {
   updateProjects: function () {
     return async function (dispatch, getState) {
       try {
         await firebase.getRealTimeData("projects", (projects) => {
           dispatch({ type: "projects/updateProjects", payload: projects })
-          // const projectTasks = Object.keys(projects).flatMap((projectID) => {
-          //   return projects[projectID].tasks
-          // })
-          // dispatch({ type: "user/getUserTasks", payload: projectTasks })
-          console.log("%c listen project update", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
@@ -22,7 +17,6 @@ export const project = {
       try {
         await firebase.getRealTimeData("tags", (tags) => {
           dispatch({ type: "projects/updateTagsDetail", payload: tags })
-          console.log("%c listen tags update ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
@@ -34,7 +28,6 @@ export const project = {
       try {
         await firebase.getRealTimeData("tasks", (tasks) => {
           dispatch({ type: "projects/updateAllTasks", payload: tasks })
-          console.log("%c listen tasks update ", "background: #ffeecc; color:#225566")
         })
       } catch (err) {
         dispatch({ type: "status/ERROR", payload: err })
@@ -87,6 +80,7 @@ export const project = {
   createNewProjectFromTemplate: function (projectID, callback) {
     return async (dispatch, getState) => {
       try {
+        const newProjectID = uuidv4()
         const { id } = getState().user
         const { totalProjectList } = getState().projects
         const selectedTemplate = {
@@ -94,15 +88,24 @@ export const project = {
           isTemplate: 0,
           users: [id],
           isPublic: 0,
+          id: newProjectID,
         }
-        const newProjectID = await firebase.createProjectWithTemplate(
-          selectedTemplate,
-          id
+        const duplicateTasksInTemplate = await firebase.duplicateTasksForNewProject(
+          selectedTemplate
         )
+        const duplicateProjectDetail = await firebase.duplicateProjectDetail(
+          selectedTemplate,
+          duplicateTasksInTemplate
+        )
+        const newProject = {
+          ...selectedTemplate,
+          ...duplicateProjectDetail,
+        }
+        // console.log(newProject)
+        await firebase.createProjectWithTemplate(newProject, id)
         await firebase
           .saveProjectToUserProjects(id, newProjectID, "ownerProjects")
           .then(() => {
-            // console.log(callback)
             callback && callback(newProjectID)
           })
           .catch((err) => console.error(err))

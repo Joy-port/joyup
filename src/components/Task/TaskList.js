@@ -43,7 +43,7 @@ const TaskList = () => {
       const taskDueDate = new Date(taskDetail.dueDate).getDate()
       taskDueDate >= new Date().getDate()
     })
-    console.log(newTaskList)
+    // console.log(newTaskList)
     return newTaskList
   }
   //py-2 px-3 w-32

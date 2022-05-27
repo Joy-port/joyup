@@ -43,7 +43,7 @@ const Report = () => {
     const taskConvertToPie = userTaskDetail.reduce((total, task) => {
       if (!totalProjectList) return total
       const taskProject = totalProjectList[task.projectID]
-      console.log(totalProjectList[task.projectID])
+      // console.log(totalProjectList[task.projectID])
       if (!task.projectID) return total
       if (!taskProject) return total
       if (task.totalTime < 600) {
@@ -68,7 +68,7 @@ const Report = () => {
         return total
       }
     }, {})
-    console.log(taskConvertToPie)
+    // console.log(taskConvertToPie)
     return taskConvertToPie
   })
   const switchProjectTasks = useCallback(() => {

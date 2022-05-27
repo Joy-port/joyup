@@ -5,7 +5,6 @@ export const user = {
     return async (dispatch, getState) => {
       try {
         const userData = await login.userSignUp(email, password, (errorMessage) => {
-          console.log(errorMessage)
           dispatch({
             type: "alert/status",
             payload: {
@@ -20,13 +19,6 @@ export const user = {
             .then(() => {
               dispatch({ type: "user/getUserID", payload: userData.uid })
               dispatch({ type: "user/getUserName", payload: userData.uid })
-            })
-            .then(() => {
-              console.log(
-                "%c sign up success ",
-                "background: #AC6B7D; color:#ffffff",
-                userData
-              )
             })
             .catch((err) => {
               dispatch({ type: "status/ERROR", payload: err })
@@ -51,7 +43,7 @@ export const user = {
             },
           })
         })
-        console.log("%c sign in success ", "background: #AC6B7D; color:#ffffff", userData)
+        // console.log("%c sign in success ", "background: #AC6B7D; color:#ffffff", userData)
         dispatch({ type: "user/getUserID", payload: userData.uid })
       } catch (error) {
         dispatch({ type: "status/ERROR", payload: error })
@@ -61,7 +53,7 @@ export const user = {
   logout: () => {
     return async (dispatch, getState) => {
       await login.userSignOut((errorMessage) => {
-        console.log(errorMessage)
+        // console.log(errorMessage)
         dispatch({
           type: "alert/status",
           payload: {
@@ -79,11 +71,11 @@ export const user = {
       try {
         await login.userStatusChange(
           (user) => {
-            console.log(
-              "%c user is login ",
-              "background: #AC6B7D; color:#ffffff",
-              user.uid
-            )
+            // console.log(
+            //   "%c user is login ",
+            //   "background: #AC6B7D; color:#ffffff",
+            //   user.uid
+            // )
             dispatch({ type: "user/getUserID", payload: user.uid })
             const { name } = firebase.getUserSettings(user.id)
             dispatch({ type: "user/getUserName", payload: name })
@@ -121,7 +113,7 @@ export const user = {
           type: "user/getUserProjectList",
           payload: ownerProjects.concat(collaborateProjects),
         })
-        console.log("%c listen user project list ", "color:#ee5588;", userProjects)
+        // console.log("%c listen user project list ", "color:#ee5588;", userProjects)
         // const { userProjects } = getState().user
       })
     }

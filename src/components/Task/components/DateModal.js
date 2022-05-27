@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import DatePicker from "../components/DatePicker"
 import { task } from "../../../sliceReducers/actions/task"
-import dayjs from "dayjs"
+import moment from "moment"
 import { X } from "react-feather"
 import { func } from "prop-types"
 const DateModal = ({ setIsOpenDateModal }) => {
@@ -53,7 +53,7 @@ const DateModal = ({ setIsOpenDateModal }) => {
             setStartTimeSelectedStyle({ borderColor: "#669FBA" })
           }}
         >
-          {dayjs(startDate).format("MMM DD, HH:mm") || "start date"}
+          {moment(startDate).format("MMM DD, HH:mm") || "start date"}
         </div>
         <div
           className="w-1/2 border-2 py-1 px-2 rounded transition-colors cursor-pointer"
@@ -64,7 +64,7 @@ const DateModal = ({ setIsOpenDateModal }) => {
             setDueTimeSelectedStyle({ borderColor: "#669FBA" })
           }}
         >
-          {dayjs(dueDate).format("MMM DD, HH:mm") || "start date"}
+          {moment(dueDate).format("MMM DD, HH:mm") || "start date"}
         </div>
       </div>
       <div className="w-330 mx-auto pb-6">

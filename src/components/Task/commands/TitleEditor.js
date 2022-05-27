@@ -16,7 +16,6 @@ const TitleEditor = () => {
   const [tagCharacterPosition, setTagCharacterPosition] = useState(null)
   const [timeCharacterPosition, setTimeCharacterPosition] = useState(null)
   const [selectionIndex, setSelectionIndex] = useState(0)
-  // const [isSettingTime, setIsSettingTime] = useState(false)
   const [style, setStyle] = useState("heading-three font-semibold")
   const [dateType, setDateType] = useState(null)
   const [editRequiredNumber, setEditRequiredNumber] = useState(false)
@@ -456,7 +455,6 @@ const TitleEditor = () => {
           placeholder="Task name or type ' / ' for commands "
           autoFocus
           onBlur={() => {
-            console.log("blur clear all commands")
             clearExistingCommands()
           }}
         />

@@ -27,10 +27,10 @@ const Login = () => {
   const [passwordMessage, setPasswordMessage] = useState("")
   const isLoginPath = pathname === "/signin"
   useEffect(() => {
-    console.log("check login status", userDetail, loading, pathname)
+    // console.log("check login status", userDetail, loading, pathname)
     if (loading) return
     if (userDetail && id !== "") {
-      console.log("after login", userDetail, id)
+      // console.log("after login", userDetail, id)
       if (isLoginPath) {
         // if (userProjects.length === 0 && userTasks.length === 0) {
         //   dispatch({ type: "modals/switchCreateProjectModal", payload: true })

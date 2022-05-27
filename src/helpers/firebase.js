@@ -24,6 +24,7 @@ import {
   deleteUser,
   onAuthStateChanged,
 } from "firebase/auth"
+import { v4 as uuidv4 } from "uuid"
 // import { getAnalytics } from "firebase/analytics"
 // const analytics = getAnalytics(app)
 
@@ -279,7 +280,6 @@ export const firebase = {
   },
   saveTask: async function (taskContent) {
     try {
-      console.log("save task", taskContent)
       const collectionName = "tasks"
       const taskRef = doc(this.db, collectionName, taskContent.id)
       const taskDoc = await getDoc(taskRef)
@@ -357,21 +357,75 @@ export const firebase = {
       await setDoc(doc(...q, tag.id), { ...tag })
     })
   },
+  duplicateTasksForNewProject: async function (projectContent) {
+    try {
+      const taskCollection = "tasks"
+      const taskList = [...projectContent.tasks]
+      const taskUpdateList = {}
+      for (const task of taskList) {
+        const taskQuery = doc(this.db, taskCollection, task)
+        const taskDetail = await getDoc(taskQuery)
+        const newTaskID = uuidv4()
+        const newTaskDetail = {
+          ...taskDetail.data(),
+          id: newTaskID,
+          projectID: projectContent.id,
+        }
+        const taskUpdateDetail = {
+          oldID: task,
+          id: newTaskID,
+          tagsList: taskDetail.data().tagList,
+        }
+        await firebase.saveTask(newTaskDetail)
+        taskUpdateList[task] = taskUpdateDetail
+      }
+      return taskUpdateList
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  duplicateProjectDetail: async function (projectDetail, taskUpdateContent) {
+    try {
+      const newTaskList = projectDetail.tasks.map((taskID) => {
+        taskUpdateContent[taskID].oldID === taskID
+        return taskUpdateContent[taskID].id
+      })
+      const totalTags = []
+      for (const tagsType of projectDetail.tags) {
+        totalTags.push(...projectDetail[tagsType])
+      }
+      const projectTagsOrderUpdate = {}
+      for (const tagID of totalTags) {
+        const newOrder = projectDetail[tagID].map((taskID) => {
+          taskUpdateContent[taskID].oldID === taskID
+          return taskUpdateContent[taskID].id
+        })
+        projectTagsOrderUpdate[tagID] = newOrder
+      }
+
+      const newProjectDetail = {
+        ...projectDetail,
+        ...projectTagsOrderUpdate,
+        tasks: newTaskList,
+      }
+      return newProjectDetail
+    } catch (error) {
+      console.error(error)
+    }
+  },
   createProjectWithTemplate: async function (projectContent, userID) {
     try {
       const collectionName = "projects"
-      const projectRef = doc(collection(this.db, collectionName))
-      const projectID = projectRef.id
+      // const projectRef = doc(collection(this.db, collectionName))
+      const projectID = projectContent.id
       await setDoc(doc(this.db, collectionName, projectID), {
         ...projectContent,
-        id: projectID,
       })
       const userProjectCollection = "userProjects"
       const userProjectsRef = doc(this.db, userProjectCollection, userID)
       await updateDoc(userProjectsRef, {
         ownerProjects: arrayUnion(projectID),
       })
-      return projectID
     } catch (error) {
       console.error(error)
     }
@@ -463,10 +517,8 @@ export const firebase = {
         collection(this.db, taskCollection),
         where("projectID", "==", projectID)
       )
-      console.log("delete project")
       const taskSnapShot = await getDocs(taskQuery)
       taskSnapShot.forEach(async (task) => {
-        console.log(task.id)
         if (task.id) {
           await deleteDoc(doc(this.db, taskCollection, task.id))
         }

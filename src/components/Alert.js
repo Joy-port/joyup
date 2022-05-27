@@ -30,10 +30,6 @@ const Alert = () => {
     return () => clearTimeout(runAlert)
   }, [alertIsShow])
 
-  useEffect(() => {
-    console.log("alert", alertText, alertType)
-  }, [alertText, alertType])
-
   return (
     <div
       style={{ zIndex: 10000 }}

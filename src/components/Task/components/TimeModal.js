@@ -107,7 +107,7 @@ const TimeModal = () => {
   const checkRequiredNumber = (e) => {
     const inputRequiredTime = e.target.value
     if (inputRequiredTime) {
-      console.log(inputRequiredTime)
+      // console.log(inputRequiredTime)
       setRequiredNumberError(2)
       setRequiredNumberErrorMessage("")
     } else if (!parseFloat(inputRequiredTime)) {

@@ -29,7 +29,6 @@ const index = () => {
           type: "alert/status",
           payload: { text: "please give the project a title", type: "info" },
         })
-        // alert("please give the project a title")
         return
       }
       const projectContent = {
@@ -47,7 +46,6 @@ const index = () => {
           navigate(`${projectID}`)
         })
       )
-      // navigate("/projects")
     } else if (currentPage === 1) {
       dispatch(
         project.createNewProjectFromTemplate(selectedTemplateType, (projectID) => {
@@ -62,9 +60,6 @@ const index = () => {
       )
     }
   }
-  //   useEffect(() => {
-  //     setCurrentPage(0)
-  //   }, [])
 
   const checkTitleMessage = (e) => {
     if (projectTitle.trim()) {
@@ -113,7 +108,7 @@ const index = () => {
           >
             {currentPage === 0 ? (
               <>
-                {/* <div
+                <div
                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
                     isSelectTemplate === true
                       ? "border-blue200 text-blue200"
@@ -126,7 +121,7 @@ const index = () => {
                 >
                   <h3 className="heading-four">Select A Template</h3>
                   <Icon.Sidebar size={50} strokeWidth={1.5} />
-                </div> */}
+                </div>
                 <div
                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 border-light100 cursor-pointer hover:shadow-lg hover:border-blue200 text-light300 hover:text-blue200  ${
                     isSelectTemplate === false

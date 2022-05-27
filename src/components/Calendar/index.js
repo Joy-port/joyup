@@ -10,7 +10,6 @@ import { task } from "../../sliceReducers/actions/task"
 import EventModal from "./EventModal"
 import { string, any } from "prop-types"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
-import dayjs from "dayjs"
 import { X, Edit3 } from "react-feather"
 // import { Overlay, OverlayTrigger, Popover } from "react-bootstrap"
 
@@ -188,8 +187,8 @@ const index = ({ type }) => {
 
   const onEventResize = (data) => {
     const { start, end } = data
-    console.log("%c start ", "color:orange", start)
-    console.log("%c end ", "color:orange", end)
+    // console.log("%c start ", "color:orange", start)
+    // console.log("%c end ", "color:orange", end)
 
     // this.setState((state) => {
     //   state.events[0].start = start

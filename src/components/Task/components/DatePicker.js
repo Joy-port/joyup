@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
-import dayjs from "dayjs"
+import moment from "moment"
 import { useDispatch, useSelector } from "react-redux"
 
 const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
@@ -13,7 +13,6 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
       value={value}
       id={id}
       onClick={onClick}
-      // isSecure={isSecure}
     />
   )
 }
@@ -53,8 +52,8 @@ const DatePick = ({ date, setDate, hasMinDate, showTime }) => {
     return newDateObj
   }
   const requiredTime = useCallback((time) => {
-    const minute = dayjs(time).minute()
-    const hour = dayjs(time).hour()
+    const minute = moment(time).minute()
+    const hour = moment(time).hour()
     const requireHour = minute > 30 ? 24 - hour : 23 - hour
     const requireMinute = minute > 30 ? "" : ".5"
     return parseFloat(requireHour + requireMinute)
@@ -77,15 +76,15 @@ const DatePick = ({ date, setDate, hasMinDate, showTime }) => {
     if (value === undefined) return
     if (value.trim().toLowerCase() === "tomorrow") {
       setDate(() => {
-        return new Date(dayjs(current).add(1, "day"))
+        return new Date(moment(current).add(1, "days"))
       })
     } else if (value.trim().toLowerCase() === "next week") {
       setDate(() => {
-        return new Date(dayjs(current).add(7, "day"))
+        return new Date(moment(current).add(7, "days"))
       })
     } else if (value.trim().toLowerCase() === "next month") {
       setDate(() => {
-        return new Date(dayjs(current).add(1, "month"))
+        return new Date(moment(current).add(1, "months"))
       })
     }
   }

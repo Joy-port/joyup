@@ -112,7 +112,7 @@ const ProjectList = () => {
                                 e.stopPropagation()
                               }}
                               onBlur={(e) => {
-                                console.log(e, "onBlur")
+                                // console.log(e, "onBlur")
                                 editProjectName(ownerProject.id)
                                 setIsEditTitle("")
                                 setProjectTile("")
