@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://joyup-management.web.app" style="margin-bottom:20px; display:block;">
-    <img src="./src/assets/images/logo/dark-name/rectengle_logo.png" alt="Logo" max-width="50%">
+    <img src="./src/assets/images/logo/dark-name/rectengle_logo.png" alt="Logo" width="200px">
   </a>
 
 ![npm peer dependency version (scoped)](https://img.shields.io/npm/dependency-version/eslint-config-prettier/peer/eslint) ![License](https://img.shields.io/badge/License-MIT-blue)
@@ -47,7 +47,7 @@
 <!-- ### Demo -->
 <!-- ### Future Features -->
 ### Contact
-  <a href="https://www.linkedin.com/in/joy-ciao" text-decoration="none">
+  <a href="https://www.linkedin.com/in/joy-chiao" text-decoration="none">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
   <a href="mailto:joy.cheng97324@gmail.com">
