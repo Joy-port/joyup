@@ -274,48 +274,40 @@ const TitleEditor = () => {
       })
       setIsEditing(true)
     } else if (e.key === "Backspace") {
-      if (!text.includes("/")) {
-        const query = null
+      if (!text.includes("/") && !text.includes(":")) {
+        setTotalCommands({ ...clearCommands })
+        setTagCommands({ ...clearCommands })
+        setTimeCommands({ ...clearCommands })
+        return
+      }
+      if (timeCommands.slashCharacterPosition && text.endsWith(":")) {
+        e.preventDefault()
         setTotalCommands((prev) => {
           return {
             ...prev,
-            query,
+            slashCharacterPosition: timeCommands.previousCharacterPosition,
           }
         })
-        setTagCommands((prev) => {
+        addSlash(0, timeCommands.previousCharacterPosition)
+        setTimeCommands({ ...clearCommands })
+        setTotalCommands((prev) => {
           return {
             ...prev,
-            query,
+            query: "",
           }
         })
-        setTimeCommands((prev) => {
+        setDateType(null)
+        setSelectionIndex(0)
+      } else if (tagCommands.slashCharacterPosition && text.endsWith(":")) {
+        e.preventDefault()
+        setTotalCommands((prev) => {
           return {
             ...prev,
-            query,
+            slashCharacterPosition: tagCommands.previousCharacterPosition,
           }
         })
-      } else {
-        if (timeCommands.slashCharacterPosition && text.endsWith(":")) {
-          e.preventDefault()
-          setTotalCommands((prev) => {
-            return {
-              ...prev,
-              slashCharacterPosition: timeCommands.slashCharacterPosition,
-            }
-          })
-          addSlash(0, timeCommands.slashCharacterPosition)
-          setTimeCommands({ ...clearCommands })
-        } else if (tagCommands.slashCharacterPosition && text.endsWith(":")) {
-          e.preventDefault()
-          setTotalCommands((prev) => {
-            return {
-              ...prev,
-              slashCharacterPosition: tagCommands.slashCharacterPosition,
-            }
-          })
-          addSlash(0, tagCommands.slashCharacterPosition)
-          setTagCommands({ ...clearCommands })
-        }
+        addSlash(0, tagCommands.previousCharacterPosition)
+        setTagCommands({ ...clearCommands })
         setTotalCommands((prev) => {
           return {
             ...prev,

@@ -1,5 +1,6 @@
 import { firebase } from "../../utils/firebase"
 import { tags } from "./tags"
+import { v4 as uuidv4 } from "uuid"
 
 export const project = {
   updateProjects: function () {
@@ -81,6 +82,7 @@ export const project = {
   createNewProjectFromTemplate: function (projectID, callback, alert) {
     return async (dispatch, getState) => {
       try {
+        const newProjectID = uuidv4()
         const { id } = getState().user
         const { totalProjectList } = getState().projects
         const selectedTemplate = {
@@ -88,11 +90,20 @@ export const project = {
           isTemplate: 0,
           users: [id],
           isPublic: 0,
+          id: newProjectID,
         }
-        const newProjectID = await firebase.createProjectWithTemplate(
-          selectedTemplate,
-          id
+        const duplicateTasksInTemplate = await firebase.duplicateTasksForNewProject(
+          selectedTemplate
         )
+        const duplicateProjectDetail = await firebase.duplicateProjectDetail(
+          selectedTemplate,
+          duplicateTasksInTemplate
+        )
+        const newProject = {
+          ...selectedTemplate,
+          ...duplicateProjectDetail,
+        }
+        await firebase.createProjectWithTemplate(newProject, id)
         await firebase
           .saveProjectToUserProjects(id, newProjectID, "ownerProjects")
           .then(() => {

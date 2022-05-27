@@ -226,11 +226,66 @@ export const firebase = {
       console.error(error)
     }
   },
+  duplicateTasksForNewProject: async function (projectContent) {
+    try {
+      const taskCollection = "tasks"
+      const taskList = [...projectContent.tasks]
+      const taskUpdateList = {}
+      for (const task of taskList) {
+        const taskQuery = doc(this.db, taskCollection, task)
+        const taskDetail = await getDoc(taskQuery)
+        const newTaskID = uuidv4()
+        const newTaskDetail = {
+          ...taskDetail.data(),
+          id: newTaskID,
+          projectID: projectContent.id,
+        }
+        const taskUpdateDetail = {
+          oldID: task,
+          id: newTaskID,
+          tagsList: taskDetail.data().tagList,
+        }
+        await firebase.saveTask(newTaskDetail)
+        taskUpdateList[task] = taskUpdateDetail
+      }
+      return taskUpdateList
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  duplicateProjectDetail: async function (projectDetail, taskUpdateContent) {
+    try {
+      const newTaskList = projectDetail.tasks.map((taskID) => {
+        taskUpdateContent[taskID].oldID === taskID
+        return taskUpdateContent[taskID].id
+      })
+      const totalTags = []
+      for (const tagsType of projectDetail.tags) {
+        totalTags.push(...projectDetail[tagsType])
+      }
+      const projectTagsOrderUpdate = {}
+      for (const tagID of totalTags) {
+        const newOrder = projectDetail[tagID].map((taskID) => {
+          taskUpdateContent[taskID].oldID === taskID
+          return taskUpdateContent[taskID].id
+        })
+        projectTagsOrderUpdate[tagID] = newOrder
+      }
+
+      const newProjectDetail = {
+        ...projectDetail,
+        ...projectTagsOrderUpdate,
+        tasks: newTaskList,
+      }
+      return newProjectDetail
+    } catch (error) {
+      console.error(error)
+    }
+  },
   createProjectWithTemplate: async function (projectContent, userID) {
     try {
       const collectionName = "projects"
-      const projectRef = doc(collection(this.db, collectionName))
-      const projectID = projectRef.id
+      const projectID = projectContent.id
       await setDoc(doc(this.db, collectionName, projectID), {
         ...projectContent,
         id: projectID,
