@@ -243,6 +243,7 @@ const index = ({ type }) => {
         components={bigCalendar.components}
         popup
         tooltipAccessor={null}
+        scrollToTime={new Date()}
       />
 
       {isOpenModal && (

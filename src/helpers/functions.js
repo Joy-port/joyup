@@ -48,6 +48,17 @@ export const getHourTime = (time) => {
   // return `${hours}:${minutes}:${seconds}`
 }
 
+export const dayRangeFromToday = (day) => {
+  const rangeFromToday =
+    new Date().getDay() < day ? day - new Date().getDay() : 7 - new Date().getDay() + day
+  return rangeFromToday
+}
+export const getDateFromToday = (numberAwayFromToday) => {
+  return new Date(
+    new Date().setDate(new Date().getDate() + numberAwayFromToday)
+  ).getTime()
+}
+
 export function filterSelectedTypeTags(
   selectedProject,
   selectedType,
@@ -112,4 +123,10 @@ export function getTagList(defaultTagList) {
 }
 export function getCalendarTime(timeInNanoSeconds) {
   return new Date(timeInNanoSeconds)
+}
+
+export const filterCommandListByQuery = (queryType, commandList) => {
+  return commandList.filter((command) =>
+    command.name.toLowerCase().match(queryType.toLowerCase())
+  )
 }
