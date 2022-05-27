@@ -42,13 +42,12 @@
 - react-joyride
 
 ### Flow chart
+ ![flow chart](./src/assets/images/flowchart/flow.drawio.svg)
 
-
-
-### Demo
-7. Future Features(optional)
+<!-- ### Demo -->
+<!-- ### Future Features -->
 ### Contact
-  <a href="https://www.linkedin.com/in/joy-ciao">
+  <a href="https://www.linkedin.com/in/joy-ciao" text-decoration="none">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
   <a href="mailto:joy.cheng97324@gmail.com">
