@@ -4,7 +4,7 @@ import { getClockTime, getHourTime } from "../../../helpers/functions"
 import { useDispatch, useSelector } from "react-redux"
 import { X, Clock, Circle, Play } from "react-feather"
 import { checkProjectMessage } from "../../../helpers/config"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 const TimeModal = () => {
   const modalOpenScrollRef = useRef()
@@ -20,6 +20,7 @@ const TimeModal = () => {
     mode,
   } = useSelector((state) => state.task)
   const { taskID } = useParams()
+  const navigate = useNavigate()
   const [requiredNumberError, setRequiredNumberError] = useState(2)
   const [workTimeError, setWorkTimeError] = useState(2)
   const [breakTimeError, setBreakTimeError] = useState(2)
@@ -273,6 +274,10 @@ const TimeModal = () => {
               payload: { type: "isPaused", status: false },
             })
             navigate(`/clocks/${taskID}`, { replace: true })
+            dispatch({
+              type: "modals/switchTaskClockSettingModal",
+              payload: false,
+            })
           }}
         >
           <Play />

@@ -133,7 +133,7 @@ const Login = () => {
         {loading ? (
           <Loader isContent={false} />
         ) : (
-          <div className="flex flex-col justify-center items-center my-0 h-full px-5 -mt-32 pt-32">
+          <div className="flex flex-col justify-center items-center my-0 h-full px-5 -mt-32">
             <div className="px-14 md:px-24 py-12 w-full md:w-128 bg-white rounded-lg shadow-lg shadow-blue100 border-1 border-light200 flex flex-col gap-6">
               <h1 className="heading-two text-center">
                 {" "}
@@ -157,7 +157,7 @@ const Login = () => {
                       <Icon.User />
                       <input
                         type="text"
-                        className={`rounded-lg grow 
+                        className={`w-full rounded-lg grow 
                          text-transparentDark border-1 border-light200 focus:outline-1 py-2 px-3 ${
                            nameStatus === 2
                              ? "  focus:caret-light200 focus:outline-light200"
@@ -198,7 +198,7 @@ const Login = () => {
                     <Icon.Mail />
                     <input
                       type="email"
-                      className={`rounded-lg grow 
+                      className={`w-full rounded-lg grow 
                          text-transparentDark border-1 border-light200 focus:outline-1 py-2 px-3 ${
                            emailStatus === 2
                              ? "focus:caret-light200 focus:outline-light200"
@@ -237,7 +237,7 @@ const Login = () => {
                     <Icon.Lock />
                     <input
                       type="password"
-                      className={`rounded-lg grow 
+                      className={`w-full rounded-lg grow 
                          text-transparentDark border-1 border-light200 focus:outline-1 py-2 px-3 ${
                            passwordStatus === 2
                              ? "focus:caret-light200 focus:outline-light200"

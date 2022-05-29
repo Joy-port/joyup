@@ -37,100 +37,95 @@ const TaskList = () => {
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/clocks/${taskID}`)
   }
-  const filterTaskList = () => {
-    const newTaskList = userTasks.filter((taskID) => {
-      const taskDetail = totalTaskList[taskID]
-      const taskDueDate = new Date(taskDetail.dueDate).getDate()
-      taskDueDate >= new Date().getDate()
-    })
-    // console.log(newTaskList)
-    return newTaskList
-  }
+  const filterTaskList = userTasks.filter((taskID) => {
+    const taskDetail = totalTaskList[taskID]
+    const taskDueDate = new Date(taskDetail.dueDate).getDate()
+    taskDueDate >= new Date().getDate()
+  })
   //py-2 px-3 w-32
   return (
     <>
       {userTasks.length !== 0 && userProjects.length !== 0 && (
         <div className="absolute bottom-5 right-5 z-100 bg-transparent flex gap-2">
-          <div
-            className="rounded button-outline-light min-w-32 max-w-72"
-            id="openClockButton"
-          >
+          {filterTaskList.length > 1 && (
             <div
-              className="relative w-56 py-2 px-3 rounded capitalize whitespace-nowrap"
-              onClick={() => {
-                if (userTasks.length < 1) {
-                  dispatch({
-                    type: "alert/status",
-                    payload: {
-                      text: "there is no task, choose or create a project to start a new file for tasks",
-                      type: "danger",
-                    },
-                  })
-                  navigate("/dashboard")
-                  return
-                }
-                setOpenSelector(!openSelector)
-              }}
-              onBlur={() => {
-                setOpenSelector(false)
-              }}
+              className="rounded button-outline-light min-w-32 max-w-72"
+              id="openClockButton"
             >
-              <p className="flex gap-2 items-center rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer">
-                <Clock />
-                Select Task to Start
-              </p>
-              {openSelector && (
-                <div
-                  className={`dropdown-container max-h-28 overflow-y-auto overflow-x-hidden scrollbar shadow-md shadow-light200 border-t-2 border-t-light100 ${
-                    userTasks.length === 1
-                      ? "-top-50px"
-                      : userTasks.length <= 2
-                      ? "-top-20"
-                      : userTasks.length <= 3
-                      ? "-top-28"
-                      : "-top-32"
-                  }`}
-                >
-                  <ul
-                    className="dropdown-list rounded"
-                    onBlur={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                      setOpenSelector(false)
-                    }}
+              <div
+                className="relative w-56 py-2 px-3 rounded capitalize whitespace-nowrap"
+                onClick={() => {
+                  if (userTasks.length < 1) {
+                    dispatch({
+                      type: "alert/status",
+                      payload: {
+                        text: "there is no task, choose or create a project to start a new file for tasks",
+                        type: "danger",
+                      },
+                    })
+                    navigate("/dashboard")
+                    return
+                  }
+                  setOpenSelector(!openSelector)
+                }}
+                onBlur={() => {
+                  setOpenSelector(false)
+                }}
+              >
+                <p className="flex gap-2 items-center rounded -my-2 -mx-3 py-2 px-3 bg-slateLight text-white cursor-pointer">
+                  <Clock />
+                  Select Task to Start
+                </p>
+                {openSelector && (
+                  <div
+                    className={`dropdown-container max-h-28 overflow-y-auto overflow-x-hidden scrollbar shadow-md shadow-light200 border-t-2 border-t-light100 ${
+                      filterTaskList.length === 1
+                        ? "-top-50px"
+                        : filterTaskList.length <= 2
+                        ? "-top-20"
+                        : filterTaskList.length <= 3
+                        ? "-top-28"
+                        : "-top-32"
+                    }`}
                   >
-                    {userTasks.map((id) => {
-                      const task = totalTaskList[id]
-                      const taskDueDate = new Date(task.dueDate).getDate()
-                      const projectDetail = totalProjectList[task.projectID]
-                      if (taskDueDate <= new Date().getDate()) return
-                      return (
-                        <li
-                          className="dropdown-item max-w-full truncate pb-2 border-b-1 border-b-light100 hover:text-white flex justify-between items-center "
-                          value={task.id}
-                          key={task.id}
-                          onClick={() => {
-                            openTask(task.id)
-                            setOpenSelector(false)
-                          }}
-                        >
-                          <div className="">
-                            <small className="mb-3 p-1 rounded bg-blue100 text-white ">
-                              {projectDetail.title}
-                            </small>
-                            <p className="p-1">{task.title}</p>
-                          </div>
-                          <div className="">
-                            <PlayCircle size={35} strokeWidth={1} />
-                          </div>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-            {/* <select
+                    <ul
+                      className="dropdown-list rounded"
+                      onBlur={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        setOpenSelector(false)
+                      }}
+                    >
+                      {filterTaskList.map((id) => {
+                        const task = totalTaskList[id]
+                        const projectDetail = totalProjectList[task.projectID]
+                        return (
+                          <li
+                            className="dropdown-item max-w-full truncate pb-2 border-b-1 border-b-light100 hover:text-white flex justify-between items-center "
+                            value={task.id}
+                            key={task.id}
+                            onClick={() => {
+                              openTask(task.id)
+                              setOpenSelector(false)
+                            }}
+                          >
+                            <div className="">
+                              <small className="mb-3 p-1 rounded bg-blue100 text-white ">
+                                {projectDetail.title}
+                              </small>
+                              <p className="p-1">{task.title}</p>
+                            </div>
+                            <div className="">
+                              <PlayCircle size={35} strokeWidth={1} />
+                            </div>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              {/* <select
             value={selectedType.id || -1}
             onChange={(e) => dispatch(tags.switchType(e.target.value))}
           >
@@ -141,7 +136,8 @@ const TaskList = () => {
               </option>
             ))}
           </select> */}
-          </div>
+            </div>
+          )}
           <button
             className="bg-slateLight text-white py-2 px-3 rounded flex items-center gap-2"
             onClick={createNewTask}

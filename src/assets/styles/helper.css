@@ -87,27 +87,13 @@ input[type="number"] {
 .background {
   z-index: -1;
   position: absolute;
-  height: calc(100vh - 85vh);
+  height: 128px;
   width: auto;
-  top: 85vh;
+  bottom: 0;
   right: 20px;
   overflow: hidden;
   pointer-events: none;
   background-position: bottom;
   background-size: contain;
   background-repeat: no-repeat;
-}
-
-@media (min-width: 576px) {
-  .background {
-    height: calc(100vh - 75vh);
-    top: 75vh;
-  }
-}
-
-@media (min-width: 768px) {
-  .background {
-    height: calc(100vh - 65vh);
-    top: 65vh;
-  }
 }
