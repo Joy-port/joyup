@@ -3,7 +3,7 @@ import { getHourTime } from "../../../utils/helpers"
 import { useDispatch, useSelector } from "react-redux"
 import { X, Clock, Circle, Play } from "react-feather"
 import { checkProjectMessage } from "../../../utils/config"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 const TimeModal = () => {
   const modalOpenScrollRef = useRef()
@@ -12,6 +12,7 @@ const TimeModal = () => {
   const { workTime, breakTime, requiredTime, requiredNumber, totalTime, mode } =
     useSelector((state) => state.task)
   const { taskID } = useParams()
+  const navigate = useNavigate()
   const [requiredNumberError, setRequiredNumberError] = useState(2)
   const [workTimeError, setWorkTimeError] = useState(2)
   const [breakTimeError, setBreakTimeError] = useState(2)
