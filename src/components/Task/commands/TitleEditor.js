@@ -4,6 +4,7 @@ import * as Icon from "react-feather"
 import { task } from "../../../store/actions/task"
 import { titleCommandList, dateCommandList } from "../../../utils/slashCommands"
 import { filterCommandListByQuery } from "../../../utils/helpers"
+import CommandList from "./CommandList"
 
 const TitleEditor = () => {
   const clearCommands = {
@@ -86,6 +87,17 @@ const TitleEditor = () => {
   const matchingCommands = getMatchingCommands(totalCommands.query, titleCommandList)
   const matchingTags = getMatchingCommands(tagCommands.query, selectedTagType?.children)
   const matchingTimeSettings = getMatchingCommands(timeCommands.query, dateCommandList)
+
+  const activeCommandList = (currentCommands, commandActions) => {
+    return (
+      <CommandList
+        commandList={currentCommands}
+        onClickFunction={commandActions}
+        mouseSelectFunction={setSelectionIndex}
+        selectionIndex={selectionIndex}
+      />
+    )
+  }
 
   useEffect(() => {
     if (
@@ -345,69 +357,9 @@ const TitleEditor = () => {
           onBlur={() => clearExistingCommands()}
         />
       )}
-      {matchingCommands.length !== 0 && (
-        <div className="results top-10 mt-1 z-10 ">
-          {matchingCommands.map((command, index) => {
-            const IconName = Icon[command.icon]
-            return (
-              <div
-                key={index}
-                onClick={() => selectTotalCommand(command)}
-                onMouseOver={() => setSelectionIndex(index)}
-                className={`
-                  results__command 
-                  ${index == selectionIndex ? "results__command--selected" : ""}
-                `}
-              >
-                <IconName strokeWidth={1.5} />
-                <p className="text-lg">{command.name}</p>
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {matchingTimeSettings.length !== 0 && (
-        <div className="results top-10 mt-1 z-10">
-          {matchingTimeSettings.map((command, index) => {
-            const IconName = Icon[command.icon]
-            return (
-              <div
-                key={index}
-                onClick={() => selectTimeCommand(command)}
-                onMouseOver={() => setSelectionIndex(index)}
-                className={`
-                  results__command 
-                  ${index == selectionIndex ? "results__command--selected" : ""}
-                `}
-              >
-                <IconName strokeWidth={1.5} />
-                <p className="text-lg">{command.name}</p>
-              </div>
-            )
-          })}
-        </div>
-      )}
-      {matchingTags.length !== 0 && (
-        <div className="results top-10 mt-1 z-10 ">
-          {matchingTags.map((child, index) => {
-            return (
-              <div
-                key={child.id}
-                onClick={() => selectTags(child)}
-                onMouseOver={() => setSelectionIndex(index)}
-                className={
-                  "results__command " +
-                  (index == selectionIndex ? "results__command--selected" : "")
-                }
-              >
-                <Icon.Tag strokeWidth={1.5} />
-                <p className="text-lg">{child.name}</p>
-              </div>
-            )
-          })}
-        </div>
-      )}
+      {activeCommandList(matchingCommands, selectTotalCommand)}
+      {activeCommandList(matchingTimeSettings, selectTimeCommand)}
+      {activeCommandList(matchingCommands, selectTags)}
     </div>
   )
 }
