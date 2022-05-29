@@ -37,11 +37,15 @@ const TaskList = () => {
     dispatch({ type: "task/openSavedTask", payload: taskDetail })
     navigate(`/clocks/${taskID}`)
   }
-  const filterTaskList = userTasks.filter((taskID) => {
-    const taskDetail = totalTaskList[taskID]
-    const taskDueDate = new Date(taskDetail.dueDate).getDate()
-    taskDueDate >= new Date().getDate()
-  })
+  const filterTaskList = userTasks
+    .filter((taskID) => {
+      const taskDetail = totalTaskList[taskID]
+      const taskDueDate = new Date(taskDetail.dueDate).getDate()
+      return taskDueDate >= new Date().getDate()
+    })
+    .sort((a, b) => {
+      return totalTaskList[a].dueDate - totalTaskList[b].dueDate
+    })
   //py-2 px-3 w-32
   return (
     <>

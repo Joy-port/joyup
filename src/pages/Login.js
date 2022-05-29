@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
 import { user } from "../sliceReducers/actions/user"
 import { checkLoginMessage } from "../helpers/config"
-import logo from "../assets/images/logo/primary/logo_transparent.png"
+import logo from "../assets/images/logo/dark/joyUp.png"
 import backgroundImage from "../assets/illustrations/Life Management.png"
 import { AuthContext } from "../components/AuthProvider"
 import Loader from "../components/Loader"
@@ -122,12 +122,12 @@ const Login = () => {
     <>
       <div className="text-slateLight h-screen ">
         <div className="py-6 px-5">
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <img src={logo} alt="JoyUp logo" className="max-w-full block h-14" />
             <p className="font-sans font-bold text-2xl">JoyUp</p>
           </div>
           <code className="ml-4 text-sm text-transparentDark">
-            brighten your life with a better life management
+            brighten up your life with a better life management
           </code>
         </div>
         {loading ? (
