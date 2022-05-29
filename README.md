@@ -44,7 +44,25 @@
 ### Flow chart
  ![flow chart](./src/assets/images/flowchart/flow.drawio.svg)
 
-<!-- ### Demo -->
+### Demo
+- Slash commands is searchable and both selectable with keyboard arrow commands and mouse event
+
+1. Title bar is allowed to select commands for task details 
+![slash Command](./src/assets/demo/slash%20command.gif)
+2. Text bar is allowed to select commands for text styling
+![slash Command](./src/assets/demo/slash%20command%202.gif)
+
+- Pomodoro Clock will start to count or pause with the play button.
+![clock](./src/assets/demo/clock.gif)
+
+- Tasks are draggable and could be switch to different tags in both list and board views.
+![list](./src/assets/demo/list%20dnd.gif)
+![board](./src/assets/demo/board%20dnd.gif)
+
+- Tasks is allowed to create when dragging mouse pointer in calender view.
+![calendar](./src/assets/demo/calendar.gif)
+
+
 <!-- ### Future Features -->
 ### Contact
   <a href="https://www.linkedin.com/in/joy-chiao" text-decoration="none">
