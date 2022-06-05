@@ -116,7 +116,6 @@ export const tags = {
       try {
         const { totalTagList, totalProjectList, totalTaskList } = getState().projects
         const currentProject = totalProjectList[projectID]
-        console.log(totalProjectList[projectID])
         const projectTasks = currentProject.tasks
         const projectTaskDetail = {}
         projectTasks.forEach((taskID) => {

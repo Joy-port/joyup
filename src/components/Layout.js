@@ -1,13 +1,13 @@
-import { Fragment, useContext, useEffect } from "react"
+import { Fragment, useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
-import { LogOut } from "react-feather"
+import * as Icon from "react-feather"
 import { user } from "../store/actions/user"
 import { AuthContext } from "./AuthProvider"
 import TaskList from "./Task/TaskList"
 import Loader from "./Loader"
 import { pathInfo } from "../utils/config"
-import * as Icon from "react-feather"
+import logo from "../assets/images/logo/primary/menu.png"
 
 const Layout = () => {
   const [userDetail, loading, _] = useContext(AuthContext)
@@ -15,6 +15,7 @@ const Layout = () => {
   const { id } = useSelector((state) => state.user)
   const { pathname } = useLocation()
   const dispatch = useDispatch()
+  const [isShow, setIsShow] = useState(false)
   useEffect(() => {
     if (loading) return
     if (!userDetail) {
@@ -40,7 +41,19 @@ const Layout = () => {
       ) : (
         <div>
           <div className="body">
-            <nav className="menu-list">
+            <nav className="md:hidden flex px-4 py-2 justify-between items-center bg-slateDark">
+              <Icon.Menu
+                className="cursor-pointer text-light200 hover:bg-slateLight hover:text-white"
+                onClick={() => setIsShow(!isShow)}
+              />
+              <Link to="/">
+                <img className="h-10" src={logo} alt="logo" />
+              </Link>
+              <Icon.Menu className="invisible" />
+            </nav>
+            <nav
+              className={`menu-list ${isShow ? "visible md:flex" : "hidden md:flex"} `}
+            >
               <div>
                 {pathInfo.map((item) => {
                   const IconName = Icon[item.icon]
@@ -65,7 +78,7 @@ const Layout = () => {
                 })}
               </div>
               <button className="menu-item__light" onClick={onClick}>
-                <LogOut />
+                <Icon.LogOut />
                 <p className="transition-all lg:block md:hidden sm:block">Logout</p>
               </button>
             </nav>

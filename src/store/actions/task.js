@@ -58,6 +58,7 @@ export const task = {
         const { id } = getState().task
         const actionType = `task/${type}`
         dispatch({ type: actionType, payload: content })
+        if (!id) return
         await firebase.saveTaskPartialContent(id, {
           [type]: content,
         })

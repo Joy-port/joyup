@@ -1,6 +1,6 @@
 import { Fragment } from "react"
 import * as Icon from "react-feather"
-import { arrayOf, func, number, object, oneOfType } from "prop-types"
+import { arrayOf, func, number, shape, string } from "prop-types"
 
 const CommandList = ({
   commandList,
@@ -36,7 +36,12 @@ const CommandList = ({
 }
 
 CommandList.propTypes = {
-  commandList: oneOfType(arrayOf(object)),
+  commandList: arrayOf(
+    shape({
+      icon: string,
+      name: string,
+    })
+  ),
   onClickFunction: func.isRequired,
   mouseSelectFunction: func.isRequired,
   selectionIndex: number.isRequired,

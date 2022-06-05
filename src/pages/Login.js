@@ -156,6 +156,7 @@ const Login = () => {
                           checkName(e.target.value)
                           setName(e.target.value)
                         }}
+                        autoComplete="true"
                       />
                     </div>
                     <div
@@ -197,6 +198,7 @@ const Login = () => {
                         checkEmail(e.target.value)
                         setEmail(e.target.value)
                       }}
+                      autoComplete="true"
                     />
                   </div>
                   <div
@@ -236,6 +238,7 @@ const Login = () => {
                         checkPassword(e.target.value)
                         setPassword(e.target.value)
                       }}
+                      autoComplete="true"
                     />
                   </div>
                   <div
