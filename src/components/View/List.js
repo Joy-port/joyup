@@ -27,7 +27,7 @@ const List = ({ type }) => {
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
             <div
-              className="group-title border-2 border-light000 rounded relative w-44 px-2 py-1"
+              className="group-title border-2 border-light000 rounded relative w-44 px-2 py-1 cursor-pointer"
               onClick={() => {
                 setOpenSelector(!openSelector)
               }}

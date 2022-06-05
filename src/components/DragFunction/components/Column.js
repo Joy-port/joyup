@@ -28,7 +28,7 @@ const Column = ({ column, taskList, type }) => {
       <h1 className={`tag`}>{column.title}</h1>
       <Droppable
         droppableId={column.id}
-        style={{ overflowY: "auto" }}
+        // style={{ overflowY: "auto" }}
         className={`${type === "list" ? "min-h-20" : "overflow-y-auto"}`}
       >
         {(provided, snapshot) => {
