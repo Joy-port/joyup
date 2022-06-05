@@ -1,5 +1,5 @@
 import { Fragment, useContext, useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { LogOut } from "react-feather"
 import { user } from "../store/actions/user"
@@ -12,15 +12,23 @@ import * as Icon from "react-feather"
 const Layout = () => {
   const [userDetail, loading, _] = useContext(AuthContext)
   const navigate = useNavigate()
+  const { id } = useSelector((state) => state.user)
   const { pathname } = useLocation()
   const dispatch = useDispatch()
   useEffect(() => {
+    if (loading) return
     if (!userDetail) {
-      dispatch(user.logout())
       navigate("/signin")
+      return
     }
-    return
-  }, [userDetail])
+    if (userDetail?.uid || id) {
+      dispatch(user.login(userDetail.uid))
+      if (!id) {
+        dispatch({ type: "user/getUserID", payload: userDetail.uid })
+      }
+      return
+    }
+  }, [userDetail, loading])
   const onClick = () => {
     dispatch(user.logout())
   }

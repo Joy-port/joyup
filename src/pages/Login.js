@@ -28,6 +28,7 @@ const Login = () => {
   useEffect(() => {
     if (loading) return
     if (userDetail && id !== "") {
+      dispatch({ type: "user/getUserID", payload: userDetail.uid })
       if (isLoginPath) {
         navigate("/projects")
       }

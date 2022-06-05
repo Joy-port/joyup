@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import React, { Fragment } from "react"
 import { Droppable } from "react-beautiful-dnd"
 import { array, object, string } from "prop-types"
 import Task from "./Task"

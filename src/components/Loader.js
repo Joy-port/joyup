@@ -1,14 +1,9 @@
-import { bool } from "prop-types"
-
-const Loader = ({ isContent }) => {
+const Loader = () => {
   return (
-    <div className={`circle-loader ${isContent ? "circle-loader-content" : ""}`}>
+    <div className={`circle-loader`}>
       <div></div>
       <div></div>
     </div>
   )
-}
-Loader.propTypes = {
-  isContent: bool.isRequired,
 }
 export default Loader

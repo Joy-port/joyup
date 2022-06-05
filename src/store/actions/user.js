@@ -52,6 +52,16 @@ export const user = {
       }
     }
   },
+  login: (userID) => {
+    return async (dispatch) => {
+      try {
+        dispatch({ type: "user/getUserID", payload: userID })
+        dispatch(user.getUserProjectList(userID))
+      } catch (error) {
+        dispatch({ type: "status/error", payload: error })
+      }
+    }
+  },
   logout: () => {
     return async (dispatch) => {
       await login.userSignOut((errorMessage) => {
