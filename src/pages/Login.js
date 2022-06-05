@@ -12,7 +12,6 @@ import Loader from "../components/Loader"
 const Login = () => {
   const { id } = useSelector((state) => state.user)
   const [userDetail, loading, error] = useContext(AuthContext)
-  const { ownerProjects, userTasks, userProjects } = useSelector((state) => state.user)
   const [email, setEmail] = useState("joy3124@gmail.com")
   const [password, setPassword] = useState("111111")
   const [name, setName] = useState("")
@@ -47,7 +46,7 @@ const Login = () => {
       }
     }
     return
-  }, [userDetail, id, ownerProjects])
+  }, [userDetail, id])
   useEffect(() => {
     setNameStatus(2)
     setEmailStatus(2)

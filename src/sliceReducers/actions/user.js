@@ -81,7 +81,7 @@ export const user = {
             //   user.uid
             // )
             dispatch({ type: "user/getUserID", payload: user.uid })
-            const { name } = firebase.getUserSettings(user.id)
+            const { name } = firebase.getUserSettings(user.uid)
             dispatch({ type: "user/getUserName", payload: name })
           },
           () => {
