@@ -5,6 +5,7 @@ import * as Icon from "react-feather"
 import { project } from "../../store/actions/project"
 import { tags } from "../../store/actions/tags"
 import { checkProjectMessage } from "../../utils/config"
+import Loader from "../Loader"
 
 const index = () => {
   const { isFirstTimeUser } = useSelector((state) => state.user)
@@ -18,6 +19,7 @@ const index = () => {
   const [projectTitle, setProjectTitle] = useState("")
   const [isPublic, setIsPublic] = useState(false)
   const [startCreateProject, setStartCreateProject] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -29,6 +31,7 @@ const index = () => {
     dispatch(tags.switchProject(projectID))
   }
   const runAlertWhenSuccessAndSwitchToPage = (projectID) => {
+    setIsLoading(false)
     dispatch({
       type: "alert/status",
       payload: { text: "Project is set up", type: "success" },
@@ -46,6 +49,7 @@ const index = () => {
         })
         return
       }
+      setIsLoading(true)
       const projectContent = {
         projectTitle,
         isPublic,
@@ -58,6 +62,7 @@ const index = () => {
         )
       )
     } else if (currentPage === 1) {
+      setIsLoading(true)
       dispatch(
         project.createNewProjectFromTemplate(
           selectedTemplateType,
@@ -112,126 +117,132 @@ const index = () => {
               currentPage !== 2 ? "flex-col md:flex-row" : ""
             }`}
           >
-            {currentPage === 0 ? (
+            {isLoading ? (
+              <Loader isContent={true} />
+            ) : (
               <Fragment>
-                <div
-                  className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
-                    isSelectTemplate === true
-                      ? "border-blue200 text-blue200"
-                      : "border-light100 text-light300"
-                  }`}
-                  onClick={() => {
-                    setIsSelectTemplate(true)
-                    setCurrentPage(1)
-                  }}
-                >
-                  <h3 className="heading-four">Select A Template</h3>
-                  <Icon.Sidebar size={50} strokeWidth={1.5} />
-                </div>
-                <div
-                  className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 border-light100 cursor-pointer hover:shadow-lg hover:border-blue200 text-light300 hover:text-blue200  ${
-                    isSelectTemplate === false
-                      ? "border-blue200 text-blue200"
-                      : "border-light100 text-light300"
-                  }`}
-                  onClick={() => {
-                    setIsSelectTemplate(false)
-                    setCurrentPage(2)
-                  }}
-                >
-                  <h3 className="heading-four">Create A Project</h3>
-                  <Icon.FolderPlus size={50} strokeWidth={1.5} />
-                </div>
-              </Fragment>
-            ) : currentPage === 1 ? (
-              <Fragment>
-                {templateProjects.map((templateDetail) => {
-                  const IconName = Icon[templateDetail.icon]
-                  return (
+                {currentPage === 0 ? (
+                  <Fragment>
                     <div
-                      className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 
+                      className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
+                        isSelectTemplate === true
+                          ? "border-blue200 text-blue200"
+                          : "border-light100 text-light300"
+                      }`}
+                      onClick={() => {
+                        setIsSelectTemplate(true)
+                        setCurrentPage(1)
+                      }}
+                    >
+                      <h3 className="heading-four">Select A Template</h3>
+                      <Icon.Sidebar size={50} strokeWidth={1.5} />
+                    </div>
+                    <div
+                      className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 border-light100 cursor-pointer hover:shadow-lg hover:border-blue200 text-light300 hover:text-blue200  ${
+                        isSelectTemplate === false
+                          ? "border-blue200 text-blue200"
+                          : "border-light100 text-light300"
+                      }`}
+                      onClick={() => {
+                        setIsSelectTemplate(false)
+                        setCurrentPage(2)
+                      }}
+                    >
+                      <h3 className="heading-four">Create A Project</h3>
+                      <Icon.FolderPlus size={50} strokeWidth={1.5} />
+                    </div>
+                  </Fragment>
+                ) : currentPage === 1 ? (
+                  <Fragment>
+                    {templateProjects.map((templateDetail) => {
+                      const IconName = Icon[templateDetail.icon]
+                      return (
+                        <div
+                          className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1 cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 
                       ${
                         selectedTemplateType === templateDetail.id
                           ? "border-blue200 text-blue200"
                           : "border-light100 text-light300"
                       }`}
-                      onClick={() => {
-                        setSelectedTemplateType(templateDetail.id)
-                        setStartCreateProject(true)
-                      }}
-                      key={templateDetail.id}
-                    >
-                      <h3 className="heading-four">{templateDetail.title}</h3>
-                      <IconName size={50} strokeWidth={1.5} />
+                          onClick={() => {
+                            setSelectedTemplateType(templateDetail.id)
+                            setStartCreateProject(true)
+                          }}
+                          key={templateDetail.id}
+                        >
+                          <h3 className="heading-four">{templateDetail.title}</h3>
+                          <IconName size={50} strokeWidth={1.5} />
+                        </div>
+                      )
+                    })}
+                  </Fragment>
+                ) : (
+                  <form
+                    className="w-2/3 self-start flex flex-col gap-5"
+                    onSubmit={(e) => createNewProject(e)}
+                  >
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="title" className="block font-semibold heading-four">
+                        Title
+                      </label>
+                      <input
+                        className={`border-0 border-b-2  p-2  ${
+                          !projectTitle
+                            ? "border-b-danger text-danger placeholder:text-red100"
+                            : "border-b-light300 placeholder:text-light100"
+                        }`}
+                        type="text"
+                        id="title"
+                        required
+                        value={projectTitle}
+                        onChange={(e) => {
+                          setProjectTitle(e.target.value)
+                          checkTitleMessage(e.target.value)
+                          setStartCreateProject(true)
+                        }}
+                        placeholder="Enter project title"
+                      />
+                      <div
+                        className={`text-sm flex gap-2 items-center h-5 ${
+                          !projectTitle ? "visible" : "invisible"
+                        } ${projectTitle ? "text-success" : "text-danger "}`}
+                        style={{ paddingTop: 2, paddingBottom: 2 }}
+                      >
+                        {projectTitle ? (
+                          <Icon.AlertTriangle size={16} />
+                        ) : (
+                          <Icon.CheckCircle size={16} />
+                        )}
+                        <div className="text-sm">
+                          {titleAlertMessage}
+                          <span className="invisible">123</span>
+                        </div>
+                      </div>
                     </div>
-                  )
-                })}
+                    <div className="flex items-center gap-4">
+                      <label htmlFor="public" className="font-semibold mr-5">
+                        Public
+                      </label>
+                      <div
+                        className={`rounded-full w-14 px-1 py-1 transition-colors cursor-pointer ${
+                          isPublic ? "bg-blue200" : "bg-light100"
+                        }`}
+                        onClick={() => {
+                          setIsPublic(!isPublic)
+                        }}
+                      >
+                        <div
+                          className={`transition-all max-w-fit ${
+                            isPublic ? "ml-auto" : "mr-auto"
+                          }`}
+                        >
+                          <Icon.Circle color="white" fill="white" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                )}
               </Fragment>
-            ) : (
-              <form
-                className="w-2/3 self-start flex flex-col gap-5"
-                onSubmit={(e) => createNewProject(e)}
-              >
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="title" className="block font-semibold heading-four">
-                    Title
-                  </label>
-                  <input
-                    className={`border-0 border-b-2  p-2  ${
-                      !projectTitle
-                        ? "border-b-danger text-danger placeholder:text-red100"
-                        : "border-b-light300 placeholder:text-light100"
-                    }`}
-                    type="text"
-                    id="title"
-                    required
-                    value={projectTitle}
-                    onChange={(e) => {
-                      setProjectTitle(e.target.value)
-                      checkTitleMessage(e.target.value)
-                      setStartCreateProject(true)
-                    }}
-                    placeholder="Enter project title"
-                  />
-                  <div
-                    className={`text-sm flex gap-2 items-center h-5 ${
-                      !projectTitle ? "visible" : "invisible"
-                    } ${projectTitle ? "text-success" : "text-danger "}`}
-                    style={{ paddingTop: 2, paddingBottom: 2 }}
-                  >
-                    {projectTitle ? (
-                      <Icon.AlertTriangle size={16} />
-                    ) : (
-                      <Icon.CheckCircle size={16} />
-                    )}
-                    <div className="text-sm">
-                      {titleAlertMessage}
-                      <span className="invisible">123</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <label htmlFor="public" className="font-semibold mr-5">
-                    Public
-                  </label>
-                  <div
-                    className={`rounded-full w-14 px-1 py-1 transition-colors cursor-pointer ${
-                      isPublic ? "bg-blue200" : "bg-light100"
-                    }`}
-                    onClick={() => {
-                      setIsPublic(!isPublic)
-                    }}
-                  >
-                    <div
-                      className={`transition-all max-w-fit ${
-                        isPublic ? "ml-auto" : "mr-auto"
-                      }`}
-                    >
-                      <Icon.Circle color="white" fill="white" />
-                    </div>
-                  </div>
-                </div>
-              </form>
             )}
           </div>
         </div>
@@ -241,7 +252,7 @@ const index = () => {
             className={`w-1/2 md:w-1/3 button-dark flex items-center justify-center gap-3 ${
               currentPage !== 0 ? "opacity-100 cursor-pointer" : "invisible"
             }`}
-            onClick={(e) => {
+            onClick={() => {
               setCurrentPage(0)
               setStartCreateProject(false)
             }}

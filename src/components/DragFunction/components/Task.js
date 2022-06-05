@@ -5,7 +5,7 @@ import useOpenTaskPage from "../../../hooks/useOpenTaskPage"
 
 const Task = ({ task, index, type }) => {
   const openTaskPage = useOpenTaskPage()
-  const draggingTop = type === "list" ? 0 : 0
+  const draggingTop = type === "list" ? 45 : 0
   const draggingLeft = type === "list" ? 0 : 100
   return (
     <Draggable draggableId={task.id} index={index}>

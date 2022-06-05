@@ -1,10 +1,10 @@
 import { Fragment, useState, useCallback, useEffect } from "react"
 import { useSelector } from "react-redux"
 import DatePicker from "react-datepicker"
-import { any, bool, func, string } from "prop-types"
+import { any, bool, func, string, object } from "prop-types"
 import moment from "moment"
 
-const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
+const CustomInput = ({ onChange, placeholder, value, id, onClick, ref }) => {
   return (
     <input
       className="bg-light100 w-full rounded select-light300 cursor-pointer"
@@ -13,6 +13,7 @@ const CustomInput = ({ onChange, placeholder, value, id, onClick }) => {
       value={value}
       id={id}
       onClick={onClick}
+      ref={ref}
     />
   )
 }
@@ -112,6 +113,7 @@ CustomInput.propTypes = {
   value: any,
   id: any,
   onClick: func,
+  ref: object,
 }
 DatePick.propTypes = {
   date: any.isRequired,

@@ -207,7 +207,7 @@ const Report = () => {
           </div>
         </Fragment>
       ) : (
-        <Loader />
+        <Loader isContent={true} />
       )}
     </Fragment>
   )

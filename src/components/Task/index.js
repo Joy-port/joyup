@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import * as Icon from "react-feather"
 import { getHourTime } from "../../utils/helpers"
 import { tags } from "../../store/actions/tags"
 import { task } from "../../store/actions/task"
 import TitleEditor from "./commands/TitleEditor"
 import TextEditor from "./commands/TextEditor"
 import DatePicker from "./components/DatePicker"
-import * as Icon from "react-feather"
 import TimeModal from "./components/TimeModal"
+import Loader from "../Loader"
 
 const index = () => {
   const { taskClockSettingModalIsOpen } = useSelector((state) => state.modals)
@@ -34,6 +35,7 @@ const index = () => {
   const navigate = useNavigate()
   const [calendarStartDate, setCalendarStartDate] = useState(startDate)
   const [calendarDueDate, setCalendarDueDate] = useState(dueDate)
+  const [isLoading, setIsLoading] = useState(false)
   const selectDate = useCallback((selectedDateType, name) => {
     const date = new Date(selectedDateType).getTime()
     const dateContent = { name, date }
@@ -287,6 +289,7 @@ const index = () => {
               <TextEditor />
             </div>
           </div>
+          {isLoading && <Loader isContent={true} />}
         </div>
         <div className="modal-footer flex gap-2 items-center w-full md:w-72 md:ml-auto">
           <button
@@ -310,12 +313,17 @@ const index = () => {
                 })
                 return
               }
-              dispatch({
-                type: "alert/status",
-                payload: { text: "task is saved successfully", type: "success" },
-              })
-              dispatch(task.saveTotalTask())
-              navigate(-1)
+              setIsLoading(true)
+              dispatch(
+                task.saveTotalTask(() => {
+                  dispatch({
+                    type: "alert/status",
+                    payload: { text: "task is saved successfully", type: "success" },
+                  })
+                  navigate(-1)
+                  setIsLoading(false)
+                })
+              )
             }}
           >
             <Icon.Save />

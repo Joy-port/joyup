@@ -191,12 +191,14 @@ export const tags = {
       }
     }
   },
-  updateTagOrder: function (taskTagContent) {
+  updateTagOrder: function (taskTagContent, successAlert) {
     return async (dispatch, getState) => {
       try {
         const { selectedProjectID } = getState().tags
         dispatch({ type: "tags/switchTaskOrders", payload: taskTagContent })
-        await firebase.saveTaskOrder(selectedProjectID, taskTagContent)
+        await firebase.saveTaskOrder(selectedProjectID, taskTagContent).then(() => {
+          successAlert && successAlert()
+        })
       } catch (err) {
         dispatch({ type: "status/error", payload: err })
       }

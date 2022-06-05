@@ -139,7 +139,6 @@ const index = ({ type }) => {
         endAccessor={bigCalendar.endAccessor}
         events={events}
         views={bigCalendar.views}
-        resizable
         selectable
         longPressThreshold={20}
         onSelectSlot={createTaskWhenSelected}

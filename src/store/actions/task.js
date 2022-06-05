@@ -67,11 +67,10 @@ export const task = {
       }
     }
   },
-  saveTotalTask: () => {
+  saveTotalTask: (successAlert) => {
     return async (dispatch, getState) => {
       try {
         const { task } = getState()
-        await firebase.saveTask(task)
         task.tagList.forEach(async (tagContent) => {
           const content = {
             parentTag: tagContent.parent,
@@ -80,6 +79,9 @@ export const task = {
             projectID: task.projectID,
           }
           await firebase.saveTagsToProjectID(content)
+        })
+        await firebase.saveTask(task).then(() => {
+          successAlert && successAlert()
         })
       } catch (err) {
         dispatch({ type: "status/error", payload: err })
