@@ -52,18 +52,22 @@ export const user = {
   },
   logout: () => {
     return async (dispatch, getState) => {
-      await login.userSignOut((errorMessage) => {
-        // console.log(errorMessage)
-        dispatch({
-          type: "alert/status",
-          payload: {
-            text: errorMessage,
-            type: "danger",
-          },
-        })
-      })
-      dispatch({ type: "user/clearUserData" })
-      dispatch({ type: "tags/clearTagsData" })
+      await login.userSignOut(
+        () => {
+          dispatch({ type: "user/clearUserData" })
+          dispatch({ type: "tags/clearTagsData" })
+        },
+        (errorMessage) => {
+          // console.log(errorMessage)
+          dispatch({
+            type: "alert/status",
+            payload: {
+              text: errorMessage,
+              type: "danger",
+            },
+          })
+        }
+      )
     }
   },
   listenUserStatus: () => {

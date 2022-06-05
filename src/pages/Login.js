@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
 import { user } from "../sliceReducers/actions/user"
 import { checkLoginMessage } from "../helpers/config"
@@ -27,9 +27,9 @@ const Login = () => {
   const [passwordMessage, setPasswordMessage] = useState("")
   const isLoginPath = pathname === "/signin"
   useEffect(() => {
-    // console.log("check login status", userDetail, loading, pathname)
     if (loading) return
     if (userDetail && id !== "") {
+      dispatch({ type: "user/getUserID", payload: userDetail.uid })
       // console.log("after login", userDetail, id)
       if (isLoginPath) {
         // if (userProjects.length === 0 && userTasks.length === 0) {

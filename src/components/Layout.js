@@ -4,16 +4,17 @@ import { LogOut } from "react-feather"
 import MenuItem from "./Menu/MenuItem"
 import TaskList from "./Task/TaskList"
 import { user } from "../sliceReducers/actions/user"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AuthContext } from "./AuthProvider"
 import Loader from "./Loader"
 const Layout = () => {
+  const { id } = useSelector((state) => state.user)
   const [userDetail, loading, error] = useContext(AuthContext)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
-    if (!userDetail) {
-      dispatch(user.logout())
+    if (loading) return
+    if (!userDetail || !id) {
       navigate("/signin")
     }
     return

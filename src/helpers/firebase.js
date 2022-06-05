@@ -575,27 +575,29 @@ export const login = {
         throw new Error(errorCode, errorMessage)
       })
   },
-  userSignOut: async function (callback) {
+  userSignOut: async function (success, errorAlert) {
     try {
       await signOut(this.auth)
+      success && success()
     } catch (error) {
       const errMsg = error.message.split("/")[1].replace(/-/g, " ").replace(").", "")
       // alert(error.message)
-      callback && callback(errMsg)
+      errorAlert && errorAlert(errMsg)
       const errorCode = error.code
       const errorMessage = error.message
       throw new Error(errorCode, errorMessage)
     }
   },
-  // deleteProfile: function () {
-  //   deleteUser(this.auth.currentUser)
-  //     .then(() => {
-  //       console.log("deleted")
-  //     })
-  //     .catch((error) => {
-  //       console.error(error)
-  //     })
-  // },
+  listenUserStatus: function (callback) {
+    return onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid
+        callback && callback(uid)
+      } else {
+        return false
+      }
+    })
+  },
   userStatusChange: async function (isSignInCallBack, isSignOutCallBack) {
     return onAuthStateChanged(this.auth, (user) => {
       if (user) {

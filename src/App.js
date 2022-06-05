@@ -89,14 +89,7 @@ function App() {
         <Routes>
           <Route path="/">
             <Route path="signin" element={<Login />} />
-            <Route
-              path="signup"
-              element={
-                <AuthProvider>
-                  <Login />
-                </AuthProvider>
-              }
-            />
+            <Route path="signup" element={<Login />} />
             <Route
               element={
                 <Layout>
