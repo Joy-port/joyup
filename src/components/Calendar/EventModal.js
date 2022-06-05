@@ -1,4 +1,4 @@
-import React from "react"
+import { Fragment } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { Edit3, X } from "react-feather"
@@ -46,7 +46,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
     }
   }
   return (
-    <>
+    <Fragment>
       {JSON.stringify(taskDetail) !== "{}" && (
         <div
           className={`modal-container-popUp h-32 w-54 text-light300 z-110 cursor-pointer ${
@@ -100,7 +100,7 @@ const EventModal = ({ type, position, setIsOpenModal, isOpenModal }) => {
           </div>
         </div>
       )}
-    </>
+    </Fragment>
   )
 }
 

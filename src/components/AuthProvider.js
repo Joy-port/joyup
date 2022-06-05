@@ -1,5 +1,4 @@
 import { any } from "prop-types"
-import React from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { login } from "../utils/firebase"
 

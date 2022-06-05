@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { Fragment, useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
@@ -22,7 +22,7 @@ const List = ({ type }) => {
     }
   }, [selectedProjectTaskList])
   return (
-    <>
+    <Fragment>
       <div className="tool-bar">
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) !== "{}" && (
           <div className="text-center rounded button-outline-light">
@@ -64,7 +64,7 @@ const List = ({ type }) => {
         } -ml-4 -mr-4  px-4 pb-2 scrollbar`}
       >
         {selectedProjectTaskList && JSON.stringify(selectedProjectTaskList) === "{}" ? (
-          <>
+          <Fragment>
             <div className="h-full flex flex-col gap-5 justify-center items-center ">
               <div
                 className="cursor-pointer flex-col flex items-center gap-4 button-outline-primary"
@@ -78,12 +78,12 @@ const List = ({ type }) => {
                 <p>Create New Task</p>
               </div>
             </div>
-          </>
+          </Fragment>
         ) : (
           <DragFunction type={type} />
         )}
       </div>
-    </>
+    </Fragment>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ChevronRight, ChevronLeft } from "react-feather"
 import { useNavigate } from "react-router-dom"
 import { func, object, string } from "prop-types"

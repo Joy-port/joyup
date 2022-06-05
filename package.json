@@ -41,7 +41,8 @@
   "eslintConfig": {
     "extends": [
       "plugin:react/recommended",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:react/jsx-runtime"
     ],
     "parserOptions": {
       "ecmaFeatures": {
@@ -53,7 +54,11 @@
     "plugins": [
       "react",
       "prettier"
-    ]
+    ],
+    "rules": {
+      "react/jsx-uses-react": "off",
+      "react/react-in-jsx-scope": "off"
+    }
   },
   "browserslist": {
     "production": [

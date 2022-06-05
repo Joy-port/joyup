@@ -1,6 +1,5 @@
-import React, { useState, useRef, useCallback, useEffect } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import * as Icon from "react-feather"
 import { task } from "../../../store/actions/task"
 import { titleCommandList, dateCommandList } from "../../../utils/slashCommands"
 import { filterCommandListByQuery } from "../../../utils/helpers"
@@ -88,10 +87,10 @@ const TitleEditor = () => {
   const matchingTags = getMatchingCommands(tagCommands.query, selectedTagType?.children)
   const matchingTimeSettings = getMatchingCommands(timeCommands.query, dateCommandList)
 
-  const activeCommandList = (currentCommands, commandActions) => {
+  const activeCommandList = (selectedCommands, commandActions) => {
     return (
       <CommandList
-        commandList={currentCommands}
+        commandList={selectedCommands}
         onClickFunction={commandActions}
         mouseSelectFunction={setSelectionIndex}
         selectionIndex={selectionIndex}
@@ -195,12 +194,12 @@ const TitleEditor = () => {
     })
 
     setStyle("heading-three font-semibold text-light200")
-    setTotalCommands({ ...clearCommands })
     if (command.type === "tag") {
       setSelectedTagType(types.find((item) => item.type === command.name))
     } else {
       setDateType(command.type)
     }
+    setTotalCommands({ ...clearCommands })
     setSelectionIndex(0)
   }
 
@@ -331,6 +330,7 @@ const TitleEditor = () => {
       }
     }
   }
+
   return (
     <div className="flex flex-col rounded relative w-full">
       {text !== "" && !isEditing ? (
@@ -357,9 +357,10 @@ const TitleEditor = () => {
           onBlur={() => clearExistingCommands()}
         />
       )}
+
       {activeCommandList(matchingCommands, selectTotalCommand)}
       {activeCommandList(matchingTimeSettings, selectTimeCommand)}
-      {activeCommandList(matchingCommands, selectTags)}
+      {activeCommandList(matchingTags, selectTags)}
     </div>
   )
 }

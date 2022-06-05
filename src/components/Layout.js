@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import { Fragment, useContext, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { LogOut } from "react-feather"
@@ -26,7 +26,7 @@ const Layout = () => {
   }
 
   return (
-    <>
+    <Fragment>
       {loading ? (
         <Loader isContent={true} />
       ) : (
@@ -68,7 +68,7 @@ const Layout = () => {
           </div>
         </div>
       )}
-    </>
+    </Fragment>
   )
 }
 

@@ -1,4 +1,3 @@
-import React from "react"
 import { bool } from "prop-types"
 
 const Loader = ({ isContent }) => {

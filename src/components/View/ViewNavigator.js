@@ -1,4 +1,3 @@
-import React from "react"
 import { viewInfo } from "../../utils/config"
 import { Link, useLocation } from "react-router-dom"
 import { useSelector } from "react-redux"

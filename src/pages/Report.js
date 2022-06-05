@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import { Fragment, useCallback, useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet"
@@ -15,7 +15,7 @@ import { AuthContext } from "../components/AuthProvider"
 import { getClockTime } from "../utils/helpers"
 
 const Report = () => {
-  const [userDetail] = useContext(AuthContext)
+  const [userDetail, loading, error] = useContext(AuthContext)
   const [openSelector, setOpenSelector] = useState(false)
   const { userTasks, userProjects } = useSelector((state) => state.user)
   const { totalTaskList, totalProjectList, projectList } = useSelector(
@@ -98,12 +98,12 @@ const Report = () => {
     })
   }, [selectedProject])
   return (
-    <>
+    <Fragment>
       <Helmet>
         <title>JoyUp | Reports</title>
       </Helmet>
       {totalProjectList && selectedProject && totalProjectList[selectedProject] ? (
-        <>
+        <Fragment>
           <div className="menu-container">
             <div className="menu-item">
               <BarChart2 />
@@ -205,11 +205,11 @@ const Report = () => {
               </div>
             </div>
           </div>
-        </>
+        </Fragment>
       ) : (
         <Loader />
       )}
-    </>
+    </Fragment>
   )
 }
 

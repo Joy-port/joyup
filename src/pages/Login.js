@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import { Fragment, useCallback, useContext, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
@@ -104,7 +104,7 @@ const Login = () => {
     }
   })
   return (
-    <>
+    <Fragment>
       <div className="text-slateLight h-screen ">
         <div className="py-6 px-5">
           <div className="flex items-center">
@@ -277,7 +277,7 @@ const Login = () => {
         )}
         <img className="background" src={backgroundImage} alt="image" />
       </div>
-    </>
+    </Fragment>
   )
 }
 

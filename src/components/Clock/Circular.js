@@ -1,4 +1,3 @@
-import React from "react"
 import { Droplet } from "react-feather"
 import { number, string } from "prop-types"
 

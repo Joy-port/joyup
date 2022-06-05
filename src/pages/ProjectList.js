@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import { Fragment, useContext, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet"
@@ -36,7 +36,7 @@ const ProjectList = () => {
   }
 
   return (
-    <>
+    <Fragment>
       <Helmet>
         <title>JoyUp | Projects </title>
       </Helmet>
@@ -61,7 +61,7 @@ const ProjectList = () => {
       </div>
       <div className="hidden md:block -mt-5 min-h-18"></div>
       {ownerProjects.length === 0 ? (
-        <>
+        <Fragment>
           <div
             className="h-full flex flex-col gap-5 justify-center items-center cursor-pointer"
             onClick={() =>
@@ -72,9 +72,9 @@ const ProjectList = () => {
             <p>Create New Project</p>
           </div>
           {createProjectModalIsOpen && <ProjectSetup />}
-        </>
+        </Fragment>
       ) : (
-        <>
+        <Fragment>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5">
             {ownerProjects.map((projectID) => {
               if (projectID === "") {
@@ -141,10 +141,10 @@ const ProjectList = () => {
               )
             })}
           </div>
-        </>
+        </Fragment>
       )}
       {createProjectModalIsOpen && <ProjectSetup />}
-    </>
+    </Fragment>
   )
 }
 

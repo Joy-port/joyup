@@ -1,16 +1,16 @@
-import React from "react"
+import { Fragment } from "react"
 import { Droppable } from "react-beautiful-dnd"
 import { array, object, string } from "prop-types"
 import Task from "./Task"
 
 const InnerTaskList = ({ taskList, type }) => {
   return (
-    <>
+    <Fragment>
       {taskList &&
         taskList.map((item, index) => (
           <Task key={item.id} task={item} index={index} type={type} />
         ))}
-    </>
+    </Fragment>
   )
 }
 function taskIsSameInColumn(prevProp, nextProp) {

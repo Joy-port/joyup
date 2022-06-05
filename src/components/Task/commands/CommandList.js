@@ -1,6 +1,6 @@
-import React from "react"
+import { Fragment } from "react"
 import * as Icon from "react-feather"
-import { array, arrayOf, func, number, object, oneOfType } from "prop-types"
+import { arrayOf, func, number, object, oneOfType } from "prop-types"
 
 const CommandList = ({
   commandList,
@@ -9,7 +9,7 @@ const CommandList = ({
   selectionIndex,
 }) => {
   return (
-    <>
+    <Fragment>
       {commandList.length !== 0 && (
         <div className="results top-10 mt-1 z-10 ">
           {commandList.map((command, index) => {
@@ -31,7 +31,7 @@ const CommandList = ({
           })}
         </div>
       )}
-    </>
+    </Fragment>
   )
 }
 

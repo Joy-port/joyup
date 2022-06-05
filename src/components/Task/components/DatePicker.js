@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react"
+import { Fragment, useState, useCallback, useEffect } from "react"
 import { useSelector } from "react-redux"
 import DatePicker from "react-datepicker"
 import { any, bool, func, string } from "prop-types"
@@ -73,7 +73,7 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
   }
 
   return (
-    <>
+    <Fragment>
       {hasMinDate ? (
         <DatePicker
           showTimeSelect={!allDay}
@@ -102,7 +102,7 @@ const DatePick = ({ date, setDate, hasMinDate }) => {
           customInput={<CustomInput />}
         />
       )}
-    </>
+    </Fragment>
   )
 }
 

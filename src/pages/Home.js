@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useMemo } from "react"
+import { Fragment, useCallback, useEffect, useState, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { Calendar, momentLocalizer, Views } from "react-big-calendar"
 import { Helmet } from "react-helmet"
@@ -67,7 +67,7 @@ const Home = () => {
   )
 
   return (
-    <>
+    <Fragment>
       <Helmet>
         <title>JoyUp | Home </title>
       </Helmet>
@@ -111,7 +111,7 @@ const Home = () => {
           onSelectEvent={handleSelectEvent}
         />
       )}
-    </>
+    </Fragment>
   )
 }
 

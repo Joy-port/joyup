@@ -1,4 +1,4 @@
-import React from "react"
+import { Fragment } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 const Confirm = () => {
@@ -8,7 +8,7 @@ const Confirm = () => {
   const dispatch = useDispatch()
 
   return (
-    <>
+    <Fragment>
       {openConfirm && (
         <div className="modal-bg">
           <div
@@ -38,7 +38,7 @@ const Confirm = () => {
           </div>
         </div>
       )}
-    </>
+    </Fragment>
   )
 }
 

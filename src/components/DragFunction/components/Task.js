@@ -1,4 +1,3 @@
-import React from "react"
 import { Draggable } from "react-beautiful-dnd"
 import { Menu } from "react-feather"
 import { number, object, string } from "prop-types"

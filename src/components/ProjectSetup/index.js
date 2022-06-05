@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { Fragment, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import * as Icon from "react-feather"
@@ -113,7 +113,7 @@ const index = () => {
             }`}
           >
             {currentPage === 0 ? (
-              <>
+              <Fragment>
                 <div
                   className={`bg-white shadow-light200 shadow-md rounded-lg px-3 py-2 flex flex-col justify-center items-center gap-5 w-48 h-4/6 border-1  cursor-pointer hover:shadow-lg hover:border-blue200  hover:text-blue200 ${
                     isSelectTemplate === true
@@ -142,9 +142,9 @@ const index = () => {
                   <h3 className="heading-four">Create A Project</h3>
                   <Icon.FolderPlus size={50} strokeWidth={1.5} />
                 </div>
-              </>
+              </Fragment>
             ) : currentPage === 1 ? (
-              <>
+              <Fragment>
                 {templateProjects.map((templateDetail) => {
                   const IconName = Icon[templateDetail.icon]
                   return (
@@ -166,7 +166,7 @@ const index = () => {
                     </div>
                   )
                 })}
-              </>
+              </Fragment>
             ) : (
               <form
                 className="w-2/3 self-start flex flex-col gap-5"

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react"
+import { Fragment, useState, useContext, useEffect } from "react"
 import JoyRide, { ACTIONS, EVENTS, STATUS } from "react-joyride"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -88,7 +88,7 @@ const index = () => {
   }
 
   return (
-    <>
+    <Fragment>
       {isFirstTimeUser && runTour && (
         <JoyRide
           {...tourStatus}
@@ -120,7 +120,7 @@ const index = () => {
           }}
         />
       )}
-    </>
+    </Fragment>
   )
 }
 

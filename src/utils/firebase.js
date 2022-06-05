@@ -70,14 +70,18 @@ export const firebase = {
     })
   },
   getTotalProjects: async function () {
-    const collectionName = "projects"
-    const projectRef = collection(this.db, collectionName)
-    const totalProjects = []
-    const projectSnapshot = await getDocs(projectRef)
-    projectSnapshot.forEach((item) => {
-      totalProjects.push(item.data())
-    })
-    return totalProjects
+    try {
+      const collectionName = "projects"
+      const projectRef = collection(this.db, collectionName)
+      const totalProjects = []
+      const projectSnapshot = await getDocs(projectRef)
+      projectSnapshot.forEach((item) => {
+        totalProjects.push(item.data())
+      })
+      return totalProjects
+    } catch (error) {
+      console.error(error)
+    }
   },
   saveTagsToProjectID: async function (content) {
     const { parentTag, childTag, taskID, projectID } = content

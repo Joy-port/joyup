@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { getHourTime } from "../../../utils/helpers"
 import { useDispatch, useSelector } from "react-redux"
 import { X, Clock, Circle, Play } from "react-feather"
