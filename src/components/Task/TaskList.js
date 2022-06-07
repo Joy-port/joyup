@@ -34,6 +34,9 @@ const TaskList = () => {
 
   const filterTaskList = userTasks
     .filter((taskID) => {
+      totalTaskList[taskID] && taskID
+    })
+    .filter((taskID) => {
       const taskDetail = totalTaskList[taskID]
       const taskDueDate = new Date(taskDetail.dueDate).getDate()
       return taskDueDate >= new Date().getDate()
