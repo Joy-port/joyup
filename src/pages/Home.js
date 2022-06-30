@@ -102,7 +102,7 @@ const Home = () => {
           defaultDate={new Date()}
           defaultView="agenda"
           view={Views.AGENDA}
-          style={{ height: "calc(100vh - 150ßpx)" }}
+          style={{ height: "calc(100vh - 150px)" }}
           startAccessor="start"
           endAccessor="end"
           events={events}
